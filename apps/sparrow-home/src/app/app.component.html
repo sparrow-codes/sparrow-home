@@ -1,1 +1,9 @@
-<app-nx-welcome></app-nx-welcome> <router-outlet></router-outlet>
+<app-shell
+  [applicationTitle]="appTitle"
+  [navigationItems]="[
+    { label: 'Strona Główna', icon: 'pi-home', routerLink: routePath.MAIN },
+    { label: 'Panele i Pompa Ciepła', icon: 'pi-warehouse', routerLink: routePath.PANASONIC }
+  ]"
+>
+  <router-outlet></router-outlet>
+</app-shell>

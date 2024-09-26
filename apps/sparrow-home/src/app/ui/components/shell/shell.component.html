@@ -1,0 +1,27 @@
+<header
+  class="flex bg-secondary justify-content-between p-component align-items-center border-primary border-bottom-1 px-1 mx-1 shadow-1"
+>
+  <div class="text-base font-semibold text-primary">{{ applicationTitle() }}</div>
+</header>
+
+<div class="flex content w-full">
+  <nav class="flex w-20rem flex-column gap-2 surface-100 h-full p-2">
+    @for (item of navigationItems(); track $index) {
+
+    <a
+      class="p-2 text-primary hover:surface-200 w-full block flex gap-4 mb-1"
+      [routerLink]="item.routerLink"
+      [class.surface-300]="currentUrl() === '/' + item.routerLink"
+    >
+      <i class="pi" [ngClass]="item.icon"></i>
+      <span> {{ item.label }} </span>
+    </a>
+    }
+  </nav>
+
+  <div class="p-4 w-full">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+<p-toast />

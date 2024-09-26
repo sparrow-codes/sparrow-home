@@ -21,7 +21,12 @@
             "input": "apps/sparrow-home/public"
           }
         ],
-        "styles": ["apps/sparrow-home/src/styles.css"],
+        "styles": [
+          "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+          "node_modules/primeng/resources/primeng.min.css",
+          "node_modules/primeflex/primeflex.css",
+          "apps/sparrow-home/src/styles.css"
+        ],
         "scripts": []
       },
       "configurations": {

@@ -1,0 +1,58 @@
+<div class="flex gap-2 p-component align-items-center">
+  <ng-icon name="heroClock"></ng-icon>
+  <span>Ciśnienie Wody</span>
+  <span>{{ heatPump().waterPressure }}</span>
+</div>
+
+<div class="flex gap-2 mt-2 p-component align-items-center">
+  <ng-icon name="heroClock"></ng-icon>
+  <span>Temperatura zewnętrzna</span>
+  <span>{{ heatPump().outdoorNow }} &#176;C</span>
+</div>
+
+@if(heatPump().tankStatus[0]; as waterTank) {
+
+<div class="flex gap-2 mt-2 p-component align-items-center mb-6">
+  <ng-icon name="heroClock"></ng-icon>
+  <span>Status:</span>
+  @if (waterTank.operationStatus === 1) {
+    <i class="pi pi-spin pi-cog" style="font-size: 1rem"></i>
+  } @else {
+    <i class="pi pi-ban" style="font-size: 1rem"></i>  
+  }
+</div>
+
+<div class="p-component flex flex-column gap-1 w-full">
+  <div class="w-full flex gap-4 align-items-center">
+    <div class="font-semibold">Sczegóły Grzania wody:</div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <div class="w-full flex gap-4 align-items-center">
+    <div class="w-full">Wybrana temeratura</div>
+    <div class="w-full">{{ waterTank.heatSet }} &#176;C</div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <div class="w-full flex gap-4 align-items-center">
+    <div class="w-full">Bierząca temeratura na wyjściu z kotła</div>
+    <div class="w-full">{{ waterTank.temparatureNow }} &#176;C</div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <div class="w-full flex gap-4 align-items-center">
+    <div class="w-full">Maksymalna temeratura grzania wody</div>
+    <div class="w-full">{{ waterTank.heatMax }} &#176;C</div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <div class="w-full flex gap-4 align-items-center">
+    <div class="w-full">Minimalna temeratura grzania wody</div>
+    <div class="w-full">{{ waterTank.heatMin }} &#176;C</div>
+  </div>
+</div>
+}
