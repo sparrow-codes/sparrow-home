@@ -1,10 +1,8 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 
 export const apiUrlInterceptor: HttpInterceptorFn = (req, next) => {
-  const apiPrefix = 'api';
-  const backendUrl = 'http://localhost:3000';
-
-  const request = req.clone({url: `${backendUrl}/${apiPrefix}/${req.url}`});
-
+  const apiPrefix: string = 'api';
+  const backendUrl: string = 'http://localhost:3000';
+  const request: HttpRequest<unknown> = req.clone({url: `${backendUrl}/${apiPrefix}/${req.url}`});
   return next(request);
 };

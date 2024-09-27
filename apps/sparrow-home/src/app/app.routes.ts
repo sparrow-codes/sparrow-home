@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
-import { MainComponent } from './features/main/components/home/main.component';
+
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
+import { MainComponent } from './features/main/components/home/main.component';
 
 export enum RoutePath {
     MAIN = 'main',

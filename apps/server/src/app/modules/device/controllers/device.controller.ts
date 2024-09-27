@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+
 import { DeviceService } from '../services/device/device.service';
 
 @Controller('device')

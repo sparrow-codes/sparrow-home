@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+
 import { RootDataFacadeService } from '../../../../core/services/root-data-facade.service';
+import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 
 @Component({
   standalone: true,

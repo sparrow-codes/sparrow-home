@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
+
+import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
 
 @Injectable()
 export class CloudConnectionService {

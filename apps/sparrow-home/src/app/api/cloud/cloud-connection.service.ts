@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
+import { Observable } from 'rxjs';
 
 enum CLOUD_URLS {
   PANASONIC_CLOUD_CONNECT = 'panasonic-cloud/connect',
@@ -16,7 +16,7 @@ export class CloudConnectionService {
   private readonly http: HttpClient = inject(HttpClient);
 
   public getPanasonicCloundConnection(): Observable<string> {
-    return this.http.get<string>(CLOUD_URLS.PANASONIC_CLOUD_CONNECT)
+    return this.http.get<string>(CLOUD_URLS.PANASONIC_CLOUD_CONNECT);
   }
 
   public getHeatPumpDetails(): Observable<HeatPump> {

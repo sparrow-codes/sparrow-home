@@ -1,6 +1,7 @@
 import { inject, Injectable, Signal } from '@angular/core';
-import { RootStore } from '../store/root-store';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
+
+import { RootStore } from '../store/root-store';
 
 @Injectable({
   providedIn: 'root'

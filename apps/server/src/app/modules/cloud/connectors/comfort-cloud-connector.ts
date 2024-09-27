@@ -1,8 +1,9 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { Axios } from 'axios';
-import { OAuthClient } from './OAuthConnector';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
+import { Axios } from 'axios';
+
+import { OAuthClient } from './OAuthConnector';
 
 @Injectable()
 export class ComfortCloudConnector {

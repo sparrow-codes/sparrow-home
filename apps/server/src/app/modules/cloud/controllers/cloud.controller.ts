@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { CloudConnectionService } from '../services/cloud-connection/cloud-connection.service';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
+
+import { CloudConnectionService } from '../services/cloud-connection/cloud-connection.service';
 
 @Controller('panasonic-cloud')
 export class CloudController {

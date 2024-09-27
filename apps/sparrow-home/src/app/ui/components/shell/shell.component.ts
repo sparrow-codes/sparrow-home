@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,14 +9,14 @@ import {
   OutputEmitterRef,
   Signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { NavigationItem } from '../../models/navigation-item';
-import { ToastModule } from 'primeng/toast';
-import { SkeletonModule } from 'primeng/skeleton';
-import { filter, map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
+import { ToastModule } from 'primeng/toast';
+import { filter, map } from 'rxjs';
+
+import { NavigationItem } from '../../models/navigation-item';
 
 @Component({
   selector: 'app-shell',
