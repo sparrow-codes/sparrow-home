@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigKey } from './enums/config-key';
 import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { DeviceModule } from './modules/device/device.module';
         synchronize: false,
       }),
     }),
+    UserModule,
   ],
 })
 export class AppModule {}
