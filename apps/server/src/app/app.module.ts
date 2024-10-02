@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ConfigKey } from './enums/config-key';
+import { AuthModule } from './modules/auth/auth.module';
 import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
 import { UserModule } from './modules/user/user.module';
@@ -29,6 +30,7 @@ import { UserModule } from './modules/user/user.module';
       }),
     }),
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

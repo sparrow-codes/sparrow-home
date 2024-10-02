@@ -26,4 +26,8 @@ export class UserService {
     user.role = UserRole.ADMIN;
     await this.userRepository.save(user);
   }
+
+  public getUserByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOneBy({ email });
+  }
 }
