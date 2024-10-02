@@ -11,9 +11,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
-import { ToastModule } from 'primeng/toast';
+import { ButtonComponent } from '@sparrow-codes/sparrow-ui';
 import { filter, map } from 'rxjs';
 
 import { NavigationItem } from '../../models/navigation-item';
@@ -21,7 +19,7 @@ import { NavigationItem } from '../../models/navigation-item';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, ButtonModule, RouterLink, ToastModule, SkeletonModule],
+  imports: [CommonModule, RouterLink, ButtonComponent],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -4,9 +4,8 @@
     header {
         height: var(--header-height);
     }
-    
+
     .content {
         height: calc(100% - var(--header-height));
-        width: 15rem;
     }
 }

@@ -1,10 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
-import { MessageService } from 'primeng/api';
+import { SpToastService } from '@sparrow-codes/sparrow-ui';
 import { finalize, first, pipe, switchMap, tap } from 'rxjs';
 
 import { CloudConnectionService } from '../../api/cloud/cloud-connection.service';
@@ -22,7 +21,7 @@ export const RootStore = signalStore(
     (
       store,
       cloudConnectionService = inject(CloudConnectionService),
-      messageService = inject(MessageService),
+      messageService = inject(SpToastService),
       deviceApiService = inject(DeviceApiService)
     ) => ({
       connectToCloud: rxMethod<void>(
@@ -34,7 +33,7 @@ export const RootStore = signalStore(
               switchMap(() => cloudConnectionService.getHeatPumpDetails().pipe(first())),
               tapResponse({
                 next: (value) => patchState(store, { heatPump: value }),
-                error: (error: HttpErrorResponse) => messageService.add({ detail: error.message, severity: 'error' }),
+                error: () => messageService.danger('Błąd', 'Wystąpił błąd w połączeniu do cloud!'),
               }),
               finalize(() => patchState(store, { loading: false }))
             )

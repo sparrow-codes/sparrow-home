@@ -1,19 +1,13 @@
 <app-page-title>Pompa i Panele Fotowoltaiczne</app-page-title>
 
 @if(isLoading()) {
-<div class="flex w-full justify-content-center">
-  <p-progressSpinner></p-progressSpinner>
-</div>
+<div class="flex w-full justify-center"></div>
 } @else if(heatPump()) {
-<p-tabView>
-  <p-tabPanel>
-    <ng-template pTemplate="header">
-      <div class="flex align-items-center gap-2">
+<sp-card>
+      <div class="flex items-center  gap-2">
         <ng-icon name="heroPresentationChartLine"></ng-icon>
         <span class="font-bold white-space-nowrap m-0">Pompa Ciepła</span>
       </div>
-    </ng-template>
-    <app-heat-pump class="fadein" [heatPump]="heatPump()!"></app-heat-pump>    
-  </p-tabPanel>
-</p-tabView>
+    <app-heat-pump class="fadein" [heatPump]="heatPump()!"></app-heat-pump>
+</sp-card>
 }
