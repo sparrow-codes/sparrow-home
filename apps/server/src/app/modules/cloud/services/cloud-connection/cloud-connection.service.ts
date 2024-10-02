@@ -8,22 +8,22 @@ import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector'
 @Injectable()
 export class CloudConnectionService {
   public constructor(
-    private readonly connector: ComfortCloudConnector,
-    private readonly configService: ConfigService
+    private readonly _connector: ComfortCloudConnector,
+    private readonly _configService: ConfigService
   ) {}
 
   public async connectToPanasonicCloud(): Promise<void> {
-    const userName: string = this.configService.get(ConfigKey.PANASONIC_CLOUD_LOGIN);
-    const password: string = this.configService.get(ConfigKey.PANASONIC_CLOUD_PASSWORD);
+    const userName: string = this._configService.get(ConfigKey.PANASONIC_CLOUD_LOGIN);
+    const password: string = this._configService.get(ConfigKey.PANASONIC_CLOUD_PASSWORD);
 
     if (!userName || !password) {
       throw new UnauthorizedException();
     }
 
-    return this.connector.login(userName, password);
+    return this._connector.login(userName, password);
   }
 
   public getHeatPumpDetails(): Promise<HeatPump> {
-    return this.connector.getDeviceDetails();
+    return this._connector.getDeviceDetails();
   }
 }
