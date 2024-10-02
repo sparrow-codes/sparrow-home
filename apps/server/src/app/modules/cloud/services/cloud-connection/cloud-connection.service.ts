@@ -1,20 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { HeatPump } from '@shared-models/panasonic-cloud-models';
 
+import { ConfigKey } from '../../../../enums/config-key';
 import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
 
 @Injectable()
 export class CloudConnectionService {
-  private readonly userName: string = 'feret.katarzyna@gmail.com';
-  private readonly password: string = 'Kozunia83!';
-
-  public constructor(private readonly connector: ComfortCloudConnector) {}
+  public constructor(
+    private readonly _connector: ComfortCloudConnector,
+    private readonly _configService: ConfigService
+  ) {}
 
   public async connectToPanasonicCloud(): Promise<void> {
-    return this.connector.login(this.userName, this.password);
+    const userName: string = this._configService.get(ConfigKey.PANASONIC_CLOUD_LOGIN);
+    const password: string = this._configService.get(ConfigKey.PANASONIC_CLOUD_PASSWORD);
+
+    if (!userName || !password) {
+      throw new UnauthorizedException();
+    }
+
+    return this._connector.login(userName, password);
   }
 
   public getHeatPumpDetails(): Promise<HeatPump> {
-    return this.connector.getDeviceDetails();
+    return this._connector.getDeviceDetails();
   }
 }
