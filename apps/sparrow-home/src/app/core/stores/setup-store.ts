@@ -1,6 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { HttpStatus } from '@nestjs/common';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { SpToastService } from '@sparrow-codes/sparrow-ui';
@@ -21,7 +20,7 @@ export const SetupStore = signalStore(
         first(),
         map(() => true),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === HttpStatus.UNAUTHORIZED) {
+          if (error.status === HttpStatusCode.Unauthorized) {
             return of(false);
           }
 
