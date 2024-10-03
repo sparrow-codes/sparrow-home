@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { HeatPump } from '@shared-models/panasonic-cloud-models';
 
 import { ConfigKey } from '../../../../enums/config-key';
 import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
+import { HeatPump } from '../../controllers/models/panasonic-cloud-models';
 
 @Injectable()
 export class CloudConnectionService {

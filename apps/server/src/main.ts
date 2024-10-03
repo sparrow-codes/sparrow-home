@@ -13,6 +13,7 @@ async function bootstrap(): Promise<void> {
   const globalPrefix: string = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
   const port: number = +process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);

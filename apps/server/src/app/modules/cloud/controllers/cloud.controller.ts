@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { HeatPump } from '@shared-models/panasonic-cloud-models';
 
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { CloudConnectionService } from '../services/cloud-connection/cloud-connection.service';
+import { HeatPump } from './models/panasonic-cloud-models';
 
 @UseGuards(AuthGuard)
 @Controller('panasonic-cloud')

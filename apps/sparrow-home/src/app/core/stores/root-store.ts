@@ -2,12 +2,12 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { HeatPump } from '@shared-models/panasonic-cloud-models';
 import { SpToastService } from '@sparrow-codes/sparrow-ui';
 import { finalize, first, pipe, switchMap, tap } from 'rxjs';
 
-import { CloudConnectionService } from '../../api/cloud/cloud-connection.service';
-import { DeviceApiService } from '../../api/device/device-api.service';
+import { CloudConnectionService } from '~api/cloud/cloud-connection.service';
+import { HeatPump } from '~api/cloud/models/panasonic-cloud-models';
+import { DeviceApiService } from '~api/device/device-api.service';
 
 type RootState = {
   loading: boolean;
@@ -16,7 +16,7 @@ type RootState = {
 
 export const RootStore = signalStore(
   { providedIn: 'root' },
-  withState<RootState>({ connecting: true, loading: false, heatPump: null } as RootState),
+  withState<RootState>({ connecting: true, loading: false, heatPump: null, isUserLoggedIn: false } as RootState),
   withMethods(
     (
       store,

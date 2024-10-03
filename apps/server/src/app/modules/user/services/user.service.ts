@@ -24,10 +24,15 @@ export class UserService {
     user.email = request.email;
     user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
     user.role = UserRole.ADMIN;
+    user.isPasswordExpired = false;
     await this.userRepository.save(user);
   }
 
   public getUserByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOneBy({ email });
+  }
+
+  public getAllUsers(): Promise<User[]> {
+    return this.userRepository.find();
   }
 }

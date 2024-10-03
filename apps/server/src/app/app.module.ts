@@ -7,6 +7,7 @@ import { ConfigKey } from './enums/config-key';
 import { AuthModule } from './modules/auth/auth.module';
 import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
+import { SetupModule } from './modules/setup/setup.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -26,11 +27,12 @@ import { UserModule } from './modules/user/user.module';
         password: configService?.get<string>(ConfigKey.DB_PASSWORD),
         schema: configService?.get<string>(ConfigKey.DB_SCHEMA),
         autoLoadEntities: true,
-        synchronize: false,
+        synchronize: true,
       }),
     }),
     UserModule,
     AuthModule,
+    SetupModule,
   ],
 })
 export class AppModule {}

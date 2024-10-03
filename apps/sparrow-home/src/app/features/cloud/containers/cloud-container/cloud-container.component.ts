@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
-import { HeatPump } from '@shared-models/panasonic-cloud-models';
 import { CardComponent } from '@sparrow-codes/sparrow-ui';
 
-import { RootDataFacadeService } from '../../../../core/services/root-data-facade.service';
+import { HeatPump } from '~api/cloud/models/panasonic-cloud-models';
+import { DataFacadeService } from '~core/services/data-facade.service';
+
 import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 import { HeatPumpComponent } from '../../components/heat-pump/heat-pump.component';
 
@@ -17,7 +18,7 @@ import { HeatPumpComponent } from '../../components/heat-pump/heat-pump.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloudContainerComponent implements OnInit {
-  protected readonly rootDataService: RootDataFacadeService = inject(RootDataFacadeService);
+  protected readonly rootDataService: DataFacadeService = inject(DataFacadeService);
   protected readonly heatPump: Signal<HeatPump | null> = this.rootDataService.heatPump;
   protected readonly isLoading: Signal<boolean> = this.rootDataService.isLoading;
 

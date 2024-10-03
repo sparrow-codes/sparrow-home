@@ -1,21 +1,32 @@
 <header
-  class="flex border-b-primary border-b shadow-md items-center px-4"
+  class="flex border-b-primary border-b shadow-md items-center px-4 justify-between bg-light-gray"
 >
-  <div class="text-base font-semibold text-primary">{{ applicationTitle() }}</div>
+  <div class="font-semibold text-primary">{{ applicationTitle() }}</div>
+  <div class="flex gap-2 items-center">
+    <sp-button type="link" (click)="logout.emit()">
+      <div class="flex gap-2 items-center">
+        <span>WYLOGUJ</span>
+        <ng-icon class="text-lg" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
+      </div>
+
+    </sp-button>
+  </div>
 </header>
 
 <div class="flex content w-full">
-  <nav class="flex w-auto flex-col gap-2 h-full p-2 border-primary border-r-2">
+  <nav class="flex w-auto flex-col gap-[10px] h-full p-4 border-primary border-r-2 bg-light-gray">
     @for (item of navigationItems(); track $index) {
 
     <sp-button
-      class="p-2 text-primary hover:surface-200"
       [routerLink]="item.routerLink"
       [type]="currentUrl() === '/' + item.routerLink ? 'primary' : 'secondary'"
       [class.surface-300]="currentUrl() === '/' + item.routerLink"
     >
-      <i class="pi" [ngClass]="item.icon"></i>
-      <span class="whitespace-nowrap"> {{ item.label }} </span>
+      <div class="flex gap-2 items-center">
+        <ng-icon class="text-lg" [name]="item.icon"></ng-icon>
+        <span class="whitespace-nowrap"> {{ item.label }} </span>
+      </div>
+
     </sp-button>
     }
   </nav>
