@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --sp-card-border: 1px solid #8d8d8d;
+  --sp-card-border-radius: 10px;
+  --sp-card-box-shadow: 0 0 8px #8d8d8d;
+
+  --app-light-gray: #F4F4FC;
+
+  --sp-primary-color: #4E91B8;
+  --sp-primary-font-color: #474747;
+  --sp-error-color: #dc2c24;
+}
+
 html,
 body {
   margin: 0;

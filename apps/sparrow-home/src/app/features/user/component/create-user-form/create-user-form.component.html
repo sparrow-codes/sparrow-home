@@ -1,0 +1,21 @@
+<form [formGroup]="formGroup" class="w-[450px] flex flex-col gap-2">
+  <sp-input type="text" name="first-name" [formControlName]="formName.FIRST_NAME" label="Imię:"></sp-input>
+  <sp-input type="text" name="first-name" [formControlName]="formName.LAST_NAME" label="Nazwisko (opcjonalnie):"></sp-input>
+  <sp-input type="text" name="first-name" [formControlName]="formName.EMAIL" label="Email:"></sp-input>
+  <sp-input type="password" name="first-name" [formControlName]="formName.PASSWORD" label="Hasło:"></sp-input>
+  <sp-input type="password" name="first-name" [formControlName]="formName.REPEAT_PASSWORD" label="Powtórz hasło:"></sp-input>
+
+  <div class="min-h-[30px]">
+    @if(showMismatchPasswordError()) {
+      <span class="text-error text-sm">Podane hasła nie są identyczne</span>
+    }
+  </div>
+
+  <sp-button class="mt-6" [disabled]="formGroup.invalid" (click)="onSave()">
+    <div class="flex justify-center gap-2 items-center">
+      <span>Utwórz</span>
+      <ng-icon name="heroUser"></ng-icon>
+    </div>
+
+  </sp-button>
+</form>

@@ -1,6 +1,10 @@
 :host {
     --header-height: 60px;
 
+    nav {
+      --sp-button-width: 100%
+    }
+
     header {
         height: var(--header-height);
     }

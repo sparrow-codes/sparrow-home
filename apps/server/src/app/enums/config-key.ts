@@ -7,4 +7,7 @@ export enum ConfigKey {
   DB_USER_NAME = 'dbUserName',
   DB_PASSWORD = 'dbPassword',
   DB_SCHEMA = 'dbSchema',
+
+  JWT_SECRET = 'jwtSecret',
+  JWT_EXPIRATION = 'jwtExpiry',
 }

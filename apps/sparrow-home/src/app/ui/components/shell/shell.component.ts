@@ -11,6 +11,8 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { heroArrowLeftEndOnRectangleSolid } from '@ng-icons/heroicons/solid';
 import { ButtonComponent } from '@sparrow-codes/sparrow-ui';
 import { filter, map } from 'rxjs';
 
@@ -19,9 +21,10 @@ import { NavigationItem } from '../../models/navigation-item';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonComponent],
+  imports: [CommonModule, RouterLink, ButtonComponent, NgIcon],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.css',
+  providers: [provideIcons({ heroArrowLeftEndOnRectangleSolid })],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent {
