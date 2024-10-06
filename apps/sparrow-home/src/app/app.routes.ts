@@ -4,6 +4,7 @@ import { RoutePath } from '~core/enum/route-path';
 import { authGuard } from '~core/guards/auth.guard';
 import { configurationNotReadyGuard } from '~core/guards/configuration-not-ready.guard';
 import { configurationReadyGuard } from '~core/guards/configuration-ready.guard';
+import { setupResolver } from '~core/resolvers/setup.resolver';
 
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
 import { MainComponent } from './features/main/components/home/main.component';
@@ -26,6 +27,7 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: FrameComponent,
+    resolve: { data: setupResolver },
     canActivate: [configurationReadyGuard, authGuard],
     children: [
       {
