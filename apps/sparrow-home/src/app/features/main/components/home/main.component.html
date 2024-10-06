@@ -1,3 +1,10 @@
 <app-page-title>Panel Główny</app-page-title>
 
-<sp-button (click)="toastMessage.success('abc', 'efg')">Message</sp-button>
+<section class="w-full">
+  <sp-card>
+    <h1 class="text-lg text-dark-gray">Sterowanie Główne:</h1>
+    <div class="max-w-full md:max-w-[75%] lg:max-w-[35%] ">
+      <sp-select class="mt-6" [formControl]="modeControl" [options]="modeOptions()" name="mode-select" label="Tryb pracy"></sp-select>
+    </div>
+  </sp-card>
+</section>

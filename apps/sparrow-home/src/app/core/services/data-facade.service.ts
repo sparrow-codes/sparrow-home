@@ -37,6 +37,14 @@ export class DataFacadeService {
     return this._userStore.isLoginError;
   }
 
+  public get currentMode(): Signal<number | null> {
+    return this._setupStore.currentMode;
+  }
+
+  public get modeDictionary(): Signal<{ value: number; label: string }[]> {
+    return this._setupStore.modeDictionary;
+  }
+
   public get isUserLoggedIn(): Signal<boolean> {
     return computed(() => !!this._userStore.token());
   }
@@ -53,8 +61,16 @@ export class DataFacadeService {
     this._rootStore.fetchDeviceList();
   }
 
+  public setMode(mode: number): void {
+    this._setupStore.setMode(mode);
+  }
+
   public isConfigurationReady(): Observable<boolean> {
     return this._setupStore.verifyConfigurationReady();
+  }
+
+  public fetchCurrentConfiguration(): Observable<void> {
+    return this._setupStore.getCurrentSetup();
   }
 
   public createFirstUser(request: CreateUserRequest): void {
