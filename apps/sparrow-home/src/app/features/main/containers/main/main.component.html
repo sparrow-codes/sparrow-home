@@ -1,0 +1,22 @@
+<app-page-title>Panel Główny</app-page-title>
+
+<section class="w-full flex flex-col gap-6">
+  <sp-card>
+    <h1 class="text-lg text-dark-gray">Sterowanie Główne:</h1>
+    <div class="max-w-full md:max-w-[75%] lg:max-w-[35%]">
+      <sp-select
+        class="mt-6"
+        [formControl]="modeControl"
+        [options]="modeOptions()"
+        name="mode-select"
+        label="Tryb pracy"
+      ></sp-select>
+    </div>
+  </sp-card>
+
+  @if(configuration(); as config) {
+  <sp-card>
+    <app-configuration-form [configuration]="config" (onSave)="saveConfiguration($event)"></app-configuration-form>
+  </sp-card>
+  }
+</section>

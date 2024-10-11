@@ -8,21 +8,31 @@ import { finalize, first, pipe, switchMap, tap } from 'rxjs';
 import { CloudConnectionService } from '~api/cloud/cloud-connection.service';
 import { HeatPump } from '~api/cloud/models/panasonic-cloud-models';
 import { DeviceApiService } from '~api/device/device-api.service';
+import { WeatherApiService } from '~api/weather/weather-api.service';
 
 type RootState = {
   loading: boolean;
   heatPump: HeatPump | null;
+  lowestTemperatureAtNight: number | undefined;
 };
 
 export const RootStore = signalStore(
   { providedIn: 'root' },
-  withState<RootState>({ connecting: true, loading: false, heatPump: null, isUserLoggedIn: false } as RootState),
+  withState<RootState>({
+    connecting: true,
+    loading: false,
+    heatPump: null,
+    isUserLoggedIn: false,
+    lowestTemperatureAtNight: undefined,
+  } as RootState),
   withMethods(
     (
       store,
       cloudConnectionService = inject(CloudConnectionService),
       messageService = inject(SpToastService),
-      deviceApiService = inject(DeviceApiService)
+      deviceApiService = inject(DeviceApiService),
+      weatherApiService = inject(WeatherApiService),
+      toastService = inject(SpToastService)
     ) => ({
       connectToCloud: rxMethod<void>(
         pipe(
@@ -41,6 +51,18 @@ export const RootStore = signalStore(
         )
       ),
       fetchDeviceList: rxMethod<void>(pipe(switchMap(() => deviceApiService.getWifiDeviceList().pipe()))),
+      fetchLowestTemperature: rxMethod<void>(
+        pipe(
+          switchMap(() =>
+            weatherApiService.getLowestTemperatureByNight().pipe(
+              tapResponse({
+                next: (temperature) => patchState(store, { lowestTemperatureAtNight: temperature }),
+                error: () => toastService.danger('Pogoda', 'Błąd pobierania nocnej temperatury'),
+              })
+            )
+          )
+        )
+      ),
     })
   )
 );

@@ -16,9 +16,9 @@
   <ng-icon name="heroClock"></ng-icon>
   <span>Status:</span>
   @if (waterTank.operationStatus === 1) {
-    <ng-icon name="heroCheckCircle"></ng-icon>
+  <ng-icon name="heroCheckCircle"></ng-icon>
   } @else {
-    <ng-icon name="heroNoSymbol"></ng-icon>
+  <ng-icon name="heroNoSymbol"></ng-icon>
   }
 </div>
 
@@ -27,24 +27,20 @@
     <div class="font-semibold">Sczegóły Grzania wody:</div>
   </div>
 
-
   <div class="w-full flex gap-4 items-center">
     <div class="w-full">Wybrana temeratura</div>
     <div class="w-full">{{ waterTank.heatSet }} &#176;C</div>
   </div>
-
 
   <div class="w-full flex gap-4 items-center">
     <div class="w-full">Bierząca temeratura na wyjściu z kotła</div>
     <div class="w-full">{{ waterTank.temparatureNow }} &#176;C</div>
   </div>
 
-
   <div class="w-full flex gap-4 items-center">
     <div class="w-full">Maksymalna temeratura grzania wody</div>
     <div class="w-full">{{ waterTank.heatMax }} &#176;C</div>
   </div>
-
 
   <div class="w-full flex gap-4 items-center">
     <div class="w-full">Minimalna temeratura grzania wody</div>

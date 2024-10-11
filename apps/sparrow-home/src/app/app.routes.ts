@@ -7,7 +7,7 @@ import { configurationReadyGuard } from '~core/guards/configuration-ready.guard'
 import { setupResolver } from '~core/resolvers/setup.resolver';
 
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
-import { MainComponent } from './features/main/components/home/main.component';
+import { MainComponent } from './features/main/containers/main/main.component';
 import { FrameComponent } from './ui/components/frame/frame.component';
 
 export const appRoutes: Route[] = [

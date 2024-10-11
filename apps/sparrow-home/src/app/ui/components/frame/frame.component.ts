@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 import { heroCloud, heroComputerDesktop } from '@ng-icons/heroicons/outline';
@@ -17,8 +17,13 @@ import { ShellComponent } from '../shell/shell.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideIcons({ heroComputerDesktop, heroCloud })],
 })
-export class FrameComponent {
+export class FrameComponent implements OnInit {
   protected readonly appTitle: string = inject(APP_TITLE);
   protected readonly routePath: typeof RoutePath = RoutePath;
   protected readonly dataService: DataFacadeService = inject(DataFacadeService);
+  protected readonly lowestTemperatureAtNight: Signal<number | undefined> = this.dataService.lowestTemperatureAtNight;
+
+  public ngOnInit(): void {
+    this.dataService.fetchLowestTemperature();
+  }
 }

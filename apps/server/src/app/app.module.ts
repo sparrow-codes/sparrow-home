@@ -9,6 +9,7 @@ import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
 import { SetupModule } from './modules/setup/setup.module';
 import { UserModule } from './modules/user/user.module';
+import { WeatherModule } from './modules/waether/weather.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UserModule } from './modules/user/user.module';
     UserModule,
     AuthModule,
     SetupModule,
+    WeatherModule,
   ],
 })
 export class AppModule {}

@@ -3,13 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --sp-card-border: 1px solid #8d8d8d;
   --sp-card-border-radius: 10px;
-  --sp-card-box-shadow: 0 0 8px #8d8d8d;
+  --sp-card-box-shadow: 0;
+  --sp-card-border: 1px solid #d1d1d1;
+  --sp-card-background-color: white;
 
-  --app-light-gray: #F4F4FC;
+  --sp-input-border-radius: 10px;
 
-  --sp-primary-color: #4E91B8;
+  --app-light-gray: #d1d1d1;
+  --app-dark-blue: #262c40;
+  --app-light-blue: #393e61;
+  --app-background-gray: #f3f6f9;
+
+  --sp-primary-color: #4e91b8;
   --sp-primary-font-color: #474747;
   --sp-error-color: #dc2c24;
 }
@@ -20,4 +26,6 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
+  background-color: var(--app-background-gray);
+  font-family: 'Inter', sans-serif;
 }

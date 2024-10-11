@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { User } from '../../user/enitities/user';
+import { SetConfigurationRequest } from '../controlers/models/set-configuration.request';
 import { Setup } from '../enitites/setup';
 
 @Injectable()
@@ -21,14 +22,23 @@ export class SetupService {
   }
 
   public async setMode(mode: number): Promise<void> {
-    const setup: Setup[] = await this._setupRepository.find();
-    const first: Setup = setup[0];
+    const setup: Setup = await this.getSetup();
 
-    first.mode = mode;
-    await this._setupRepository.save(first);
+    setup.mode = mode;
+    await this._setupRepository.save(setup);
   }
 
-  public getSetup(): Promise<Setup[]> {
-    return this._setupRepository.find();
+  public async saveConfiguration(request: SetConfigurationRequest): Promise<void> {
+    const setup: Setup = await this.getSetup();
+
+    setup.lat = request.lat;
+    setup.lng = request.lng;
+
+    await this._setupRepository.save(setup);
+  }
+
+  public async getSetup(): Promise<Setup> {
+    const setup: Setup[] = await this._setupRepository.find();
+    return setup[0];
   }
 }

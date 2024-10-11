@@ -7,4 +7,10 @@ export class Setup {
 
   @Column()
   public mode: number;
+
+  @Column({ nullable: true, type: 'decimal' })
+  public lat?: number;
+
+  @Column({ nullable: true, type: 'decimal' })
+  public lng?: number;
 }

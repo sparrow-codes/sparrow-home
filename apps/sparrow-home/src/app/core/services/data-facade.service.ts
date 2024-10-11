@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HeatPump } from '~api/cloud/models/panasonic-cloud-models';
 import { CreateUserRequest } from '~api/user/models/create-user-request';
 import { LoginRequest } from '~api/user/models/login-request';
+import { Configuration } from '~core/models/configuration';
 
 import { RootStore } from '../stores/root-store';
 import { SetupStore } from '../stores/setup-store';
@@ -37,8 +38,8 @@ export class DataFacadeService {
     return this._userStore.isLoginError;
   }
 
-  public get currentMode(): Signal<number | null> {
-    return this._setupStore.currentMode;
+  public get configuration(): Signal<Configuration | null> {
+    return this._setupStore.configuration;
   }
 
   public get modeDictionary(): Signal<{ value: number; label: string }[]> {
@@ -51,6 +52,10 @@ export class DataFacadeService {
 
   public get configurationReady(): Signal<boolean | null> {
     return this._setupStore.isConfigurationReady;
+  }
+
+  public get lowestTemperatureAtNight(): Signal<number | undefined> {
+    return this._rootStore.lowestTemperatureAtNight;
   }
 
   public connectToCloudServices(): void {
@@ -73,6 +78,10 @@ export class DataFacadeService {
     return this._setupStore.getCurrentSetup();
   }
 
+  public saveConfiguration(configuration: Configuration): void {
+    this._setupStore.setConfiguration(configuration);
+  }
+
   public createFirstUser(request: CreateUserRequest): void {
     this._userStore.createUser(request);
   }
@@ -83,5 +92,9 @@ export class DataFacadeService {
 
   public logout(): void {
     this._userStore.logout();
+  }
+
+  public fetchLowestTemperature(): void {
+    this._rootStore.fetchLowestTemperature();
   }
 }

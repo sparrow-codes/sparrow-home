@@ -1,4 +1,5 @@
 <app-shell
+  [lowestTemperatureAtNight]="lowestTemperatureAtNight()"
   (logout)="dataService.logout()"
   [applicationTitle]="appTitle"
   [navigationItems]="[

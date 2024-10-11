@@ -1,5 +1,5 @@
 export interface NavigationItem {
-    label: string;
-    icon: string;
-    routerLink: string;
+  label: string;
+  icon: string;
+  routerLink: string;
 }
