@@ -4,19 +4,20 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { SpToastService } from '@sparrow-codes/sparrow-ui';
-import { catchError, first, map, Observable, of, pipe, switchMap } from 'rxjs';
+import { catchError, first, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
 
 import { SetupApiService } from '~api/setup/setup-api.service';
+import { Configuration } from '~core/models/configuration';
 
 interface SetupStoreState {
   isConfigurationReady: boolean | null;
   modeDictionary: { value: number; label: string }[];
-  currentMode: number | null;
+  configuration: Configuration | null;
 }
 
 export const SetupStore = signalStore(
   { providedIn: 'root' },
-  withState<SetupStoreState>({ isConfigurationReady: null, currentMode: null, modeDictionary: [] }),
+  withState<SetupStoreState>({ isConfigurationReady: null, configuration: null, modeDictionary: [] }),
   withMethods((store, apiService = inject(SetupApiService), toastService = inject(SpToastService)) => ({
     verifyConfigurationReady: (): Observable<boolean> => {
       return apiService.isConfigurationReady().pipe(
@@ -41,7 +42,11 @@ export const SetupStore = signalStore(
         tapResponse({
           next: (response) =>
             patchState(store, {
-              currentMode: response.currentMode,
+              configuration: {
+                mode: response.currentMode,
+                lat: response.lat,
+                lng: response.lng,
+              },
               modeDictionary: response.dictionaries.modeDictionary,
             }),
           error: () => toastService.danger('Konfiguracja', 'Błąd pobierania konfiguracji!'),
@@ -62,6 +67,20 @@ export const SetupStore = signalStore(
                     store.modeDictionary().find((dictionary) => dictionary.value === mode)?.label ?? ''
                   }`
                 ),
+              error: () => toastService.danger('Konfiguracja', 'Błąd zmiany konfiguracji!'),
+            })
+          )
+        )
+      )
+    ),
+    setConfiguration: rxMethod<Configuration>(
+      pipe(
+        tap((configuration) => patchState(store, { configuration })),
+        switchMap((configuration) =>
+          apiService.changeConfiguration({ lng: configuration.lng, lat: configuration.lat }).pipe(
+            first(),
+            tapResponse({
+              next: () => toastService.success('Konfiguracja', 'Zapisano pomyślnie!'),
               error: () => toastService.danger('Konfiguracja', 'Błąd zmiany konfiguracji!'),
             })
           )

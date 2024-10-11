@@ -21,10 +21,7 @@
             "input": "apps/sparrow-home/public"
           }
         ],
-        "styles": [
-          "node_modules/@sparrow-codes/sparrow-ui/assets/styles.css",
-          "apps/sparrow-home/src/styles.css"
-        ],
+        "styles": ["node_modules/@sparrow-codes/sparrow-ui/assets/styles.css", "apps/sparrow-home/src/styles.css"],
         "scripts": []
       },
       "configurations": {

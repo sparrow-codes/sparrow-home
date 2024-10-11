@@ -11,19 +11,19 @@
 To run the dev server for your app, use:
 
 ```sh
-npx nx serve sparrow-home
+npx nx serve sparrow-main
 ```
 
 To create a production bundle:
 
 ```sh
-npx nx build sparrow-home
+npx nx build sparrow-main
 ```
 
 To see all available targets to run for a project, run:
 
 ```sh
-npx nx show project sparrow-home
+npx nx show project sparrow-main
 ```
         
 These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.

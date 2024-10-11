@@ -4,10 +4,10 @@
 <div class="flex w-full justify-center"></div>
 } @else if(heatPump()) {
 <sp-card>
-      <div class="flex items-center  gap-2">
-        <ng-icon name="heroPresentationChartLine"></ng-icon>
-        <span class="font-bold white-space-nowrap m-0">Pompa Ciepła</span>
-      </div>
-    <app-heat-pump class="fadein" [heatPump]="heatPump()!"></app-heat-pump>
+  <div class="flex items-center gap-2">
+    <ng-icon name="heroPresentationChartLine"></ng-icon>
+    <span class="font-bold white-space-nowrap m-0">Pompa Ciepła</span>
+  </div>
+  <app-heat-pump class="fadein" [heatPump]="heatPump()!"></app-heat-pump>
 </sp-card>
 }

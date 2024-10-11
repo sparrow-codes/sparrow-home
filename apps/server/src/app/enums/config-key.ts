@@ -2,6 +2,8 @@ export enum ConfigKey {
   PANASONIC_CLOUD_LOGIN = 'panasonicCloudLogin',
   PANASONIC_CLOUD_PASSWORD = 'panasonicCloudPassword',
 
+  WEATHER_API_URL = 'weatherApiUrl',
+
   DB_HOST = 'dbHost',
   DB_PORT = 'dbPort',
   DB_USER_NAME = 'dbUserName',

@@ -24,7 +24,7 @@
     "@ng-icons/heroicons": "^29.5.0",
     "@ngrx/operators": "^18.0.2",
     "@ngrx/signals": "^18.0.2",
-    "@sparrow-codes/sparrow-ui": "1.1.5",
+    "@sparrow-codes/sparrow-ui": "1.2.1",
     "@types/express": "^5.0.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",

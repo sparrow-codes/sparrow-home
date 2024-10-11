@@ -1,37 +1,34 @@
-<header
-  class="flex border-b-primary border-b shadow-md items-center px-4 justify-between bg-light-gray"
->
-  <div class="font-semibold text-primary">{{ applicationTitle() }}</div>
-  <div class="flex gap-2 items-center">
-    <sp-button type="link" (click)="logout.emit()">
-      <div class="flex gap-2 items-center">
-        <span>WYLOGUJ</span>
-        <ng-icon class="text-lg" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
-      </div>
-
-    </sp-button>
-  </div>
-</header>
-
-<div class="flex content w-full">
-  <nav class="flex w-auto flex-col gap-[10px] h-full p-4 border-primary border-r-2 bg-light-gray">
-    @for (item of navigationItems(); track $index) {
-
-    <sp-button
-      [routerLink]="item.routerLink"
-      [type]="currentUrl() === '/' + item.routerLink ? 'primary' : 'secondary'"
-      [class.surface-300]="currentUrl() === '/' + item.routerLink"
-    >
-      <div class="flex gap-2 items-center">
-        <ng-icon class="text-lg" [name]="item.icon"></ng-icon>
-        <span class="whitespace-nowrap"> {{ item.label }} </span>
-      </div>
-
-    </sp-button>
-    }
+<div class="flex h-full w-full">
+  <nav class="flex w-auto flex-col h-full bg-dark-blue">
+    <div class="px-4 pb-8 pt-4 text-white font-semibold">{{ applicationTitle() }}</div>
+    <div class="text-white text-xs px-4 mb-4">MENU</div>
+    <div class="flex flex-col gap-4 flex-grow">
+      @for (item of navigationItems(); track $index) {
+      <app-nav-item [currentUrl]="currentUrl()" [navItem]="item"></app-nav-item>
+      }
+    </div>
+    <span class="text-white text-[9px] p-4">SPARROW CODES &copy; {{ today | date : 'yyyy' }}</span>
   </nav>
 
-  <div class="p-4 w-full">
-    <ng-content></ng-content>
+  <div class="flex flex-col w-full">
+    <header class="flex items-center px-4 justify-end bg-white h-[60px]">
+      <div class="flex gap-2 items-center">
+        @if(lowestTemperatureAtNight()) {
+        <div class="border-r border-light-gray pr-5 text-dark-gray">
+          Temperatura w nocy: <span class="font-semibold">{{ lowestTemperatureAtNight() }} &#176;C</span>
+        </div>
+        }
+        <sp-button type="link" (click)="logout.emit()">
+          <div class="flex gap-2 items-center">
+            <span class="text-primary">WYLOGUJ</span>
+            <ng-icon class="text-lg text-primary" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
+          </div>
+        </sp-button>
+      </div>
+    </header>
+
+    <div class="p-4 w-full">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

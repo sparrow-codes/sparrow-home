@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'sparrow-home',
+  displayName: 'sparrow-main',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/sparrow-home',
+  coverageDirectory: '../../coverage/apps/sparrow-main',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

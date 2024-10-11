@@ -1,6 +1,6 @@
 <div class="w-full h-full flex items-center justify-center">
   <sp-card @sparrowFadeIn>
-    <h4 class="text-xl text-primary text-center mb-2">{{appTitle}}</h4>
+    <h4 class="text-xl text-primary text-center mb-2">{{ appTitle }}</h4>
     <span class="text-md mb-2">Utwórz nowego użytkownika, aby rozpocząć:</span>
     <app-create-user-form (onFormSave)="dataService.createFirstUser($event)"></app-create-user-form>
   </sp-card>
