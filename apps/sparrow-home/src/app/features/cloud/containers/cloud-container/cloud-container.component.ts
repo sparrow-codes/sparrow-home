@@ -1,28 +1,99 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  Injector,
+  OnInit,
+  Signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
-import { CardComponent } from '@sparrow-codes/sparrow-ui';
+import { CardComponent, sparrowFadeIn, SwitchComponent } from '@sparrow-codes/sparrow-ui';
 
-import { HeatPump } from '~api/cloud/models/panasonic-cloud-models';
+import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
 import { DataFacadeService } from '~core/services/data-facade.service';
+import { LoaderComponent } from '~ui/components/loader/loader.component';
+import { PageSubtitleComponent } from '~ui/components/page-subtitle/page-subtitle.component';
+import { PageTitleComponent } from '~ui/components/page-title/page-title.component';
 
-import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
-import { HeatPumpComponent } from '../../components/heat-pump/heat-pump.component';
+import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
+import { WaterTankComponent } from '../../components/water-tank/water-tank.component';
+import { CloudFormService } from './form-service/cloud-form.service';
+import { CloudFormName } from './form-service/enum/cloud-form-name';
+import { CloudForm } from './form-service/model/cloud-form';
 
 @Component({
   standalone: true,
-  imports: [PageTitleComponent, NgIconComponent, HeatPumpComponent, CardComponent],
+  imports: [
+    PageTitleComponent,
+    NgIconComponent,
+    WaterTankComponent,
+    CardComponent,
+    PageSubtitleComponent,
+    HeatTankComponent,
+    LoaderComponent,
+    SwitchComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './cloud-container.component.html',
-  styleUrl: './cloud-container.component.css',
-  providers: [provideIcons({ heroPresentationChartLine, heroClock })],
+  providers: [provideIcons({ heroPresentationChartLine, heroClock }), CloudFormService],
+  animations: [sparrowFadeIn],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloudContainerComponent implements OnInit {
-  protected readonly rootDataService: DataFacadeService = inject(DataFacadeService);
-  protected readonly heatPump: Signal<HeatPump | null> = this.rootDataService.heatPump;
-  protected readonly isLoading: Signal<boolean> = this.rootDataService.isLoading;
+  protected formGroup?: FormGroup<CloudForm>;
+
+  protected readonly formName: typeof CloudFormName = CloudFormName;
+  protected readonly dataFacadeService: DataFacadeService = inject(DataFacadeService);
+  protected readonly heatPump: Signal<GetHeatPumpDetailsResponse | null> = this.dataFacadeService.heatPump;
+  protected readonly isLoading: Signal<boolean> = this.dataFacadeService.isCloudStoreLoading;
+
+  private readonly _injector: Injector = inject(Injector);
+  private readonly _formService: CloudFormService = inject(CloudFormService);
+  private readonly _destroyRef: DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
-    this.rootDataService.connectToCloudServices();
+    this.dataFacadeService.getHeatPumpDetails();
+
+    effect(
+      () => {
+        const heatPump: GetHeatPumpDetailsResponse | null = this.heatPump();
+
+        if (heatPump && !this.formGroup) {
+          this._createCloudForm(heatPump);
+        }
+      },
+      { injector: this._injector }
+    );
+
+    effect(
+      () => {
+        if (this.formGroup) {
+          if (this.isLoading()) {
+            this.formGroup.disable({ emitEvent: false });
+          } else {
+            this.formGroup.enable({ emitEvent: false });
+          }
+        }
+      },
+      { injector: this._injector }
+    );
+  }
+
+  private _createCloudForm(heatPump: GetHeatPumpDetailsResponse): void {
+    this._formService.prepareForm(!!heatPump.tankStatus?.operationStatus, !!heatPump.zoneStatus?.operationStatus);
+    this.formGroup = this._formService.form;
+    this.formGroup?.valueChanges
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe((value) =>
+        this.dataFacadeService.setHeatPumpOperationStatus(
+          value[CloudFormName.IS_WATER_ON] ?? false,
+          value[CloudFormName.IS_HEAT_ON] ?? false
+        )
+      );
   }
 }

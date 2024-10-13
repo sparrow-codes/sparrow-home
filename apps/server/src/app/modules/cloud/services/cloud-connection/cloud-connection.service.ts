@@ -1,9 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 
 import { ConfigKey } from '../../../../enums/config-key';
 import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
-import { HeatPump } from '../../controllers/models/panasonic-cloud-models';
+import { SetHeatPumpStatusRequest } from '../../controllers/models/set-heat-pump-status.request';
+import { HeatPump } from '../../models/panasonic-cloud-models';
 
 @Injectable()
 export class CloudConnectionService {
@@ -12,7 +14,14 @@ export class CloudConnectionService {
     private readonly _configService: ConfigService
   ) {}
 
-  public async connectToPanasonicCloud(): Promise<void> {
+  public getHeatPumpDetails(): Observable<HeatPump> {
+    return from(this._connectToPanasonicCloud()).pipe(
+      first(),
+      switchMap(() => this._connector.getDeviceDetails())
+    );
+  }
+
+  private async _connectToPanasonicCloud(): Promise<void> {
     const userName: string = this._configService.get(ConfigKey.PANASONIC_CLOUD_LOGIN);
     const password: string = this._configService.get(ConfigKey.PANASONIC_CLOUD_PASSWORD);
 
@@ -23,7 +32,8 @@ export class CloudConnectionService {
     return this._connector.login(userName, password);
   }
 
-  public getHeatPumpDetails(): Promise<HeatPump> {
-    return this._connector.getDeviceDetails();
+  public async setHeatPumpOperationMode(request: SetHeatPumpStatusRequest): Promise<void> {
+    await this._connectToPanasonicCloud();
+    await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn, request.deviceGuid));
   }
 }

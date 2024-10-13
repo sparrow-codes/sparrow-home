@@ -7,8 +7,10 @@ import { SelectOption } from '@sparrow-codes/sparrow-ui/lib/components/form-cont
 
 import { Configuration } from '~core/models/configuration';
 import { DataFacadeService } from '~core/services/data-facade.service';
+import { LoaderComponent } from '~ui/components/loader/loader.component';
+import { PageSubtitleComponent } from '~ui/components/page-subtitle/page-subtitle.component';
+import { PageTitleComponent } from '~ui/components/page-title/page-title.component';
 
-import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 import { ConfigurationFormComponent } from '../../components/configuration-form/configuration-form.component';
 
 @Component({
@@ -21,6 +23,8 @@ import { ConfigurationFormComponent } from '../../components/configuration-form/
     SelectComponent,
     ReactiveFormsModule,
     ConfigurationFormComponent,
+    PageSubtitleComponent,
+    LoaderComponent,
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',

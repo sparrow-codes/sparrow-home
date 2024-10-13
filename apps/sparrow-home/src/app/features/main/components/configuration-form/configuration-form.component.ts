@@ -14,6 +14,7 @@ import { heroCheck, heroPencil, heroTrash } from '@ng-icons/heroicons/outline';
 import { ButtonComponent, InputComponent, sparrowFadeIn } from '@sparrow-codes/sparrow-ui';
 
 import { Configuration } from '~core/models/configuration';
+import { PageSubtitleComponent } from '~ui/components/page-subtitle/page-subtitle.component';
 
 import { ConfigurationFormService } from './form-service/configuration-form.service';
 import { ConfigurationFormName } from './form-service/enum/configuration-form-name';
@@ -22,7 +23,7 @@ import { ConfigurationForm } from './form-service/model/configuration-form';
 @Component({
   selector: 'app-configuration-form',
   standalone: true,
-  imports: [ButtonComponent, NgIcon, ReactiveFormsModule, InputComponent],
+  imports: [ButtonComponent, NgIcon, ReactiveFormsModule, InputComponent, PageSubtitleComponent],
   templateUrl: './configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ConfigurationFormService, provideIcons({ heroTrash, heroPencil, heroCheck })],

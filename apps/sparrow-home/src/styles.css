@@ -10,6 +10,12 @@
 
   --sp-input-border-radius: 10px;
 
+  --sp-switch-border-radius: 10px;
+  --sp-switch-circle-radius: 50%;
+  --sp-select-arrow-down-top: 12px;
+  --sp-select-arrow-up-top: 18px;
+  --sp-switch-label-top: 4px;
+
   --app-light-gray: #d1d1d1;
   --app-dark-blue: #262c40;
   --app-light-blue: #393e61;
