@@ -27,19 +27,16 @@ export class ComfortCloudConnector {
   }
 
   public async getDeviceDetails(): Promise<HeatPump> {
-    const dispalyResponse: AxiosResponse<unknown> = await this.axios.get(
-      'https://aquarea-smart.panasonic.com/remote/a2wStatusDisplay',
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Cookie: `accessToken=${this._oAuthClient.accessToken};`,
-          Origin: 'https://aquarea-smart.panasonic.com',
-        },
-      }
-    );
+    const dispalyResponse = await this.axios.get('https://aquarea-smart.panasonic.com/remote/a2wStatusDisplay', {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Cookie: `accessToken=${this._oAuthClient.accessToken};`,
+        Origin: 'https://aquarea-smart.panasonic.com',
+      },
+    });
 
-    const selectedDeviceId: AxiosResponse<unknown> = dispalyResponse.data.match(/var selectedDeviceId = '(.+?)';/i)[1];
-    const detailsResponse: AxiosResponse<unknown> = await this.axios.get(
+    const selectedDeviceId = dispalyResponse.data.match(/var selectedDeviceId = '(.+?)';/i)[1];
+    const detailsResponse = await this.axios.get(
       `https://aquarea-smart.panasonic.com/remote/v1/api/devices/${selectedDeviceId}?var.deviceDirect=1`,
       {
         headers: {
