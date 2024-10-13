@@ -19,6 +19,7 @@
     "@nestjs/core": "^10.0.2",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/schedule": "^4.1.1",
     "@nestjs/typeorm": "^10.0.2",
     "@ng-icons/core": "^29.5.0",
     "@ng-icons/heroicons": "^29.5.0",

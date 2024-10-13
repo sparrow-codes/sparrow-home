@@ -10,5 +10,6 @@ import { CloudConnectionService } from './services/cloud-connection/cloud-connec
   imports: [HttpModule, AuthModule],
   providers: [CloudConnectionService, ComfortCloudConnector],
   controllers: [CloudController],
+  exports: [CloudConnectionService],
 })
 export class CloudModule {}

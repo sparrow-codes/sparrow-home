@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
 import { SetupModule } from './modules/setup/setup.module';
+import { TaskModule } from './modules/task/task.module';
 import { UserModule } from './modules/user/user.module';
 import { WeatherModule } from './modules/waether/weather.module';
 
@@ -35,6 +36,7 @@ import { WeatherModule } from './modules/waether/weather.module';
     AuthModule,
     SetupModule,
     WeatherModule,
+    TaskModule,
   ],
 })
 export class AppModule {}

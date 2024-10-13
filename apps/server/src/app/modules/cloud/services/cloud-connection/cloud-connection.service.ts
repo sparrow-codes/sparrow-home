@@ -36,4 +36,8 @@ export class CloudConnectionService {
     await this._connectToPanasonicCloud();
     await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn, request.deviceGuid));
   }
+
+  public removeAuthToken(): void {
+    this._connector.logout();
+  }
 }
