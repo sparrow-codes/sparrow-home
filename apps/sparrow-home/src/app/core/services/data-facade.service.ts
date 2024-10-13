@@ -1,10 +1,11 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { HeatPump } from '~api/cloud/models/panasonic-cloud-models';
+import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
 import { CreateUserRequest } from '~api/user/models/create-user-request';
 import { LoginRequest } from '~api/user/models/login-request';
 import { Configuration } from '~core/models/configuration';
+import { CloudStore } from '~core/stores/cloud-store';
 
 import { RootStore } from '../stores/root-store';
 import { SetupStore } from '../stores/setup-store';
@@ -17,9 +18,10 @@ export class DataFacadeService {
   private readonly _rootStore = inject(RootStore);
   private readonly _setupStore = inject(SetupStore);
   private readonly _userStore = inject(UserStore);
+  private readonly _cloudStore = inject(CloudStore);
 
-  public get heatPump(): Signal<HeatPump | null> {
-    return this._rootStore.heatPump;
+  public get heatPump(): Signal<GetHeatPumpDetailsResponse | null> {
+    return this._cloudStore.heatPump;
   }
 
   public get authToken(): string | null {
@@ -32,6 +34,10 @@ export class DataFacadeService {
 
   public get isUserStoreLoading(): Signal<boolean> {
     return this._userStore.isLoading;
+  }
+
+  public get isCloudStoreLoading(): Signal<boolean> {
+    return this._cloudStore.isLoading;
   }
 
   public get isLoginError(): Signal<boolean> {
@@ -58,12 +64,12 @@ export class DataFacadeService {
     return this._rootStore.lowestTemperatureAtNight;
   }
 
-  public connectToCloudServices(): void {
-    this._rootStore.connectToCloud();
+  public getHeatPumpDetails(): void {
+    this._cloudStore.getHeatPumpDetails();
   }
 
-  public fetchWifiDeviceList(): void {
-    this._rootStore.fetchDeviceList();
+  public setHeatPumpOperationStatus(isWaterOn: boolean, isHeatOn: boolean): void {
+    this._cloudStore.changeOperationsStatus({ isWaterOn, isHeatOn });
   }
 
   public setMode(mode: number): void {

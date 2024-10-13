@@ -1,0 +1,33 @@
+@if(waterTank(); as waterTank) {
+
+<div class="flex gap-2 mt-2 items-center mb-6">
+  <span>Status:</span>
+  @if (waterTank.operationStatus === 1) {
+  <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
+  } @else {
+  <ng-icon name="heroNoSymbol"></ng-icon>
+  }
+</div>
+
+<div class="flex flex-col gap-1 w-full">
+  <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
+    <div class="w-full">Wybrana temeratura</div>
+    <div class="w-full text-right md:text-left">{{ waterTank.heatSet }} &#176;C</div>
+  </div>
+
+  <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
+    <div class="w-full">Bierząca temeratura na wyjściu z kotła</div>
+    <div class="w-full text-right md:text-left">{{ waterTank.temparatureNow }} &#176;C</div>
+  </div>
+
+  <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
+    <div class="w-full">Maksymalna temeratura grzania wody</div>
+    <div class="w-full text-right md:text-left">{{ waterTank.heatMax }} &#176;C</div>
+  </div>
+
+  <div class="w-full flex gap-4 items-center">
+    <div class="w-full">Minimalna temeratura grzania wody</div>
+    <div class="w-full text-right md:text-left">{{ waterTank.heatMin }} &#176;C</div>
+  </div>
+</div>
+}

@@ -13,7 +13,7 @@
       "~api/*": ["./apps/sparrow-home/src/app/api/*"],
       "~core/*": ["./apps/sparrow-home/src/app/core/*"],
       "~user/*": ["./apps/sparrow-home/src/app/features/user/*"],
-      "@shared-models/*": ["./apps/shared-models/*"]
+      "~ui/*": ["./apps/sparrow-home/src/app/ui/*"]
     }
   },
   "files": [],
