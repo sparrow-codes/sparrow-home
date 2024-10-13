@@ -18,6 +18,10 @@ export class ComfortCloudConnector {
     this.axios = this.http.axiosRef;
   }
 
+  public logout(): void {
+    this._oAuthClient.removeToken();
+  }
+
   public async login(username: string, password: string): Promise<void> {
     await this._oAuthClient.ensureAuthenticated(username, password);
   }
