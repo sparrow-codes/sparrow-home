@@ -46,6 +46,7 @@ export const SetupStore = signalStore(
                 mode: response.currentMode,
                 lat: response.lat,
                 lng: response.lng,
+                marginTemperatureOverNight: response.marginTemperatureOverNight,
               },
               modeDictionary: response.dictionaries.modeDictionary,
             }),
@@ -77,13 +78,19 @@ export const SetupStore = signalStore(
       pipe(
         tap((configuration) => patchState(store, { configuration })),
         switchMap((configuration) =>
-          apiService.changeConfiguration({ lng: configuration.lng, lat: configuration.lat }).pipe(
-            first(),
-            tapResponse({
-              next: () => toastService.success('Konfiguracja', 'Zapisano pomyślnie!'),
-              error: () => toastService.danger('Konfiguracja', 'Błąd zmiany konfiguracji!'),
+          apiService
+            .changeConfiguration({
+              lng: configuration.lng,
+              lat: configuration.lat,
+              marginTemperatureOverNight: configuration.marginTemperatureOverNight,
             })
-          )
+            .pipe(
+              first(),
+              tapResponse({
+                next: () => toastService.success('Konfiguracja', 'Zapisano pomyślnie!'),
+                error: () => toastService.danger('Konfiguracja', 'Błąd zmiany konfiguracji!'),
+              })
+            )
         )
       )
     ),

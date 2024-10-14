@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
-import { Mode } from '../../../enums/mode';
 import { Setup } from '../../setup/enitites/setup';
 import { CreateNewUserRequest } from '../controller/model/create-new-user-request';
 import { User } from '../enitities/user';
@@ -32,7 +31,6 @@ export class UserService {
     user.isPasswordExpired = false;
 
     const setup: Setup = new Setup();
-    setup.mode = Mode.SUMMER;
 
     await this.setupRepository.save(setup);
     await this.userRepository.save(user);

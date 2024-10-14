@@ -18,12 +18,14 @@
 </div>
 
 @if(formGroup) {
-<form [formGroup]="formGroup" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-  <div class="w-[300]px">
-    <sp-input type="number" label="Latitude:" [name]="'latitude'" [formControlName]="formName.LAT"></sp-input>
-  </div>
-  <div class="w-[300]px">
-    <sp-input type="number" label="Longitude:" [name]="'longitude'" [formControlName]="formName.LNG"></sp-input>
-  </div>
+<form [formGroup]="formGroup" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
+  <sp-input type="number" label="Latitude:" [name]="'latitude'" [formControlName]="formName.LAT"></sp-input>
+  <sp-input type="number" label="Longitude:" [name]="'longitude'" [formControlName]="formName.LNG"></sp-input>
+  <sp-input
+    type="number"
+    label="Temp. graniczna dla ogrzewania w nocy:"
+    [name]="'nightTemperature'"
+    [formControlName]="formName.MARGIN_TEMPERATURE_OVER_NIGHT"
+  ></sp-input>
 </form>
 }

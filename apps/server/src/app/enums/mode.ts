@@ -1,4 +1,5 @@
 export enum Mode {
   WINTER = 0,
-  SUMMER,
+  SUMMER = 1,
+  AUTUMN_SPRING = 2,
 }

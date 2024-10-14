@@ -16,7 +16,8 @@ import { heroArrowLeftEndOnRectangleSolid } from '@ng-icons/heroicons/solid';
 import { ButtonComponent } from '@sparrow-codes/sparrow-ui';
 import { filter, map } from 'rxjs';
 
-import { NavigationItem } from '../../models/navigation-item';
+import { NavigationItem } from '~ui/models/navigation-item';
+
 import { NavItemComponent } from './nav-item/nav-item.component';
 
 @Component({
@@ -33,11 +34,16 @@ export class ShellComponent {
   public readonly logout: OutputEmitterRef<void> = output();
   public readonly navigationItems: InputSignal<NavigationItem[]> = input<NavigationItem[]>([]);
 
+  private readonly router: Router = inject(Router);
+
   protected currentUrl: Signal<string | undefined> = toSignal(
-    inject(Router).events.pipe(
+    this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      map((event: NavigationEnd) => event.url)
+      map(() => {
+        return this.router.url;
+      })
     )
   );
+
   protected readonly today: Date = new Date();
 }

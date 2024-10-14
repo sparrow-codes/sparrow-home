@@ -8,6 +8,7 @@ export class GetSetupResponseMapper {
       currentMode: setup.mode,
       lat: setup.lat,
       lng: setup.lng,
+      marginTemperatureOverNight: setup.marginTemperatureOverNight,
       dictionaries: {
         modeDictionary: ModeDictionary,
       },

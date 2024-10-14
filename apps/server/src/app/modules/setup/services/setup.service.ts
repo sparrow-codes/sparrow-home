@@ -5,12 +5,14 @@ import { Repository } from 'typeorm';
 import { User } from '../../user/enitities/user';
 import { SetConfigurationRequest } from '../controlers/models/set-configuration.request';
 import { Setup } from '../enitites/setup';
+import { ModeService } from './mode/mode.service';
 
 @Injectable()
 export class SetupService {
   public constructor(
     @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>,
-    @InjectRepository(User) private readonly _userRepository: Repository<User>
+    @InjectRepository(User) private readonly _userRepository: Repository<User>,
+    private readonly modeService: ModeService
   ) {}
 
   public async isConfigurationReady(): Promise<void> {
@@ -22,10 +24,7 @@ export class SetupService {
   }
 
   public async setMode(mode: number): Promise<void> {
-    const setup: Setup = await this.getSetup();
-
-    setup.mode = mode;
-    await this._setupRepository.save(setup);
+    await this.modeService.setMode(mode);
   }
 
   public async saveConfiguration(request: SetConfigurationRequest): Promise<void> {
@@ -33,6 +32,7 @@ export class SetupService {
 
     setup.lat = request.lat;
     setup.lng = request.lng;
+    setup.marginTemperatureOverNight = request.marginTemperatureOverNight;
 
     await this._setupRepository.save(setup);
   }
