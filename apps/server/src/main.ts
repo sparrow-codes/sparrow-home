@@ -20,10 +20,14 @@ async function bootstrap(): Promise<void> {
 
   const setupService: SetupService = app.get(SetupService);
   const modeService: ModeService = app.get(ModeService);
-  const setup: Setup = await setupService.getSetup();
+  const setup: Setup | undefined = await setupService.getSetup();
 
   const port: number = +process.env.PORT || 3000;
-  await app.listen(port).then(() => modeService.setMode(setup.mode, true));
+  await app.listen(port).then(() => {
+    if (setup && setup?.mode) {
+      modeService.setMode(setup.mode, true);
+    }
+  });
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
