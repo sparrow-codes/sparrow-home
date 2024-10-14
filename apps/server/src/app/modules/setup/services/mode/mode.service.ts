@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { CronJobName } from '../../../../enums/cron-job-name';
 import { Mode } from '../../../../enums/mode';
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
+import { ModeDictionary } from '../../dictionaries/mode-dictionary';
 import { Setup } from '../../enitites/setup';
 import { SPRING_AUTUMN_JOBS, SUMMER_JOBS, WINTER_JOBS } from './mode-cron-jobs/mode-crone-jobs';
 
@@ -18,9 +19,9 @@ export class ModeService {
     private readonly cloudService: CloudConnectionService
   ) {}
 
-  public async setMode(mode: Mode): Promise<void> {
+  public async setMode(mode: Mode, force?: boolean): Promise<void> {
     const setup: Setup = (await this.setupRepository.find())[0];
-    if (setup.mode !== mode) {
+    if (setup.mode !== mode || force) {
       setup.mode = mode;
       await this.setupRepository.save(setup).then(() => {
         const jobs: string[] = Object.values(CronJobName);
@@ -30,22 +31,28 @@ export class ModeService {
             cronJob.stop();
           }
         });
-
-        switch (mode) {
-          case Mode.AUTUMN_SPRING:
-            this._runJobsByList(SPRING_AUTUMN_JOBS);
-            break;
-          case Mode.SUMMER:
-            this._runJobsByList(SUMMER_JOBS);
-            this.cloudService.setHeatOnly(false);
-            break;
-          case Mode.WINTER:
-            this._runJobsByList(WINTER_JOBS);
-            break;
-          default:
-            Logger.error(`Unsupported mode: ${mode}`);
-        }
+        this.handleMode(mode);
       });
+    }
+  }
+
+  public handleMode(mode: Mode): void {
+    switch (mode) {
+      case Mode.AUTUMN_SPRING:
+        this._runJobsByList(SPRING_AUTUMN_JOBS);
+        Logger.log(`Setting mode: ${ModeDictionary.find((value) => value.value === Mode.AUTUMN_SPRING)?.label}`);
+        break;
+      case Mode.SUMMER:
+        this._runJobsByList(SUMMER_JOBS);
+        this.cloudService.setHeatOnly(false);
+        Logger.log(`Setting mode: ${ModeDictionary.find((value) => value.value === Mode.SUMMER)?.label}`);
+        break;
+      case Mode.WINTER:
+        this._runJobsByList(WINTER_JOBS);
+        Logger.log(`Setting mode: ${ModeDictionary.find((value) => value.value === Mode.WINTER)?.label}`);
+        break;
+      default:
+        Logger.error(`Unsupported mode: ${mode}`);
     }
   }
 
