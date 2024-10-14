@@ -13,4 +13,7 @@ export class Setup {
 
   @Column({ nullable: true, type: 'decimal' })
   public lng?: number;
+
+  @Column({ nullable: true, type: 'decimal' })
+  public marginTemperatureOverNight?: number;
 }

@@ -52,8 +52,12 @@ export class ConfigurationFormComponent implements OnInit {
     this.formGroup?.reset();
     this.formGroup?.disable();
   }
+
   protected onSubmit(): void {
-    this.onSave.emit(this._formService.toConfiguration(this.configuration()));
-    this.formGroup?.disable();
+    this.formGroup?.markAllAsTouched();
+    if (this.formGroup?.valid) {
+      this.onSave.emit(this._formService.toConfiguration(this.configuration()));
+      this.formGroup?.disable();
+    }
   }
 }

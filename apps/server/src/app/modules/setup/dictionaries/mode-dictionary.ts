@@ -9,4 +9,8 @@ export const ModeDictionary: { value: Mode; label: string }[] = [
     value: Mode.SUMMER,
     label: 'Lato',
   },
+  {
+    value: Mode.AUTUMN,
+    label: 'Jesień',
+  },
 ];

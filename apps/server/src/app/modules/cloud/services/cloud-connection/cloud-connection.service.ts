@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 
@@ -14,11 +14,28 @@ export class CloudConnectionService {
     private readonly _configService: ConfigService
   ) {}
 
+  public removeAuthToken(): void {
+    this._connector.logout();
+  }
+
   public getHeatPumpDetails(): Observable<HeatPump> {
     return from(this._connectToPanasonicCloud()).pipe(
       first(),
       switchMap(() => this._connector.getDeviceDetails())
     );
+  }
+
+  public async setHeatOnly(isHeatOn: boolean): Promise<void> {
+    await this._connectToPanasonicCloud();
+    const heatPump: HeatPump = await this._connector.getDeviceDetails();
+    const isWaterOn: boolean = heatPump.tankStatus[0].operationStatus === 1;
+    await this.setHeatPumpOperationMode({ isWaterOn, isHeatOn, deviceGuid: heatPump.deviceGuid });
+    Logger.log(`Setting heat: ${isHeatOn ? 'ON' : 'OFF'}`);
+  }
+
+  public async setHeatPumpOperationMode(request: SetHeatPumpStatusRequest): Promise<void> {
+    await this._connectToPanasonicCloud();
+    await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn, request.deviceGuid));
   }
 
   private async _connectToPanasonicCloud(): Promise<void> {
@@ -30,14 +47,5 @@ export class CloudConnectionService {
     }
 
     return this._connector.login(userName, password);
-  }
-
-  public async setHeatPumpOperationMode(request: SetHeatPumpStatusRequest): Promise<void> {
-    await this._connectToPanasonicCloud();
-    await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn, request.deviceGuid));
-  }
-
-  public removeAuthToken(): void {
-    this._connector.logout();
   }
 }
