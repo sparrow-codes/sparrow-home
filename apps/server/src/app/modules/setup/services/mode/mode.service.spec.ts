@@ -35,6 +35,7 @@ describe('ModeService', () => {
           provide: SchedulerRegistry,
           useValue: {
             getCronJob: jest.fn(() => mockedCronJob),
+            doesExist: jest.fn(() => true),
           },
         },
         {

@@ -8,7 +8,7 @@ import { CronJobName } from '../../../../enums/cron-job-name';
 import { Mode } from '../../../../enums/mode';
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
 import { Setup } from '../../enitites/setup';
-import { AUTUMN_JOBS, SUMMER_JOBS, WINTER_JOBS } from './mode-cron-jobs/mode-crone-jobs';
+import { SPRING_AUTUMN_JOBS, SUMMER_JOBS, WINTER_JOBS } from './mode-cron-jobs/mode-crone-jobs';
 
 @Injectable()
 export class ModeService {
@@ -32,8 +32,8 @@ export class ModeService {
         });
 
         switch (mode) {
-          case Mode.AUTUMN:
-            this._runJobsByList(AUTUMN_JOBS);
+          case Mode.AUTUMN_SPRING:
+            this._runJobsByList(SPRING_AUTUMN_JOBS);
             break;
           case Mode.SUMMER:
             this._runJobsByList(SUMMER_JOBS);
