@@ -5,10 +5,11 @@ import { Repository } from 'typeorm';
 
 import { CronJobName } from '../../../../enums/cron-job-name';
 import { Mode } from '../../../../enums/mode';
+import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
 import { Setup } from '../../enitites/setup';
 import { ModeService } from './mode.service';
 import Mock = jest.Mock;
-import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
+import { SPRING_AUTUMN_JOBS, SUMMER_JOBS, WINTER_JOBS } from './mode-cron-jobs/mode-crone-jobs';
 
 describe('ModeService', () => {
   let service: ModeService;
@@ -16,8 +17,9 @@ describe('ModeService', () => {
   let setupRepository: Repository<Setup>;
   let cloudConnectionService: CloudConnectionService;
 
-  const mockedCronJob: { stop: Mock } = {
+  const mockedCronJob: { stop: Mock; start: Mock } = {
     stop: jest.fn(),
+    start: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -58,6 +60,11 @@ describe('ModeService', () => {
   });
 
   describe('save mode', () => {
+    beforeEach(() => {
+      mockedCronJob.stop.mockReset();
+      mockedCronJob.start.mockReset();
+    });
+
     it('should save mode', async () => {
       await service.setMode(Mode.WINTER);
       expect(setupRepository.save).toHaveBeenNthCalledWith(1, { mode: Mode.WINTER });
@@ -68,6 +75,17 @@ describe('ModeService', () => {
     it('should turn off heat when setting summer mode', async () => {
       await service.setMode(Mode.SUMMER);
       expect(cloudConnectionService.setHeatOnly).toHaveBeenNthCalledWith(1, false);
+      expect(mockedCronJob.start).toHaveBeenCalledTimes(Object.values(SUMMER_JOBS).length);
+    });
+
+    it('should run spring / autumn jobs', async () => {
+      await service.setMode(Mode.AUTUMN_SPRING);
+      expect(mockedCronJob.start).toHaveBeenCalledTimes(Object.values(SPRING_AUTUMN_JOBS).length);
+    });
+
+    it('should run winter jobs', async () => {
+      await service.setMode(Mode.WINTER);
+      expect(mockedCronJob.start).toHaveBeenCalledTimes(Object.values(WINTER_JOBS).length);
     });
   });
 });
