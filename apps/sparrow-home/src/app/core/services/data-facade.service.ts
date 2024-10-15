@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
 import { CreateUserRequest } from '~api/user/models/create-user-request';
 import { LoginRequest } from '~api/user/models/login-request';
+import { AppConfig } from '~core/models/app-config';
 import { Configuration } from '~core/models/configuration';
 import { CloudStore } from '~core/stores/cloud-store';
 
@@ -64,6 +65,10 @@ export class DataFacadeService {
     return this._rootStore.lowestTemperatureAtNight;
   }
 
+  public get applicationConfig(): Signal<AppConfig | null> {
+    return this._rootStore.appConfig;
+  }
+
   public getHeatPumpDetails(): void {
     this._cloudStore.getHeatPumpDetails();
   }
@@ -102,5 +107,9 @@ export class DataFacadeService {
 
   public fetchLowestTemperature(): void {
     this._rootStore.fetchLowestTemperature();
+  }
+
+  public saveAppConfig(appConfig: AppConfig): void {
+    this._rootStore.saveAppConfig(appConfig);
   }
 }

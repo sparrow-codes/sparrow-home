@@ -16,6 +16,7 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/sparrow-home/tsconfig.app.json",
         "assets": [
+          "apps/sparrow-home/src/config.json",
           {
             "glob": "**/*",
             "input": "apps/sparrow-home/public"
