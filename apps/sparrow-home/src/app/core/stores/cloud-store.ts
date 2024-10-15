@@ -17,10 +17,10 @@ export const CloudStore = signalStore(
   { providedIn: 'root' },
   withState<CloudState>({ heatPump: null, isLoading: false }),
   withMethods((store, cloudApiService = inject(CloudApiService), toastMessage = inject(SpToastService)) => {
-    const getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponse> = () =>
+    const _getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponse> = () =>
       cloudApiService.getHeatPumpDetails().pipe(
         tapResponse({
-          next: (value) => patchState(store, { heatPump: value }),
+          next: (value) => patchState(store, { heatPump: { ...value } }),
           error: () => toastMessage.danger('Błąd', 'Wystąpił błąd w połączeniu do cloud!'),
         })
       );
@@ -29,7 +29,7 @@ export const CloudStore = signalStore(
       getHeatPumpDetails: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
-          switchMap(() => getHeatPumpDetails().pipe(finalize(() => patchState(store, { isLoading: false }))))
+          switchMap(() => _getHeatPumpDetails().pipe(finalize(() => patchState(store, { isLoading: false }))))
         )
       ),
       changeOperationsStatus: rxMethod<{ isWaterOn: boolean; isHeatOn: boolean }>(
@@ -37,9 +37,8 @@ export const CloudStore = signalStore(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((request) =>
             cloudApiService.changeOperationsStatus({ ...request, deviceGuid: store.heatPump()?.deviceGuid ?? '' }).pipe(
-              delay(3000),
-              switchMap(() => getHeatPumpDetails()),
-              finalize(() => patchState(store, { isLoading: false }))
+              delay(10000),
+              switchMap(() => _getHeatPumpDetails())
             )
           )
         )
