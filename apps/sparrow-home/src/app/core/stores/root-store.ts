@@ -6,10 +6,12 @@ import { SpToastService } from '@sparrow-codes/sparrow-ui';
 import { pipe, switchMap } from 'rxjs';
 
 import { WeatherApiService } from '~api/weather/weather-api.service';
+import { AppConfig } from '~core/models/app-config';
 
 type RootState = {
   loading: boolean;
   lowestTemperatureAtNight: number | undefined;
+  appConfig: AppConfig | null;
 };
 
 export const RootStore = signalStore(
@@ -17,6 +19,7 @@ export const RootStore = signalStore(
   withState<RootState>({
     loading: false,
     lowestTemperatureAtNight: undefined,
+    appConfig: null,
   } as RootState),
   withMethods((store, weatherApiService = inject(WeatherApiService), toastService = inject(SpToastService)) => ({
     fetchLowestTemperature: rxMethod<void>(
@@ -31,5 +34,8 @@ export const RootStore = signalStore(
         )
       )
     ),
+    saveAppConfig: (appConfig: AppConfig): void => {
+      patchState(store, { appConfig });
+    },
   }))
 );
