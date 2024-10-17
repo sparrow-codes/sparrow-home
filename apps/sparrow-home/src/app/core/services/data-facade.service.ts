@@ -6,6 +6,7 @@ import { CreateUserRequest } from '~api/user/models/create-user-request';
 import { LoginRequest } from '~api/user/models/login-request';
 import { AppConfig } from '~core/models/app-config';
 import { Configuration } from '~core/models/configuration';
+import { WaterTankOptions } from '~core/models/water-tank-options';
 import { CloudStore } from '~core/stores/cloud-store';
 
 import { RootStore } from '../stores/root-store';
@@ -69,6 +70,10 @@ export class DataFacadeService {
     return this._rootStore.appConfig;
   }
 
+  public get waterTankOptions(): Signal<WaterTankOptions | null> {
+    return this._cloudStore.waterTankOptions;
+  }
+
   public getHeatPumpDetails(): void {
     this._cloudStore.getHeatPumpDetails();
   }
@@ -111,5 +116,9 @@ export class DataFacadeService {
 
   public saveAppConfig(appConfig: AppConfig): void {
     this._rootStore.saveAppConfig(appConfig);
+  }
+
+  public changeScheduledWaterHeatingStatus(status: boolean): void {
+    this._cloudStore.setWaterHeatingStatus(status);
   }
 }

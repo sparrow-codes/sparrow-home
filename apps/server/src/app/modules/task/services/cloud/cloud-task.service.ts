@@ -50,4 +50,16 @@ export class CloudTaskService {
         }
       });
   }
+
+  @Cron(CronExpression.EVERY_DAY_AT_1PM, { disabled: true, name: CronJobName.EVERY_DAY_WATER_ON })
+  public async everyDayWaterOn(): Promise<void> {
+    Logger.log('Setting up water heating');
+    await this.cloudService.setWaterOnly(true);
+  }
+
+  @Cron('0 30 13 * * 1-7', { disabled: true, name: CronJobName.EVERY_DAY_WATER_OFF })
+  public async everyDayWaterOff(): Promise<void> {
+    Logger.log('Setting down water heating');
+    await this.cloudService.setWaterOnly(false);
+  }
 }

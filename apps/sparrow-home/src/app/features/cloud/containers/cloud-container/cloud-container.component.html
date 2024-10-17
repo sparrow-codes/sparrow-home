@@ -26,7 +26,13 @@
       <app-page-subtitle>Woda użytkowa:</app-page-subtitle>
       <sp-switch [formControlName]="formName.IS_WATER_ON"></sp-switch>
     </div>
-    <app-water-tank [waterTank]="tankStatus"></app-water-tank>
+    @if (waterTankOptions()) {
+    <app-water-tank
+      [waterTank]="tankStatus"
+      [waterTankOptions]="waterTankOptions()"
+      (onWaterTankOptionsChange)="handleWaterTankOptionsChange($event)"
+    ></app-water-tank>
+    }
   </sp-card>
   } @if (heatPump()?.zoneStatus; as zoneStatus) {
   <sp-card>

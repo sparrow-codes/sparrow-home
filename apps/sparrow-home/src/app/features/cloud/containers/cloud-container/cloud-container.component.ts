@@ -15,6 +15,7 @@ import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outlin
 import { CardComponent, sparrowFadeIn, SwitchComponent } from '@sparrow-codes/sparrow-ui';
 
 import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
+import { WaterTankOptions } from '~core/models/water-tank-options';
 import { DataFacadeService } from '~core/services/data-facade.service';
 import { LoaderComponent } from '~ui/components/loader/loader.component';
 import { PageSubtitleComponent } from '~ui/components/page-subtitle/page-subtitle.component';
@@ -51,6 +52,7 @@ export class CloudContainerComponent implements OnInit {
   protected readonly dataFacadeService: DataFacadeService = inject(DataFacadeService);
   protected readonly heatPump: Signal<GetHeatPumpDetailsResponse | null> = this.dataFacadeService.heatPump;
   protected readonly isLoading: Signal<boolean> = this.dataFacadeService.isCloudStoreLoading;
+  protected readonly waterTankOptions: Signal<WaterTankOptions | null> = this.dataFacadeService.waterTankOptions;
 
   private readonly _injector: Injector = inject(Injector);
   private readonly _formService: CloudFormService = inject(CloudFormService);
@@ -82,6 +84,10 @@ export class CloudContainerComponent implements OnInit {
       },
       { injector: this._injector }
     );
+  }
+
+  protected handleWaterTankOptionsChange(waterTankOptions: WaterTankOptions): void {
+    this.dataFacadeService.changeScheduledWaterHeatingStatus(waterTankOptions.isScheduledHeating);
   }
 
   private _createCloudForm(heatPump: GetHeatPumpDetailsResponse): void {
