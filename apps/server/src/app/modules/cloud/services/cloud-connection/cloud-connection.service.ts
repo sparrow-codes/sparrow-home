@@ -1,8 +1,10 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 
 import { ConfigKey } from '../../../../enums/config-key';
+import { CronJobName } from '../../../../enums/cron-job-name';
 import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
 import { SetHeatPumpStatusRequest } from '../../controllers/models/set-heat-pump-status.request';
 import { HeatPump } from '../../models/panasonic-cloud-models';
@@ -11,7 +13,8 @@ import { HeatPump } from '../../models/panasonic-cloud-models';
 export class CloudConnectionService {
   public constructor(
     private readonly _connector: ComfortCloudConnector,
-    private readonly _configService: ConfigService
+    private readonly _configService: ConfigService,
+    private readonly scheduleRegistry: SchedulerRegistry
   ) {}
 
   public removeAuthToken(): void {
@@ -25,12 +28,49 @@ export class CloudConnectionService {
     );
   }
 
+  public scheduledWaterHeating(active: boolean): void {
+    if (active) {
+      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).start();
+      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).start();
+      Logger.log('Scheduling everyday water heating');
+    } else {
+      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).stop();
+      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).stop();
+      Logger.log('Setting off everyday water heating');
+    }
+  }
+
+  public isScheduledWaterHeating(): boolean {
+    return (
+      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).running &&
+      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).running
+    );
+  }
+
   public async setHeatOnly(isHeatOn: boolean): Promise<void> {
     await this._connectToPanasonicCloud();
     const heatPump: HeatPump = await this._connector.getDeviceDetails();
     const isWaterOn: boolean = heatPump.tankStatus[0].operationStatus === 1;
-    await this.setHeatPumpOperationMode({ isWaterOn, isHeatOn, deviceGuid: heatPump.deviceGuid });
-    Logger.log(`Setting heat: ${isHeatOn ? 'ON' : 'OFF'}`);
+    const isHeatCurrentlyOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
+    if (isHeatCurrentlyOn !== isHeatOn) {
+      await this.setHeatPumpOperationMode({ isWaterOn, isHeatOn, deviceGuid: heatPump.deviceGuid });
+      Logger.log(`Setting heat: ${isHeatOn ? 'ON' : 'OFF'}`);
+    } else {
+      Logger.log('Heat status is already in desired state');
+    }
+  }
+
+  public async setWaterOnly(isWaterOn: boolean): Promise<void> {
+    await this._connectToPanasonicCloud();
+    const heatPump: HeatPump = await this._connector.getDeviceDetails();
+    const isWaterOnCurrently: boolean = heatPump.tankStatus[0].operationStatus === 1;
+    const isHeatOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
+    if (isWaterOnCurrently !== isWaterOn) {
+      await this.setHeatPumpOperationMode({ isWaterOn, isHeatOn, deviceGuid: heatPump.deviceGuid });
+      Logger.log(`Setting water: ${isWaterOn ? 'ON' : 'OFF'}`);
+    } else {
+      Logger.log('Water status is already in desired state');
+    }
   }
 
   public async setHeatPumpOperationMode(request: SetHeatPumpStatusRequest): Promise<void> {
