@@ -14,7 +14,7 @@ export class CloudConnectionService {
   public constructor(
     private readonly _connector: ComfortCloudConnector,
     private readonly _configService: ConfigService,
-    private readonly scheduleRegistry: SchedulerRegistry
+    private readonly _scheduleRegistry: SchedulerRegistry
   ) {}
 
   public removeAuthToken(): void {
@@ -30,20 +30,20 @@ export class CloudConnectionService {
 
   public scheduledWaterHeating(active: boolean): void {
     if (active) {
-      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).start();
-      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).start();
+      this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).start();
+      this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).start();
       Logger.log('Scheduling everyday water heating');
     } else {
-      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).stop();
-      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).stop();
+      this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).stop();
+      this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).stop();
       Logger.log('Setting off everyday water heating');
     }
   }
 
   public isScheduledWaterHeating(): boolean {
     return (
-      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).running &&
-      this.scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).running
+      this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).running &&
+      this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).running
     );
   }
 

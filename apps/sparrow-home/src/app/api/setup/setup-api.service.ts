@@ -6,7 +6,7 @@ import { GetCurrentSetupResponse } from '~api/setup/models/get-current-setup.res
 import { SetConfigurationRequest } from '~api/setup/models/set-configuration-request';
 import { SetModeRequest } from '~api/setup/models/set-mode-request';
 
-enum SetupUrl {
+export enum SetupUrl {
   READY = 'setup/ready',
   CURRENT = 'setup/current',
   SET_MODE = 'setup/set-mode',

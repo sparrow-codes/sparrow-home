@@ -13,12 +13,12 @@ export class UserService {
   private static readonly HASHING_ROUNDS: number = 10;
 
   public constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(Setup) private readonly setupRepository: Repository<Setup>
+    @InjectRepository(User) private readonly _userRepository: Repository<User>,
+    @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>
   ) {}
 
   public async createFirstUser(request: CreateNewUserRequest): Promise<void> {
-    if ((await this.userRepository.count()) !== 0) {
+    if (await this._userRepository.findOneBy({ role: UserRole.OWNER })) {
       throw new UnauthorizedException();
     }
 
@@ -27,16 +27,43 @@ export class UserService {
     user.lastName = request.lastName;
     user.email = request.email;
     user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
-    user.role = UserRole.ADMIN;
+    user.role = UserRole.OWNER;
     user.isPasswordExpired = false;
 
-    const setup: Setup = new Setup();
+    user.setup = await this._setupRepository.save(new Setup());
 
-    await this.setupRepository.save(setup);
-    await this.userRepository.save(user);
+    await this.save(user);
   }
 
-  public getUserByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOneBy({ email });
+  public async getUserByEmail(email: string): Promise<User | null> {
+    const user: User | null = await this._userRepository.findOneBy({ email });
+    if (user) {
+      return user;
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  public async getUserById(id: number): Promise<User | null> {
+    const user: User | null = await this._userRepository.findOneBy({ id });
+
+    if (user) {
+      return user;
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  public async getUserByRole(role: UserRole): Promise<User | null> {
+    const user: User | null = await this._userRepository.findOneBy({ role });
+    if (user) {
+      return user;
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  public async save(user: User): Promise<void> {
+    await this._userRepository.save(user);
   }
 }

@@ -3,12 +3,13 @@ import { Module } from '@nestjs/common';
 
 import { AuthModule } from '../auth/auth.module';
 import { SetupModule } from '../setup/setup.module';
+import { UserModule } from '../user/user.module';
 import { WeatherApiService } from './api/weather-api.service';
 import { WeatherController } from './controllers/weather.controller';
 import { WeatherService } from './services/weather.service';
 
 @Module({
-  imports: [SetupModule, HttpModule, AuthModule],
+  imports: [SetupModule, HttpModule, AuthModule, UserModule],
   providers: [WeatherApiService, WeatherService],
   controllers: [WeatherController],
   exports: [WeatherService],

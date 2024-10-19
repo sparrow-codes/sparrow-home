@@ -1,20 +1,17 @@
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import { CronJobName } from '../../../../enums/cron-job-name';
 import { Mode } from '../../../../enums/mode';
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
-import { Setup } from '../../enitites/setup';
+import { UserService } from '../../../user/services/user.service';
 import { ModeService } from './mode.service';
-import Mock = jest.Mock;
 import { SPRING_AUTUMN_JOBS, SUMMER_JOBS, WINTER_JOBS } from './mode-cron-jobs/mode-crone-jobs';
+import Mock = jest.Mock;
 
 describe('ModeService', () => {
   let service: ModeService;
   let scheduleRegistry: SchedulerRegistry;
-  let setupRepository: Repository<Setup>;
   let cloudConnectionService: CloudConnectionService;
 
   const mockedCronJob: { stop: Mock; start: Mock } = {
@@ -22,15 +19,17 @@ describe('ModeService', () => {
     start: jest.fn(),
   };
 
+  const unitId: number = 1;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ModeService,
         {
-          provide: getRepositoryToken(Setup),
+          provide: UserService,
           useValue: {
             save: jest.fn(() => Promise.resolve()),
-            find: jest.fn(() => Promise.resolve([{ mode: undefined }])),
+            getUserById: jest.fn(() => Promise.resolve({ setup: { mode: undefined } })),
           },
         },
         {
@@ -49,7 +48,6 @@ describe('ModeService', () => {
 
     service = module.get<ModeService>(ModeService);
     scheduleRegistry = module.get(SchedulerRegistry);
-    setupRepository = module.get(getRepositoryToken(Setup));
     cloudConnectionService = module.get(CloudConnectionService);
   });
 
@@ -66,25 +64,24 @@ describe('ModeService', () => {
     });
 
     it('should save mode', async () => {
-      await service.setMode(Mode.WINTER);
-      expect(setupRepository.save).toHaveBeenNthCalledWith(1, { mode: Mode.WINTER });
+      await service.setMode(Mode.WINTER, unitId);
       expect(scheduleRegistry.getCronJob).toHaveBeenCalledTimes(Object.values(CronJobName).length);
       expect(mockedCronJob.stop).toHaveBeenCalledTimes(Object.values(CronJobName).length);
     });
 
     it('should turn off heat when setting summer mode', async () => {
-      await service.setMode(Mode.SUMMER);
+      await service.setMode(Mode.SUMMER, unitId);
       expect(cloudConnectionService.setHeatOnly).toHaveBeenNthCalledWith(1, false);
       expect(mockedCronJob.start).toHaveBeenCalledTimes(Object.values(SUMMER_JOBS).length);
     });
 
     it('should run spring / autumn jobs', async () => {
-      await service.setMode(Mode.AUTUMN_SPRING);
+      await service.setMode(Mode.AUTUMN_SPRING, unitId);
       expect(mockedCronJob.start).toHaveBeenCalledTimes(Object.values(SPRING_AUTUMN_JOBS).length);
     });
 
     it('should run winter jobs', async () => {
-      await service.setMode(Mode.WINTER);
+      await service.setMode(Mode.WINTER, unitId);
       expect(mockedCronJob.start).toHaveBeenCalledTimes(Object.values(WINTER_JOBS).length);
     });
   });

@@ -1,32 +1,35 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CronJob } from 'cron';
 import { combineLatest, first, from } from 'rxjs';
-import { Repository } from 'typeorm';
 
 import { CronJobName } from '../../../../enums/cron-job-name';
 import { DateUtils } from '../../../../utils/date-utils';
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
 import { Setup } from '../../../setup/enitites/setup';
+import { UserRole } from '../../../user/enum/user-role';
+import { UserService } from '../../../user/services/user.service';
 import { WeatherService } from '../../../waether/services/weather.service';
 
 @Injectable()
 export class CloudTaskService {
   public constructor(
-    private readonly weatherService: WeatherService,
-    private readonly schedulerRegistry: SchedulerRegistry,
-    private readonly cloudService: CloudConnectionService,
-    @InjectRepository(Setup) private readonly setupRepository: Repository<Setup>
+    private readonly _weatherService: WeatherService,
+    private readonly _schedulerRegistry: SchedulerRegistry,
+    private readonly _cloudService: CloudConnectionService,
+    private readonly _userService: UserService
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON, { name: CronJobName.TURN_HEAT_IF_COLD_NIGHT, disabled: true })
   public turnHeatIfColdNight(): void {
     Logger.log('Checking temperature over night');
-    combineLatest([from(this.setupRepository.find()), this.weatherService.getSunriseAndSunsetWithLowestTemperature()])
+    combineLatest([
+      from(this._userService.getUserByRole(UserRole.OWNER)),
+      this._weatherService.getSunriseAndSunsetWithLowestTemperature(),
+    ])
       .pipe(first())
-      .subscribe(([setups, data]) => {
-        const setup: Setup = setups[0];
+      .subscribe(([user, data]) => {
+        const setup: Setup = user.setup;
         const sunset: Date = data.sunset;
         const sunrise: Date = data.sunrise;
 
@@ -37,11 +40,11 @@ export class CloudTaskService {
           const dateToTurnHeatOff: Date = DateUtils.addHours(sunrise, -2);
           Logger.log(`Setting up heat time at ${dateToStartHeating.toString()} for sunset at ${sunset.toString()}`);
 
-          const heatOnJob: CronJob = new CronJob(dateToStartHeating, () => this.cloudService.setHeatOnly(true));
-          const heatOffJob: CronJob = new CronJob(dateToTurnHeatOff, () => this.cloudService.setHeatOnly(false));
+          const heatOnJob: CronJob = new CronJob(dateToStartHeating, () => this._cloudService.setHeatOnly(true));
+          const heatOffJob: CronJob = new CronJob(dateToTurnHeatOff, () => this._cloudService.setHeatOnly(false));
 
-          this.schedulerRegistry.addCronJob('heatOn', heatOnJob);
-          this.schedulerRegistry.addCronJob('heatOff', heatOffJob);
+          this._schedulerRegistry.addCronJob('heatOn', heatOnJob);
+          this._schedulerRegistry.addCronJob('heatOff', heatOffJob);
 
           heatOnJob.start();
           heatOffJob.start();
@@ -54,12 +57,12 @@ export class CloudTaskService {
   @Cron(CronExpression.EVERY_DAY_AT_1PM, { disabled: true, name: CronJobName.EVERY_DAY_WATER_ON })
   public async everyDayWaterOn(): Promise<void> {
     Logger.log('Setting up water heating');
-    await this.cloudService.setWaterOnly(true);
+    await this._cloudService.setWaterOnly(true);
   }
 
   @Cron('0 30 13 * * 1-7', { disabled: true, name: CronJobName.EVERY_DAY_WATER_OFF })
   public async everyDayWaterOff(): Promise<void> {
     Logger.log('Setting down water heating');
-    await this.cloudService.setWaterOnly(false);
+    await this._cloudService.setWaterOnly(false);
   }
 }
