@@ -5,7 +5,7 @@ export class Setup {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
+  @Column({ nullable: true })
   public mode: number;
 
   @Column({ nullable: true, type: 'decimal' })

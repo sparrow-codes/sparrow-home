@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ConfigKey } from './enums/config-key';
+import { AppInitService } from './init/app-init.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
@@ -38,5 +39,6 @@ import { WeatherModule } from './modules/waether/weather.module';
     WeatherModule,
     TaskModule,
   ],
+  providers: [AppInitService],
 })
 export class AppModule {}

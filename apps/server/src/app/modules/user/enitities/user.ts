@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Setup } from '../../setup/enitites/setup';
 import { UserRole } from '../enum/user-role';
 
 @Entity()
@@ -24,4 +25,8 @@ export class User {
 
   @Column({ enum: UserRole })
   public role: number;
+
+  @OneToOne(() => Setup, { onDelete: 'CASCADE', eager: true })
+  @JoinColumn()
+  public setup: Setup;
 }

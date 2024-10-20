@@ -1,19 +1,19 @@
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { of } from 'rxjs';
 
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
-import { Setup } from '../../../setup/enitites/setup';
+import { UserService } from '../../../user/services/user.service';
 import { WeatherService } from '../../../waether/services/weather.service';
 import { CloudTaskService } from './cloud-task.service';
 
 describe('CloudTaskService', () => {
   let service: CloudTaskService;
   let scheduleRegistry: SchedulerRegistry;
+  let cloudConnectionService: CloudConnectionService;
 
-  const sunset: string = '2024-10-17T20:00';
-  const sunrise: string = '2024-10-18T08:00';
+  const sunset: string = new Date(new Date().setHours(new Date().getHours() + 8)).toISOString();
+  const sunrise: string = new Date(new Date().setHours(new Date().getHours() + 16)).toISOString();
   const marginTemperature: number = 7;
 
   beforeEach(async () => {
@@ -33,8 +33,10 @@ describe('CloudTaskService', () => {
           },
         },
         {
-          provide: getRepositoryToken(Setup),
-          useValue: { find: jest.fn(() => Promise.resolve([{ marginTemperatureOverNight: marginTemperature }])) },
+          provide: UserService,
+          useValue: {
+            getUserByRole: jest.fn(() => Promise.resolve({ setup: { marginTemperatureOverNight: marginTemperature } })),
+          },
         },
         {
           provide: SchedulerRegistry,
@@ -42,13 +44,14 @@ describe('CloudTaskService', () => {
         },
         {
           provide: CloudConnectionService,
-          useValue: { setHeatOnly: jest.fn() },
+          useValue: { setHeatOnly: jest.fn(), setWaterOnly: jest.fn() },
         },
       ],
     }).compile();
 
     service = module.get<CloudTaskService>(CloudTaskService);
     scheduleRegistry = module.get<SchedulerRegistry>(SchedulerRegistry);
+    cloudConnectionService = module.get(CloudConnectionService);
   });
 
   describe('service init', () => {
@@ -63,6 +66,18 @@ describe('CloudTaskService', () => {
 
       await service.turnHeatIfColdNight();
       expect(scheduleRegistry.addCronJob).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('everyday events', () => {
+    it('should set water on', () => {
+      service.everyDayWaterOn();
+      expect(cloudConnectionService.setWaterOnly).toHaveBeenNthCalledWith(1, true);
+    });
+
+    it('should set heat on', () => {
+      service.everyDayWaterOff();
+      expect(cloudConnectionService.setWaterOnly).toHaveBeenNthCalledWith(1, false);
     });
   });
 });
