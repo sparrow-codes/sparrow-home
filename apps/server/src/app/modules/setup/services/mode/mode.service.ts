@@ -2,10 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 
+import { User } from '../../../../entities/user';
 import { CronJobName } from '../../../../enums/cron-job-name';
 import { Mode } from '../../../../enums/mode';
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
-import { User } from '../../../user/enitities/user';
 import { UserService } from '../../../user/services/user.service';
 import { ModeDictionary } from '../../dictionaries/mode-dictionary';
 import { SPRING_AUTUMN_JOBS, SUMMER_JOBS, WINTER_JOBS } from './mode-cron-jobs/mode-crone-jobs';

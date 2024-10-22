@@ -3,10 +3,10 @@ import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { combineLatest, first, from } from 'rxjs';
 
+import { Setup } from '../../../../entities/setup';
 import { CronJobName } from '../../../../enums/cron-job-name';
-import { DateUtils } from '../../../../utils/date-utils';
+import { DateUtils } from '../../../../utils/date/date-utils';
 import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
-import { Setup } from '../../../setup/enitites/setup';
 import { UserRole } from '../../../user/enum/user-role';
 import { UserService } from '../../../user/services/user.service';
 import { WeatherService } from '../../../waether/services/weather.service';
@@ -60,7 +60,7 @@ export class CloudTaskService {
     await this._cloudService.setWaterOnly(true);
   }
 
-  @Cron('0 30 13 * * 1-7', { disabled: true, name: CronJobName.EVERY_DAY_WATER_OFF })
+  @Cron('0 30 14 * * 1-7', { disabled: true, name: CronJobName.EVERY_DAY_WATER_OFF })
   public async everyDayWaterOff(): Promise<void> {
     Logger.log('Setting down water heating');
     await this._cloudService.setWaterOnly(false);
