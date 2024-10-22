@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import { CronJob } from 'cron';
 import { combineLatest, first, from } from 'rxjs';
 
 import { Setup } from '../../../../entities/setup';
@@ -10,6 +9,7 @@ import { CloudConnectionService } from '../../../cloud/services/cloud-connection
 import { UserRole } from '../../../user/enum/user-role';
 import { UserService } from '../../../user/services/user.service';
 import { WeatherService } from '../../../waether/services/weather.service';
+import { scheduleHeatOff, scheduleHeatOn } from '../../functions/heat-functions';
 
 @Injectable()
 export class CloudTaskService {
@@ -40,14 +40,25 @@ export class CloudTaskService {
           const dateToTurnHeatOff: Date = DateUtils.addHours(sunrise, -2);
           Logger.log(`Setting up heat time at ${dateToStartHeating.toString()} for sunset at ${sunset.toString()}`);
 
-          const heatOnJob: CronJob = new CronJob(dateToStartHeating, () => this._cloudService.setHeatOnly(true));
-          const heatOffJob: CronJob = new CronJob(dateToTurnHeatOff, () => this._cloudService.setHeatOnly(false));
+          scheduleHeatOn({
+            date: dateToStartHeating,
+            userId: user.id,
+            schedulerRegistry: this._schedulerRegistry,
+            userService: this._userService,
+            cloudService: this._cloudService,
+          });
 
-          this._schedulerRegistry.addCronJob('heatOn', heatOnJob);
-          this._schedulerRegistry.addCronJob('heatOff', heatOffJob);
+          scheduleHeatOff({
+            date: dateToTurnHeatOff,
+            userId: user.id,
+            schedulerRegistry: this._schedulerRegistry,
+            userService: this._userService,
+            cloudService: this._cloudService,
+          });
 
-          heatOnJob.start();
-          heatOffJob.start();
+          user.cloudPreferences.dateToStartHeating = dateToStartHeating;
+          user.cloudPreferences.dateToTurnOffHeating = dateToTurnHeatOff;
+          this._userService.save(user);
         } else {
           Logger.log(`Temperature over night is planned to be: ${data.lowestTemperature}. Heat will not be turned on`);
         }
