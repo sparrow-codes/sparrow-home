@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 
-import { User } from '../../user/enitities/user';
+import { User } from '../../../entities/user';
+import { getUserId } from '../../../utils/request-util';
 import { UserService } from '../../user/services/user.service';
 import { SetupService } from '../services/setup.service';
 import { GetSetupResponseMapper } from './mapper/get-setup-response-mapper';
@@ -20,17 +21,20 @@ export class SetupController {
 
   @Get('current')
   public async getCurrentSetup(@Req() request: Request): Promise<GetSetupResponse> {
-    const user: User = await this._userService.getUserById(request['userId']);
+    const userId: number = getUserId(request);
+    const user: User = await this._userService.getUserById(userId);
     return GetSetupResponseMapper.map(user.setup);
   }
 
   @Post('set-mode')
   public async setMode(@Req() request: Request<SetModeRequest>): Promise<void> {
-    return this._setupService.setMode(request.body.mode, request['userId']);
+    const userId: number = getUserId(request);
+    return this._setupService.setMode(request.body.mode, userId);
   }
 
   @Put('config-change')
   public async changeConfiguration(@Req() request: Request<SetConfigurationRequest>): Promise<void> {
-    await this._setupService.saveConfiguration(request.body, request['userId']);
+    const userId: number = getUserId(request);
+    await this._setupService.saveConfiguration(request.body, userId);
   }
 }

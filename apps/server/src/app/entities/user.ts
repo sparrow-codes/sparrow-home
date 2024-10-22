@@ -1,7 +1,8 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Setup } from '../../setup/enitites/setup';
-import { UserRole } from '../enum/user-role';
+import { UserRole } from '../modules/user/enum/user-role';
+import { CloudPreferences } from './cloud-preferences';
+import { Setup } from './setup';
 
 @Entity()
 export class User {
@@ -29,4 +30,8 @@ export class User {
   @OneToOne(() => Setup, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   public setup: Setup;
+
+  @OneToOne(() => CloudPreferences, { onDelete: 'CASCADE', eager: true })
+  @JoinColumn()
+  public cloudPreferences: CloudPreferences;
 }

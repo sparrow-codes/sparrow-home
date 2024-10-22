@@ -1,5 +1,5 @@
+import { Setup } from '../../../../entities/setup';
 import { ModeDictionary } from '../../dictionaries/mode-dictionary';
-import { Setup } from '../../enitites/setup';
 import { GetSetupResponse } from '../models/get-setup.response';
 
 export class GetSetupResponseMapper {

@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { map, Observable } from 'rxjs';
 
+import { getUserId } from '../../../utils/request-util';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { CloudConnectionService } from '../services/cloud-connection/cloud-connection.service';
 import { HeatPumpDetailsResponseMapper } from './mapper/heat-pump-details-response.mapper';
@@ -25,8 +27,9 @@ export class CloudController {
   }
 
   @Put('/scheduled-water-heating')
-  public scheduledWaterHeating(@Body() request: ScheduledWaterHeatingRequest): void {
-    this.cloudService.scheduledWaterHeating(request.active);
+  public scheduledWaterHeating(@Req() request: Request<ScheduledWaterHeatingRequest>): Promise<void> {
+    const userId: number = getUserId(request);
+    return this.cloudService.scheduledWaterHeating(request.body.active, userId);
   }
 
   @Get('/scheduled-water-heating-status')

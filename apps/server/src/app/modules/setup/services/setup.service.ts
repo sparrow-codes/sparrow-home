@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { User } from '../../user/enitities/user';
+import { User } from '../../../entities/user';
 import { UserRole } from '../../user/enum/user-role';
 import { UserService } from '../../user/services/user.service';
 import { SetConfigurationRequest } from '../controlers/models/set-configuration.request';
@@ -26,6 +26,7 @@ export class SetupService {
     user.setup.lat = request.lat;
     user.setup.lng = request.lng;
     user.setup.marginTemperatureOverNight = request.marginTemperatureOverNight;
-    await this._userService.save(user);
+    console.log(JSON.stringify(user));
+    await this._userService.save({ ...user });
   }
 }
