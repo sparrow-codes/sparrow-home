@@ -35,7 +35,10 @@ describe('CloudTaskService', () => {
         {
           provide: UserService,
           useValue: {
-            getUserByRole: jest.fn(() => Promise.resolve({ setup: { marginTemperatureOverNight: marginTemperature } })),
+            getUserByRole: jest.fn(() =>
+              Promise.resolve({ setup: { marginTemperatureOverNight: marginTemperature }, cloudPreferences: {} })
+            ),
+            save: jest.fn(),
           },
         },
         {
