@@ -2,15 +2,13 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
 
-import { CloudConnectionService } from '../../../cloud/services/cloud-connection/cloud-connection.service';
-import { UserService } from '../../../user/services/user.service';
-import { WeatherService } from '../../../waether/services/weather.service';
-import { CloudTaskService } from './cloud-task.service';
+import { CloudConnectionService } from '../modules/cloud/services/cloud-connection/cloud-connection.service';
+import { UserService } from '../modules/user/services/user.service';
+import { WeatherService } from '../modules/waether/services/weather.service';
+import { CustomScheduleRegistryService } from './custom-schedule-registry.service';
 
-describe('CloudTaskService', () => {
-  let service: CloudTaskService;
-  let scheduleRegistry: SchedulerRegistry;
-  let cloudConnectionService: CloudConnectionService;
+describe('CustomScheduleRegistryService', () => {
+  let service: CustomScheduleRegistryService;
 
   const sunset: string = new Date(new Date().setHours(new Date().getHours() + 8)).toISOString();
   const sunrise: string = new Date(new Date().setHours(new Date().getHours() + 16)).toISOString();
@@ -19,7 +17,7 @@ describe('CloudTaskService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CloudTaskService,
+        CustomScheduleRegistryService,
         {
           provide: WeatherService,
           useValue: {
@@ -52,35 +50,12 @@ describe('CloudTaskService', () => {
       ],
     }).compile();
 
-    service = module.get<CloudTaskService>(CloudTaskService);
-    scheduleRegistry = module.get<SchedulerRegistry>(SchedulerRegistry);
-    cloudConnectionService = module.get(CloudConnectionService);
+    service = module.get<CustomScheduleRegistryService>(CustomScheduleRegistryService);
   });
 
   describe('service init', () => {
     it('should be defined', () => {
       expect(service).toBeDefined();
-    });
-  });
-
-  describe('check temperature over night', () => {
-    it('should schedule heating on 2 hours before sunset', async () => {
-      jest.spyOn(scheduleRegistry, 'addCronJob');
-
-      await service.turnHeatIfColdNight();
-      expect(scheduleRegistry.addCronJob).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe('everyday events', () => {
-    it('should set water on', () => {
-      service.everyDayWaterOn();
-      expect(cloudConnectionService.setWaterOnly).toHaveBeenNthCalledWith(1, true);
-    });
-
-    it('should set heat on', () => {
-      service.everyDayWaterOff();
-      expect(cloudConnectionService.setWaterOnly).toHaveBeenNthCalledWith(1, false);
     });
   });
 });

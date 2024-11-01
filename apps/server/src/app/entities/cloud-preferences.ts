@@ -9,8 +9,8 @@ export class CloudPreferences {
   public isEverydayWaterHeatOn: boolean;
 
   @Column({ nullable: true })
-  public dateToStartHeating?: Date;
+  public dateToStartHeating: Date | null;
 
   @Column({ nullable: true })
-  public dateToTurnOffHeating?: Date;
+  public dateToTurnOffHeating: Date | null;
 }

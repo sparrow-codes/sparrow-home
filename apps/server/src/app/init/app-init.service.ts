@@ -1,22 +1,20 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob, CronTime } from 'cron';
 
 import { CloudPreferences } from '../entities/cloud-preferences';
 import { User } from '../entities/user';
 import { CronJobName } from '../enums/cron-job-name';
-import { CloudConnectionService } from '../modules/cloud/services/cloud-connection/cloud-connection.service';
 import { ModeService } from '../modules/setup/services/mode/mode.service';
-import { scheduleHeatOff, scheduleHeatOn } from '../modules/task/functions/heat-functions';
 import { UserRole } from '../modules/user/enum/user-role';
 import { UserService } from '../modules/user/services/user.service';
+import { CustomScheduleRegistryService } from '../registry/custom-schedule-registry.service';
 
 @Injectable()
 export class AppInitService {
   public constructor(
     private readonly _userService: UserService,
     private readonly _modeService: ModeService,
-    private readonly _schedulerRegistry: SchedulerRegistry,
-    private readonly _cloudService: CloudConnectionService
+    private readonly _schedulerRegistry: CustomScheduleRegistryService
   ) {}
 
   public async onInit(): Promise<void> {
@@ -60,32 +58,26 @@ export class AppInitService {
       const now: Date = new Date();
 
       if (now < dateToStartHeating) {
-        scheduleHeatOn({
-          date: dateToStartHeating,
-          userId: owner.id,
-          schedulerRegistry: this._schedulerRegistry,
-          userService: this._userService,
-          cloudService: this._cloudService,
-        });
+        const startHeatingJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.HEAT_ON);
+        startHeatingJob.setTime(new CronTime(dateToStartHeating));
 
-        scheduleHeatOff({
-          date: dateToTurnOffHeating,
-          userId: owner.id,
-          schedulerRegistry: this._schedulerRegistry,
-          userService: this._userService,
-          cloudService: this._cloudService,
-        });
+        const stopHeatingJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.HEAT_OFF);
+        stopHeatingJob.setTime(new CronTime(dateToTurnOffHeating));
+        Logger.log(`Will start heating at ${dateToStartHeating}`);
+        return;
       }
 
       if (now > dateToStartHeating && now < dateToTurnOffHeating) {
-        scheduleHeatOff({
-          date: dateToTurnOffHeating,
-          userId: owner.id,
-          schedulerRegistry: this._schedulerRegistry,
-          userService: this._userService,
-          cloudService: this._cloudService,
-        });
+        const stopHeatingJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.HEAT_OFF);
+        stopHeatingJob.setTime(new CronTime(dateToTurnOffHeating));
+        Logger.log(`Will stop heating at ${dateToTurnOffHeating}`);
+        return;
       }
+
+      Logger.log('Heating dates are out of scope! Clearing DB');
+      owner.cloudPreferences.dateToTurnOffHeating = null;
+      owner.cloudPreferences.dateToStartHeating = null;
+      this._userService.save(owner);
     } else {
       Logger.log('No heating found for scheduling');
     }
