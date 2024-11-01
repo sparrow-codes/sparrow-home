@@ -23,7 +23,7 @@ export class ModeService {
     if (user.setup.mode !== mode || force) {
       user.setup.mode = mode;
       await this._userService.save(user).then(() => {
-        const jobs: string[] = Object.values(CronJobName);
+        const jobs: CronJobName[] = Object.values(CronJobName);
         jobs.forEach((job) => {
           if (this._scheduleRegistry.doesExist('cron', job)) {
             const cronJob: CronJob = this._scheduleRegistry.getCronJob(job);
@@ -55,9 +55,9 @@ export class ModeService {
     }
   }
 
-  private _runJobsByList(jobNames: string[]): void {
+  private _runJobsByList(jobNames: CronJobName[]): void {
     jobNames.forEach((jobName) => {
-      const cronJob: CronJob = this._scheduleRegistry.getCronJob(jobName);
+      const cronJob: CronJob = this._scheduleRegistry.getCronJob(jobName as CronJobName);
       cronJob.start();
     });
   }

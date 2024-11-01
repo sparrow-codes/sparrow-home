@@ -12,6 +12,7 @@ import { SetupModule } from './modules/setup/setup.module';
 import { TaskModule } from './modules/task/task.module';
 import { UserModule } from './modules/user/user.module';
 import { WeatherModule } from './modules/waether/weather.module';
+import { CustomScheduleRegistryService } from './registry/custom-schedule-registry.service';
 
 @Module({
   imports: [
@@ -39,6 +40,6 @@ import { WeatherModule } from './modules/waether/weather.module';
     WeatherModule,
     TaskModule,
   ],
-  providers: [AppInitService],
+  providers: [AppInitService, CustomScheduleRegistryService],
 })
 export class AppModule {}
