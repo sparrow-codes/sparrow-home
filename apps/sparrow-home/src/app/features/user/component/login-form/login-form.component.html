@@ -8,7 +8,7 @@
     }
   </div>
 
-  <sp-button [disabled]="isLoading() || showInvalidLoginError()" (click)="onLoginClick()">
+  <sp-button [disabled]="showInvalidLoginError()" (click)="onLoginClick()">
     <div class="flex justify-center gap-2 items-center">
       <span>Login</span>
       <ng-icon name="heroLockOpen"></ng-icon>

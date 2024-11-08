@@ -36,4 +36,9 @@ export class CloudController {
   public getScheduledWaterHeatingStatus(): GetScheduledWaterHeatingStatusResponse {
     return { isScheduled: this.cloudService.isScheduledWaterHeating() };
   }
+
+  @Put('/long-bath')
+  public setLongerBath(@Body() request: {isOn: boolean}): Promise<void> {
+    return this.cloudService.setLongerBath(request.isOn);
+  }
 }

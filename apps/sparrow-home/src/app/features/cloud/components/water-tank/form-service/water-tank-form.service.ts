@@ -16,9 +16,14 @@ export class WaterTankFormService {
     return this._form.get(WaterTankFormName.SCHEDULE_WATER_HEATING) as FormControl<boolean>;
   }
 
+  public get longBathControl(): FormControl<boolean> {
+    return this._form.get(WaterTankFormName.LONG_BATH) as FormControl<boolean>;
+  }
+
   public constructor(private readonly _fb: NonNullableFormBuilder) {
     this._form = this._fb.group({
       [WaterTankFormName.SCHEDULE_WATER_HEATING]: this._fb.control(false),
+      [WaterTankFormName.LONG_BATH]: this._fb.control(false)
     });
   }
 }

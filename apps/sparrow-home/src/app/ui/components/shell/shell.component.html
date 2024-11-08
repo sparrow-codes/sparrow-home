@@ -11,7 +11,7 @@
   </nav>
 
   <div class="flex flex-col w-full">
-    <header class="flex items-center px-4 justify-end bg-white h-[60px]">
+    <header class="flex items-center px-4 justify-end bg-white h-[60px] shadow-sm">
       <div class="flex gap-2 items-center">
         @if(lowestTemperatureAtNight()) {
         <div class="border-r border-light-gray pr-5 text-dark-gray">
@@ -27,7 +27,7 @@
       </div>
     </header>
 
-    <div class="p-4 w-full">
+    <div class="p-4 w-full overflow-auto">
       <ng-content></ng-content>
     </div>
   </div>

@@ -30,18 +30,6 @@ export class DataFacadeService {
     return this._userStore.token();
   }
 
-  public get isLoading(): Signal<boolean> {
-    return this._rootStore.loading;
-  }
-
-  public get isUserStoreLoading(): Signal<boolean> {
-    return this._userStore.isLoading;
-  }
-
-  public get isCloudStoreLoading(): Signal<boolean> {
-    return this._cloudStore.isLoading;
-  }
-
   public get isLoginError(): Signal<boolean> {
     return this._userStore.isLoginError;
   }
@@ -120,5 +108,9 @@ export class DataFacadeService {
 
   public changeScheduledWaterHeatingStatus(status: boolean): void {
     this._cloudStore.setWaterHeatingStatus(status);
+  }
+
+  public setLongerBathMode(isOn: boolean): void {
+    this._cloudStore.setLongerBath(isOn);
   }
 }

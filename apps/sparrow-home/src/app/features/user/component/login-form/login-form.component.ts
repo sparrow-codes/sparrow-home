@@ -37,7 +37,6 @@ import { LoginForm } from '~user/component/login-form/form-service/model/login-f
 export class LoginFormComponent implements OnInit {
   public readonly onLogin: OutputEmitterRef<LoginRequest> = output();
   public readonly hasError: InputSignal<boolean> = input(false);
-  public readonly isLoading: InputSignal<boolean> = input(false);
 
   protected readonly formService: LoginFormService = inject(LoginFormService);
   protected readonly formGroup: FormGroup<LoginForm> = this.formService.form;

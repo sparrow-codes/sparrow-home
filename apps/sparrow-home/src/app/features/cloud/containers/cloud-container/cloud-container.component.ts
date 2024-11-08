@@ -51,7 +51,6 @@ export class CloudContainerComponent implements OnInit {
   protected readonly formName: typeof CloudFormName = CloudFormName;
   protected readonly dataFacadeService: DataFacadeService = inject(DataFacadeService);
   protected readonly heatPump: Signal<GetHeatPumpDetailsResponse | null> = this.dataFacadeService.heatPump;
-  protected readonly isLoading: Signal<boolean> = this.dataFacadeService.isCloudStoreLoading;
   protected readonly waterTankOptions: Signal<WaterTankOptions | null> = this.dataFacadeService.waterTankOptions;
 
   private readonly _injector: Injector = inject(Injector);
@@ -71,23 +70,14 @@ export class CloudContainerComponent implements OnInit {
       },
       { injector: this._injector }
     );
-
-    effect(
-      () => {
-        if (this.formGroup) {
-          if (this.isLoading()) {
-            this.formGroup.disable({ emitEvent: false });
-          } else {
-            this.formGroup.enable({ emitEvent: false });
-          }
-        }
-      },
-      { injector: this._injector }
-    );
   }
 
   protected handleWaterTankOptionsChange(waterTankOptions: WaterTankOptions): void {
     this.dataFacadeService.changeScheduledWaterHeatingStatus(waterTankOptions.isScheduledHeating);
+  }
+
+  protected handleLongerBathChange(isOn: boolean): void {
+    this.dataFacadeService.setLongerBathMode(isOn);
   }
 
   private _createCloudForm(heatPump: GetHeatPumpDetailsResponse): void {

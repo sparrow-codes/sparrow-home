@@ -1,10 +1,7 @@
 <app-page-title>Pompa i Panele Fotowoltaiczne</app-page-title>
 
-@if(isLoading() && heatPump() === null) {
-<div class="flex w-full justify-center">
-  <app-loader></app-loader>
-</div>
-} @else if(heatPump() && formGroup) {
+
+@if(heatPump() && formGroup) {
 <div @sparrowFadeIn class="flex justify-end gap-6 items-center flex-col md:flex-row md:gap-6 mb-4">
   <div class="flex gap-2 items-center">
     <ng-icon name="heroClock"></ng-icon>
@@ -31,6 +28,7 @@
       [waterTank]="tankStatus"
       [waterTankOptions]="waterTankOptions()"
       (onWaterTankOptionsChange)="handleWaterTankOptionsChange($event)"
+      (onLongBathChange)="handleLongerBathChange($event)"
     ></app-water-tank>
     }
   </sp-card>

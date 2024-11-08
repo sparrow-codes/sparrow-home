@@ -1,11 +1,14 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronTime } from 'cron';
 import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 
 import { User } from '../../../../entities/user';
 import { ConfigKey } from '../../../../enums/config-key';
 import { CronJobName } from '../../../../enums/cron-job-name';
+import { DateUtils } from '../../../../utils/date/date-utils';
+import { UserRole } from '../../../user/enum/user-role';
 import { UserService } from '../../../user/services/user.service';
 import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
 import { SetHeatPumpStatusRequest } from '../../controllers/models/set-heat-pump-status.request';
@@ -22,6 +25,23 @@ export class CloudConnectionService {
 
   public removeAuthToken(): void {
     this._connector.logout();
+  }
+
+  public async setLongerBath(isOn: boolean): Promise<void> {
+    const user: User =  await this._userService.getUserByRole(UserRole.OWNER);
+    
+    if(isOn) {
+      this.setWaterOnly(true);
+      const turnWaterOff: Date = DateUtils.addHours(new Date(), 1);
+      this._scheduleRegistry.getCronJob(CronJobName.WATER_OFF).setTime(new CronTime(turnWaterOff));
+      const user: User =  await this._userService.getUserByRole(UserRole.OWNER);
+      user.cloudPreferences.dateToTurnWaterOff = turnWaterOff;
+      await this._userService.save(user);
+    } else {
+      this.setWaterOnly(false);
+      user.cloudPreferences.dateToTurnWaterOff = null;
+      await this._userService.save(user);
+    }
   }
 
   public getHeatPumpDetails(): Observable<HeatPump> {

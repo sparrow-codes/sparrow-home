@@ -3,7 +3,6 @@
     <h4 class="text-xl text-primary text-center mb-2">{{ appTitle }}</h4>
     <span class="text-md">Logowanie</span>
     <app-login-form
-      [isLoading]="dataService.isUserStoreLoading()"
       [hasError]="dataService.isLoginError()"
       (onLogin)="dataService.login($event)"
     ></app-login-form>

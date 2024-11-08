@@ -10,12 +10,12 @@ import { CreateUserRequest } from '~api/user/models/create-user-request';
 import { LoginRequest } from '~api/user/models/login-request';
 import { UserApiService } from '~api/user/user-api.service';
 import { RoutePath } from '~core/enum/route-path';
+import { LoaderService } from '~ui/services/loader.service';
 
 import { User } from '../models/user';
 
 type UserState = {
   user: User | null;
-  isLoading: boolean;
   token: string | null;
   isLoginError: boolean;
 };
@@ -24,17 +24,18 @@ const tokenKey: string = 'SP_ACCESS_TOKEN';
 
 export const UserStore = signalStore(
   { providedIn: 'root' },
-  withState<UserState>({ token: null, isLoading: false, user: null, isLoginError: false }),
+  withState<UserState>({ token: null, user: null, isLoginError: false }),
   withMethods(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
       toastService: SpToastService = inject(SpToastService),
-      router: Router = inject(Router)
+      router: Router = inject(Router),
+      loaderService = inject(LoaderService)
     ) => ({
       createUser: rxMethod<CreateUserRequest>(
         pipe(
-          tap(() => patchState(store, { isLoading: true })),
+          tap(() => loaderService.showLoader = true),
           switchMap((request) =>
             userApiService.createUser(request).pipe(
               first(),
@@ -44,7 +45,7 @@ export const UserStore = signalStore(
                   router.navigate([RoutePath.LOGIN]);
                 },
                 error: () => toastService.danger('Konfiguracja', 'Konfiguracja zakończona niepowodzeniem'),
-                finalize: () => patchState(store, { isLoading: false }),
+                finalize: () => loaderService.showLoader = false,
               })
             )
           )
@@ -52,7 +53,7 @@ export const UserStore = signalStore(
       ),
       login: rxMethod<LoginRequest>(
         pipe(
-          tap(() => patchState(store, { isLoading: true })),
+          tap(() => loaderService.showLoader = true),
           switchMap((request) =>
             userApiService.login(request.email, request.password).pipe(
               first(),
@@ -63,7 +64,7 @@ export const UserStore = signalStore(
                   router.navigate([RoutePath.MAIN]);
                 },
                 error: () => patchState(store, { isLoginError: true }),
-                finalize: () => patchState(store, { isLoading: false }),
+                finalize: () => loaderService.showLoader = false,
               })
             )
           )

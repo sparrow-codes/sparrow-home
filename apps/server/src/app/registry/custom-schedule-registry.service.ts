@@ -97,4 +97,13 @@ export class CustomScheduleRegistryService {
     user.cloudPreferences.dateToStartHeating = null;
     await this._userService.save(user);
   }
+
+  @Cron(new Date, {disabled: true, name: CronJobName.WATER_OFF})
+  public async setWaterOff(): Promise<void> {
+    Logger.log('Turning water off');
+    await this._cloudService.setWaterOnly(false);
+    const user: User = await this._userService.getUserByRole(UserRole.OWNER);
+    user.cloudPreferences.dateToTurnWaterOff = null;
+    await this._userService.save(user);
+  }
 }

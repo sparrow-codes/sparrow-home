@@ -13,4 +13,7 @@ export class CloudPreferences {
 
   @Column({ nullable: true })
   public dateToTurnOffHeating: Date | null;
+
+  @Column({nullable: true})
+  public dateToTurnWaterOff: Date | null;
 }
