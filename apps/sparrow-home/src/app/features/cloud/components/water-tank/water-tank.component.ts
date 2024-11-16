@@ -50,6 +50,7 @@ export class WaterTankComponent implements OnInit {
     });
 
     this._handleScheduleWaterHeatingChange();
+    this._handleLongBathChange();
   }
 
   private _handleScheduleWaterHeatingChange(): void {

@@ -62,11 +62,12 @@ export const CloudStore = signalStore(
               cloudApiService
                 .changeOperationsStatus({ ...request, deviceGuid: store.heatPump()?.deviceGuid ?? '' })
                 .pipe(
-                  delay(7000),
-                  switchMap(() => _getHeatPumpDetails())
+                  delay(10000),
+                  switchMap(() => _getHeatPumpDetails()),
+                  finalize(() => loaderService.showLoader = false)
                 )
             ),
-            finalize(() => (loaderService.showLoader = false))
+            
           )
         ),
         setWaterHeatingStatus: rxMethod<boolean>(
@@ -94,7 +95,22 @@ export const CloudStore = signalStore(
                   error: () =>
                     toastMessage.danger('Grzanie wody', 'Błąd podczas ustawiania grzania wody w tryb kąpieli!'),
                 }),
-                finalize(() => loaderService.showLoader = false)
+                finalize(() => (loaderService.showLoader = false))
+              )
+            )
+          )
+        ),
+        setHeatOverNight: rxMethod<boolean>(
+          pipe(
+            tap(() => (loaderService.showLoader = true)),
+            switchMap((isOn) =>
+              cloudApiService.setHeatOverNight(isOn).pipe(
+                tapResponse({
+                  next: () => toastMessage.success('Ogrzewanie', 'Włączono ogrzewanie w trybie nocnym'),
+                  error: () =>
+                    toastMessage.danger('Ogrzewanie', 'Błąd podczas ustawiania ogrzewania w trybie nocnym!'),
+                }),
+                finalize(() => (loaderService.showLoader = false))
               )
             )
           )
