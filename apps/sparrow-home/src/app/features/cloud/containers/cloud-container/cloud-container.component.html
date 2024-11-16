@@ -1,6 +1,5 @@
 <app-page-title>Pompa i Panele Fotowoltaiczne</app-page-title>
 
-
 @if(heatPump() && formGroup) {
 <div @sparrowFadeIn class="flex justify-end gap-6 items-center flex-col md:flex-row md:gap-6 mb-4">
   <div class="flex gap-2 items-center">
@@ -39,7 +38,7 @@
       <sp-switch [formControlName]="formName.IS_HEAT_ON"></sp-switch>
     </div>
 
-    <app-heat-tank [zone]="zoneStatus"></app-heat-tank>
+    <app-heat-tank [zone]="zoneStatus" (onHeatOverNightChange)="handleHeatOverNight($event)"></app-heat-tank>
   </sp-card>
   }
 </form>

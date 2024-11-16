@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ConfigKey } from './enums/config-key';
 import { AppInitService } from './init/app-init.service';
+import { ApiModule } from './modules/api/api.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CloudModule } from './modules/cloud/cloud.module';
 import { DeviceModule } from './modules/device/device.module';
@@ -39,6 +40,7 @@ import { CustomScheduleRegistryService } from './registry/custom-schedule-regist
     SetupModule,
     WeatherModule,
     TaskModule,
+    ApiModule
   ],
   providers: [AppInitService, CustomScheduleRegistryService],
 })

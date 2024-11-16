@@ -113,4 +113,8 @@ export class DataFacadeService {
   public setLongerBathMode(isOn: boolean): void {
     this._cloudStore.setLongerBath(isOn);
   }
+
+  public setHeatOverNight(isOn: boolean): void {
+    this._cloudStore.setHeatOverNight(isOn);
+  }
 }

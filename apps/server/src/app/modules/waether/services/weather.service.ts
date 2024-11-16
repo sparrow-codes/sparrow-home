@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { first, from, map, Observable, of, switchMap } from 'rxjs';
 
+import { GetWeatherResponse } from '../../api/model/get-weather-response';
+import { WeatherApiService } from '../../api/weather/weather-api.service';
 import { UserRole } from '../../user/enum/user-role';
 import { UserService } from '../../user/services/user.service';
-import { GetWeatherResponse } from '../api/model/get-weather-response';
-import { WeatherApiService } from '../api/weather-api.service';
 
 @Injectable()
 export class WeatherService {

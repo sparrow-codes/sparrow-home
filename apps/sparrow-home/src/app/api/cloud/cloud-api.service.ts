@@ -12,7 +12,8 @@ enum CLOUD_URLS {
   CHANGE_OPERATION_STATUS = 'panasonic-cloud/change-operation-status',
   SCHEDULE_WATER_HEATING = 'panasonic-cloud/scheduled-water-heating',
   SCHEDULE_WATER_HEATING_STATUS = 'panasonic-cloud/scheduled-water-heating-status',
-  LONG_BATH = 'panasonic-cloud/long-bath'
+  LONG_BATH = 'panasonic-cloud/long-bath',
+  HEAT_OVER_NIGHT = 'panasonic-cloud/heat-over-night',
 }
 
 @Injectable({
@@ -39,5 +40,9 @@ export class CloudApiService {
 
   public setLongBath(isOn: boolean): Observable<void> {
     return this._http.put<void>(CLOUD_URLS.LONG_BATH, { isOn });
+  }
+
+  public setHeatOverNight(isOn: boolean): Observable<void> {
+    return this._http.put<void>(CLOUD_URLS.HEAT_OVER_NIGHT, { isOn });
   }
 }
