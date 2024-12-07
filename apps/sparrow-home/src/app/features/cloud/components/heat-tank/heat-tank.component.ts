@@ -31,7 +31,7 @@ import { HeatTankFormService } from './form-service/heat-tank-form.service';
 })
 export class HeatTankComponent implements OnInit {
   public readonly zone: InputSignal<ZoneStatus> = input.required();
-  public readonly onHeatOverNightChange: OutputEmitterRef<boolean> = output();
+  public readonly heatOverNightChange: OutputEmitterRef<boolean> = output();
 
   protected readonly formService: HeatTankFormService = inject(HeatTankFormService);
   protected readonly formGroup: FormGroup = this.formService.form;
@@ -46,6 +46,6 @@ export class HeatTankComponent implements OnInit {
   private _handleHeatOverNightChange(): void {
     this.formService.heatOverNightControl.valueChanges
       .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((value) => this.onHeatOverNightChange.emit(value));
+      .subscribe((value) => this.heatOverNightChange.emit(value));
   }
 }

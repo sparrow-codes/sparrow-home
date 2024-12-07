@@ -34,8 +34,8 @@ import { WaterTankFormService } from './form-service/water-tank-form.service';
 })
 export class WaterTankComponent implements OnInit {
   public readonly waterTank: InputSignal<TankStatus> = input.required();
-  public readonly onWaterTankOptionsChange: OutputEmitterRef<WaterTankOptions> = output();
-  public readonly onLongBathChange: OutputEmitterRef<boolean> = output();
+  public readonly waterTankOptionsChange: OutputEmitterRef<WaterTankOptions> = output();
+  public readonly longBathChange: OutputEmitterRef<boolean> = output();
   public readonly waterTankOptions: InputSignal<WaterTankOptions | null> = input.required();
 
   protected readonly formService: WaterTankFormService = inject(WaterTankFormService);
@@ -56,12 +56,12 @@ export class WaterTankComponent implements OnInit {
   private _handleScheduleWaterHeatingChange(): void {
     this.formService.scheduleWaterHeatingControl.valueChanges
       .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((value) => this.onWaterTankOptionsChange.emit({ isScheduledHeating: value }));
+      .subscribe((value) => this.waterTankOptionsChange.emit({ isScheduledHeating: value }));
   }
 
   private _handleLongBathChange(): void {
     this.formService.longBathControl.valueChanges
       .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((value) => this.onLongBathChange.emit(value));
+      .subscribe((value) => this.longBathChange.emit(value));
   }
 }

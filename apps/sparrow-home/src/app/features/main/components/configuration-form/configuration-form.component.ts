@@ -32,7 +32,7 @@ import { ConfigurationForm } from './form-service/model/configuration-form';
 })
 export class ConfigurationFormComponent implements OnInit {
   public readonly configuration: InputSignal<Configuration> = input.required();
-  public readonly onSave: OutputEmitterRef<Configuration> = output();
+  public readonly save: OutputEmitterRef<Configuration> = output();
 
   protected formGroup?: FormGroup<ConfigurationForm>;
   protected readonly formName: typeof ConfigurationFormName = ConfigurationFormName;
@@ -57,7 +57,7 @@ export class ConfigurationFormComponent implements OnInit {
   protected onSubmit(): void {
     this.formGroup?.markAllAsTouched();
     if (this.formGroup?.valid) {
-      this.onSave.emit(this._formService.toConfiguration(this.configuration()));
+      this.save.emit(this._formService.toConfiguration(this.configuration()));
       this.formGroup?.disable();
     }
   }

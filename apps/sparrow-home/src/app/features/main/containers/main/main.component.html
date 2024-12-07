@@ -18,6 +18,6 @@
   </mat-card>
 
   @if(configuration(); as config) {
-      <app-configuration-form [configuration]="config" (onSave)="saveConfiguration($event)"></app-configuration-form>
+      <app-configuration-form [configuration]="config" (save)="saveConfiguration($event)"></app-configuration-form>
   }
 </section>

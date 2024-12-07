@@ -7,7 +7,7 @@
       <span class="text-md mt-2 mb-2 block">Logowanie</span>
       <app-login-form
         [hasError]="dataService.isLoginError()"
-        (onLogin)="dataService.login($event)"
+        (login)="dataService.login($event)"
       ></app-login-form>
     </mat-card-content>
   </mat-card>
