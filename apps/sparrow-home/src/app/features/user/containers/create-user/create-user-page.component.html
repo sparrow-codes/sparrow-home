@@ -5,7 +5,7 @@
     </mat-card-header>
     <mat-card-content>
       <span class="text-md mb-2 mt-2 block">Utwórz nowego użytkownika, aby rozpocząć:</span>
-      <app-create-user-form (onFormSave)="dataService.createFirstUser($event)"></app-create-user-form>
+      <app-create-user-form (formSave)="dataService.createFirstUser($event)"></app-create-user-form>
     </mat-card-content>
   </mat-card>
 </div>

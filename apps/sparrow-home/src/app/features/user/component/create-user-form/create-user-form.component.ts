@@ -34,7 +34,7 @@ import { CreateUserFormService } from './form-service/create-user-form.service';
   providers: [CreateUserFormService, provideIcons({ heroUser })],
 })
 export class CreateUserFormComponent implements OnInit {
-  public readonly onFormSave: OutputEmitterRef<CreateUserRequest> = output();
+  public readonly formSave: OutputEmitterRef<CreateUserRequest> = output();
 
   protected readonly formService: CreateUserFormService = inject(CreateUserFormService);
   protected readonly formGroup: FormGroup<CreateNewUserForm> = this.formService.form;
@@ -53,7 +53,7 @@ export class CreateUserFormComponent implements OnInit {
     const passwordMath: boolean = this.formGroup.value.password === this.formGroup.value.repeatPassword;
     if (this.formGroup.valid) {
       if (passwordMath) {
-        this.onFormSave.emit(this.formService.toRequest());
+        this.formSave.emit(this.formService.toRequest());
       } else {
         this.showMismatchPasswordError.set(true);
       }

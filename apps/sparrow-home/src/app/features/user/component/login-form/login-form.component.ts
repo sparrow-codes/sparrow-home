@@ -37,7 +37,7 @@ import { LoginForm } from '~user/component/login-form/form-service/model/login-f
   providers: [LoginFormService, provideIcons({ heroLockOpen })],
 })
 export class LoginFormComponent implements OnInit {
-  public readonly onLogin: OutputEmitterRef<LoginRequest> = output();
+  public readonly login: OutputEmitterRef<LoginRequest> = output();
   public readonly hasError: InputSignal<boolean> = input(false);
 
   protected readonly formService: LoginFormService = inject(LoginFormService);
@@ -69,7 +69,7 @@ export class LoginFormComponent implements OnInit {
     if (this.formGroup.invalid) {
       this.showInvalidLoginError.set(true);
     } else {
-      this.onLogin.emit(this.formService.toRequest());
+      this.login.emit(this.formService.toRequest());
     }
   }
 }
