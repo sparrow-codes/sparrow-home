@@ -18,7 +18,7 @@ export class HeatTankFormService {
 
   public constructor(private readonly formBuilder: NonNullableFormBuilder) {
     this._form = this.formBuilder.group({
-      [HeatTankFormName.HEAT_OVER_NIGHT]: this.formBuilder.control<boolean>(false)
+      [HeatTankFormName.HEAT_OVER_NIGHT]: this.formBuilder.control<boolean>(false),
     });
   }
 }

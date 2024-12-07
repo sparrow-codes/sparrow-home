@@ -10,15 +10,14 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
-import { CardComponent, sparrowFadeIn, SwitchComponent } from '@sparrow-codes/sparrow-ui';
 
 import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
 import { WaterTankOptions } from '~core/models/water-tank-options';
 import { DataFacadeService } from '~core/services/data-facade.service';
-import { LoaderComponent } from '~ui/components/loader/loader.component';
-import { PageSubtitleComponent } from '~ui/components/page-subtitle/page-subtitle.component';
 import { PageTitleComponent } from '~ui/components/page-title/page-title.component';
 
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
@@ -33,16 +32,13 @@ import { CloudForm } from './form-service/model/cloud-form';
     PageTitleComponent,
     NgIconComponent,
     WaterTankComponent,
-    CardComponent,
-    PageSubtitleComponent,
     HeatTankComponent,
-    LoaderComponent,
-    SwitchComponent,
     ReactiveFormsModule,
+    MatSlideToggle,
+    MatCardModule,
   ],
   templateUrl: './cloud-container.component.html',
   providers: [provideIcons({ heroPresentationChartLine, heroClock }), CloudFormService],
-  animations: [sparrowFadeIn],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloudContainerComponent implements OnInit {

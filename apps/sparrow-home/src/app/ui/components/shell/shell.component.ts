@@ -10,10 +10,10 @@ import {
   Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { NavigationEnd, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowLeftEndOnRectangleSolid } from '@ng-icons/heroicons/solid';
-import { ButtonComponent } from '@sparrow-codes/sparrow-ui';
 import { filter, map } from 'rxjs';
 
 import { NavigationItem } from '~ui/models/navigation-item';
@@ -23,7 +23,7 @@ import { NavItemComponent } from './nav-item/nav-item.component';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonComponent, NgIcon, NavItemComponent],
+  imports: [CommonModule, NgIcon, NavItemComponent, MatButton],
   templateUrl: './shell.component.html',
   providers: [provideIcons({ heroArrowLeftEndOnRectangleSolid })],
   changeDetection: ChangeDetectionStrategy.OnPush,

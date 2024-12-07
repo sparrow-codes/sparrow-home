@@ -1,8 +1,7 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { effect, Injectable, signal, WritableSignal } from '@angular/core';
-
-import { LoaderComponent } from '~ui/components/loader/loader.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +9,7 @@ import { LoaderComponent } from '~ui/components/loader/loader.component';
 export class LoaderService {
   private _overlayRef?: OverlayRef;
   private readonly _showLoader: WritableSignal<boolean> = signal(false);
-  private readonly _loader: ComponentPortal<LoaderComponent> = new ComponentPortal(LoaderComponent);
+  private readonly _loader: ComponentPortal<MatProgressSpinner> = new ComponentPortal(MatProgressSpinner);
 
   public set showLoader(value: boolean) {
     this._showLoader.set(value);
@@ -23,7 +22,7 @@ export class LoaderService {
     });
 
     effect(() => {
-      if(this._showLoader()) {
+      if (this._showLoader()) {
         this._overlayRef = this._overlay.create({
           hasBackdrop: true,
           positionStrategy: this._overlay.position().global().centerHorizontally().centerVertically(),

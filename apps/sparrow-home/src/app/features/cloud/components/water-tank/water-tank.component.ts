@@ -12,10 +12,10 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
-import { LabelComponent, SwitchComponent } from '@sparrow-codes/sparrow-ui';
 
 import { TankStatus } from '~api/cloud/models/get-heat-pump-details-response';
 import { WaterTankOptions } from '~core/models/water-tank-options';
@@ -27,7 +27,7 @@ import { WaterTankFormService } from './form-service/water-tank-form.service';
 @Component({
   selector: 'app-water-tank',
   standalone: true,
-  imports: [CommonModule, NgIconComponent, LabelComponent, SwitchComponent, ReactiveFormsModule],
+  imports: [CommonModule, NgIconComponent, ReactiveFormsModule, MatSlideToggle],
   templateUrl: './water-tank.component.html',
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal }), WaterTankFormService],
   changeDetection: ChangeDetectionStrategy.OnPush,

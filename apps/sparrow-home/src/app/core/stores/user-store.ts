@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { SpToastService } from '@sparrow-codes/sparrow-ui';
 import { first, pipe, switchMap, tap } from 'rxjs';
 
 import { CreateUserRequest } from '~api/user/models/create-user-request';
@@ -29,23 +29,23 @@ export const UserStore = signalStore(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
-      toastService: SpToastService = inject(SpToastService),
+      snackBar: MatSnackBar = inject(MatSnackBar),
       router: Router = inject(Router),
       loaderService = inject(LoaderService)
     ) => ({
       createUser: rxMethod<CreateUserRequest>(
         pipe(
-          tap(() => loaderService.showLoader = true),
+          tap(() => (loaderService.showLoader = true)),
           switchMap((request) =>
             userApiService.createUser(request).pipe(
               first(),
               tapResponse({
                 next: () => {
-                  toastService.success('Konfiguracja', 'Konfiguracja zakończona powodzeniem');
+                  snackBar.open('Konfiguracja zakończona powodzeniem', 'Zamknij');
                   router.navigate([RoutePath.LOGIN]);
                 },
-                error: () => toastService.danger('Konfiguracja', 'Konfiguracja zakończona niepowodzeniem'),
-                finalize: () => loaderService.showLoader = false,
+                error: () => snackBar.open('Konfiguracja zakończona niepowodzeniem', 'Zamknij'),
+                finalize: () => (loaderService.showLoader = false),
               })
             )
           )
@@ -53,7 +53,7 @@ export const UserStore = signalStore(
       ),
       login: rxMethod<LoginRequest>(
         pipe(
-          tap(() => loaderService.showLoader = true),
+          tap(() => (loaderService.showLoader = true)),
           switchMap((request) =>
             userApiService.login(request.email, request.password).pipe(
               first(),
@@ -64,7 +64,7 @@ export const UserStore = signalStore(
                   router.navigate([RoutePath.MAIN]);
                 },
                 error: () => patchState(store, { isLoginError: true }),
-                finalize: () => loaderService.showLoader = false,
+                finalize: () => (loaderService.showLoader = false),
               })
             )
           )

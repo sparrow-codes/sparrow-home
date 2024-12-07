@@ -1,37 +1,19 @@
-@tailwind base;
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+@import "app/styles/material/material.css";
+@import "app/styles/colors/colors.css";
+
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --sp-card-border-radius: 10px;
-  --sp-card-box-shadow: 0;
-  --sp-card-border: 1px solid #d1d1d1;
-  --sp-card-background-color: white;
-
-  --sp-input-border-radius: 10px;
-
-  --sp-switch-border-radius: 10px;
-  --sp-switch-circle-radius: 50%;
-  --sp-select-arrow-down-top: 12px;
-  --sp-select-arrow-up-top: 18px;
-  --sp-switch-label-top: 4px;
-
-  --app-light-gray: #d1d1d1;
-  --app-dark-blue: #262c40;
-  --app-light-blue: #393e61;
-  --app-background-gray: #f3f6f9;
-
-  --sp-primary-color: #4e91b8;
-  --sp-primary-font-color: #474747;
-  --sp-error-color: #dc2c24;
-}
-
-html,
-body {
+body, html {
   margin: 0;
   padding: 0;
-  height: 100%;
   width: 100%;
-  background-color: var(--app-background-gray);
+  height: 100%;
+
+  background-color: var(--mat-app-background-color);
+}
+
+body, button, input, textarea {
   font-family: 'Inter', sans-serif;
 }

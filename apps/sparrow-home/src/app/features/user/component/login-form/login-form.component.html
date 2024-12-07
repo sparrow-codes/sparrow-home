@@ -1,17 +1,21 @@
 <form [formGroup]="formGroup" class="w-[450px] flex flex-col gap-6">
-  <sp-input placeholder="email" name="email" [formControlName]="formName.EMAIL"></sp-input>
-  <sp-input placeholder="password" type="password" name="password" [formControlName]="formName.PASSWORD"></sp-input>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput [formControlName]="formName.EMAIL">
+  </mat-form-field>
 
-  <div class="min-h-[30px]">
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput type="password" [formControlName]="formName.PASSWORD">
     @if(showInvalidLoginError()) {
-    <span class="text-error text-sm">Niepoprawny login lub hasło!</span>
+      <mat-error>Niepoprawny login lub hasło!</mat-error>
     }
-  </div>
+  </mat-form-field>
 
-  <sp-button [disabled]="showInvalidLoginError()" (click)="onLoginClick()">
+  <button mat-button [disabled]="showInvalidLoginError()" (click)="onLoginClick()">
     <div class="flex justify-center gap-2 items-center">
       <span>Login</span>
       <ng-icon name="heroLockOpen"></ng-icon>
     </div>
-  </sp-button>
+  </button>
 </form>

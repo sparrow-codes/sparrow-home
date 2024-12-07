@@ -23,7 +23,7 @@ export class WaterTankFormService {
   public constructor(private readonly _fb: NonNullableFormBuilder) {
     this._form = this._fb.group({
       [WaterTankFormName.SCHEDULE_WATER_HEATING]: this._fb.control(false),
-      [WaterTankFormName.LONG_BATH]: this._fb.control(false)
+      [WaterTankFormName.LONG_BATH]: this._fb.control(false),
     });
   }
 }

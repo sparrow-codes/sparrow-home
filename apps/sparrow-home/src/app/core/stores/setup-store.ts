@@ -1,9 +1,9 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { SpToastService } from '@sparrow-codes/sparrow-ui';
 import { catchError, first, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
 
 import { SetupApiService } from '~api/setup/setup-api.service';
@@ -18,7 +18,7 @@ interface SetupStoreState {
 export const SetupStore = signalStore(
   { providedIn: 'root' },
   withState<SetupStoreState>({ isConfigurationReady: null, configuration: null, modeDictionary: [] }),
-  withMethods((store, apiService = inject(SetupApiService), toastService = inject(SpToastService)) => ({
+  withMethods((store, apiService = inject(SetupApiService), snackBar = inject(MatSnackBar)) => ({
     verifyConfigurationReady: (): Observable<boolean> => {
       return apiService.isConfigurationReady().pipe(
         first(),
@@ -27,12 +27,11 @@ export const SetupStore = signalStore(
           if (error.status === HttpStatusCode.Unauthorized) {
             return of(false);
           }
-
           throw error;
         }),
         tapResponse({
           next: (value) => patchState(store, { isConfigurationReady: value }),
-          error: () => toastService.danger('Konfiguracja', 'Błąd pobierania konfiguracji!'),
+          error: () => snackBar.open('Konfiguracja - Błąd pobierania konfiguracji!', 'Zamknij'),
         })
       );
     },
@@ -50,7 +49,7 @@ export const SetupStore = signalStore(
               },
               modeDictionary: response.dictionaries.modeDictionary,
             }),
-          error: () => toastService.danger('Konfiguracja', 'Błąd pobierania konfiguracji!'),
+          error: () => snackBar.open('Konfiguracja - Błąd pobierania konfiguracji!', 'Zamknij'),
         }),
         map(() => void 0)
       );
@@ -62,13 +61,13 @@ export const SetupStore = signalStore(
             first(),
             tapResponse({
               next: () =>
-                toastService.success(
-                  'Konfiguracja',
-                  `Zmieniono tryb pracy na ${
+                snackBar.open(
+                  `Konfiguracja - Zmieniono tryb pracy na ${
                     store.modeDictionary().find((dictionary) => dictionary.value === mode)?.label ?? ''
-                  }`
+                  }`,
+                  'Zamknij'
                 ),
-              error: () => toastService.danger('Konfiguracja', 'Błąd zmiany konfiguracji!'),
+              error: () => snackBar.open('Konfiguracja - Błąd zmiany konfiguracji!', 'Zamknij'),
             })
           )
         )
@@ -87,8 +86,8 @@ export const SetupStore = signalStore(
             .pipe(
               first(),
               tapResponse({
-                next: () => toastService.success('Konfiguracja', 'Zapisano pomyślnie!'),
-                error: () => toastService.danger('Konfiguracja', 'Błąd zmiany konfiguracji!'),
+                next: () => snackBar.open('Konfiguracja - Zapisano pomyślnie!', 'Zamknij'),
+                error: () => snackBar.open('Konfiguracja - Błąd zmiany konfiguracji!', 'Zamknij'),
               })
             )
         )

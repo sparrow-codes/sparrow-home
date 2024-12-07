@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CardComponent, sparrowFadeIn } from '@sparrow-codes/sparrow-ui';
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 
 import { DataFacadeService } from '~core/services/data-facade.service';
 import { APP_TITLE } from '~core/tokens/app-title-token';
@@ -8,10 +8,9 @@ import { CreateUserFormComponent } from '~user/component/create-user-form/create
 
 @Component({
   standalone: true,
-  imports: [CommonModule, CardComponent, CreateUserFormComponent],
+  imports: [CommonModule, CreateUserFormComponent, MatCard, MatCardTitle, MatCardContent, MatCardHeader],
   templateUrl: './create-user-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [sparrowFadeIn],
 })
 export class CreateUserPageComponent {
   protected readonly dataService: DataFacadeService = inject(DataFacadeService);

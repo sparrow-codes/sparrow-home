@@ -1,30 +1,39 @@
 <form [formGroup]="formGroup" class="w-[450px] flex flex-col gap-2">
-  <sp-input type="text" name="first-name" [formControlName]="formName.FIRST_NAME" label="Imię:"></sp-input>
-  <sp-input
-    type="text"
-    name="first-name"
-    [formControlName]="formName.LAST_NAME"
-    label="Nazwisko (opcjonalnie):"
-  ></sp-input>
-  <sp-input type="text" name="first-name" [formControlName]="formName.EMAIL" label="Email:"></sp-input>
-  <sp-input type="password" name="first-name" [formControlName]="formName.PASSWORD" label="Hasło:"></sp-input>
-  <sp-input
-    type="password"
-    name="first-name"
-    [formControlName]="formName.REPEAT_PASSWORD"
-    label="Powtórz hasło:"
-  ></sp-input>
+  <mat-form-field>
+    <mat-label>Imię:</mat-label>
+    <input matInput type="text" [formControlName]="formName.FIRST_NAME">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Nazwisko (opcjonalnie):</mat-label>
+    <input matInput [formControlName]="formName.LAST_NAME">
+  </mat-form-field>
+
+  <mat-form-field >
+    <mat-label>Email:</mat-label>
+    <input matInput [formControlName]="formName.EMAIL">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Hasło:</mat-label>
+    <input matInput type="password" [formControlName]="formName.PASSWORD">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Powtórz hasło:</mat-label>
+    <input matInput type="password" [formControlName]="formName.REPEAT_PASSWORD">
+  </mat-form-field>
 
   <div class="min-h-[30px]">
     @if(showMismatchPasswordError()) {
-    <span class="text-error text-sm">Podane hasła nie są identyczne</span>
+      <span class="text-error text-sm">Podane hasła nie są identyczne</span>
     }
   </div>
 
-  <sp-button class="mt-6" [disabled]="formGroup.invalid" (click)="onSave()">
+  <button mat-raised-button color="primary" class="mt-6" [disabled]="formGroup.invalid" (click)="onSave()">
     <div class="flex justify-center gap-2 items-center">
       <span>Utwórz</span>
       <ng-icon name="heroUser"></ng-icon>
     </div>
-  </sp-button>
+  </button>
 </form>

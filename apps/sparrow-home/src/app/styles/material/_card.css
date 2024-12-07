@@ -1,0 +1,9 @@
+:root {
+  --mdc-outlined-card-container-color: white;
+  --mdc-outlined-card-container-elevation: 0;
+
+  mat-card-header {
+    border-bottom: 1px solid var(--sp-home-divider-color);
+    padding-bottom: 16px;
+  }
+}

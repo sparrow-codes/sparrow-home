@@ -11,10 +11,10 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
-import { LabelComponent, SwitchComponent } from '@sparrow-codes/sparrow-ui';
 
 import { ZoneStatus } from '~api/cloud/models/get-heat-pump-details-response';
 
@@ -24,7 +24,7 @@ import { HeatTankFormService } from './form-service/heat-tank-form.service';
 @Component({
   selector: 'app-heat-tank',
   standalone: true,
-  imports: [NgIcon, ReactiveFormsModule, LabelComponent, SwitchComponent],
+  imports: [NgIcon, ReactiveFormsModule, MatSlideToggle],
   templateUrl: './heat-tank.component.html',
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal }), HeatTankFormService],
   changeDetection: ChangeDetectionStrategy.OnPush,
