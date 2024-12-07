@@ -9,12 +9,14 @@ import {
   OutputEmitterRef,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroCheck, heroPencil, heroTrash } from '@ng-icons/heroicons/outline';
-import { ButtonComponent, InputComponent, sparrowFadeIn } from '@sparrow-codes/sparrow-ui';
 
 import { Configuration } from '~core/models/configuration';
-import { PageSubtitleComponent } from '~ui/components/page-subtitle/page-subtitle.component';
 
 import { ConfigurationFormService } from './form-service/configuration-form.service';
 import { ConfigurationFormName } from './form-service/enum/configuration-form-name';
@@ -23,11 +25,10 @@ import { ConfigurationForm } from './form-service/model/configuration-form';
 @Component({
   selector: 'app-configuration-form',
   standalone: true,
-  imports: [ButtonComponent, NgIcon, ReactiveFormsModule, InputComponent, PageSubtitleComponent],
+  imports: [NgIcon, ReactiveFormsModule, MatFormField, MatInput, MatButton, MatFormFieldModule, MatCardModule],
   templateUrl: './configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ConfigurationFormService, provideIcons({ heroTrash, heroPencil, heroCheck })],
-  animations: [sparrowFadeIn],
 })
 export class ConfigurationFormComponent implements OnInit {
   public readonly configuration: InputSignal<Configuration> = input.required();

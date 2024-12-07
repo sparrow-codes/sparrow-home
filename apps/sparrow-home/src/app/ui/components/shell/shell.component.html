@@ -18,16 +18,16 @@
           Temperatura w nocy: <span class="font-semibold">{{ lowestTemperatureAtNight() }} &#176;C</span>
         </div>
         }
-        <sp-button type="link" (click)="logout.emit()">
+        <button mat-button (click)="logout.emit()">
           <div class="flex gap-2 items-center">
             <span class="text-primary">WYLOGUJ</span>
             <ng-icon class="text-lg text-primary" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
           </div>
-        </sp-button>
+        </button>
       </div>
     </header>
 
-    <div class="p-4 w-full overflow-auto">
+    <div class="p-4 w-[calc(100%-2rem)] overflow-auto">
       <ng-content></ng-content>
     </div>
   </div>

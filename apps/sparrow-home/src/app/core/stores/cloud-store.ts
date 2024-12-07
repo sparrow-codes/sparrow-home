@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { SpToastService } from '@sparrow-codes/sparrow-ui';
 import { delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { CloudApiService } from '~api/cloud/cloud-api.service';
@@ -23,14 +23,14 @@ export const CloudStore = signalStore(
     (
       store,
       cloudApiService = inject(CloudApiService),
-      toastMessage = inject(SpToastService),
+      snackBar = inject(MatSnackBar),
       loaderService = inject(LoaderService)
     ) => {
       const _getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponse> = () =>
         cloudApiService.getHeatPumpDetails().pipe(
           tapResponse({
             next: (value) => patchState(store, { heatPump: { ...value } }),
-            error: () => toastMessage.danger('Błąd', 'Wystąpił błąd w połączeniu do cloud!'),
+            error: () => snackBar.open('Błąd: Wystąpił błąd w połączeniu do cloud!', 'Zamknij'),
           })
         );
 
@@ -39,7 +39,7 @@ export const CloudStore = signalStore(
           tapResponse({
             next: (response) =>
               patchState(store, { waterTankOptions: { isScheduledHeating: response.isScheduled } as WaterTankOptions }),
-            error: () => toastMessage.danger('Konfiguracja', 'Błąd pobierania szczegółów harmonogramu grzania wody'),
+            error: () => snackBar.open('Błąd pobierania szczegółów harmonogramu grzania wody', 'Zamknij'),
           })
         );
 
@@ -64,10 +64,9 @@ export const CloudStore = signalStore(
                 .pipe(
                   delay(10000),
                   switchMap(() => _getHeatPumpDetails()),
-                  finalize(() => loaderService.showLoader = false)
+                  finalize(() => (loaderService.showLoader = false))
                 )
-            ),
-            
+            )
           )
         ),
         setWaterHeatingStatus: rxMethod<boolean>(
@@ -76,8 +75,8 @@ export const CloudStore = signalStore(
             switchMap((isActive) =>
               cloudApiService.scheduleWaterHeating({ active: isActive }).pipe(
                 tapResponse({
-                  next: () => toastMessage.success('Konfiguracja', 'Pomyślnie zmieniono ustawienie grzania wody'),
-                  error: () => toastMessage.danger('Konfiguracja', 'Błąd podczas zmiany ustawień grzania wody!'),
+                  next: () => snackBar.open('Pomyślnie zmieniono ustawienie grzania wody', 'Zamknij'),
+                  error: () => snackBar.open('Błąd podczas zmiany ustawień grzania wody!', 'Zamknij'),
                 }),
                 switchMap(() => _getScheduledWaterHeatStatus()),
                 finalize(() => (loaderService.showLoader = false))
@@ -91,9 +90,8 @@ export const CloudStore = signalStore(
             switchMap((isOn) =>
               cloudApiService.setLongBath(isOn).pipe(
                 tapResponse({
-                  next: () => toastMessage.success('Grzanie wody', 'Włączono grzanie wody w trybie kąpieli'),
-                  error: () =>
-                    toastMessage.danger('Grzanie wody', 'Błąd podczas ustawiania grzania wody w tryb kąpieli!'),
+                  next: () => snackBar.open('Pomyślnie ustawiono dłuższą kąpiel', 'Zamknij'),
+                  error: () => snackBar.open('Błąd podczas ustawiania dłuższego grzania wody!', 'Zamknij'),
                 }),
                 finalize(() => (loaderService.showLoader = false))
               )
@@ -106,9 +104,8 @@ export const CloudStore = signalStore(
             switchMap((isOn) =>
               cloudApiService.setHeatOverNight(isOn).pipe(
                 tapResponse({
-                  next: () => toastMessage.success('Ogrzewanie', 'Włączono ogrzewanie w trybie nocnym'),
-                  error: () =>
-                    toastMessage.danger('Ogrzewanie', 'Błąd podczas ustawiania ogrzewania w trybie nocnym!'),
+                  next: () => snackBar.open('Pomyślnie ustawiono nocne grzanie', 'Zamknij'),
+                  error: () => snackBar.open('Błąd podczas ustawiania nocnego grzania!', 'Zamknij'),
                 }),
                 finalize(() => (loaderService.showLoader = false))
               )

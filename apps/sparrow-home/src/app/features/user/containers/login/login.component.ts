@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { CardComponent, sparrowFadeIn } from '@sparrow-codes/sparrow-ui';
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 
 import { DataFacadeService } from '~core/services/data-facade.service';
 import { APP_TITLE } from '~core/tokens/app-title-token';
@@ -8,9 +8,8 @@ import { LoginFormComponent } from '~user/component/login-form/login-form.compon
 
 @Component({
   standalone: true,
-  imports: [CommonModule, CardComponent, LoginFormComponent],
+  imports: [CommonModule, LoginFormComponent, MatCard, MatCardHeader, MatCardTitle, MatCardContent],
   templateUrl: './login.component.html',
-  animations: [sparrowFadeIn],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {

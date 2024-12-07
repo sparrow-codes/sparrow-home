@@ -1,9 +1,9 @@
 <div class="flex gap-2 mt-2 items-center mb-6">
   <span>Status:</span>
   @if (zone().operationStatus === 1) {
-  <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
+    <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
   } @else {
-  <ng-icon name="heroNoSymbol"></ng-icon>
+    <ng-icon name="heroNoSymbol"></ng-icon>
   }
 </div>
 
@@ -21,8 +21,7 @@
 
 <form [formGroup]="formGroup" class="mt-4 flex flex-col gap-2">
   <ng-icon class="text-2xl text-dark-blue" name="heroAdjustmentsHorizontal"></ng-icon>
-  <div class="flex gap-4">
-    <sp-switch [formControlName]="formName.HEAT_OVER_NIGHT"></sp-switch>
-    <sp-label>Ogrzewanie nocne</sp-label>
+  <div class="flex gap-4 items-center">
+    <mat-slide-toggle [formControlName]="formName.HEAT_OVER_NIGHT">Ogrzewanie nocne</mat-slide-toggle>
   </div>
 </form>

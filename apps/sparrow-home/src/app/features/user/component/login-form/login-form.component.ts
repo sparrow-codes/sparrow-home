@@ -16,9 +16,11 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroLockOpen } from '@ng-icons/heroicons/outline';
-import { ButtonComponent, InputComponent } from '@sparrow-codes/sparrow-ui';
 
 import { LoginRequest } from '~api/user/models/login-request';
 import { LoginFormName } from '~user/component/login-form/form-service/enum/loing-form-name';
@@ -28,7 +30,7 @@ import { LoginForm } from '~user/component/login-form/form-service/model/login-f
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, ButtonComponent, NgIcon],
+  imports: [CommonModule, ReactiveFormsModule, NgIcon, MatButtonModule, MatInputModule, MatFormFieldModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,13 +52,17 @@ export class LoginFormComponent implements OnInit {
     effect(
       () => {
         this.showInvalidLoginError.set(this.hasError());
+
+        if (this.showInvalidLoginError()) {
+          this.formGroup.get('password')?.patchValue('' as never, { emitEvent: false });
+        }
       },
       { allowSignalWrites: true, injector: this._injector }
     );
 
-    this.formGroup.valueChanges
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe(() => this.showInvalidLoginError.set(false));
+    this.formGroup.valueChanges.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
+      this.showInvalidLoginError.set(false);
+    });
   }
 
   protected onLoginClick(): void {

@@ -1,46 +1,44 @@
 @if(waterTank(); as waterTank) {
 
-<div class="flex gap-2 mt-2 items-center mb-6">
-  <span>Status:</span>
-  @if (waterTank.operationStatus === 1) {
-  <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
-  } @else {
-  <ng-icon name="heroNoSymbol"></ng-icon>
-  }
-</div>
-
-<div class="flex flex-col gap-1 w-full">
-  <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-    <div class="w-full">Wybrana temeratura</div>
-    <div class="w-full text-right md:text-left">{{ waterTank.heatSet }} &#176;C</div>
+  <div class="flex gap-2 mt-2 items-center mb-6">
+    <span>Status:</span>
+    @if (waterTank.operationStatus === 1) {
+      <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
+    } @else {
+      <ng-icon name="heroNoSymbol"></ng-icon>
+    }
   </div>
 
-  <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-    <div class="w-full">Bierząca temeratura na wyjściu z kotła</div>
-    <div class="w-full text-right md:text-left">{{ waterTank.temparatureNow }} &#176;C</div>
+  <div class="flex flex-col gap-1 w-full">
+    <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
+      <div class="w-full">Wybrana temperatura</div>
+      <div class="w-full text-right md:text-left">{{ waterTank.heatSet }} &#176;C</div>
+    </div>
+
+    <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
+      <div class="w-full">Bieżąca temperatura na wyjściu z kotła</div>
+      <div class="w-full text-right md:text-left">{{ waterTank.temparatureNow }} &#176;C</div>
+    </div>
+
+    <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
+      <div class="w-full">Maksymalna temperatura grzania wody</div>
+      <div class="w-full text-right md:text-left">{{ waterTank.heatMax }} &#176;C</div>
+    </div>
+
+    <div class="w-full flex gap-4 items-center">
+      <div class="w-full">Minimalna temperatura grzania wody</div>
+      <div class="w-full text-right md:text-left">{{ waterTank.heatMin }} &#176;C</div>
+    </div>
   </div>
 
-  <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-    <div class="w-full">Maksymalna temeratura grzania wody</div>
-    <div class="w-full text-right md:text-left">{{ waterTank.heatMax }} &#176;C</div>
-  </div>
+  <form [formGroup]="formGroup" class="mt-4 flex flex-col gap-2">
+    <ng-icon class="text-2xl text-dark-blue" name="heroAdjustmentsHorizontal"></ng-icon>
+    <div class="flex gap-4 items-center">
+      <mat-slide-toggle [formControlName]="formName.SCHEDULE_WATER_HEATING">Codzienne grzanie wody w okresie pracy paneli</mat-slide-toggle>
+    </div>
 
-  <div class="w-full flex gap-4 items-center">
-    <div class="w-full">Minimalna temeratura grzania wody</div>
-    <div class="w-full text-right md:text-left">{{ waterTank.heatMin }} &#176;C</div>
-  </div>
-</div>
-
-<form [formGroup]="formGroup" class="mt-4 flex flex-col gap-2">
-  <ng-icon class="text-2xl text-dark-blue" name="heroAdjustmentsHorizontal"></ng-icon>
-  <div class="flex gap-4">
-    <sp-switch [formControlName]="formName.SCHEDULE_WATER_HEATING"></sp-switch>
-    <sp-label>Codzienne grzanie wody w okresie pracy paneli</sp-label>
-  </div>
-
-  <div class="flex gap-4">
-    <sp-switch [formControlName]="formName.LONG_BATH"></sp-switch>
-    <sp-label>Dodatkowa Kąpiel</sp-label>
-  </div>
-</form>
+    <div class="flex gap-4 items-center">
+      <mat-slide-toggle [formControlName]="formName.LONG_BATH">Dodatkowa Kąpiel</mat-slide-toggle>
+    </div>
+  </form>
 }

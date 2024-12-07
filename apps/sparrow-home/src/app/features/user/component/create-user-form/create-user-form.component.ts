@@ -12,9 +12,11 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroUser } from '@ng-icons/heroicons/outline';
-import { ButtonComponent, InputComponent } from '@sparrow-codes/sparrow-ui';
 
 import { CreateUserRequest } from '~api/user/models/create-user-request';
 import { CreateUserFormName } from '~user/component/create-user-form/form-service/enum/create-user-form.name';
@@ -25,7 +27,7 @@ import { CreateUserFormService } from './form-service/create-user-form.service';
 @Component({
   selector: 'app-create-user-form',
   standalone: true,
-  imports: [CommonModule, InputComponent, ReactiveFormsModule, ButtonComponent, NgIcon],
+  imports: [CommonModule, ReactiveFormsModule, NgIcon, MatFormField, MatInput, MatButton, MatFormFieldModule],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

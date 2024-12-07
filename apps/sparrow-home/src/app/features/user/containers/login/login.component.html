@@ -1,10 +1,14 @@
-<div @sparrowFadeIn class="w-full h-full flex items-center justify-center">
-  <sp-card>
-    <h4 class="text-xl text-primary text-center mb-2">{{ appTitle }}</h4>
-    <span class="text-md">Logowanie</span>
-    <app-login-form
-      [hasError]="dataService.isLoginError()"
-      (onLogin)="dataService.login($event)"
-    ></app-login-form>
-  </sp-card>
+<div class="w-full h-full flex items-center justify-center">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ appTitle }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <span class="text-md mt-2 mb-2 block">Logowanie</span>
+      <app-login-form
+        [hasError]="dataService.isLoginError()"
+        (onLogin)="dataService.login($event)"
+      ></app-login-form>
+    </mat-card-content>
+  </mat-card>
 </div>

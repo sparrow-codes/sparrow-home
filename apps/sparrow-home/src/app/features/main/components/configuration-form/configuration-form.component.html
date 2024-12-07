@@ -1,31 +1,41 @@
-<div class="flex items-center justify-between min-h-[50px] mb-2">
-  <app-page-subtitle>Ustawienia:</app-page-subtitle>
-  <div class="flex items-center gap-2">
-    @if(formGroup?.disabled) {
-    <sp-button @sparrowFadeIn type="link" (click)="onEdit()">
-      <ng-icon class="text-lg" name="heroPencil"></ng-icon>
-    </sp-button>
-    } @else {
-    <sp-button @sparrowFadeIn type="primary" (click)="onSubmit()">
-      <ng-icon class="text-lg" name="heroCheck"></ng-icon>
-    </sp-button>
+<mat-card>
+      <mat-card-header class="flex items-center justify-between">
+        <mat-card-title>Ustawienia:</mat-card-title>
+        <div class="flex items-center">
+          @if(formGroup?.disabled) {
+            <button mat-button (click)="onEdit()">
+              <ng-icon class="text-lg" name="heroPencil"></ng-icon>
+            </button>
+          } @else {
+            <button mat-button color="primary" (click)="onSubmit()">
+              <ng-icon class="text-lg" name="heroCheck"></ng-icon>
+            </button>
 
-    <sp-button @sparrowFadeIn type="secondary" (click)="onCancel()">
-      <ng-icon class="text-lg" name="heroTrash"></ng-icon>
-    </sp-button>
+            <button mat-button color="accent" (click)="onCancel()">
+              <ng-icon class="text-lg" name="heroTrash"></ng-icon>
+            </button>
+          }
+        </div>
+  </mat-card-header>
+  <mat-card-content class="mt-2">
+    @if(formGroup) {
+      <form [formGroup]="formGroup" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
+        <mat-form-field>
+          <mat-label>Latitude:</mat-label>
+          <input matInput type="number" [formControlName]="formName.LAT">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Longitude:</mat-label>
+          <input matInput type="number" [formControlName]="formName.LNG">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Temp. graniczna dla ogrzewania w nocy:</mat-label>
+          <input matInput type="number" [formControlName]="formName.MARGIN_TEMPERATURE_OVER_NIGHT">
+        </mat-form-field>
+      </form>
     }
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
 
-@if(formGroup) {
-<form [formGroup]="formGroup" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
-  <sp-input type="number" label="Latitude:" [name]="'latitude'" [formControlName]="formName.LAT"></sp-input>
-  <sp-input type="number" label="Longitude:" [name]="'longitude'" [formControlName]="formName.LNG"></sp-input>
-  <sp-input
-    type="number"
-    label="Temp. graniczna dla ogrzewania w nocy:"
-    [name]="'nightTemperature'"
-    [formControlName]="formName.MARGIN_TEMPERATURE_OVER_NIGHT"
-  ></sp-input>
-</form>
-}

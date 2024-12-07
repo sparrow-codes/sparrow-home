@@ -7,12 +7,10 @@ module.exports = {
   theme: {
     colors: {
       primary: 'var(--sp-primary-color)',
-      error: 'var(--sp-error-color)',
       white: '#ffffff',
       success: '#2CA42C',
       'dark-blue': 'var(--app-dark-blue)',
       'light-gray': 'var(--app-light-gray)',
-      'dark-gray': 'var(--sp-primary-font-color)',
       'light-blue': 'var(--app-light-blue)',
     },
     extend: {},
