@@ -2,6 +2,8 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TuyaModule } from '@sparrow-server/tuya';
+
 import { AuthModule } from '@sparrow-server/auth';
 import { CloudModule } from '@sparrow-server/cloud';
 import { ApiModule } from '@sparrow-server/external-api';
@@ -34,6 +36,7 @@ import { UserModule } from '@sparrow-server/user';
     SetupModule,
     ApiModule,
     InitModule,
+    TuyaModule,
   ],
 })
 export class AppModule {}
