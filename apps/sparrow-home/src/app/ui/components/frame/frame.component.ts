@@ -4,10 +4,9 @@ import { RouterOutlet } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 import { heroCloud, heroComputerDesktop } from '@ng-icons/heroicons/outline';
 
-import { RoutePath } from '~core/enum/route-path';
-import { DataFacadeService } from '~core/services/data-facade.service';
-import { APP_TITLE } from '~core/tokens/app-title-token';
-
+import { RoutePath } from '../../../core/enum/route-path';
+import { DataFacadeService } from '../../../core/services/data-facade.service';
+import { APP_TITLE } from '../../../core/tokens/app-title-token';
 import { ShellComponent } from '../shell/shell.component';
 
 @Component({

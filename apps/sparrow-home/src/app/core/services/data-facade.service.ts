@@ -1,14 +1,11 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
+import { CreateUserRequest, GetHeatPumpDetailsResponse, LoginRequest } from '@sparrow-home/api';
 import { Observable } from 'rxjs';
 
-import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
-import { CreateUserRequest } from '~api/user/models/create-user-request';
-import { LoginRequest } from '~api/user/models/login-request';
-import { AppConfig } from '~core/models/app-config';
-import { Configuration } from '~core/models/configuration';
-import { WaterTankOptions } from '~core/models/water-tank-options';
-import { CloudStore } from '~core/stores/cloud-store';
-
+import { AppConfig } from '../models/app-config';
+import { Configuration } from '../models/configuration';
+import { WaterTankOptions } from '../models/water-tank-options';
+import { CloudStore } from '../stores/cloud-store';
 import { RootStore } from '../stores/root-store';
 import { SetupStore } from '../stores/setup-store';
 import { UserStore } from '../stores/user-store';

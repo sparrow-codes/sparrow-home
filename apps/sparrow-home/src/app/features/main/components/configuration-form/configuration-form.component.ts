@@ -7,8 +7,7 @@ import { MatInput } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroCheck, heroPencil, heroTrash } from '@ng-icons/heroicons/outline';
 
-import { Configuration } from '~core/models/configuration';
-
+import { Configuration } from '../../../../core/models/configuration';
 import { ConfigurationFormService } from './form-service/configuration-form.service';
 import { ConfigurationFormName } from './form-service/enum/configuration-form-name';
 import { ConfigurationForm } from './form-service/model/configuration-form';

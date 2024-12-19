@@ -4,10 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { Configuration } from '~core/models/configuration';
-import { DataFacadeService } from '~core/services/data-facade.service';
-import { PageTitleComponent } from '~ui/components/page-title/page-title.component';
-
+import { Configuration } from '../../../../core/models/configuration';
+import { DataFacadeService } from '../../../../core/services/data-facade.service';
+import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 import { ConfigurationFormComponent } from '../../components/configuration-form/configuration-form.component';
 
 @Component({

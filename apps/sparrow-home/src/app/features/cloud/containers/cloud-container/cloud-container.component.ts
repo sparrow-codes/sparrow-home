@@ -14,12 +14,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
+import { GetHeatPumpDetailsResponse } from '@sparrow-home/api';
 
-import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
-import { WaterTankOptions } from '~core/models/water-tank-options';
-import { DataFacadeService } from '~core/services/data-facade.service';
-import { PageTitleComponent } from '~ui/components/page-title/page-title.component';
-
+import { WaterTankOptions } from '../../../../core/models/water-tank-options';
+import { DataFacadeService } from '../../../../core/services/data-facade.service';
+import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
 import { WaterTankComponent } from '../../components/water-tank/water-tank.component';
 import { CloudFormService } from './form-service/cloud-form.service';

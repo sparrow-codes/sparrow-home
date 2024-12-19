@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shared-models/*": ["./apps/shared-models/*"]
+      "@sparrow-home/api": ["libs/fe/api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

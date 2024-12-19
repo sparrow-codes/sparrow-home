@@ -7,13 +7,12 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 
-import { initializeApp } from '~core/initializer/config.initializer';
-import { apiUrlInterceptor } from '~core/interceptors/api-url.interceptor';
-import { authInterceptor } from '~core/interceptors/auth.interceptor';
-import { DataFacadeService } from '~core/services/data-facade.service';
-import { APP_TITLE } from '~core/tokens/app-title-token';
-
 import { appRoutes } from './app.routes';
+import { initializeApp } from './core/initializer/config.initializer';
+import { apiUrlInterceptor } from './core/interceptors/api-url.interceptor';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { DataFacadeService } from './core/services/data-facade.service';
+import { APP_TITLE } from './core/tokens/app-title-token';
 
 export const appConfig: ApplicationConfig = {
   providers: [

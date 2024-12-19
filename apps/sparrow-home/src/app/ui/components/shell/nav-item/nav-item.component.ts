@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, InputSignal } from '@angular
 import { RouterLink } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
 
-import { NavigationItem } from '~ui/models/navigation-item';
+import { NavigationItem } from '../../../models/navigation-item';
 
 @Component({
   selector: 'app-nav-item',

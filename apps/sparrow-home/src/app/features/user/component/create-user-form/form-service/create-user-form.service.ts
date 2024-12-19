@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-
-import { CreateUserRequest } from '~api/user/models/create-user-request';
+import { CreateUserRequest } from '@sparrow-home/api';
 
 import { CreateUserFormName } from './enum/create-user-form.name';
 import { CreateNewUserForm } from './model/create-new-user-form';

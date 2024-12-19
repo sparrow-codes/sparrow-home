@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 
-import { DataFacadeService } from '~core/services/data-facade.service';
+import { DataFacadeService } from '../services/data-facade.service';
 
 export const apiUrlInterceptor: HttpInterceptorFn = (req, next) => {
   const dataService: DataFacadeService = inject(DataFacadeService);

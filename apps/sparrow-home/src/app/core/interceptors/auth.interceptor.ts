@@ -1,11 +1,11 @@
 import { HttpErrorResponse, HttpEvent, HttpInterceptorFn, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { SetupUrl } from '@sparrow-home/api';
 import { catchError, Observable } from 'rxjs';
 
-import { SetupUrl } from '~api/setup/setup-api.service';
-import { RoutePath } from '~core/enum/route-path';
-import { DataFacadeService } from '~core/services/data-facade.service';
+import { RoutePath } from '../enum/route-path';
+import { DataFacadeService } from '../services/data-facade.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEvent<unknown>> => {
   const dataService: DataFacadeService = inject(DataFacadeService);

@@ -6,10 +6,9 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
+import { TankStatus } from '@sparrow-home/api';
 
-import { TankStatus } from '~api/cloud/models/get-heat-pump-details-response';
-import { WaterTankOptions } from '~core/models/water-tank-options';
-
+import { WaterTankOptions } from '../../../../core/models/water-tank-options';
 import { WaterTankFormName } from './form-service/enum/water-tank-form-name';
 import { WaterTankForm } from './form-service/model/water-tank-form';
 import { WaterTankFormService } from './form-service/water-tank-form.service';
