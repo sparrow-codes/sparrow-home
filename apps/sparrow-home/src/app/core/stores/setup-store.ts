@@ -11,13 +11,12 @@ import { Configuration } from '~core/models/configuration';
 
 interface SetupStoreState {
   isConfigurationReady: boolean | null;
-  modeDictionary: { value: number; label: string }[];
   configuration: Configuration | null;
 }
 
 export const SetupStore = signalStore(
   { providedIn: 'root' },
-  withState<SetupStoreState>({ isConfigurationReady: null, configuration: null, modeDictionary: [] }),
+  withState<SetupStoreState>({ isConfigurationReady: null, configuration: null }),
   withMethods((store, apiService = inject(SetupApiService), snackBar = inject(MatSnackBar)) => ({
     verifyConfigurationReady: (): Observable<boolean> => {
       return apiService.isConfigurationReady().pipe(
@@ -42,37 +41,15 @@ export const SetupStore = signalStore(
           next: (response) =>
             patchState(store, {
               configuration: {
-                mode: response.currentMode,
                 lat: response.lat,
                 lng: response.lng,
-                marginTemperatureOverNight: response.marginTemperatureOverNight,
               },
-              modeDictionary: response.dictionaries.modeDictionary,
             }),
           error: () => snackBar.open('Konfiguracja - Błąd pobierania konfiguracji!', 'Zamknij'),
         }),
         map(() => void 0)
       );
     },
-    setMode: rxMethod<number>(
-      pipe(
-        switchMap((mode) =>
-          apiService.setMode(mode).pipe(
-            first(),
-            tapResponse({
-              next: () =>
-                snackBar.open(
-                  `Konfiguracja - Zmieniono tryb pracy na ${
-                    store.modeDictionary().find((dictionary) => dictionary.value === mode)?.label ?? ''
-                  }`,
-                  'Zamknij'
-                ),
-              error: () => snackBar.open('Konfiguracja - Błąd zmiany konfiguracji!', 'Zamknij'),
-            })
-          )
-        )
-      )
-    ),
     setConfiguration: rxMethod<Configuration>(
       pipe(
         tap((configuration) => patchState(store, { configuration })),
@@ -81,7 +58,6 @@ export const SetupStore = signalStore(
             .changeConfiguration({
               lng: configuration.lng,
               lat: configuration.lat,
-              marginTemperatureOverNight: configuration.marginTemperatureOverNight,
             })
             .pipe(
               first(),

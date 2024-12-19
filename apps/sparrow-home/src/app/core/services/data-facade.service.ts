@@ -38,10 +38,6 @@ export class DataFacadeService {
     return this._setupStore.configuration;
   }
 
-  public get modeDictionary(): Signal<{ value: number; label: string }[]> {
-    return this._setupStore.modeDictionary;
-  }
-
   public get isUserLoggedIn(): Signal<boolean> {
     return computed(() => !!this._userStore.token());
   }
@@ -70,10 +66,6 @@ export class DataFacadeService {
     this._cloudStore.changeOperationsStatus({ isWaterOn, isHeatOn });
   }
 
-  public setMode(mode: number): void {
-    this._setupStore.setMode(mode);
-  }
-
   public isConfigurationReady(): Observable<boolean> {
     return this._setupStore.verifyConfigurationReady();
   }
@@ -98,23 +90,11 @@ export class DataFacadeService {
     this._userStore.logout();
   }
 
-  public fetchLowestTemperature(): void {
-    this._rootStore.fetchLowestTemperature();
-  }
-
   public saveAppConfig(appConfig: AppConfig): void {
     this._rootStore.saveAppConfig(appConfig);
   }
 
   public changeScheduledWaterHeatingStatus(status: boolean): void {
     this._cloudStore.setWaterHeatingStatus(status);
-  }
-
-  public setLongerBathMode(isOn: boolean): void {
-    this._cloudStore.setLongerBath(isOn);
-  }
-
-  public setHeatOverNight(isOn: boolean): void {
-    this._cloudStore.setHeatOverNight(isOn);
   }
 }

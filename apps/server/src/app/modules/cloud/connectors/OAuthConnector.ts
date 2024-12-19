@@ -7,10 +7,6 @@ export class OAuthClient {
   public clientId = 'vf2i6hW5hA2BB2BQGfTHXM4YFyW4I06K';
   public accessToken = '';
 
-  public removeToken(): void {
-    this.accessToken = '';
-  }
-
   public async ensureAuthenticated(username: string, password: string): Promise<void> {
     if (this.accessToken) {
       return;

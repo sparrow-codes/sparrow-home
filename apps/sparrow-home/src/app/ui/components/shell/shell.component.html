@@ -13,11 +13,6 @@
   <div class="flex flex-col w-full">
     <header class="flex items-center px-4 justify-end bg-white h-[60px] shadow-sm">
       <div class="flex gap-2 items-center">
-        @if(lowestTemperatureAtNight()) {
-        <div class="border-r border-light-gray pr-5 text-dark-gray">
-          Temperatura w nocy: <span class="font-semibold">{{ lowestTemperatureAtNight() }} &#176;C</span>
-        </div>
-        }
         <button mat-button (click)="logout.emit()">
           <div class="flex gap-2 items-center">
             <span class="text-primary">WYLOGUJ</span>

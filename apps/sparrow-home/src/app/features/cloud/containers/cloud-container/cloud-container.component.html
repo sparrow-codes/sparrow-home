@@ -28,7 +28,6 @@
               [waterTank]="tankStatus"
               [waterTankOptions]="waterTankOptions()"
               (waterTankOptionsChange)="handleWaterTankOptionsChange($event)"
-              (longBathChange)="handleLongerBathChange($event)"
             ></app-water-tank>
           </mat-card-content>
         }
@@ -40,7 +39,7 @@
         <mat-slide-toggle [formControlName]="formName.IS_HEAT_ON"></mat-slide-toggle>
       </mat-card-header>
       <mat-card-content>
-        <app-heat-tank [zone]="zoneStatus" (heatOverNightChange)="handleHeatOverNight($event)"></app-heat-tank>
+        <app-heat-tank [zone]="zoneStatus"></app-heat-tank>
       </mat-card-content>
     </mat-card>
   }

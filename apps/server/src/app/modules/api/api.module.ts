@@ -4,8 +4,8 @@ import { Module } from '@nestjs/common';
 import { WeatherApiService } from './weather/weather-api.service';
 
 @Module({
-    imports: [HttpModule],
-    providers: [WeatherApiService],
-    exports: [WeatherApiService]
+  imports: [HttpModule],
+  providers: [WeatherApiService],
+  exports: [WeatherApiService],
 })
 export class ApiModule {}

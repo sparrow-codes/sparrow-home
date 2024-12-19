@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-  output,
-  OutputEmitterRef,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -26,11 +16,9 @@ import { CreateUserFormService } from './form-service/create-user-form.service';
 
 @Component({
   selector: 'app-create-user-form',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgIcon, MatFormField, MatInput, MatButton, MatFormFieldModule],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [CreateUserFormService, provideIcons({ heroUser })],
 })
 export class CreateUserFormComponent implements OnInit {

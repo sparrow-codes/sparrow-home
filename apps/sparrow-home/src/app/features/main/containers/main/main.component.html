@@ -1,22 +1,6 @@
 <app-page-title>Panel Główny</app-page-title>
 
 <section class="w-full flex flex-col gap-6">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Sterowanie Główne:</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field class="mt-6">
-        <mat-label>Tryb pracy</mat-label>
-        <mat-select [formControl]="modeControl">
-          <mat-option *ngFor="let option of modeOptions()" [value]="option.value">
-            {{ option.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-card-content>
-  </mat-card>
-
   @if(configuration(); as config) {
       <app-configuration-form [configuration]="config" (save)="saveConfiguration($event)"></app-configuration-form>
   }

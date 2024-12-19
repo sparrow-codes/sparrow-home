@@ -17,7 +17,7 @@ export class WeatherApiService {
     startDate: Date,
     endDate: Date
   ): Observable<GetSunriseSunsetResponse> {
-    return this.getWeather(lat, lng, startDate, endDate).pipe(
+    return this._getWeather(lat, lng, startDate, endDate).pipe(
       map((response) => ({
         sunrise: new Date(response.daily.sunrise[1]),
         sunset: new Date(response.daily.sunset[0]),
@@ -25,7 +25,7 @@ export class WeatherApiService {
     );
   }
 
-  public getWeather(lat: number, lng: number, startDate: Date, endDate: Date): Observable<GetWeatherResponse> {
+  private _getWeather(lat: number, lng: number, startDate: Date, endDate: Date): Observable<GetWeatherResponse> {
     return this.http
       .get<GetWeatherResponse>(this.configService.get(ConfigKey.WEATHER_API_URL), {
         params: {

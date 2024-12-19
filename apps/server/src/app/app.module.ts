@@ -8,18 +8,14 @@ import { AppInitService } from './init/app-init.service';
 import { ApiModule } from './modules/api/api.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CloudModule } from './modules/cloud/cloud.module';
-import { DeviceModule } from './modules/device/device.module';
 import { SetupModule } from './modules/setup/setup.module';
-import { TaskModule } from './modules/task/task.module';
 import { UserModule } from './modules/user/user.module';
-import { WeatherModule } from './modules/waether/weather.module';
 import { CustomScheduleRegistryService } from './registry/custom-schedule-registry.service';
 
 @Module({
   imports: [
     CloudModule,
     HttpModule,
-    DeviceModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -38,9 +34,7 @@ import { CustomScheduleRegistryService } from './registry/custom-schedule-regist
     UserModule,
     AuthModule,
     SetupModule,
-    WeatherModule,
-    TaskModule,
-    ApiModule
+    ApiModule,
   ],
   providers: [AppInitService, CustomScheduleRegistryService],
 })

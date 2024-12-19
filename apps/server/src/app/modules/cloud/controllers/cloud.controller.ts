@@ -2,7 +2,6 @@ import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { map, Observable } from 'rxjs';
 
-import { getUserId } from '../../../utils/request-util';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { CloudConnectionService } from '../services/cloud-connection/cloud-connection.service';
 import { HeatPumpDetailsResponseMapper } from './mapper/heat-pump-details-response.mapper';
@@ -17,7 +16,7 @@ export class CloudController {
   public constructor(private readonly _cloudService: CloudConnectionService) {}
 
   @Get('/pump-heat-details')
-  public getInsideTemperature(): Observable<GetHeatPumpDetailsResponse> {
+  public getHeatPumpDetails(): Observable<GetHeatPumpDetailsResponse> {
     return this._cloudService.getHeatPumpDetails().pipe(map((heatPump) => HeatPumpDetailsResponseMapper.map(heatPump)));
   }
 
@@ -28,22 +27,11 @@ export class CloudController {
 
   @Put('/scheduled-water-heating')
   public scheduledWaterHeating(@Req() request: Request<ScheduledWaterHeatingRequest>): Promise<void> {
-    const userId: number = getUserId(request);
-    return this._cloudService.scheduledWaterHeating(request.body.active, userId);
+    return this._cloudService.scheduledWaterHeating(request.body.active);
   }
 
   @Get('/scheduled-water-heating-status')
   public getScheduledWaterHeatingStatus(): GetScheduledWaterHeatingStatusResponse {
     return { isScheduled: this._cloudService.isScheduledWaterHeating() };
-  }
-
-  @Put('/long-bath')
-  public setLongerBath(@Body() request: {isOn: boolean}): Promise<void> {
-    return this._cloudService.setLongerBath(request.isOn);
-  }
-
-  @Put('/heat-over-night')
-  public setHeatOverNight(@Body() request: {isOn: boolean}): Promise<void> {
-    return this._cloudService.heatOverNight(request.isOn);
   }
 }

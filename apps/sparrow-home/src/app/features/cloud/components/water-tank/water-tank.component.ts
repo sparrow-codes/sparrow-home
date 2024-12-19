@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  InputSignal,
-  OnInit,
-  output,
-  OutputEmitterRef,
-} from '@angular/core';
+import { Component, DestroyRef, inject, input, InputSignal, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
@@ -26,16 +16,13 @@ import { WaterTankFormService } from './form-service/water-tank-form.service';
 
 @Component({
   selector: 'app-water-tank',
-  standalone: true,
   imports: [CommonModule, NgIconComponent, ReactiveFormsModule, MatSlideToggle],
   templateUrl: './water-tank.component.html',
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal }), WaterTankFormService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WaterTankComponent implements OnInit {
   public readonly waterTank: InputSignal<TankStatus> = input.required();
   public readonly waterTankOptionsChange: OutputEmitterRef<WaterTankOptions> = output();
-  public readonly longBathChange: OutputEmitterRef<boolean> = output();
   public readonly waterTankOptions: InputSignal<WaterTankOptions | null> = input.required();
 
   protected readonly formService: WaterTankFormService = inject(WaterTankFormService);
@@ -50,18 +37,11 @@ export class WaterTankComponent implements OnInit {
     });
 
     this._handleScheduleWaterHeatingChange();
-    this._handleLongBathChange();
   }
 
   private _handleScheduleWaterHeatingChange(): void {
     this.formService.scheduleWaterHeatingControl.valueChanges
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((value) => this.waterTankOptionsChange.emit({ isScheduledHeating: value }));
-  }
-
-  private _handleLongBathChange(): void {
-    this.formService.longBathControl.valueChanges
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((value) => this.longBathChange.emit(value));
   }
 }

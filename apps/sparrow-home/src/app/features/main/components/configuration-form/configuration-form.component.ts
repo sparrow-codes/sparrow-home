@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  InputSignal,
-  OnInit,
-  output,
-  OutputEmitterRef,
-} from '@angular/core';
+import { Component, inject, input, InputSignal, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -24,10 +15,8 @@ import { ConfigurationForm } from './form-service/model/configuration-form';
 
 @Component({
   selector: 'app-configuration-form',
-  standalone: true,
   imports: [NgIcon, ReactiveFormsModule, MatFormField, MatInput, MatButton, MatFormFieldModule, MatCardModule],
   templateUrl: './configuration-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ConfigurationFormService, provideIcons({ heroTrash, heroPencil, heroCheck })],
 })
 export class ConfigurationFormComponent implements OnInit {
