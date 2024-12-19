@@ -3,8 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
-
-import { ZoneStatus } from '~api/cloud/models/get-heat-pump-details-response';
+import { ZoneStatus } from '@sparrow-home/api';
 
 @Component({
   selector: 'app-heat-tank',

@@ -4,14 +4,11 @@ import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { CreateUserRequest, LoginRequest, UserApiService } from '@sparrow-home/api';
 import { first, pipe, switchMap, tap } from 'rxjs';
 
-import { CreateUserRequest } from '~api/user/models/create-user-request';
-import { LoginRequest } from '~api/user/models/login-request';
-import { UserApiService } from '~api/user/user-api.service';
-import { RoutePath } from '~core/enum/route-path';
-import { LoaderService } from '~ui/services/loader.service';
-
+import { LoaderService } from '../../ui/services/loader.service';
+import { RoutePath } from '../enum/route-path';
 import { User } from '../models/user';
 
 type UserState = {

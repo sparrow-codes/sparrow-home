@@ -2,8 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 
-import { RoutePath } from '~core/enum/route-path';
-
+import { RoutePath } from '../enum/route-path';
 import { DataFacadeService } from '../services/data-facade.service';
 
 export const configurationNotReadyGuard: CanActivateFn = (): Observable<boolean | UrlTree> | boolean => {

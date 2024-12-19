@@ -1,6 +1,6 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-import { AppConfig } from '~core/models/app-config';
+import { AppConfig } from '../models/app-config';
 
 type RootState = {
   lowestTemperatureAtNight: number | undefined;

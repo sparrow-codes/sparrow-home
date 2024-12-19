@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { LoginRequest } from '@sparrow-home/api';
 
-import { LoginRequest } from '~api/user/models/login-request';
-import { LoginFormName } from '~user/component/login-form/form-service/enum/loing-form-name';
-import { LoginForm } from '~user/component/login-form/form-service/model/login-form';
+import { LoginFormName } from './enum/loing-form-name';
+import { LoginForm } from './model/login-form';
 
 @Injectable({
   providedIn: 'root',

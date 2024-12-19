@@ -7,8 +7,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowLeftEndOnRectangleSolid } from '@ng-icons/heroicons/solid';
 import { filter, map } from 'rxjs';
 
-import { NavigationItem } from '~ui/models/navigation-item';
-
+import { NavigationItem } from '../../models/navigation-item';
 import { NavItemComponent } from './nav-item/nav-item.component';
 
 @Component({

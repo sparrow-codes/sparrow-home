@@ -2,7 +2,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { effect, Injectable, signal, WritableSignal } from '@angular/core';
 
-import { SpinnerComponent } from '~ui/components/spinner/spinner.component';
+import { SpinnerComponent } from '../components/spinner/spinner.component';
 
 @Injectable({
   providedIn: 'root',

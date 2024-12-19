@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { GetCurrentSetupResponse } from '~api/setup/models/get-current-setup.response';
-import { SetConfigurationRequest } from '~api/setup/models/set-configuration-request';
+import { GetCurrentSetupResponse } from './models/get-current-setup.response';
+import { SetConfigurationRequest } from './models/set-configuration-request';
 
 export enum SetupUrl {
   READY = 'setup/ready',

@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ChangeHeatPumpOperationRequest } from '~api/cloud/models/change-heat-pump-operation.request';
-import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
-import { GetScheduleWaterHeatingResponse } from '~api/cloud/models/get-schedule-water-heating.response';
-import { ScheduleWaterHeatingRequest } from '~api/cloud/models/schedule-water-heating.request';
+import { ChangeHeatPumpOperationRequest } from './models/change-heat-pump-operation.request';
+import { GetHeatPumpDetailsResponse } from './models/get-heat-pump-details-response';
+import { GetScheduleWaterHeatingResponse } from './models/get-schedule-water-heating.response';
+import { ScheduleWaterHeatingRequest } from './models/schedule-water-heating.request';
 
 enum CLOUD_URLS {
   PUMP_HEAT_DETAILS = 'panasonic-cloud/pump-heat-details',

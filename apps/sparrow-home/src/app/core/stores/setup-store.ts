@@ -4,10 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { SetupApiService } from '@sparrow-home/api';
 import { catchError, first, map, Observable, of, pipe, switchMap, tap } from 'rxjs';
 
-import { SetupApiService } from '~api/setup/setup-api.service';
-import { Configuration } from '~core/models/configuration';
+import { Configuration } from '../models/configuration';
 
 interface SetupStoreState {
   isConfigurationReady: boolean | null;

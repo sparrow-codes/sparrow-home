@@ -20,11 +20,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroLockOpen } from '@ng-icons/heroicons/outline';
+import { LoginRequest } from '@sparrow-home/api';
 
-import { LoginRequest } from '~api/user/models/login-request';
-import { LoginFormName } from '~user/component/login-form/form-service/enum/loing-form-name';
-import { LoginFormService } from '~user/component/login-form/form-service/login-form.service';
-import { LoginForm } from '~user/component/login-form/form-service/model/login-form';
+import { LoginFormName } from './form-service/enum/loing-form-name';
+import { LoginFormService } from './form-service/login-form.service';
+import { LoginForm } from './form-service/model/login-form';
 
 @Component({
   selector: 'app-login-form',

@@ -3,13 +3,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { CloudApiService, GetHeatPumpDetailsResponse, GetScheduleWaterHeatingResponse } from '@sparrow-home/api';
 import { delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
 
-import { CloudApiService } from '~api/cloud/cloud-api.service';
-import { GetHeatPumpDetailsResponse } from '~api/cloud/models/get-heat-pump-details-response';
-import { GetScheduleWaterHeatingResponse } from '~api/cloud/models/get-schedule-water-heating.response';
-import { WaterTankOptions } from '~core/models/water-tank-options';
-import { LoaderService } from '~ui/services/loader.service';
+import { LoaderService } from '../../ui/services/loader.service';
+import { WaterTankOptions } from '../models/water-tank-options';
 
 interface CloudState {
   heatPump: GetHeatPumpDetailsResponse | null;
