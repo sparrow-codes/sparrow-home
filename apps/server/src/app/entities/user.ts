@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { UserRole } from '../modules/user/enum/user-role';
+import { UserRole } from '../enums/user-role';
 import { CloudPreferences } from './cloud-preferences';
 import { Setup } from './setup';
 
@@ -21,11 +21,8 @@ export class User {
   @Column()
   public email: string;
 
-  @Column()
-  public isPasswordExpired: boolean;
-
   @Column({ enum: UserRole })
-  public role: number;
+  public userRole: number;
 
   @OneToOne(() => Setup, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()

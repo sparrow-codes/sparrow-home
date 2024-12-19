@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  InputSignal,
-  output,
-  OutputEmitterRef,
-  Signal,
-} from '@angular/core';
+import { Component, inject, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { NavigationEnd, Router } from '@angular/router';
@@ -26,10 +17,8 @@ import { NavItemComponent } from './nav-item/nav-item.component';
   imports: [CommonModule, NgIcon, NavItemComponent, MatButton],
   templateUrl: './shell.component.html',
   providers: [provideIcons({ heroArrowLeftEndOnRectangleSolid })],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent {
-  public readonly lowestTemperatureAtNight: InputSignal<number | undefined> = input();
   public readonly applicationTitle: InputSignal<string> = input.required();
   public readonly logout: OutputEmitterRef<void> = output();
   public readonly navigationItems: InputSignal<NavigationItem[]> = input<NavigationItem[]>([]);

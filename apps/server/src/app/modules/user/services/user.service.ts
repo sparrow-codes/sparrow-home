@@ -7,8 +7,8 @@ import { Repository } from 'typeorm';
 import { CloudPreferences } from '../../../entities/cloud-preferences';
 import { Setup } from '../../../entities/setup';
 import { User } from '../../../entities/user';
+import { UserRole } from '../../../enums/user-role';
 import { CreateNewUserRequest } from '../controller/model/create-new-user-request';
-import { UserRole } from '../enum/user-role';
 
 @Injectable()
 export class UserService {
@@ -21,7 +21,7 @@ export class UserService {
   ) {}
 
   public async createFirstUser(request: CreateNewUserRequest): Promise<void> {
-    if (await this._userRepository.findOneBy({ role: UserRole.OWNER })) {
+    if ((await this._userRepository.find()).length) {
       throw new UnauthorizedException();
     }
 
@@ -30,9 +30,7 @@ export class UserService {
     user.lastName = request.lastName;
     user.email = request.email;
     user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
-    user.role = UserRole.OWNER;
-    user.isPasswordExpired = false;
-
+    user.userRole = UserRole.OWNER;
     user.setup = await this._setupRepository.save(new Setup());
     user.cloudPreferences = await this._cloudPreferencesRepository.save(new CloudPreferences());
 
@@ -41,25 +39,6 @@ export class UserService {
 
   public async getUserByEmail(email: string): Promise<User | null> {
     const user: User | null = await this._userRepository.findOneBy({ email });
-    if (user) {
-      return user;
-    } else {
-      throw new UnauthorizedException();
-    }
-  }
-
-  public async getUserById(id: number): Promise<User | null> {
-    const user: User | null = await this._userRepository.findOneBy({ id });
-
-    if (user) {
-      return user;
-    } else {
-      throw new UnauthorizedException();
-    }
-  }
-
-  public async getUserByRole(role: UserRole): Promise<User | null> {
-    const user: User | null = await this._userRepository.findOneBy({ role });
     if (user) {
       return user;
     } else {
@@ -77,5 +56,15 @@ export class UserService {
         switchMap(() => this._userRepository.save(user))
       )
     );
+  }
+
+  public async getUserByRole(userRole: UserRole): Promise<User> {
+    const user: User = await this._userRepository.findOneBy({ userRole });
+
+    if (user) {
+      return user;
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 }

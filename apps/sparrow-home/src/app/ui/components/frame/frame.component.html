@@ -1,6 +1,5 @@
 <app-shell
-  [lowestTemperatureAtNight]="lowestTemperatureAtNight()"
-  (logout)="dataService.logout()"
+  (logout)="logout()"
   [applicationTitle]="appTitle"
   [navigationItems]="[
     { label: 'Panel Główny', icon: 'heroComputerDesktop', routerLink: routePath.MAIN },

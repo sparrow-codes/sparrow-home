@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   effect,
@@ -29,11 +28,9 @@ import { LoginForm } from '~user/component/login-form/form-service/model/login-f
 
 @Component({
   selector: 'app-login-form',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgIcon, MatButtonModule, MatInputModule, MatFormFieldModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LoginFormService, provideIcons({ heroLockOpen })],
 })
 export class LoginFormComponent implements OnInit {

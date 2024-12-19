@@ -7,13 +7,4 @@ export class CloudPreferences {
 
   @Column({ default: false })
   public isEverydayWaterHeatOn: boolean;
-
-  @Column({ nullable: true })
-  public dateToStartHeating: Date | null;
-
-  @Column({ nullable: true })
-  public dateToTurnOffHeating: Date | null;
-
-  @Column({nullable: true})
-  public dateToTurnWaterOff: Date | null;
 }

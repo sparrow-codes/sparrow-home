@@ -72,14 +72,6 @@ export class CloudContainerComponent implements OnInit {
     this.dataFacadeService.changeScheduledWaterHeatingStatus(waterTankOptions.isScheduledHeating);
   }
 
-  protected handleLongerBathChange(isOn: boolean): void {
-    this.dataFacadeService.setLongerBathMode(isOn);
-  }
-
-  protected handleHeatOverNight(isOn: boolean): void {
-    this.dataFacadeService.setHeatOverNight(isOn);
-  }
-
   private _createCloudForm(heatPump: GetHeatPumpDetailsResponse): void {
     this._formService.prepareForm(!!heatPump.tankStatus?.operationStatus, !!heatPump.zoneStatus?.operationStatus);
     this.formGroup = this._formService.form;

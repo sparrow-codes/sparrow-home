@@ -6,13 +6,12 @@ import { User } from '../../entities/user';
 import { CloudModule } from '../cloud/cloud.module';
 import { UserModule } from '../user/user.module';
 import { SetupController } from './controlers/setup.controller';
-import { ModeService } from './services/mode/mode.service';
 import { SetupService } from './services/setup.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Setup, User]), CloudModule, UserModule],
-  providers: [SetupService, ModeService],
+  providers: [SetupService],
   controllers: [SetupController],
-  exports: [SetupService, ModeService],
+  exports: [SetupService],
 })
 export class SetupModule {}

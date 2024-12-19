@@ -84,34 +84,6 @@ export const CloudStore = signalStore(
             )
           )
         ),
-        setLongerBath: rxMethod<boolean>(
-          pipe(
-            tap(() => (loaderService.showLoader = true)),
-            switchMap((isOn) =>
-              cloudApiService.setLongBath(isOn).pipe(
-                tapResponse({
-                  next: () => snackBar.open('Pomyślnie ustawiono dłuższą kąpiel', 'Zamknij'),
-                  error: () => snackBar.open('Błąd podczas ustawiania dłuższego grzania wody!', 'Zamknij'),
-                }),
-                finalize(() => (loaderService.showLoader = false))
-              )
-            )
-          )
-        ),
-        setHeatOverNight: rxMethod<boolean>(
-          pipe(
-            tap(() => (loaderService.showLoader = true)),
-            switchMap((isOn) =>
-              cloudApiService.setHeatOverNight(isOn).pipe(
-                tapResponse({
-                  next: () => snackBar.open('Pomyślnie ustawiono nocne grzanie', 'Zamknij'),
-                  error: () => snackBar.open('Błąd podczas ustawiania nocnego grzania!', 'Zamknij'),
-                }),
-                finalize(() => (loaderService.showLoader = false))
-              )
-            )
-          )
-        ),
       };
     }
   )
