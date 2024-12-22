@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { SetupUrl } from '@sparrow-home/api';
 import { catchError, Observable } from 'rxjs';
 
-import { RoutePath } from '../enum/route-path';
-import { DataFacadeService } from '../services/data-facade.service';
+import { RoutePath } from '../enum';
+import { DataFacadeService } from '../services';
 
 export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEvent<unknown>> => {
   const dataService: DataFacadeService = inject(DataFacadeService);
