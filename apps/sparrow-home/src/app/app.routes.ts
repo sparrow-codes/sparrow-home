@@ -1,13 +1,15 @@
 import { Route } from '@angular/router';
+import {
+  authGuard,
+  configurationNotReadyGuard,
+  configurationReadyGuard,
+  RoutePath,
+  setupResolver,
+} from '@sparrow-home/core';
+import { FrameComponent } from '@sparrow-home/ui';
 
-import { RoutePath } from './core/enum/route-path';
-import { authGuard } from './core/guards/auth.guard';
-import { configurationNotReadyGuard } from './core/guards/configuration-not-ready.guard';
-import { configurationReadyGuard } from './core/guards/configuration-ready.guard';
-import { setupResolver } from './core/resolvers/setup.resolver';
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
 import { MainComponent } from './features/main/containers/main/main.component';
-import { FrameComponent } from './ui/components/frame/frame.component';
 
 export const appRoutes: Route[] = [
   {

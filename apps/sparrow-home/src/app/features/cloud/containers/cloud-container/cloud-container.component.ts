@@ -15,10 +15,9 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
 import { GetHeatPumpDetailsResponse } from '@sparrow-home/api';
+import { DataFacadeService, WaterTankOptions } from '@sparrow-home/core';
+import { PageTitleComponent } from '@sparrow-home/ui';
 
-import { WaterTankOptions } from '../../../../core/models/water-tank-options';
-import { DataFacadeService } from '../../../../core/services/data-facade.service';
-import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
 import { WaterTankComponent } from '../../components/water-tank/water-tank.component';
 import { CloudFormService } from './form-service/cloud-form.service';
@@ -35,6 +34,7 @@ import { CloudForm } from './form-service/model/cloud-form';
     ReactiveFormsModule,
     MatSlideToggle,
     MatCardModule,
+    PageTitleComponent,
   ],
   templateUrl: './cloud-container.component.html',
   providers: [provideIcons({ heroPresentationChartLine, heroClock }), CloudFormService],

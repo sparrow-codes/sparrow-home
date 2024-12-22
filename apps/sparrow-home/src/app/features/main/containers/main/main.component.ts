@@ -3,20 +3,19 @@ import { Component, inject, Signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { Configuration, DataFacadeService } from '@sparrow-home/core';
+import { PageTitleComponent } from '@sparrow-home/ui';
 
-import { Configuration } from '../../../../core/models/configuration';
-import { DataFacadeService } from '../../../../core/services/data-facade.service';
-import { PageTitleComponent } from '../../../../ui/components/page-title/page-title.component';
 import { ConfigurationFormComponent } from '../../components/configuration-form/configuration-form.component';
 
 @Component({
   imports: [
     CommonModule,
-    PageTitleComponent,
     ReactiveFormsModule,
     ConfigurationFormComponent,
     MatFormFieldModule,
     MatCardModule,
+    PageTitleComponent,
   ],
   templateUrl: './main.component.html',
 })

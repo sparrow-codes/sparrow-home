@@ -1,0 +1,10 @@
+<sp-shell
+  (logout)="logout()"
+  [applicationTitle]="appTitle"
+  [navigationItems]="[
+    { label: 'Panel Główny', icon: 'heroComputerDesktop', routerLink: routePath.MAIN },
+    { label: 'Panele i Pompa Ciepła', icon: 'heroCloud', routerLink: routePath.PANASONIC }
+  ]"
+>
+  <router-outlet></router-outlet>
+</sp-shell>
