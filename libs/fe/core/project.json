@@ -4,7 +4,7 @@
   "sourceRoot": "libs/fe/core/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": [],
+  "tags": ["scope: fe-core"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",

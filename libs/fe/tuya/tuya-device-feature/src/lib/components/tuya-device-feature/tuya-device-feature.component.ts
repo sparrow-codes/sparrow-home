@@ -11,9 +11,9 @@ import { MatTableModule } from '@angular/material/table';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroMagnifyingGlass, heroPlusCircle } from '@ng-icons/heroicons/outline';
 import { TuyaDevice, TuyaFacadeService } from '@sparrow-home/tuya-device-domain';
+import { PageTitleComponent } from '@sparrow-home/ui';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 
-import { PageTitleComponent } from '../../../../../../../../apps/sparrow-home/src/app/ui/components/page-title/page-title.component';
 import { CreateDeviceDialogComponent } from '../create-device-dialog/create-device-dialog.component';
 import { CreateDeviceFormName } from '../create-device-dialog/form-service/enum/create-device-form-name';
 import { DeviceTypeComponent } from '../device-type/device-type.component';
@@ -21,7 +21,6 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 @Component({
   imports: [
     CommonModule,
-    PageTitleComponent,
     MatCardModule,
     MatTableModule,
     MatFormFieldModule,
@@ -31,6 +30,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
     MatButtonModule,
     DeviceTypeComponent,
     MatDialogModule,
+    PageTitleComponent,
   ],
   templateUrl: './tuya-device-feature.component.html',
   styleUrl: './tuya-device-feature.component.css',

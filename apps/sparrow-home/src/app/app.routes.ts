@@ -9,7 +9,6 @@ import {
 import { FrameComponent } from '@sparrow-home/ui';
 
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
-import { MainComponent } from './features/main/containers/main/main.component';
 
 export const appRoutes: Route[] = [
   {

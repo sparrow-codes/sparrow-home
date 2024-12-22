@@ -1,9 +1,9 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TuyaApiService, TuyaDeviceApiModel } from '@sparrow-home/api';
+import { LoaderService } from '@sparrow-home/core';
 import { finalize, first, Observable, switchMap, tap } from 'rxjs';
 
-import { LoaderService } from '../../../../../../../../apps/sparrow-home/src/app/ui/services/loader.service';
 import { TuyaDevice } from '../../models';
 import { TuyaDeviceMapper } from '../mapper/tuya-device-mapper';
 

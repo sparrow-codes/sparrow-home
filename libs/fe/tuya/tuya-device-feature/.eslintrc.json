@@ -13,7 +13,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:fe-tuya-feature",
-                "onlyDependOnLibsWithTags": ["scope:fe-tuya-domain"]
+                "onlyDependOnLibsWithTags": ["scope:fe-tuya-domain", "scope: fe-ui"]
               }
             ]
           }
