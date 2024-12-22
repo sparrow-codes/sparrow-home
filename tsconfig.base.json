@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sparrow-home/api": ["libs/fe/api/src/index.ts"]
+      "@sparrow-home/api": ["libs/fe/api/src/index.ts"],
+      "@sparrow-home/core": ["libs/fe/core/src/index.ts"],
+      "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Configuration } from '@sparrow-home/core';
 
-import { Configuration } from '../../../../../core/models/configuration';
 import { ConfigurationFormName } from './enum/configuration-form-name';
 import { ConfigurationForm } from './model/configuration-form';
 
