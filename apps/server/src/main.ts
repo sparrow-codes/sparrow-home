@@ -1,9 +1,9 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppInitService } from '@sparrow-server/init';
 
 import { AppModule } from './app/app.module';
-import { AppInitService } from './app/init/app-init.service';
 
 async function bootstrap(): Promise<void> {
   const app: NestApplication = await NestFactory.create(AppModule);
