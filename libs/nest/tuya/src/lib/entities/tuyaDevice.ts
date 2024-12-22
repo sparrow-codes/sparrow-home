@@ -13,6 +13,6 @@ export class TuyaDevice {
   @Column({ enum: DeviceType })
   public deviceType!: number;
 
-  @Column({ length: 100, nullable: true })
-  public deviceName?: string;
+  @Column({ length: 100 })
+  public deviceName!: string;
 }

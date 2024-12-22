@@ -33,7 +33,7 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: RoutePath.MAIN,
-        component: MainComponent,
+        loadChildren: () => import('@sparrow-home/tuya-device-feature').then((f) => f.tuyaDeviceRoutes),
       },
       {
         path: RoutePath.PANASONIC,

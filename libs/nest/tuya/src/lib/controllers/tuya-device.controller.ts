@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger';
 
+import { AuthGuard } from '../../../../../../apps/server/src/app/modules/auth/guards/auth.guard';
 import { TuyaDeviceDTO } from '../models/TuyaDeviceDTO';
 import { TuyaService } from '../services/tuya.service';
 import { CreateDeviceRequest } from './models/create-device-request';
 
+@UseGuards(AuthGuard)
 @Controller('tuya-device')
 export class TuyaDeviceController {
   public constructor(private readonly _tuyaService: TuyaService) {}

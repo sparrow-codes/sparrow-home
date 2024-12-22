@@ -15,7 +15,7 @@ export class TuyaService {
     return devices.map(this._toDto);
   }
 
-  public async addDevice(type: DeviceType, tuyaDeviceId: string, name?: string): Promise<void> {
+  public async addDevice(type: DeviceType, tuyaDeviceId: string, name: string): Promise<void> {
     if (await this._tuyaRepository.findOneBy({ tuyaDeviceId })) {
       throw new ForbiddenException('TuyaDevice already exists!');
     }
@@ -36,6 +36,7 @@ export class TuyaService {
       id: device.id,
       name: device.deviceName,
       type: device.deviceType,
+      tuyaDeviceId: device.tuyaDeviceId,
     };
   }
 }

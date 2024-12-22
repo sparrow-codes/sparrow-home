@@ -1,0 +1,20 @@
+{
+  "name": "tuya-device-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/fe/tuya/tuya-device-feature/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:fe-tuya-feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/fe/tuya/tuya-device-feature/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

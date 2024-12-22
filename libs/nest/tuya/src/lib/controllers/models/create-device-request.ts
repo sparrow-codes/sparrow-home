@@ -11,6 +11,7 @@ export class CreateDeviceRequest {
   public tuyaDeviceId!: string;
 
   @MaxLength(100)
-  @ApiProperty({ required: false })
-  public name?: string;
+  @IsNotEmpty({ message: 'Type is required' })
+  @ApiProperty({ required: true })
+  public name!: string;
 }

@@ -5,7 +5,8 @@ export class TuyaDeviceDTO {
   public id!: number;
   @ApiProperty()
   public type!: number;
-
-  @ApiProperty({ nullable: true })
-  public name?: string;
+  @ApiProperty()
+  public tuyaDeviceId!: string;
+  @ApiProperty()
+  public name!: string;
 }
