@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TuyaDeviceDTO {
+export class TuyaDeviceDto {
   @ApiProperty()
   public id!: number;
   @ApiProperty()
