@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { DeviceType } from '../enums/device-type';
+import { TuyaDeviceType } from '../enum/tuya-device-type';
+
 
 @Entity()
 export class TuyaDevice {
@@ -10,7 +11,7 @@ export class TuyaDevice {
   @Column({ unique: true })
   public tuyaDeviceId!: string;
 
-  @Column({ enum: DeviceType })
+  @Column({ enum: TuyaDeviceType })
   public deviceType!: number;
 
   @Column({ length: 100 })

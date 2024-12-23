@@ -4,7 +4,18 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
+      "rules": {
+        "@nx/enforce-module-boundaries": [
+          "error", {
+            "depConstraints": [
+              {
+                "sourceTag": "scope: be-tuya",
+                "onlyDependOnLibsWithTags": ["scope: be-entities", "scope: be-auth"]
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "files": ["*.ts", "*.tsx"],

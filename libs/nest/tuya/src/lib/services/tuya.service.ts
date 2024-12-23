@@ -1,9 +1,8 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TuyaDevice, TuyaDeviceType } from '@sparrow-server/entities';
 import { Repository } from 'typeorm';
 
-import { TuyaDevice } from '../entities/tuyaDevice';
-import { DeviceType } from '../enums/device-type';
 import { TuyaDeviceDTO } from '../models/TuyaDeviceDTO';
 
 @Injectable()
@@ -15,7 +14,7 @@ export class TuyaService {
     return devices.map(this._toDto);
   }
 
-  public async addDevice(type: DeviceType, tuyaDeviceId: string, name: string): Promise<void> {
+  public async addDevice(type: TuyaDeviceType, tuyaDeviceId: string, name: string): Promise<void> {
     if (await this._tuyaRepository.findOneBy({ tuyaDeviceId })) {
       throw new ForbiddenException('TuyaDevice already exists!');
     }

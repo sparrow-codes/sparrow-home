@@ -2,14 +2,13 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TuyaModule } from '@sparrow-server/tuya';
-
 import { AuthModule } from '@sparrow-server/auth';
 import { CloudModule } from '@sparrow-server/cloud';
 import { ApiModule } from '@sparrow-server/external-api';
 import { InitModule } from '@sparrow-server/init';
 import { SetupModule } from '@sparrow-server/setup';
 import { ConfigKey } from '@sparrow-server/shared';
+import { TuyaModule } from '@sparrow-server/tuya';
 import { UserModule } from '@sparrow-server/user';
 
 @Module({

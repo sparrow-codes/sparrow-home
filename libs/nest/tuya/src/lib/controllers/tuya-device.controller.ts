@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '@sparrow-server/auth';
 
-import { AuthGuard } from '../../../../../../apps/server/src/app/modules/auth/guards/auth.guard';
 import { TuyaDeviceDTO } from '../models/TuyaDeviceDTO';
 import { TuyaService } from '../services/tuya.service';
 import { CreateDeviceRequest } from './models/create-device-request';
