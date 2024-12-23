@@ -11,7 +11,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope: fe-ui",
-                "onlyDependOnLibsWithTags": []
+                "onlyDependOnLibsWithTags": ["scope: fe-core"]
               }
             ]
           }
