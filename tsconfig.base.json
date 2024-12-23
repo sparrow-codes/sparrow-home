@@ -25,7 +25,10 @@
       "@sparrow-server/init": ["libs/nest/init/src/index.ts"],
       "@sparrow-server/setup": ["libs/nest/setup/src/index.ts"],
       "@sparrow-server/shared": ["libs/nest/shared/src/index.ts"],
-      "@sparrow-server/user": ["libs/nest/user/src/index.ts"]
+      "@sparrow-server/user": ["libs/nest/user/src/index.ts"],
+      "@sparrow-server/tuya": ["libs/nest/tuya/src/index.ts"],
+      "@sparrow-home/tuya-device-domain": ["libs/fe/tuya/tuya-device-domain/src/index.ts"],
+      "@sparrow-home/tuya-device-feature": ["libs/fe/tuya/tuya-device-feature/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

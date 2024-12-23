@@ -1,0 +1,41 @@
+<div mat-dialog-title>Utwórz nowe urządzenie</div>
+<mat-dialog-content>
+  <form [formGroup]="formGroup" class="flex flex-col gap-6 w-[300px]">
+    <mat-form-field class="mt-2">
+      <mat-label>Wybierz typ urządzenia:</mat-label>
+      <mat-select [formControlName]="formName.DEVICE_TYPE">
+        @for (option of dropdownOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+      @if (deviceTypeControl.invalid && deviceTypeControl.touched) {
+        <mat-error>Pole wymagane!</mat-error>
+      }
+      <mat-error></mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Nazwa Urządzenia:</mat-label>
+      <input matInput [formControlName]="formName.NAME">
+      @if (nameControl.invalid && nameControl.errors && nameControl.errors['required']) {
+        <mat-error>Pole wymagane!</mat-error>
+      }
+
+      @if (nameControl.invalid && nameControl.errors && nameControl.errors['maxlength']) {
+        <mat-error>Maksymalna długość do 100</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tuya device ID:</mat-label>
+      <input matInput [formControlName]="formName.TUYA_DEVICE_ID">
+      @if (tuyaIdControl.invalid && tuyaIdControl.touched) {
+        <mat-error>Pole wymagane!</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+  <div class="flex gap-4">
+    <button mat-stroked-button mat-dialog-close>Anuluj</button>
+    <button mat-raised-button (click)="onSave()">Utwórz</button>
+  </div>
+</mat-dialog-actions>

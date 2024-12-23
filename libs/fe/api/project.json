@@ -4,7 +4,7 @@
   "sourceRoot": "libs/fe/api/src",
   "prefix": "sp",
   "projectType": "library",
-  "tags": ["scope: fe-api"],
+  "tags": ["scope:fe-api"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",

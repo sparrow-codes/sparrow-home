@@ -3,4 +3,5 @@ export enum RoutePath {
   PANASONIC = 'panasonic',
   CREATE_USER = 'create-user',
   LOGIN = 'login',
+  DEVICES = 'devices',
 }

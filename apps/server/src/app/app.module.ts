@@ -8,6 +8,7 @@ import { ApiModule } from '@sparrow-server/external-api';
 import { InitModule } from '@sparrow-server/init';
 import { SetupModule } from '@sparrow-server/setup';
 import { ConfigKey } from '@sparrow-server/shared';
+import { TuyaModule } from '@sparrow-server/tuya';
 import { UserModule } from '@sparrow-server/user';
 
 @Module({
@@ -34,6 +35,7 @@ import { UserModule } from '@sparrow-server/user';
     SetupModule,
     ApiModule,
     InitModule,
+    TuyaModule,
   ],
 })
 export class AppModule {}

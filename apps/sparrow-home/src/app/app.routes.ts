@@ -9,7 +9,6 @@ import {
 import { FrameComponent } from '@sparrow-home/ui';
 
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
-import { MainComponent } from './features/main/containers/main/main.component';
 
 export const appRoutes: Route[] = [
   {
@@ -33,7 +32,7 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: RoutePath.MAIN,
-        component: MainComponent,
+        loadChildren: () => import('@sparrow-home/tuya-device-feature').then((f) => f.tuyaDeviceRoutes),
       },
       {
         path: RoutePath.PANASONIC,

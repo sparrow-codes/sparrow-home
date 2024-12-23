@@ -1,20 +1,16 @@
 {
-  "name": "core",
+  "name": "tuya",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/fe/core/src",
-  "prefix": "lib",
+  "sourceRoot": "libs/nest/tuya/src",
   "projectType": "library",
-  "tags": ["scope: fe-core"],
+  "tags": ["scope: be-tuya"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/fe/core/jest.config.ts"
+        "jestConfig": "libs/nest/tuya/jest.config.ts"
       }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
     }
   }
 }
