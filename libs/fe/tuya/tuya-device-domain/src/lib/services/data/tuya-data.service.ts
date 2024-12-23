@@ -1,8 +1,10 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TuyaApiService, TuyaDeviceApiModel } from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
-import { finalize, first, Observable, switchMap, tap } from 'rxjs';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
+import { filter, finalize, first, Observable, switchMap, take, tap } from 'rxjs';
 
 import { TuyaDevice } from '../../models';
 import { TuyaDeviceMapper } from '../mapper/tuya-device-mapper';
@@ -14,6 +16,7 @@ export class TuyaDataService {
   private readonly _apiService: TuyaApiService = inject(TuyaApiService);
   private readonly _snackBar: MatSnackBar = inject(MatSnackBar);
   private readonly _loadingService: LoaderService = inject(LoaderService);
+  private readonly _matDialog: MatDialog = inject(MatDialog);
 
   private readonly _tuyaDevices: WritableSignal<TuyaDevice[] | null> = signal(null);
   private readonly _searchQuery: WritableSignal<string> = signal('');
@@ -60,18 +63,30 @@ export class TuyaDataService {
       .subscribe();
   }
 
-  public removeDevice(id: number): void {
-    this._loadingService.showLoader = true;
-    this._apiService
-      .deleteDevice(id)
+  public removeDevice(id: number, deviceName: string): void {
+    this._matDialog
+      .open(ConfirmationDialogComponent, {
+        data: {
+          title: 'Usuń urządzenie',
+          content: `Czy na pewno chcesz usunąć urządzenie o nazwie: ${deviceName}?`,
+        } as ConfirmationDialogData,
+      })
+      .afterClosed()
       .pipe(
-        first(),
-        tap({
-          next: () => this._snackBar.open('Usunięto urządzenie!'),
-          error: () => this._snackBar.open('Błąd podczas usuwania urządzenia!'),
-        }),
-        switchMap(() => this._fetchDevices()),
-        finalize(() => (this._loadingService.showLoader = false))
+        take(1),
+        filter((result) => !!result),
+        tap(() => (this._loadingService.showLoader = true)),
+        switchMap(() =>
+          this._apiService.deleteDevice(id).pipe(
+            first(),
+            tap({
+              next: () => this._snackBar.open('Usunięto urządzenie!'),
+              error: () => this._snackBar.open('Błąd podczas usuwania urządzenia!'),
+            }),
+            switchMap(() => this._fetchDevices()),
+            finalize(() => (this._loadingService.showLoader = false))
+          )
+        )
       )
       .subscribe();
   }

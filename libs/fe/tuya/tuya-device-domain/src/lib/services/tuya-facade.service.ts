@@ -25,7 +25,7 @@ export class TuyaFacadeService {
     this._dataService.createDevices(deviceType, tuyaId, name);
   }
 
-  public deleteDevice(id: number): void {
-    this._dataService.removeDevice(id);
+  public deleteDevice(id: number, deviceName: string): void {
+    this._dataService.removeDevice(id, deviceName);
   }
 }

@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroMagnifyingGlass, heroPlusCircle } from '@ng-icons/heroicons/outline';
+import { heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
 import { TuyaDevice, TuyaFacadeService } from '@sparrow-home/tuya-device-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
@@ -34,7 +34,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
   ],
   templateUrl: './tuya-device-feature.component.html',
   styleUrl: './tuya-device-feature.component.css',
-  providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle })],
+  providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash })],
 })
 export class TuyaDeviceFeatureComponent implements OnInit {
   private readonly _facadeService: TuyaFacadeService = inject(TuyaFacadeService);
@@ -42,7 +42,7 @@ export class TuyaDeviceFeatureComponent implements OnInit {
   private readonly _dialog: MatDialog = inject(MatDialog);
 
   protected readonly data: Signal<TuyaDevice[] | null> = this._facadeService.tuyaDevices;
-  protected readonly columns: string[] = ['id', 'type', 'name', 'tuyaDeviceId'];
+  protected readonly columns: string[] = ['id', 'type', 'name', 'tuyaDeviceId', 'actions'];
   protected readonly searchControl: FormControl<string | null> = new FormControl('');
 
   public ngOnInit(): void {
@@ -65,6 +65,10 @@ export class TuyaDeviceFeatureComponent implements OnInit {
           value[CreateDeviceFormName.NAME]
         )
       );
+  }
+
+  protected onRemoveDevice(device: TuyaDevice): void {
+    this._facadeService.deleteDevice(device.id, device.name);
   }
 
   private _handleSearchEvent(): void {
