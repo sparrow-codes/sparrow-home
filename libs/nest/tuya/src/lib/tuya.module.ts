@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@sparrow-server/auth';
+import { TuyaDevice } from '@sparrow-server/entities';
 
 import { TuyaDeviceController } from './controllers/tuya-device.controller';
-import { TuyaDevice } from './entities/tuyaDevice';
 import { TuyaService } from './services/tuya.service';
 
 @Module({
