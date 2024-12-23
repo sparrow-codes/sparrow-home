@@ -23,7 +23,10 @@ export class TuyaDataService {
       return this._tuyaDevices();
     }
 
-    return this._tuyaDevices()?.filter((device) => device.name.includes(this._searchQuery())) ?? null;
+    return (
+      this._tuyaDevices()?.filter((device) => device.name.toUpperCase().includes(this._searchQuery().toUpperCase())) ??
+      null
+    );
   });
 
   public setSearchQuery(query: string): void {
