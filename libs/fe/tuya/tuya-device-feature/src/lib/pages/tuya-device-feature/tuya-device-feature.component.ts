@@ -8,15 +8,16 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
+import { heroArrowRightCircle, heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
 import { TuyaDevice, TuyaFacadeService } from '@sparrow-home/tuya-device-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 
-import { CreateDeviceDialogComponent } from '../create-device-dialog/create-device-dialog.component';
-import { CreateDeviceFormName } from '../create-device-dialog/form-service/enum/create-device-form-name';
-import { DeviceTypeComponent } from '../device-type/device-type.component';
+import { CreateDeviceDialogComponent } from '../../components/create-device-dialog/create-device-dialog.component';
+import { CreateDeviceFormName } from '../../components/create-device-dialog/form-service/enum/create-device-form-name';
+import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
 
 @Component({
   imports: [
@@ -31,10 +32,11 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
     DeviceTypeComponent,
     MatDialogModule,
     PageTitleComponent,
+    RouterLink,
   ],
   templateUrl: './tuya-device-feature.component.html',
   styleUrl: './tuya-device-feature.component.css',
-  providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash })],
+  providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash, heroArrowRightCircle })],
 })
 export class TuyaDeviceFeatureComponent implements OnInit {
   private readonly _facadeService: TuyaFacadeService = inject(TuyaFacadeService);

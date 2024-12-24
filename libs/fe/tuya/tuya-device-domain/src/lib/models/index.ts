@@ -1,1 +1,1 @@
-export * from './tuya-device-view-model';
+export * from './tuya-device';

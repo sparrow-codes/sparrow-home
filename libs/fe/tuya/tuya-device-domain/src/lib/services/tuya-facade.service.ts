@@ -13,6 +13,10 @@ export class TuyaFacadeService {
     return this._dataService.tuyaDevices;
   }
 
+  public get tuyaDeviceDetails(): Signal<TuyaDevice | null> {
+    return this._dataService.tuyaDeviceDetails;
+  }
+
   public fetchDevices(): void {
     this._dataService.fetchAvailableTuyaDevices();
   }
@@ -27,5 +31,9 @@ export class TuyaFacadeService {
 
   public deleteDevice(id: number, deviceName: string): void {
     this._dataService.removeDevice(id, deviceName);
+  }
+
+  public fetchDeviceDetailsById(id: number): void {
+    this._dataService.fetchDeviceDetailsById(id);
   }
 }

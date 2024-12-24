@@ -12,6 +12,7 @@ module.exports = {
       'dark-blue': 'var(--app-dark-blue)',
       'light-gray': 'var(--app-light-gray)',
       'light-blue': 'var(--app-light-blue)',
+      'super-light-gray': 'var(--app-super-light-grey)',
     },
     extend: {},
   },
