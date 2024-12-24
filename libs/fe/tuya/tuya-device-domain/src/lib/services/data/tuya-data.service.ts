@@ -1,8 +1,10 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { TuyaApiService, TuyaDeviceApiModel } from '@sparrow-home/api';
-import { LoaderService } from '@sparrow-home/core';
+import { LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
 import { filter, finalize, first, Observable, switchMap, take, tap } from 'rxjs';
 
@@ -17,9 +19,11 @@ export class TuyaDataService {
   private readonly _snackBar: MatSnackBar = inject(MatSnackBar);
   private readonly _loadingService: LoaderService = inject(LoaderService);
   private readonly _matDialog: MatDialog = inject(MatDialog);
+  private readonly _router: Router = inject(Router);
 
   private readonly _tuyaDevices: WritableSignal<TuyaDevice[] | null> = signal(null);
   private readonly _searchQuery: WritableSignal<string> = signal('');
+  private readonly _tuyaDeviceDetails: WritableSignal<TuyaDevice | null> = signal(null);
 
   public readonly tuyaDevices: Signal<TuyaDevice[] | null> = computed(() => {
     if (this._searchQuery() === '') {
@@ -31,6 +35,10 @@ export class TuyaDataService {
       null
     );
   });
+
+  public get tuyaDeviceDetails(): Signal<TuyaDevice | null> {
+    return this._tuyaDeviceDetails;
+  }
 
   public setSearchQuery(query: string): void {
     this._searchQuery.set(query);
@@ -87,6 +95,27 @@ export class TuyaDataService {
             finalize(() => (this._loadingService.showLoader = false))
           )
         )
+      )
+      .subscribe();
+  }
+
+  public fetchDeviceDetailsById(id: number): void {
+    this._loadingService.showLoader = true;
+    this._apiService
+      .getDeviceDetails(id)
+      .pipe(
+        first(),
+        tap({
+          next: (details) => this._tuyaDeviceDetails.set(TuyaDeviceMapper.mapDetails(details)),
+          error: (error: HttpErrorResponse) => {
+            if (error.status === HttpStatusCode.NotFound) {
+              this._router.navigate([RoutePath.NOT_FOUND]);
+            } else {
+              this._snackBar.open('Błąd podczas pobierania szczegółów urządzenia!');
+            }
+          },
+        }),
+        finalize(() => (this._loadingService.showLoader = false))
       )
       .subscribe();
   }

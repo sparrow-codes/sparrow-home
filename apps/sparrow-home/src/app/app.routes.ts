@@ -6,7 +6,7 @@ import {
   RoutePath,
   setupResolver,
 } from '@sparrow-home/core';
-import { FrameComponent } from '@sparrow-home/ui';
+import { FrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
 
 import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
 
@@ -39,8 +39,12 @@ export const appRoutes: Route[] = [
         component: CloudContainerComponent,
       },
       {
+        path: RoutePath.NOT_FOUND,
+        component: PageNotFoundComponent,
+      },
+      {
         path: '**',
-        redirectTo: RoutePath.MAIN,
+        redirectTo: 'no-found',
       },
     ],
   },

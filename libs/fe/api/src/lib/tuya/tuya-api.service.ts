@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
-import { CreateDeviceRequest } from './models/create-device-request';
-import { TuyaDeviceApiModel } from './models/tuya-device-api-model';
+import { TuyaDeviceDetailsApiModel } from './models';
+import { CreateDeviceRequest } from './models';
+import { TuyaDeviceApiModel } from './models';
 
 enum TuyaDeviceUrl {
   ALL = 'tuya-device/all',
   CREATE = 'tuya-device/create',
   DELETE = 'tuya-device/delete',
+  DETAILS = 'tuya-device/details',
 }
 
 @Injectable({
@@ -27,5 +29,11 @@ export class TuyaApiService {
 
   public deleteDevice(id: number): Observable<void> {
     return this._http.delete<void>(`${TuyaDeviceUrl.DELETE}/${id}`);
+  }
+
+  public getDeviceDetails(id: number): Observable<TuyaDeviceDetailsApiModel> {
+    return this._http
+      .get<{ deviceDetails: TuyaDeviceDetailsApiModel }>(`${TuyaDeviceUrl.DETAILS}/${id}`)
+      .pipe(map((response) => response.deviceDetails));
   }
 }

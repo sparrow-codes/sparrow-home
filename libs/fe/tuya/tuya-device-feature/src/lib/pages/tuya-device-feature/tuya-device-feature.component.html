@@ -45,7 +45,10 @@
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element" class="max-w-[50px]">
+          <button mat-icon-button [routerLink]="['details', element.id]">
+            <ng-icon class="text-primary" name="heroArrowRightCircle"></ng-icon>
+          </button>
           <button mat-icon-button (click)="onRemoveDevice(element)">
             <ng-icon class="text-primary" name="heroTrash"></ng-icon>
           </button>

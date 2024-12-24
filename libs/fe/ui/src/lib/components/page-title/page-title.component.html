@@ -1,3 +1,11 @@
-<div class="text-xl font-semibold whitespace-nowrap border-b border-light-gray p-3 mb-6 text-dark-gray">
+<div class="h-[50px] text-xl font-semibold whitespace-nowrap border-b border-light-gray py-3 mb-6 text-dark-gray flex gap-6 items-center">
+  @if (routerLink(); as link) {
+    <button mat-button [routerLink]="link">
+      <div class="flex gap-2 items-center">
+        <ng-icon name="heroChevronDoubleLeft"></ng-icon>
+        <span>Powrót</span>
+      </div>
+    </button>
+  }
   <ng-content></ng-content>
 </div>
