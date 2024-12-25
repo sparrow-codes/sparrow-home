@@ -18,7 +18,7 @@ async function bootstrap(): Promise<void> {
   SwaggerModule.setup('api', app, () =>
     SwaggerModule.createDocument(
       app,
-      new DocumentBuilder().addSecurity('auth', { type: 'oauth2' }).setVersion('1.0').addTag('Tuya Device').build()
+      new DocumentBuilder().addBearerAuth().setVersion('1.0').addTag('Tuya Device').build()
     )
   );
 
