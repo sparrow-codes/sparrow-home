@@ -10,7 +10,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope: be-tuya",
-                "onlyDependOnLibsWithTags": ["scope: be-entities", "scope: be-auth"]
+                "onlyDependOnLibsWithTags": ["scope: be-entities", "scope: be-auth", "scope: external-api"]
               }
             ]
           }

@@ -9,4 +9,6 @@ export class TuyaDeviceDetailsDto {
   public tuyaDeviceId!: string;
   @ApiProperty()
   public name!: string;
+  @ApiProperty({ type: 'boolean' })
+  public isOnline!: boolean;
 }

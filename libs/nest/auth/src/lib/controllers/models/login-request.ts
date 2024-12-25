@@ -3,10 +3,10 @@ import { IsNotEmpty } from 'class-validator';
 
 export class LoginRequest {
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ required: true })
   public email!: string;
 
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ required: true })
   public password!: string;
 }

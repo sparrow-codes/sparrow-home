@@ -3,4 +3,5 @@ export interface TuyaDevice {
   type: number;
   name: string;
   tuyaDeviceId: string;
+  isOnline?: boolean;
 }
