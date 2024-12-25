@@ -1,3 +1,3 @@
 export class GetScheduledWaterHeatingStatusResponse {
-  public isScheduled: boolean;
+  public isScheduled!: boolean;
 }

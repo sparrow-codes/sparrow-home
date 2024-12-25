@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
+import { map, Observable } from 'rxjs';
 
 import { TuyaDeviceDto } from '../models/tuya-device-dto';
 import { TuyaService } from '../services/tuya.service';
@@ -15,7 +16,7 @@ export class TuyaDeviceController {
   public constructor(private readonly _tuyaService: TuyaService) {}
 
   @Get('all')
-  @ApiResponse({ type: [TuyaDeviceDto] })
+  @ApiResponse({ type: TuyaDeviceDto, isArray: true })
   public async getAll(): Promise<TuyaDeviceDto[]> {
     return this._tuyaService.getListOfDevices();
   }
@@ -33,9 +34,7 @@ export class TuyaDeviceController {
 
   @ApiResponse({ type: GetDeviceDetailsResponse })
   @Get('details/:id')
-  public async getDetails(@Param('id') id: string): Promise<GetDeviceDetailsResponse> {
-    return {
-      deviceDetails: await this._tuyaService.getDeviceDetails(Number(id)),
-    };
+  public getDetails(@Param('id') id: string): Observable<GetDeviceDetailsResponse> {
+    return this._tuyaService.getDeviceDetails(Number(id)).pipe(map((details) => ({ deviceDetails: details })));
   }
 }

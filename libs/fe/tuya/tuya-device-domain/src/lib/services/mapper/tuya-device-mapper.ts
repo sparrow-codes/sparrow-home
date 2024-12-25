@@ -18,6 +18,7 @@ export class TuyaDeviceMapper {
       tuyaDeviceId: device.tuyaDeviceId,
       name: device.name,
       type: device.type,
+      isOnline: device.isOnline,
     };
   }
 }

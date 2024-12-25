@@ -20,9 +20,21 @@
           <div>Nazwa własna:</div>
           <div class="font-semibold">{{ tuyaDevice.name }}</div>
         </div>
+
+        <mat-divider></mat-divider>
+        <div class="flex w-full py-2 justify-between">
+          <div>Status:</div>
+          <div class="flex gap-2 items-center">
+            @if (tuyaDevice.isOnline) {
+              <span>Online</span>
+              <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
+            } @else {
+              <span>Offline</span>
+              <ng-icon name="heroNoSymbol"></ng-icon>
+            }
+          </div>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>
 }
-
-

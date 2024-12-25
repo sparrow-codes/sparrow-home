@@ -12,4 +12,8 @@ export enum ConfigKey {
 
   JWT_SECRET = 'jwtSecret',
   JWT_EXPIRATION = 'jwtExpiry',
+
+  TUYA_BASE_URL = 'tuyaBaseUr',
+  TUYA_ACCESS_KEY = 'tuyaAccessKey',
+  TUYA_SECRET_KEY = 'tuyaSecretKey',
 }

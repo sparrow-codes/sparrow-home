@@ -3,4 +3,5 @@ export interface TuyaDeviceDetailsApiModel {
   type: number;
   tuyaDeviceId: string;
   name: string;
+  isOnline: boolean;
 }

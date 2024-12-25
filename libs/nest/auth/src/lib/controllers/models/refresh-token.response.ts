@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RefreshTokenResponse {
-  @ApiProperty()
+  @ApiProperty({ nullable: false })
   public token!: string;
 }

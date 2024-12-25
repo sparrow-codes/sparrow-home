@@ -4,8 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigKey } from '@sparrow-server/shared';
 import { map, Observable } from 'rxjs';
 
-import { GetSunriseSunsetResponse } from '../model/get-sunrise-sunset-response';
-import { GetWeatherResponse } from '../model/get-weather-response';
+import { GetSunriseSunsetResponse } from './model/get-sunrise-sunset-response';
+import { GetWeatherResponse } from './model/get-weather-response';
 
 @Injectable()
 export class WeatherApiService {

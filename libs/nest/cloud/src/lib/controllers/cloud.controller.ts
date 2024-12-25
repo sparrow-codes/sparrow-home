@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { Request } from 'express';
 import { map, Observable } from 'rxjs';
@@ -10,6 +11,7 @@ import { GetScheduledWaterHeatingStatusResponse } from './models/get-scheduled-w
 import { ScheduledWaterHeatingRequest } from './models/scheduled-water-heating.request';
 import { SetHeatPumpStatusRequest } from './models/set-heat-pump-status.request';
 
+@ApiTags('Panasonic Cloud')
 @UseGuards(AuthGuard)
 @Controller('panasonic-cloud')
 export class CloudController {
