@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigKey } from '@sparrow-server/shared';
 import { TuyaContext } from '@tuya/tuya-connector-nodejs';
-import { from, map, Observable } from 'rxjs';
+import { from, map, Observable, tap } from 'rxjs';
 
 import { TuyaDeviceDetailsCloudModel } from './model/tuya-device-details-cloud-model';
 
@@ -19,6 +19,15 @@ export class TuyaApiService {
   }
 
   public getDeviceDetails(id: string): Observable<TuyaDeviceDetailsCloudModel> {
-    return from(this._connector.device.detail({ device_id: id })).pipe(map((response) => response.result));
+    return from(this._connector.device.detail({ device_id: id })).pipe(
+      tap((response) => Logger.log(response, 'Tuya Response:')),
+      map((response) => {
+        if (response.success === false) {
+          throw new NotFoundException(`No Tuya device found for id: ${id}`);
+        }
+
+        return response.result;
+      })
+    );
   }
 }
