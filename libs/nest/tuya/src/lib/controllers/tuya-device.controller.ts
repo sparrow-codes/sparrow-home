@@ -7,6 +7,7 @@ import { TuyaDeviceDto } from '../models/tuya-device-dto';
 import { TuyaService } from '../services/tuya.service';
 import { CreateDeviceRequest } from './models/create-device-request';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
+import { SetLcsSwitchStatusRequest } from './models/set-lcs-switch-status.request';
 
 @ApiBearerAuth()
 @ApiTags('Tuya Device')
@@ -36,5 +37,10 @@ export class TuyaDeviceController {
   @Get('details/:id')
   public getDetails(@Param('id') id: string): Observable<GetDeviceDetailsResponse> {
     return this._tuyaService.getDeviceDetails(Number(id)).pipe(map((details) => ({ deviceDetails: details })));
+  }
+
+  @Post('lcs-switch/status/:id')
+  public setLcsSwitchStatus(@Param('id') id: string, @Body() request: SetLcsSwitchStatusRequest): Observable<boolean> {
+    return this._tuyaService.setLcsSwitchStatus(Number(id), request.isOn);
   }
 }
