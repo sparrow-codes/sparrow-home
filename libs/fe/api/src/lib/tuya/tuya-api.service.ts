@@ -11,6 +11,7 @@ enum TuyaDeviceUrl {
   CREATE = 'tuya-device/create',
   DELETE = 'tuya-device/delete',
   DETAILS = 'tuya-device/details',
+  LCS_SWITCH_STATUS = 'tuya-device/lcs-switch/status',
 }
 
 @Injectable({
@@ -35,5 +36,9 @@ export class TuyaApiService {
     return this._http
       .get<{ deviceDetails: TuyaDeviceDetailsApiModel }>(`${TuyaDeviceUrl.DETAILS}/${id}`)
       .pipe(map((response) => response.deviceDetails));
+  }
+
+  public setLcsSwitchStatus(id: number, isOn: boolean): Observable<void> {
+    return this._http.post<void>(`${TuyaDeviceUrl.LCS_SWITCH_STATUS}/${id}`, { isOn });
   }
 }

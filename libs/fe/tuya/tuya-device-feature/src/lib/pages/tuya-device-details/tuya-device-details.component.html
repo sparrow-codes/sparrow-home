@@ -1,5 +1,5 @@
 @if (deviceDetails(); as tuyaDevice) {
-  <sp-page-title [routerLink]="['/main']">Sczegóły {{tuyaDevice.name}}</sp-page-title>
+  <sp-page-title [routerLink]="['/main']">Sczegóły {{ tuyaDevice.name }}</sp-page-title>
 
   <mat-card>
     <mat-card-content>
@@ -35,6 +35,16 @@
           </div>
         </div>
       </div>
+
+      <mat-divider class="py-4 mt-4"></mat-divider>
+      <div class="mb-4">
+        <ng-icon name="heroAdjustmentsHorizontal" size="24px"></ng-icon>
+      </div>
+      @switch (tuyaDevice.type) {
+        @case (deviceType.LSC_POWER_PLUG) {
+          <sp-lcs-switch-manual-control (switchChange)="onLscSwitchChange($event)"></sp-lcs-switch-manual-control>
+        }
+      }
     </mat-card-content>
   </mat-card>
 }
