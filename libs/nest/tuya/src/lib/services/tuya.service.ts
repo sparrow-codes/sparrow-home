@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TuyaDevice, TuyaDeviceType } from '@sparrow-server/entities';
-import { TuyaApiService, TuyaDeviceDetailsCloudModel } from '@sparrow-server/external-api';
+import { LscSwitchApiService, TuyaDeviceDetailsCloudModel } from '@sparrow-server/external-api';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
@@ -12,7 +12,7 @@ import { TuyaDeviceDto } from '../models/tuya-device-dto';
 export class TuyaService {
   public constructor(
     @InjectRepository(TuyaDevice) private readonly _tuyaRepository: Repository<TuyaDevice>,
-    private readonly _tuyaApiService: TuyaApiService
+    private readonly _lscSwitchApiService: LscSwitchApiService
   ) {}
 
   public async getListOfDevices(): Promise<TuyaDeviceDto[]> {
@@ -45,10 +45,23 @@ export class TuyaService {
             throw new NotFoundException(`TuyaDevice not found for id: ${id}`);
           }
 
-          return combineLatest([of(entity), this._tuyaApiService.getDeviceDetails(entity.tuyaDeviceId)]);
+          return combineLatest([of(entity), this._lscSwitchApiService.getDeviceDetails(entity.tuyaDeviceId)]);
         })
       )
       .pipe(map(([entity, device]) => this._toDeviceDetailsDto(entity, device)));
+  }
+
+  public setLcsSwitchStatus(id: number, isOn: boolean): Observable<boolean> {
+    return from(this._tuyaRepository.findOneBy({ id })).pipe(
+      first(),
+      switchMap((entity) => {
+        if (!entity) {
+          throw new NotFoundException(`TuyaDevice not found for id: ${id}`);
+        }
+
+        return this._lscSwitchApiService.setSwitch(entity.tuyaDeviceId, isOn);
+      })
+    );
   }
 
   private _toDeviceDto(device: TuyaDevice): TuyaDeviceDto {

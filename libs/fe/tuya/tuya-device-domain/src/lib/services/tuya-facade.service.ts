@@ -2,12 +2,14 @@ import { inject, Injectable, Signal } from '@angular/core';
 
 import { TuyaDevice } from '../models';
 import { TuyaDataService } from './data/tuya-data.service';
+import { LscSwitchOperationsService } from './operations/lsc-switch-operations.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TuyaFacadeService {
   private readonly _dataService: TuyaDataService = inject(TuyaDataService);
+  private readonly _lscOperationService: LscSwitchOperationsService = inject(LscSwitchOperationsService);
 
   public get tuyaDevices(): Signal<TuyaDevice[] | null> {
     return this._dataService.tuyaDevices;
@@ -35,5 +37,9 @@ export class TuyaFacadeService {
 
   public fetchDeviceDetailsById(id: number): void {
     this._dataService.fetchDeviceDetailsById(id);
+  }
+
+  public setLscSwitchOperationStatus(id: number, isOn: boolean): void {
+    this._lscOperationService.setSwitchStatus(id, isOn);
   }
 }
