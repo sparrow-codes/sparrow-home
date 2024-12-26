@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigKey } from '@sparrow-server/shared';
 import { TuyaContext } from '@tuya/tuya-connector-nodejs';
@@ -9,7 +9,7 @@ import { Commands } from './model/commands';
 import { TuyaTokenStore } from './tuya-token.store';
 
 @Injectable()
-export abstract class TuyaApiService {
+export class TuyaApiService {
   protected connector: TuyaContext;
 
   public constructor(private readonly _configService: ConfigService) {
@@ -22,20 +22,25 @@ export abstract class TuyaApiService {
     });
   }
 
-  public getDeviceDetails(id: string): Observable<TuyaDeviceDetailsCloudModel> {
-    return from(this.connector.device.detail({ device_id: id })).pipe(
+  public getDeviceStatus(deviceId: string): Observable<TuyaDeviceDetailsCloudModel> {
+    return from(
+      this.connector.request<Commands<unknown>[]>({
+        path: `/v1.0/iot-03/devices/${deviceId}/status`,
+        method: 'GET',
+      })
+    ).pipe(
       tap((response) => Logger.log(response, 'Tuya Response:')),
       map((response) => {
-        if (response.success === false) {
-          throw new NotFoundException(`No Tuya device found for id: ${id}`);
+        if (!response.success) {
+          return { online: false } as TuyaDeviceDetailsCloudModel;
         }
 
-        return response.result;
+        return { online: true, commands: response.result } as TuyaDeviceDetailsCloudModel;
       })
     );
   }
 
-  protected sendCommands<T>(deviceId: string, commands: Commands<T>[]): Observable<boolean> {
+  public sendCommands<T>(deviceId: string, commands: Commands<T>[]): Observable<boolean> {
     return from(
       this.connector.request<boolean>({
         path: `/v1.0/iot-03/devices/${deviceId}/commands`,

@@ -1,10 +1,12 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TuyaDevice, TuyaDeviceType } from '@sparrow-server/entities';
-import { LscSwitchApiService, TuyaDeviceDetailsCloudModel } from '@sparrow-server/external-api';
+import { TuyaApiService } from '@sparrow-server/external-api';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
+import { LCS_SWITCH_CODE } from '../codes/codes';
+import { TuyaDeviceDetailsMapper } from '../mapper/tuya-device-details.mapper';
 import { TuyaDeviceDetailsDto } from '../models/tuya-device-details-dto';
 import { TuyaDeviceDto } from '../models/tuya-device-dto';
 
@@ -12,7 +14,7 @@ import { TuyaDeviceDto } from '../models/tuya-device-dto';
 export class TuyaService {
   public constructor(
     @InjectRepository(TuyaDevice) private readonly _tuyaRepository: Repository<TuyaDevice>,
-    private readonly _lscSwitchApiService: LscSwitchApiService
+    private readonly _tuyaApiService: TuyaApiService
   ) {}
 
   public async getListOfDevices(): Promise<TuyaDeviceDto[]> {
@@ -45,10 +47,10 @@ export class TuyaService {
             throw new NotFoundException(`TuyaDevice not found for id: ${id}`);
           }
 
-          return combineLatest([of(entity), this._lscSwitchApiService.getDeviceDetails(entity.tuyaDeviceId)]);
+          return combineLatest([of(entity), this._tuyaApiService.getDeviceStatus(entity.tuyaDeviceId)]);
         })
       )
-      .pipe(map(([entity, device]) => this._toDeviceDetailsDto(entity, device)));
+      .pipe(map(([entity, device]) => TuyaDeviceDetailsMapper.map(entity, device)));
   }
 
   public setLcsSwitchStatus(id: number, isOn: boolean): Observable<boolean> {
@@ -59,7 +61,7 @@ export class TuyaService {
           throw new NotFoundException(`TuyaDevice not found for id: ${id}`);
         }
 
-        return this._lscSwitchApiService.setSwitch(entity.tuyaDeviceId, isOn);
+        return this._tuyaApiService.sendCommands(entity.tuyaDeviceId, [{ code: LCS_SWITCH_CODE, value: isOn }]);
       })
     );
   }
@@ -70,16 +72,6 @@ export class TuyaService {
       name: device.deviceName,
       type: device.deviceType,
       tuyaDeviceId: device.tuyaDeviceId,
-    };
-  }
-
-  private _toDeviceDetailsDto(entity: TuyaDevice, device: TuyaDeviceDetailsCloudModel): TuyaDeviceDetailsDto {
-    return {
-      id: entity.id,
-      name: entity.deviceName,
-      type: entity.deviceType,
-      tuyaDeviceId: entity.tuyaDeviceId,
-      isOnline: device.online ?? false,
     };
   }
 }
