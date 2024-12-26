@@ -40,11 +40,10 @@
       <div class="mb-4">
         <ng-icon name="heroAdjustmentsHorizontal" size="24px"></ng-icon>
       </div>
-      @switch (tuyaDevice.type) {
-        @case (deviceType.LSC_POWER_PLUG) {
-          <sp-lcs-switch-manual-control (switchChange)="onLscSwitchChange($event)"></sp-lcs-switch-manual-control>
-        }
+      @if (lcsSwitch(); as lcsSwitch) {
+        <sp-lcs-switch-manual-control [lcsSwitch]="lcsSwitch" (switchChange)="onLscSwitchChange($event)"></sp-lcs-switch-manual-control>
       }
+
     </mat-card-content>
   </mat-card>
 }
