@@ -20,6 +20,7 @@
       "@sparrow-home/tuya-device-domain": ["libs/fe/tuya/tuya-device-domain/src/index.ts"],
       "@sparrow-home/tuya-device-feature": ["libs/fe/tuya/tuya-device-feature/src/index.ts"],
       "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"],
+      "@sparrow-server/aqua": ["libs/nest/aqua/src/index.ts"],
       "@sparrow-server/auth": ["libs/nest/auth/src/index.ts"],
       "@sparrow-server/cloud": ["libs/nest/cloud/src/index.ts"],
       "@sparrow-server/entities": ["libs/nest/entities/src/index.ts"],

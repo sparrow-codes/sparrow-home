@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
+import { AquaPreferences, CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
 import * as bcrypt from 'bcrypt';
 import { combineLatest, first, from, lastValueFrom, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -14,7 +14,8 @@ export class UserService {
   public constructor(
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>,
-    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>
+    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
+    @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>
   ) {}
 
   public async createFirstUser(request: CreateNewUserRequest): Promise<void> {
@@ -30,6 +31,7 @@ export class UserService {
     user.userRole = UserRole.OWNER;
     user.setup = await this._setupRepository.save(new Setup());
     user.cloudPreferences = await this._cloudPreferencesRepository.save(new CloudPreferences());
+    user.aquaPreferences = await this._aquaPreferencesRepository.save(new AquaPreferences());
 
     await this.save(user);
   }
@@ -53,15 +55,5 @@ export class UserService {
         switchMap(() => this._userRepository.save(user))
       )
     );
-  }
-
-  public async getUserByRole(userRole: UserRole): Promise<User> {
-    const user: User | null = await this._userRepository.findOneBy({ userRole });
-
-    if (user) {
-      return user;
-    } else {
-      throw new UnauthorizedException();
-    }
   }
 }

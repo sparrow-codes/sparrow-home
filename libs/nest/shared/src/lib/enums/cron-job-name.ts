@@ -3,4 +3,5 @@ export enum CronJobName {
   WATER_OFF = 'waterOff',
   EVERY_DAY_WATER_ON = 'everyDayWaterOn',
   EVERY_DAY_WATER_OFF = 'everyDayWaterOff',
+  EVERY_DAY_AQUA_LIGHT = 'everyDayAquaLight',
 }

@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserRole } from '../enum/user-role';
+import { AquaPreferences } from './aqua-preferences';
 import { CloudPreferences } from './cloud-preferences';
 import { Setup } from './setup';
 
@@ -31,4 +32,8 @@ export class User {
   @OneToOne(() => CloudPreferences, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   public cloudPreferences!: CloudPreferences;
+
+  @OneToOne(() => AquaPreferences, { onDelete: 'CASCADE', eager: true })
+  @JoinColumn()
+  public aquaPreferences!: AquaPreferences;
 }
