@@ -16,6 +16,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardActions, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -28,7 +29,16 @@ import { LoginForm } from './form-service/model/login-form';
 
 @Component({
   selector: 'app-login-form',
-  imports: [CommonModule, ReactiveFormsModule, NgIcon, MatButtonModule, MatInputModule, MatFormFieldModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    NgIcon,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatCardActions,
+    MatCardContent,
+  ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
   providers: [LoginFormService, provideIcons({ heroLockOpen })],
