@@ -1,6 +1,7 @@
 import { HttpBackend, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -41,5 +42,7 @@ export const appConfig: ApplicationConfig = {
       useValue: { appearance: 'outlined' },
     },
     provideAnimationsAsync(),
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
   ],
 };

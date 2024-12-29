@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
-import { heroCloud, heroComputerDesktop } from '@ng-icons/heroicons/outline';
+import { heroCloud, heroComputerDesktop, heroLightBulb } from '@ng-icons/heroicons/outline';
 import { RoutePath } from '@sparrow-home/core';
 import { DataFacadeService } from '@sparrow-home/core';
 import { APP_TITLE } from '@sparrow-home/core';
@@ -12,7 +12,7 @@ import { ShellComponent } from '../shell/shell.component';
 @Component({
   imports: [CommonModule, RouterOutlet, ShellComponent],
   templateUrl: './frame.component.html',
-  providers: [provideIcons({ heroComputerDesktop, heroCloud })],
+  providers: [provideIcons({ heroComputerDesktop, heroCloud, heroLightBulb })],
 })
 export class FrameComponent {
   protected readonly appTitle: string = inject(APP_TITLE);
