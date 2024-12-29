@@ -16,6 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@sparrow-home/api": ["libs/fe/api/src/index.ts"],
+      "@sparrow-home/aqua-domain": ["libs/fe/aqua/aqua-domain/src/index.ts"],
+      "@sparrow-home/aqua-feature": ["libs/fe/aqua/aqua-feature/src/index.ts"],
       "@sparrow-home/core": ["libs/fe/core/src/index.ts"],
       "@sparrow-home/tuya-device-domain": ["libs/fe/tuya/tuya-device-domain/src/index.ts"],
       "@sparrow-home/tuya-device-feature": ["libs/fe/tuya/tuya-device-feature/src/index.ts"],

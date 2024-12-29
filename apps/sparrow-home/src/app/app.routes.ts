@@ -39,6 +39,10 @@ export const appRoutes: Route[] = [
         component: CloudContainerComponent,
       },
       {
+        path: RoutePath.AQUARIUM,
+        loadChildren: () => import('@sparrow-home/aqua-feature').then((feature) => feature.aquaFeatureRoutes),
+      },
+      {
         path: RoutePath.NOT_FOUND,
         component: PageNotFoundComponent,
       },

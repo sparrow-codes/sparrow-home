@@ -1,0 +1,10 @@
+<sp-page-title>Akwarium</sp-page-title>
+
+@if (aquaPreferences(); as aquaPreferences) {
+  <sp-aquarium-light-settings
+    [aquaPreferences]="aquaPreferences"
+    [tuyaDeviceOptions]="tuyaDeviceOptions() ?? []"
+    (activated)="onScheduleChanged($event)"
+    (preferencesUpdates)="onPreferenceChanged($event)"
+  ></sp-aquarium-light-settings>
+}

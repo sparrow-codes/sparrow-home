@@ -3,5 +3,6 @@ export enum RoutePath {
   PANASONIC = 'panasonic',
   CREATE_USER = 'create-user',
   LOGIN = 'login',
+  AQUARIUM = 'aquarium',
   NOT_FOUND = 'not-found',
 }
