@@ -1,7 +1,7 @@
-<sp-page-title>Dostępne urząrzenia w domu:</sp-page-title>
+<sp-page-title @sparrowFadeIn>Dostępne urząrzenia w domu</sp-page-title>
 
 @if (data(); as data) {
-<div class="flex justify-between">
+<div @sparrowFadeIn class="flex justify-between">
   <div class="flex gap-6">
     <mat-form-field>
       <mat-label>Wyszukaj</mat-label>
@@ -18,7 +18,7 @@
   </button>
 </div>
 
-<mat-card>
+<mat-card @sparrowFadeIn>
   <mat-card-content>
     <table mat-table [dataSource]="data">
       <ng-container matColumnDef="id">

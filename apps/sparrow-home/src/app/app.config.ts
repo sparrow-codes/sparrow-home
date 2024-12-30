@@ -7,7 +7,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { initializeApp } from '@sparrow-home/core';
+import { initializeApp, SHORT_APP_TITLE } from '@sparrow-home/core';
 import { apiUrlInterceptor } from '@sparrow-home/core';
 import { authInterceptor } from '@sparrow-home/core';
 import { DataFacadeService } from '@sparrow-home/core';
@@ -20,6 +20,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_TITLE,
       useValue: 'Sparrow Home',
+    },
+    {
+      provide: SHORT_APP_TITLE,
+      useValue: 'SH',
     },
     {
       provide: APP_INITIALIZER,

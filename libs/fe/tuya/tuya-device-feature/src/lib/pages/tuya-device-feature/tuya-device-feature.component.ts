@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowRightCircle, heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
 import { TuyaDevice, TuyaFacadeService } from '@sparrow-home/tuya-device-domain';
-import { PageTitleComponent } from '@sparrow-home/ui';
+import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 
 import { CreateDeviceDialogComponent } from '../../components/create-device-dialog/create-device-dialog.component';
@@ -37,6 +37,7 @@ import { DeviceTypeComponent } from '../../components/device-type/device-type.co
   templateUrl: './tuya-device-feature.component.html',
   styleUrl: './tuya-device-feature.component.css',
   providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash, heroArrowRightCircle })],
+  animations: [sparrowFadeIn],
 })
 export class TuyaDeviceFeatureComponent implements OnInit {
   private readonly _facadeService: TuyaFacadeService = inject(TuyaFacadeService);

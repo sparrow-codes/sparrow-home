@@ -1,7 +1,7 @@
 <div
   [routerLink]="navItem().routerLink"
-  class="flex items-center px-4 text-light-gray gap-4 border-primary py-2 cursor-pointer hover:text-white transition-all"
-  [ngClass]="{ 'bg-light-blue text-primary border-r-8': currentUrl() === '/' + navItem().routerLink }"
+  class="flex items-center opacity-75 px-4 text-light-gray gap-4 border-primary py-2 cursor-pointer hover:text-primary transition-all"
+  [ngClass]="{ 'text-white opacity-100': currentUrl() === '/' + navItem().routerLink }"
 >
   <ng-icon class="text-2xl" [name]="navItem().icon"></ng-icon>
   <span class="whitespace-nowrap"> {{ navItem().label }} </span>

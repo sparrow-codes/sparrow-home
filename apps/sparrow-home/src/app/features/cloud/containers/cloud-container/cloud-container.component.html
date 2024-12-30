@@ -1,4 +1,4 @@
-<sp-page-title>Pompa i Panele Fotowoltaiczne</sp-page-title>
+<sp-page-title>Pompa Ciepła</sp-page-title>
 
 @if(heatPump() && formGroup) {
   <div class="flex justify-end gap-6 items-center flex-col md:flex-row md:gap-6 mb-4">
@@ -19,7 +19,7 @@
     @if(heatPump()?.tankStatus; as tankStatus) {
       <mat-card>
         <mat-card-header class="flex items-center gap-2 justify-between">
-          <mat-card-title>Woda użytkowa:</mat-card-title>
+          <mat-card-title>Woda użytkowa</mat-card-title>
           <mat-slide-toggle [formControlName]="formName.IS_WATER_ON"></mat-slide-toggle>
         </mat-card-header>
         @if (waterTankOptions()) {
@@ -35,7 +35,7 @@
     } @if (heatPump()?.zoneStatus; as zoneStatus) {
     <mat-card>
       <mat-card-header class="flex items-center gap-2 justify-between">
-        <mat-card-title>Ogrzewanie:</mat-card-title>
+        <mat-card-title>Ogrzewanie</mat-card-title>
         <mat-slide-toggle [formControlName]="formName.IS_HEAT_ON"></mat-slide-toggle>
       </mat-card-header>
       <mat-card-content>

@@ -3,6 +3,7 @@ import {
   authGuard,
   configurationNotReadyGuard,
   configurationReadyGuard,
+  pageTitleResolver,
   RoutePath,
   setupResolver,
 } from '@sparrow-home/core';
@@ -13,6 +14,7 @@ import { CloudContainerComponent } from './features/cloud/containers/cloud-conta
 export const appRoutes: Route[] = [
   {
     path: RoutePath.CREATE_USER,
+    title: pageTitleResolver,
     canActivate: [configurationNotReadyGuard],
     loadComponent: () =>
       import('./features/user/containers/create-user/create-user-page.component').then(
@@ -21,6 +23,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: RoutePath.LOGIN,
+    title: pageTitleResolver,
     loadComponent: () => import('./features/user/containers/login/login.component').then((c) => c.LoginComponent),
     canActivate: [configurationReadyGuard],
   },
@@ -32,18 +35,22 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: RoutePath.MAIN,
+        title: pageTitleResolver,
         loadChildren: () => import('@sparrow-home/tuya-device-feature').then((f) => f.tuyaDeviceRoutes),
       },
       {
-        path: RoutePath.PANASONIC,
+        path: RoutePath.HEAT_PUMP,
+        title: pageTitleResolver,
         component: CloudContainerComponent,
       },
       {
         path: RoutePath.AQUARIUM,
+        title: pageTitleResolver,
         loadChildren: () => import('@sparrow-home/aqua-feature').then((feature) => feature.aquaFeatureRoutes),
       },
       {
         path: RoutePath.NOT_FOUND,
+        title: pageTitleResolver,
         component: PageNotFoundComponent,
       },
       {
