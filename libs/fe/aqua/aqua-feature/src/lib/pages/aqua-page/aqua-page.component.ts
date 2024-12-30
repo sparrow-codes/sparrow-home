@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { AquaFacadeService, AquaPreferences } from '@sparrow-home/aqua-domain';
-import { PageTitleComponent } from '@sparrow-home/ui';
+import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 
 import { AquariumLightSettingsComponent } from '../../components/aguarium-light-settings/aquarium-light-settings.component';
 
@@ -9,7 +9,7 @@ import { AquariumLightSettingsComponent } from '../../components/aguarium-light-
   selector: 'sp-aqua-page',
   imports: [CommonModule, PageTitleComponent, AquariumLightSettingsComponent],
   templateUrl: './aqua-page.component.html',
-  styleUrl: './aqua-page.component.css',
+  animations: [sparrowFadeIn],
 })
 export class AquaPageComponent implements OnInit {
   private readonly _facadeService: AquaFacadeService = inject(AquaFacadeService);

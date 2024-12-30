@@ -1,7 +1,7 @@
 @if (deviceDetails(); as tuyaDevice) {
-  <sp-page-title [routerLink]="['/main']">Sczegóły {{ tuyaDevice.name }}</sp-page-title>
+  <sp-page-title @sparrowFadeIn [routerLink]="['/main']">{{ tuyaDevice.name }}</sp-page-title>
 
-  <mat-card>
+  <mat-card @sparrowFadeIn>
     <mat-card-content>
       <div class="flex flex-col gap-2 max-w-[500px]">
         <div class="flex w-full py-2 justify-between">

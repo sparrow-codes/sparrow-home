@@ -7,7 +7,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { DeviceType, LcsSwitch, TuyaDevice, TuyaFacadeService } from '@sparrow-home/tuya-device-domain';
-import { PageTitleComponent } from '@sparrow-home/ui';
+import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
@@ -28,6 +28,7 @@ import { LcsSwitchManualControlComponent } from '../../components/manual-control
   templateUrl: './tuya-device-details.component.html',
   styleUrl: './tuya-device-details.component.css',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal })],
+  animations: [sparrowFadeIn],
 })
 export class TuyaDeviceDetailsComponent implements OnInit {
   private id?: number;

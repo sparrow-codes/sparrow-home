@@ -1,7 +1,7 @@
-<sp-page-title>Akwarium</sp-page-title>
+<sp-page-title @sparrowFadeIn>Akwarium</sp-page-title>
 
 @if (aquaPreferences(); as aquaPreferences) {
-  <sp-aquarium-light-settings
+  <sp-aquarium-light-settings @sparrowFadeIn
     [aquaPreferences]="aquaPreferences"
     [tuyaDeviceOptions]="tuyaDeviceOptions() ?? []"
     (activated)="onScheduleChanged($event)"
