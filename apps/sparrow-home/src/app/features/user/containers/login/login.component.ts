@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
-import { DataFacadeService } from '@sparrow-home/core';
-import { APP_TITLE } from '@sparrow-home/core';
+import { MatCard, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { APP_TITLE, DataFacadeService } from '@sparrow-home/core';
 
 import { LoginFormComponent } from '../../component/login-form/login-form.component';
 
 @Component({
-  imports: [CommonModule, LoginFormComponent, MatCard, MatCardHeader, MatCardTitle, MatCardContent],
+  imports: [CommonModule, LoginFormComponent, MatCard, MatCardHeader, MatCardTitle],
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {

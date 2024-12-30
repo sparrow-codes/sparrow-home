@@ -3,12 +3,9 @@
     <mat-card-header>
       <mat-card-title>{{ appTitle }}</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <span class="text-md mt-2 mb-2 block">Logowanie</span>
       <app-login-form
         [hasError]="dataService.isLoginError()"
         (login)="dataService.login($event)"
       ></app-login-form>
-    </mat-card-content>
   </mat-card>
 </div>
