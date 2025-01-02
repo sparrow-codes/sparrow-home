@@ -1,21 +1,29 @@
 import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { Request } from 'express';
 import { map, Observable } from 'rxjs';
 
-import { CloudConnectionService } from '../services';
+import { PanasonicService } from '../services';
+import { CircularPumpService } from '../services/circular-pump/circular-pump.service';
 import { HeatPumpDetailsResponseMapper } from './mapper/heat-pump-details-response.mapper';
-import { GetHeatPumpDetailsResponse } from './models/get-heat-pump-details.response';
-import { GetScheduledWaterHeatingStatusResponse } from './models/get-scheduled-water-heating-status.response';
-import { ScheduledWaterHeatingRequest } from './models/scheduled-water-heating.request';
-import { SetHeatPumpStatusRequest } from './models/set-heat-pump-status.request';
+import { GetCircularPumpPreferences } from './models/circular-pump/get-circular-pump-preferences';
+import { SetCircularPumpJobStatusRequest } from './models/circular-pump/set-circular-pump-job-status-request';
+import { SetCircularPumpPreferencesRequest } from './models/circular-pump/set-circular-pump-preferences-request';
+import { GetHeatPumpDetailsResponse } from './models/panasonic/get-heat-pump-details.response';
+import { GetScheduledWaterHeatingStatusResponse } from './models/panasonic/get-scheduled-water-heating-status.response';
+import { ScheduledWaterHeatingRequest } from './models/panasonic/scheduled-water-heating.request';
+import { SetHeatPumpStatusRequest } from './models/panasonic/set-heat-pump-status.request';
 
 @ApiTags('Panasonic Cloud')
 @UseGuards(AuthGuard)
 @Controller('panasonic-cloud')
+@ApiBearerAuth()
 export class CloudController {
-  public constructor(private readonly _cloudService: CloudConnectionService) {}
+  public constructor(
+    private readonly _cloudService: PanasonicService,
+    private readonly _circularPumpService: CircularPumpService
+  ) {}
 
   @Get('/pump-heat-details')
   public getHeatPumpDetails(): Observable<GetHeatPumpDetailsResponse> {
@@ -35,5 +43,21 @@ export class CloudController {
   @Get('/scheduled-water-heating-status')
   public getScheduledWaterHeatingStatus(): GetScheduledWaterHeatingStatusResponse {
     return { isScheduled: this._cloudService.isScheduledWaterHeating() };
+  }
+
+  @Put('/circular-pump/preferences')
+  public setPreferences(@Body() request: SetCircularPumpPreferencesRequest): Promise<void> {
+    return this._circularPumpService.setAquaPreferences(request);
+  }
+
+  @Put('/circular-pump/status')
+  public setAquaStatus(@Body() request: SetCircularPumpJobStatusRequest): Promise<void> {
+    return this._circularPumpService.setLightJobStatusLightJob(request.isActive);
+  }
+
+  @ApiResponse({ type: GetCircularPumpPreferences })
+  @Get('/circular-pump/preferences')
+  public getPreferences(): Promise<GetCircularPumpPreferences> {
+    return this._circularPumpService.getCircularPumpPreferences();
   }
 }

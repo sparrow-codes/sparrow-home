@@ -1,5 +1,5 @@
 import { HeatPump } from '../../models/panasonic-cloud-models';
-import { GetHeatPumpDetailsResponse } from '../models/get-heat-pump-details.response';
+import { GetHeatPumpDetailsResponse } from '../models/panasonic/get-heat-pump-details.response';
 
 export class HeatPumpDetailsResponseMapper {
   public static map(heatPump: HeatPump): GetHeatPumpDetailsResponse {
