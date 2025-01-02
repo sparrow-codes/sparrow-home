@@ -19,6 +19,8 @@
       "@sparrow-home/aqua-domain": ["libs/fe/aqua/aqua-domain/src/index.ts"],
       "@sparrow-home/aqua-feature": ["libs/fe/aqua/aqua-feature/src/index.ts"],
       "@sparrow-home/core": ["libs/fe/core/src/index.ts"],
+      "@sparrow-home/heat-pump-domain": ["libs/fe/heat-pump/heat-pump-domain/src/index.ts"],
+      "@sparrow-home/heat-pump-feature": ["libs/fe/heat-pump/heat-pump-feature/src/index.ts"],
       "@sparrow-home/tuya-device-domain": ["libs/fe/tuya/tuya-device-domain/src/index.ts"],
       "@sparrow-home/tuya-device-feature": ["libs/fe/tuya/tuya-device-feature/src/index.ts"],
       "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"],

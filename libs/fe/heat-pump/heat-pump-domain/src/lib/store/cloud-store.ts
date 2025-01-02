@@ -4,10 +4,10 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CloudApiService, GetHeatPumpDetailsResponse, GetScheduleWaterHeatingResponse } from '@sparrow-home/api';
+import { LoaderService } from '@sparrow-home/core';
 import { delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { WaterTankOptions } from '../models';
-import { LoaderService } from '../services';
 
 interface CloudState {
   heatPump: GetHeatPumpDetailsResponse | null;

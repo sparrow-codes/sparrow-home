@@ -1,11 +1,8 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
-import { CreateUserRequest, GetHeatPumpDetailsResponse, LoginRequest } from '@sparrow-home/api';
+import { CreateUserRequest, LoginRequest } from '@sparrow-home/api';
 import { Observable } from 'rxjs';
 
-import { AppConfig } from '../models';
-import { Configuration } from '../models';
-import { WaterTankOptions } from '../models';
-import { CloudStore } from '../stores/cloud-store';
+import { AppConfig, Configuration } from '../models';
 import { RootStore } from '../stores/root-store';
 import { SetupStore } from '../stores/setup-store';
 import { UserStore } from '../stores/user-store';
@@ -17,11 +14,6 @@ export class DataFacadeService {
   private readonly _rootStore = inject(RootStore);
   private readonly _setupStore = inject(SetupStore);
   private readonly _userStore = inject(UserStore);
-  private readonly _cloudStore = inject(CloudStore);
-
-  public get heatPump(): Signal<GetHeatPumpDetailsResponse | null> {
-    return this._cloudStore.heatPump;
-  }
 
   public get authToken(): string | null {
     return this._userStore.token();
@@ -43,24 +35,8 @@ export class DataFacadeService {
     return this._setupStore.isConfigurationReady;
   }
 
-  public get lowestTemperatureAtNight(): Signal<number | undefined> {
-    return this._rootStore.lowestTemperatureAtNight;
-  }
-
   public get applicationConfig(): Signal<AppConfig | null> {
     return this._rootStore.appConfig;
-  }
-
-  public get waterTankOptions(): Signal<WaterTankOptions | null> {
-    return this._cloudStore.waterTankOptions;
-  }
-
-  public getHeatPumpDetails(): void {
-    this._cloudStore.getHeatPumpDetails();
-  }
-
-  public setHeatPumpOperationStatus(isWaterOn: boolean, isHeatOn: boolean): void {
-    this._cloudStore.changeOperationsStatus({ isWaterOn, isHeatOn });
   }
 
   public isConfigurationReady(): Observable<boolean> {
@@ -89,9 +65,5 @@ export class DataFacadeService {
 
   public saveAppConfig(appConfig: AppConfig): void {
     this._rootStore.saveAppConfig(appConfig);
-  }
-
-  public changeScheduledWaterHeatingStatus(status: boolean): void {
-    this._cloudStore.setWaterHeatingStatus(status);
   }
 }
