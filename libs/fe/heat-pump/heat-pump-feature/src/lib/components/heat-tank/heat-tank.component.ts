@@ -6,7 +6,7 @@ import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { ZoneStatus } from '@sparrow-home/api';
 
 @Component({
-  selector: 'app-heat-tank',
+  selector: 'sp-heat-tank',
   imports: [NgIcon, ReactiveFormsModule],
   templateUrl: './heat-tank.component.html',
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal })],

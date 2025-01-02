@@ -7,14 +7,14 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { TankStatus } from '@sparrow-home/api';
-import { WaterTankOptions } from '@sparrow-home/core';
+import { WaterTankOptions } from '@sparrow-home/heat-pump-domain';
 
 import { WaterTankFormName } from './form-service/enum/water-tank-form-name';
 import { WaterTankForm } from './form-service/model/water-tank-form';
 import { WaterTankFormService } from './form-service/water-tank-form.service';
 
 @Component({
-  selector: 'app-water-tank',
+  selector: 'sp-water-tank',
   imports: [CommonModule, NgIconComponent, ReactiveFormsModule, MatSlideToggle],
   templateUrl: './water-tank.component.html',
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal }), WaterTankFormService],

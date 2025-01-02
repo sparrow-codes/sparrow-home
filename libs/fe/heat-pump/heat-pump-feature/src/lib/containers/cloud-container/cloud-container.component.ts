@@ -15,7 +15,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
 import { GetHeatPumpDetailsResponse } from '@sparrow-home/api';
-import { DataFacadeService, WaterTankOptions } from '@sparrow-home/core';
+import { HeatPumpFacadeService, WaterTankOptions } from '@sparrow-home/heat-pump-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
 
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
@@ -44,7 +44,7 @@ export class CloudContainerComponent implements OnInit {
   protected formGroup?: FormGroup<CloudForm>;
 
   protected readonly formName: typeof CloudFormName = CloudFormName;
-  protected readonly dataFacadeService: DataFacadeService = inject(DataFacadeService);
+  protected readonly dataFacadeService: HeatPumpFacadeService = inject(HeatPumpFacadeService);
   protected readonly heatPump: Signal<GetHeatPumpDetailsResponse | null> = this.dataFacadeService.heatPump;
   protected readonly waterTankOptions: Signal<WaterTankOptions | null> = this.dataFacadeService.waterTankOptions;
 

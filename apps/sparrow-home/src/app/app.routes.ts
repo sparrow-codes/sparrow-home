@@ -9,8 +9,6 @@ import {
 } from '@sparrow-home/core';
 import { FrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
 
-import { CloudContainerComponent } from './features/cloud/containers/cloud-container/cloud-container.component';
-
 export const appRoutes: Route[] = [
   {
     path: RoutePath.CREATE_USER,
@@ -41,7 +39,7 @@ export const appRoutes: Route[] = [
       {
         path: RoutePath.HEAT_PUMP,
         title: pageTitleResolver,
-        component: CloudContainerComponent,
+        loadChildren: () => import('@sparrow-home/heat-pump-feature').then((feature) => feature.heatPumpRoutes),
       },
       {
         path: RoutePath.AQUARIUM,
