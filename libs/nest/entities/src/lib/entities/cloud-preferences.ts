@@ -21,7 +21,7 @@ export class CloudPreferences {
   @JoinColumn()
   public tuyaDevice!: TuyaDevice | null;
 
-  @Column({ nullable: true })
+  @Column({ default: false, name: 'isCircularPumpActive' })
   private _isCircularPumpActive!: boolean;
 
   public set isCircularPumpActive(value: boolean) {

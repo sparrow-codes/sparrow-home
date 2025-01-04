@@ -18,7 +18,7 @@ export class AquaPreferences {
   @JoinColumn()
   public tuyaDevice!: TuyaDevice | null;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'isActive' })
   private _isActive!: boolean;
 
   public set isActive(value: boolean) {
