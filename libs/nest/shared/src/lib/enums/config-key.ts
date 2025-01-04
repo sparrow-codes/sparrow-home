@@ -6,6 +6,7 @@ export enum ConfigKey {
 
   DB_HOST = 'dbHost',
   DB_PORT = 'dbPort',
+  DB_NAME = 'dbName',
   DB_USER_NAME = 'dbUserName',
   DB_PASSWORD = 'dbPassword',
   DB_SCHEMA = 'dbSchema',
