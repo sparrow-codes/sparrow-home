@@ -1,6 +1,6 @@
 <div class="flex gap-2 mt-2 items-center mb-6">
   <span>Status:</span>
-  @if (zone().operationStatus === 1) {
+  @if (heatTank().operationStatus === 1) {
     <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
   } @else {
     <ng-icon name="heroNoSymbol"></ng-icon>
@@ -10,11 +10,11 @@
 <div class="flex flex-col gap-1 w-full">
   <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
     <div class="w-full">Temperatura buffora</div>
-    <div class="w-full text-right md:text-left">{{ zone().temparatureNow }} &#176;C</div>
+    <div class="w-full text-right md:text-left">{{ heatTank().currentTemperature }} &#176;C</div>
   </div>
 
   <div class="w-full flex gap-4 items-center">
     <div class="w-full">Wybrana Korekta temperatury:</div>
-    <div class="w-full text-right md:text-left">{{ zone().heatSet }} &#176;C</div>
+    <div class="w-full text-right md:text-left">{{ heatTank().heatSet }} &#176;C</div>
   </div>
 </div>

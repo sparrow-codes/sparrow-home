@@ -47,12 +47,12 @@ export class CloudController {
 
   @Put('/circular-pump/preferences')
   public setPreferences(@Body() request: SetCircularPumpPreferencesRequest): Promise<void> {
-    return this._circularPumpService.setAquaPreferences(request);
+    return this._circularPumpService.setCircularPumpPreferences(request);
   }
 
   @Put('/circular-pump/status')
-  public setAquaStatus(@Body() request: SetCircularPumpJobStatusRequest): Promise<void> {
-    return this._circularPumpService.setLightJobStatusLightJob(request.isActive);
+  public setCircularPumpStatus(@Body() request: SetCircularPumpJobStatusRequest): Promise<void> {
+    return this._circularPumpService.setCircularPumpScheduleTask(request.isActive);
   }
 
   @ApiResponse({ type: GetCircularPumpPreferences })

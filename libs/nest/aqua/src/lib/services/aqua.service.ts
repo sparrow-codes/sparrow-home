@@ -21,12 +21,19 @@ export class AquaService {
 
   public async getAquaPreferences(): Promise<GetAquaPreferences> {
     const user: User = await this._getUser();
-    return {
-      lightStartTime: user.aquaPreferences.lightStartTime,
-      lightEndTime: user.aquaPreferences.lightEndTime,
-      tuyaDeviceId: user.aquaPreferences.tuyaDevice?.tuyaDeviceId,
-      isActive: user.aquaPreferences.isActive ?? false,
-    };
+    const response: GetAquaPreferences = new GetAquaPreferences();
+    response.tuyaDeviceId = user.aquaPreferences.tuyaDevice?.tuyaDeviceId;
+    response.isActive = user.aquaPreferences.isActive ?? false;
+
+    if (user.aquaPreferences.lightStartTime) {
+      response.lightStartTime = user.aquaPreferences.lightStartTime;
+    }
+
+    if (user.aquaPreferences.lightEndTime) {
+      response.lightEndTime = user.aquaPreferences.lightEndTime;
+    }
+
+    return response;
   }
 
   public async setLightJobStatusLightJob(isActive: boolean): Promise<void> {
@@ -40,6 +47,9 @@ export class AquaService {
   public async setAquaPreferences(request: SetAquaPreferencesRequest): Promise<void> {
     const user: User = await this._getUser();
     const aquaPreferences: AquaPreferences = user.aquaPreferences;
+
+    aquaPreferences.lightStartTime = request.from ? new Date(request.from) : null;
+    aquaPreferences.lightEndTime = request.to ? new Date(request.to) : null;
 
     if (request.tuyaDeviceId && request.from && request.to) {
       const tuyaDevice: TuyaDevice | null = await this._tuyaDeviceRepository.findOneBy({
@@ -56,16 +66,13 @@ export class AquaService {
       const aquaPreferences: AquaPreferences = user.aquaPreferences;
 
       aquaPreferences.tuyaDevice = tuyaDevice;
-      aquaPreferences.lightStartTime = request.from;
-      aquaPreferences.lightEndTime = request.to;
       this.setAquaLightJob(user.aquaPreferences);
     } else {
-      aquaPreferences.tuyaDevice = undefined;
-      aquaPreferences.lightStartTime = undefined;
-      aquaPreferences.lightEndTime = undefined;
+      aquaPreferences.tuyaDevice = null;
 
       const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
       cronJob.stop();
+      Logger.log('Aqua light job Stopped.');
     }
 
     await this._aquaPreferencesRepository.save(aquaPreferences);

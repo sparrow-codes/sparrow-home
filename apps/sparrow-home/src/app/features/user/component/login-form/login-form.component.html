@@ -1,26 +1,29 @@
-<mat-card-content>
-  <form [formGroup]="formGroup" class="w-[450px] flex flex-col gap-2">
-    <span class="text-md mb-2 block">Logowanie</span>
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput [formControlName]="formName.EMAIL">
-    </mat-form-field>
+<form [formGroup]="formGroup">
+  <mat-card-content>
+    <div  class="w-[450px] flex flex-col gap-2">
+      <span class="text-md mb-2 block">Logowanie</span>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [formControlName]="formName.EMAIL">
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input matInput type="password" [formControlName]="formName.PASSWORD">
-      @if(showInvalidLoginError()) {
-        <mat-error>Niepoprawny login lub hasło!</mat-error>
-      }
-    </mat-form-field>
-  </form>
-</mat-card-content>
-
-<mat-card-actions align="end">
-  <button mat-stroked-button [disabled]="showInvalidLoginError()" (click)="onLoginClick()">
-    <div class="flex justify-center gap-2 items-center">
-      <span>Login</span>
-      <ng-icon name="heroLockOpen"></ng-icon>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [formControlName]="formName.PASSWORD">
+        @if(showInvalidLoginError()) {
+          <mat-error>Niepoprawny login lub hasło!</mat-error>
+        }
+      </mat-form-field>
     </div>
-  </button>
-</mat-card-actions>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-stroked-button [disabled]="showInvalidLoginError()" (click)="onLoginClick()">
+      <div class="flex justify-center gap-2 items-center">
+        <span>Login</span>
+        <ng-icon name="heroLockOpen"></ng-icon>
+      </div>
+    </button>
+  </mat-card-actions>
+</form>
+

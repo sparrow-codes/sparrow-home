@@ -12,12 +12,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
-import { GetHeatPumpDetailsResponse } from '@sparrow-home/api';
-import { HeatPumpFacadeService, WaterTankOptions } from '@sparrow-home/heat-pump-domain';
+import {
+  CircularPumpPreferences,
+  HeatPump,
+  HeatPumpFacadeService,
+  WaterTankOptions,
+} from '@sparrow-home/heat-pump-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
 
+import { CircularPumpSettingsComponent } from '../../components/circular-pump-settings/circular-pump-settings.component';
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
 import { WaterTankComponent } from '../../components/water-tank/water-tank.component';
 import { CloudFormService } from './form-service/cloud-form.service';
@@ -35,6 +41,9 @@ import { CloudForm } from './form-service/model/cloud-form';
     MatSlideToggle,
     MatCardModule,
     PageTitleComponent,
+    MatTabGroup,
+    MatTab,
+    CircularPumpSettingsComponent,
   ],
   templateUrl: './cloud-container.component.html',
   providers: [provideIcons({ heroPresentationChartLine, heroClock }), CloudFormService],
@@ -45,19 +54,23 @@ export class CloudContainerComponent implements OnInit {
 
   protected readonly formName: typeof CloudFormName = CloudFormName;
   protected readonly dataFacadeService: HeatPumpFacadeService = inject(HeatPumpFacadeService);
-  protected readonly heatPump: Signal<GetHeatPumpDetailsResponse | null> = this.dataFacadeService.heatPump;
+  protected readonly heatPump: Signal<HeatPump | null> = this.dataFacadeService.heatPump;
   protected readonly waterTankOptions: Signal<WaterTankOptions | null> = this.dataFacadeService.waterTankOptions;
+  protected readonly circularPumpPreferences: Signal<CircularPumpPreferences | null> =
+    this.dataFacadeService.circularPumpPreferences;
+  protected readonly tuyaDeviceOptions: Signal<{ value: string; label: string }[] | null> =
+    this.dataFacadeService.tuyaDeviceOptions;
 
   private readonly _injector: Injector = inject(Injector);
   private readonly _formService: CloudFormService = inject(CloudFormService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
-    this.dataFacadeService.getHeatPumpDetails();
+    this.dataFacadeService.fetchInitData();
 
     effect(
       () => {
-        const heatPump: GetHeatPumpDetailsResponse | null = this.heatPump();
+        const heatPump: HeatPump | null = this.heatPump();
 
         if (heatPump && !this.formGroup) {
           this._createCloudForm(heatPump);
@@ -71,8 +84,16 @@ export class CloudContainerComponent implements OnInit {
     this.dataFacadeService.changeScheduledWaterHeatingStatus(waterTankOptions.isScheduledHeating);
   }
 
-  private _createCloudForm(heatPump: GetHeatPumpDetailsResponse): void {
-    this._formService.prepareForm(!!heatPump.tankStatus?.operationStatus, !!heatPump.zoneStatus?.operationStatus);
+  protected setCircularPumpPreferences(preferences: CircularPumpPreferences): void {
+    this.dataFacadeService.setCircularPumpPreferences(preferences);
+  }
+
+  protected setCircularPumScheduled(isActive: boolean): void {
+    this.dataFacadeService.setCircularPumpScheduleStatus(isActive);
+  }
+
+  private _createCloudForm(heatPump: HeatPump): void {
+    this._formService.prepareForm(!!heatPump.waterTank?.operationStatus, !!heatPump.heatTank?.operationStatus);
     this.formGroup = this._formService.form;
     this.formGroup?.valueChanges
       .pipe(takeUntilDestroyed(this._destroyRef))

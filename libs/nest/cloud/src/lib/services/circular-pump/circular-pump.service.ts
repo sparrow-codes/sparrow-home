@@ -21,25 +21,35 @@ export class CircularPumpService {
 
   public async getCircularPumpPreferences(): Promise<GetCircularPumpPreferences> {
     const user: User = await this._getUser();
-    return {
-      circularPumpEndTime: user.cloudPreferences.circularPumpEndTime,
-      circularPumpStartTime: user.cloudPreferences.circularPumpStartTime,
-      tuyaDeviceId: user.cloudPreferences.tuyaDevice?.tuyaDeviceId,
-      isActive: user.cloudPreferences.isCircularPumpActive ?? false,
-    };
+    const response: GetCircularPumpPreferences = new GetCircularPumpPreferences();
+    response.tuyaDeviceId = user.cloudPreferences.tuyaDevice?.tuyaDeviceId;
+    response.isActive = user.cloudPreferences.isCircularPumpActive ?? false;
+
+    if (user.cloudPreferences.circularPumpEndTime) {
+      response.circularPumpEndTime = user.cloudPreferences.circularPumpEndTime;
+    }
+
+    if (user.cloudPreferences.circularPumpStartTime) {
+      response.circularPumpStartTime = user.cloudPreferences.circularPumpStartTime;
+    }
+
+    return response;
   }
 
-  public async setLightJobStatusLightJob(isActive: boolean): Promise<void> {
+  public async setCircularPumpScheduleTask(isActive: boolean): Promise<void> {
     const user: User = await this._getUser();
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
     cloudPreferences.isCircularPumpActive = isActive;
     await this._cloudPreferencesRepository.save(cloudPreferences);
-    this.setAquaLightJob(cloudPreferences);
+    this.setCircularPumpJob(cloudPreferences);
   }
 
-  public async setAquaPreferences(request: SetCircularPumpPreferencesRequest): Promise<void> {
+  public async setCircularPumpPreferences(request: SetCircularPumpPreferencesRequest): Promise<void> {
     const user: User = await this._getUser();
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
+
+    cloudPreferences.circularPumpStartTime = request.from ?? null;
+    cloudPreferences.circularPumpEndTime = request.to ?? null;
 
     if (request.tuyaDeviceId && request.from && request.to) {
       const tuyaDevice: TuyaDevice | null = await this._tuyaDeviceRepository.findOneBy({
@@ -54,22 +64,19 @@ export class CircularPumpService {
       }
 
       cloudPreferences.tuyaDevice = tuyaDevice;
-      cloudPreferences.circularPumpStartTime = request.from;
-      cloudPreferences.circularPumpEndTime = request.to;
-      this.setAquaLightJob(user.cloudPreferences);
+      this.setCircularPumpJob(user.cloudPreferences);
     } else {
-      cloudPreferences.tuyaDevice = undefined;
-      cloudPreferences.circularPumpStartTime = undefined;
-      cloudPreferences.circularPumpEndTime = undefined;
+      cloudPreferences.tuyaDevice = null;
 
       const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
       cronJob.stop();
+      Logger.log('Circular pump job Stopped.');
     }
 
     await this._cloudPreferencesRepository.save(cloudPreferences);
   }
 
-  public setAquaLightJob(cloudPreferences: CloudPreferences): void {
+  public setCircularPumpJob(cloudPreferences: CloudPreferences): void {
     const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
     if (cloudPreferences.isCircularPumpActive) {
       const hours: number | undefined = cloudPreferences.circularPumpStartTime?.getHours();

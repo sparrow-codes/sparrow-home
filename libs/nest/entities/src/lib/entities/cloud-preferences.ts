@@ -12,14 +12,14 @@ export class CloudPreferences {
   public isEverydayWaterHeatOn!: boolean;
 
   @Column({ nullable: true })
-  public circularPumpStartTime?: Date;
+  public circularPumpStartTime!: Date | null;
 
   @Column({ nullable: true })
-  public circularPumpEndTime?: Date;
+  public circularPumpEndTime!: Date | null;
 
   @OneToOne(() => TuyaDevice, { eager: true, nullable: true })
   @JoinColumn()
-  public tuyaDevice?: TuyaDevice;
+  public tuyaDevice!: TuyaDevice | null;
 
   @Column({ nullable: true })
   private _isCircularPumpActive!: boolean;
