@@ -12,6 +12,12 @@ import { ConfigKey } from '@sparrow-server/shared';
 import { TuyaModule } from '@sparrow-server/tuya';
 import { UserModule } from '@sparrow-server/user';
 
+import { CreateSetupTable1735995550693 } from '../db/migrations/1735995550693-CreateSetupTable';
+import { CreateTuyaDeviceTable1735995890303 } from '../db/migrations/1735995890303-CreateTuyaDeviceTable';
+import { CreateCloudPreferencesTable1735996227082 } from '../db/migrations/1735996227082-CreateCloudPreferencesTable';
+import { CreateAquaPreferencesTable1735998874554 } from '../db/migrations/1735998874554-CreateAquaPreferencesTable';
+import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-CreateUserTable';
+
 @Module({
   imports: [
     CloudModule,
@@ -28,7 +34,14 @@ import { UserModule } from '@sparrow-server/user';
         password: configService?.get<string>(ConfigKey.DB_PASSWORD),
         schema: configService?.get<string>(ConfigKey.DB_SCHEMA),
         autoLoadEntities: true,
-        synchronize: true,
+        migrationsRun: true,
+        migrations: [
+          CreateSetupTable1735995550693,
+          CreateTuyaDeviceTable1735995890303,
+          CreateCloudPreferencesTable1735996227082,
+          CreateAquaPreferencesTable1735998874554,
+          CreateUserTable1735999040434,
+        ],
       }),
     }),
     UserModule,
