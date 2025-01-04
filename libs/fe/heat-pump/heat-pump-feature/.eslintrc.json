@@ -6,6 +6,18 @@
       "files": ["*.ts"],
       "extends": ["plugin:@nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "scope:fe-heat-pump-feature",
+                "onlyDependOnLibsWithTags": ["scope:fe-heat-pump-domain", "scope: fe-ui"]
+              }
+            ]
+          }
+        ],
         "@angular-eslint/directive-selector": [
           "error",
           {

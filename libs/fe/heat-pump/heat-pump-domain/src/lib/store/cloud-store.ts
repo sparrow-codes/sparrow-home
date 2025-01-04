@@ -3,31 +3,48 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { CloudApiService, GetHeatPumpDetailsResponse, GetScheduleWaterHeatingResponse } from '@sparrow-home/api';
+import {
+  CloudApiService,
+  GetCircularPumpPreferencesResponse,
+  GetHeatPumpDetailsResponse,
+  GetScheduleWaterHeatingResponse,
+  TuyaApiService,
+  TuyaDeviceApiModel,
+} from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
-import { delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
+import { combineLatest, delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
 
-import { WaterTankOptions } from '../models';
+import { CircularPreferencesPumpMapper } from '../mapper/circular-preferences-pump.mapper';
+import { HeatPumpMapper } from '../mapper/heat-pump.mapper';
+import { CircularPumpPreferences, HeatPump, WaterTankOptions } from '../models';
 
 interface CloudState {
-  heatPump: GetHeatPumpDetailsResponse | null;
+  heatPump: HeatPump | null;
   waterTankOptions: WaterTankOptions | null;
+  circularPumpPreferences: CircularPumpPreferences | null;
+  tuyaDeviceOptions: { value: string; label: string }[] | null;
 }
 
 export const CloudStore = signalStore(
   { providedIn: 'root' },
-  withState<CloudState>({ heatPump: null, waterTankOptions: null }),
+  withState<CloudState>({
+    heatPump: null,
+    waterTankOptions: null,
+    circularPumpPreferences: null,
+    tuyaDeviceOptions: null,
+  }),
   withMethods(
     (
       store,
       cloudApiService = inject(CloudApiService),
       snackBar = inject(MatSnackBar),
-      loaderService = inject(LoaderService)
+      loaderService = inject(LoaderService),
+      tuyaApiService = inject(TuyaApiService)
     ) => {
       const _getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponse> = () =>
         cloudApiService.getHeatPumpDetails().pipe(
           tapResponse({
-            next: (value) => patchState(store, { heatPump: { ...value } }),
+            next: (response) => patchState(store, { heatPump: HeatPumpMapper.map(response) }),
             error: () => snackBar.open('Błąd: Wystąpił błąd w połączeniu do cloud!', 'Zamknij'),
           })
         );
@@ -41,15 +58,40 @@ export const CloudStore = signalStore(
           })
         );
 
+      const _getCircularPumpPreferencesResponse: () => Observable<GetCircularPumpPreferencesResponse> = () =>
+        cloudApiService.getCircularPumpPreferences().pipe(
+          tapResponse({
+            next: (response) =>
+              patchState(store, { circularPumpPreferences: CircularPreferencesPumpMapper.map(response) }),
+            error: () => snackBar.open('Błąd pobierania szczegółów pompy cyrkulacyjnej'),
+          })
+        );
+
+      const _getTuyaDeviceOptions: () => Observable<TuyaDeviceApiModel[]> = () =>
+        tuyaApiService.getAll().pipe(
+          tapResponse({
+            next: (deviceList) =>
+              patchState(store, {
+                tuyaDeviceOptions: deviceList.map((device) => ({
+                  value: device.tuyaDeviceId,
+                  label: device.name,
+                })),
+              }),
+            error: () => snackBar.open('Błąd pobierania listy urządzeń Tuya!'),
+          })
+        );
+
       return {
-        getHeatPumpDetails: rxMethod<void>(
+        fetchInitData: rxMethod<void>(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap(() =>
-              _getHeatPumpDetails().pipe(
-                switchMap(() => _getScheduledWaterHeatStatus()),
-                finalize(() => (loaderService.showLoader = false))
-              )
+              combineLatest([
+                _getHeatPumpDetails(),
+                _getScheduledWaterHeatStatus(),
+                _getCircularPumpPreferencesResponse(),
+                _getTuyaDeviceOptions(),
+              ]).pipe(finalize(() => (loaderService.showLoader = false)))
             )
           )
         ),
@@ -77,6 +119,43 @@ export const CloudStore = signalStore(
                   error: () => snackBar.open('Błąd podczas zmiany ustawień grzania wody!', 'Zamknij'),
                 }),
                 switchMap(() => _getScheduledWaterHeatStatus()),
+                finalize(() => (loaderService.showLoader = false))
+              )
+            )
+          )
+        ),
+        setCircularPumpPreferences: rxMethod<CircularPumpPreferences>(
+          pipe(
+            tap(() => (loaderService.showLoader = true)),
+            switchMap((preferences) =>
+              cloudApiService
+                .setCircularPumpPreferences({
+                  from: preferences.scheduledStartTime,
+                  to: preferences.scheduledEndTime,
+                  tuyaDeviceId: preferences.tuyaDeviceId,
+                })
+                .pipe(
+                  tapResponse({
+                    next: () => snackBar.open('Pomyślnie zmieniono ustawienia'),
+                    error: () => snackBar.open('Błąd zmiany ustawień pompy cyrkulacyjnej'),
+                  }),
+                  switchMap(() => _getCircularPumpPreferencesResponse()),
+                  finalize(() => (loaderService.showLoader = false))
+                )
+            )
+          )
+        ),
+
+        setCircularPumpScheduleStatus: rxMethod<boolean>(
+          pipe(
+            tap(() => (loaderService.showLoader = true)),
+            switchMap((isActive) =>
+              cloudApiService.setCircularPumpScheduleStatus(isActive).pipe(
+                tapResponse({
+                  next: () => snackBar.open('Włączono harmonogram pracy pompy cyrkulacyjnej'),
+                  error: () => snackBar.open('Błąd uruchamiania harmonogramu pompy cyrkulacyjnej'),
+                }),
+                switchMap(() => _getCircularPumpPreferencesResponse()),
                 finalize(() => (loaderService.showLoader = false))
               )
             )

@@ -48,7 +48,6 @@ import { AquariumLightForm } from './form-service/model/aquarium-light-form';
     MatError,
   ],
   templateUrl: './aquarium-light-settings.component.html',
-  styleUrl: './aquarium-light-settings.component.css',
   providers: [AquariumLightFormService, provideIcons({ heroClock })],
 })
 export class AquariumLightSettingsComponent implements OnInit {

@@ -1,0 +1,54 @@
+@if (formGroup) {
+  <mat-card>
+    <mat-card-header>
+      <div class="flex w-full justify-between items-center">
+        <span>Harmonogram pompy cyrculacyjnej</span>
+        <mat-slide-toggle
+          (change)="activated.emit($event.checked)"
+          [checked]="circularPumpPreferences().isActive"
+          [disabled]="!canScheduleBeActivated() || formGroup.enabled"
+        >Włącz/Wyłącz
+        </mat-slide-toggle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content [formGroup]="formGroup">
+      <mat-form-field class="mt-4">
+        <mat-label>Urządzenie Tuya:</mat-label>
+        <mat-select [formControlName]="formName.TUYA_DEVICE">
+          <mat-option>Brak</mat-option>
+          @for (option of tuyaDeviceOptions(); track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="flex gap-6 items-center">
+        <mat-form-field>
+          <mat-label>Start pracy pompy:</mat-label>
+          <input matInput [matTimepicker]="fromPicker" [formControlName]="formName.FROM" />
+          <mat-timepicker-toggle matIconSuffix [for]="fromPicker"/>
+          <mat-timepicker interval="15min" #fromPicker />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Koniec pracy pompy:</mat-label>
+          <input matInput [matTimepicker]="toPicker" [formControlName]="formName.TO" />
+          <mat-timepicker-toggle matIconSuffix [for]="toPicker"/>
+          <mat-timepicker interval="15min" #toPicker />
+          @if (toControl?.touched && toControl?.invalid) {
+            <mat-error>Nieprawidłowy zakres czasu!</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions [align]="'end'" class="gap-4">
+      @if (formGroup.disabled) {
+        <button (click)="editMode()" mat-stroked-button>Edytuj</button>
+      } @else {
+        <button (click)="readonlyMode()" mat-button>Anuluj</button>
+        <button (click)="onSubmitPreferences()" mat-stroked-button>Zapisz</button>
+      }
+    </mat-card-actions>
+  </mat-card>
+}

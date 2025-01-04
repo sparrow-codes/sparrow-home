@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
-import { ZoneStatus } from '@sparrow-home/api';
+import { HeatTank } from '@sparrow-home/heat-pump-domain';
 
 @Component({
   selector: 'sp-heat-tank',
@@ -12,5 +12,5 @@ import { ZoneStatus } from '@sparrow-home/api';
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal })],
 })
 export class HeatTankComponent {
-  public readonly zone: InputSignal<ZoneStatus> = input.required();
+  public readonly heatTank: InputSignal<HeatTank> = input.required();
 }

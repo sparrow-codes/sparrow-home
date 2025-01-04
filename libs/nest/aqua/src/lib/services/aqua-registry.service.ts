@@ -16,7 +16,7 @@ export class AquaRegistryService {
   ) {}
 
   @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_AQUA_LIGHT })
-  public async setWaterOff(): Promise<void> {
+  public async setAquaLight(): Promise<void> {
     Logger.log('Starting scheduled task: Every day aqua light');
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     const aquaPreferences: AquaPreferences | undefined = user?.aquaPreferences;

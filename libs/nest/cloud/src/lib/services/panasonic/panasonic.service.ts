@@ -8,11 +8,11 @@ import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
-import { SetHeatPumpStatusRequest } from '../../controllers/models/set-heat-pump-status.request';
+import { SetHeatPumpStatusRequest } from '../../controllers/models/panasonic/set-heat-pump-status.request';
 import { HeatPump } from '../../models/panasonic-cloud-models';
 
 @Injectable()
-export class CloudConnectionService {
+export class PanasonicService {
   public constructor(
     private readonly _connector: ComfortCloudConnector,
     private readonly _configService: ConfigService,

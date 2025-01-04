@@ -6,8 +6,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
-import { TankStatus } from '@sparrow-home/api';
-import { WaterTankOptions } from '@sparrow-home/heat-pump-domain';
+import { WaterTank, WaterTankOptions } from '@sparrow-home/heat-pump-domain';
 
 import { WaterTankFormName } from './form-service/enum/water-tank-form-name';
 import { WaterTankForm } from './form-service/model/water-tank-form';
@@ -20,7 +19,7 @@ import { WaterTankFormService } from './form-service/water-tank-form.service';
   providers: [provideIcons({ heroCheckCircleSolid, heroNoSymbol, heroAdjustmentsHorizontal }), WaterTankFormService],
 })
 export class WaterTankComponent implements OnInit {
-  public readonly waterTank: InputSignal<TankStatus> = input.required();
+  public readonly waterTank: InputSignal<WaterTank> = input.required();
   public readonly waterTankOptionsChange: OutputEmitterRef<WaterTankOptions> = output();
   public readonly waterTankOptions: InputSignal<WaterTankOptions | null> = input.required();
 

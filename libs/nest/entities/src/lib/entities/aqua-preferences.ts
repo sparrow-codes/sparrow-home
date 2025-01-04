@@ -9,14 +9,14 @@ export class AquaPreferences {
   public id!: number;
 
   @Column({ nullable: true })
-  public lightStartTime?: Date;
+  public lightStartTime!: Date | null;
 
   @Column({ nullable: true })
-  public lightEndTime?: Date;
+  public lightEndTime!: Date | null;
 
   @OneToOne(() => TuyaDevice, { eager: true, nullable: true })
   @JoinColumn()
-  public tuyaDevice?: TuyaDevice;
+  public tuyaDevice!: TuyaDevice | null;
 
   @Column({ nullable: true })
   private _isActive!: boolean;
