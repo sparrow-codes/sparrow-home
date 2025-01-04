@@ -31,6 +31,7 @@ import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-Cre
         host: configService.get<string>(ConfigKey.DB_HOST),
         port: +configService?.get<number>(ConfigKey.DB_PORT),
         username: configService?.get<string>(ConfigKey.DB_USER_NAME),
+        database: configService.get<string>(ConfigKey.DB_NAME),
         password: configService?.get<string>(ConfigKey.DB_PASSWORD),
         schema: configService?.get<string>(ConfigKey.DB_SCHEMA),
         autoLoadEntities: true,
