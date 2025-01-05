@@ -1,6 +1,6 @@
 export enum RoutePath {
   MAIN = 'main',
-  HEAT_PUMP = 'hear-pump',
+  HEAT_PUMP = 'heat-pump',
   CREATE_USER = 'create-user',
   LOGIN = 'login',
   AQUARIUM = 'aquarium',
