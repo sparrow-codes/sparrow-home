@@ -101,6 +101,7 @@ export class TuyaDataService {
 
   public fetchDeviceDetailsById(id: number): void {
     this._loadingService.showLoader = true;
+    this._tuyaDeviceDetails.set(null);
     this._apiService
       .getDeviceDetails(id)
       .pipe(
