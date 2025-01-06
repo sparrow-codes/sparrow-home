@@ -1,8 +1,10 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
+import { AquaPreferences, CloudPreferences, User, UserRole } from '@sparrow-server/entities';
 import { CronJobName } from '@sparrow-server/shared';
+import { CronJob } from 'cron/dist/job';
+import { CronTime } from 'cron/dist/time';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -18,6 +20,7 @@ export class AppInitService {
     try {
       const owner: User = await this._getUser();
       await this._verifyCloudScheduledTask(owner);
+      await this._verifyAquaPreferences(owner);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         Logger.log('No user found. Initial configuration required');
@@ -33,6 +36,29 @@ export class AppInitService {
       this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).start();
       this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).start();
       Logger.log('Scheduling everyday water heating');
+    }
+
+    const circularPumpStartTime: Date | null = cloudPreferences.circularPumpStartTime;
+
+    if (cloudPreferences.isCircularPumpActive && circularPumpStartTime) {
+      const cronJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
+      cronJob.setTime(
+        new CronTime(`0 ${circularPumpStartTime.getMinutes()} ${circularPumpStartTime.getHours()} * * *`)
+      );
+      cronJob.start();
+      Logger.log(`Starting everyday circular pump: start at ${cronJob.nextDate()}`);
+    }
+  }
+
+  private async _verifyAquaPreferences(owner: User): Promise<void> {
+    const aquaPreferences: AquaPreferences = owner.aquaPreferences;
+    const startTime: Date | null = aquaPreferences.lightStartTime;
+
+    if (aquaPreferences.isActive && startTime) {
+      const cronJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+      cronJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
+      cronJob.start();
+      Logger.log(`Starting everyday aqua light: start at ${cronJob.nextDate()}`);
     }
   }
 

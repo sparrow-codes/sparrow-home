@@ -2,7 +2,7 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, UserRole } from '@sparrow-server/entities';
+import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
 import { ConfigKey, CronJobName } from '@sparrow-server/shared';
 import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -17,7 +17,8 @@ export class PanasonicService {
     private readonly _connector: ComfortCloudConnector,
     private readonly _configService: ConfigService,
     private readonly _scheduleRegistry: SchedulerRegistry,
-    @InjectRepository(User) private readonly _userRepository: Repository<User>
+    @InjectRepository(User) private readonly _userRepository: Repository<User>,
+    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>
   ) {}
 
   public getHeatPumpDetails(): Observable<HeatPump> {
@@ -29,19 +30,20 @@ export class PanasonicService {
 
   public async scheduledWaterHeating(active: boolean): Promise<void> {
     const user: User = await this._getUser();
+    const cloudPreferences: CloudPreferences = user.cloudPreferences;
     if (active) {
       this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).start();
       this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).start();
-      user.cloudPreferences.isEverydayWaterHeatOn = true;
+      cloudPreferences.isEverydayWaterHeatOn = true;
       Logger.log('Scheduling everyday water heating');
     } else {
       this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).stop();
       this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_OFF).stop();
-      user.cloudPreferences.isEverydayWaterHeatOn = false;
+      cloudPreferences.isEverydayWaterHeatOn = false;
       Logger.log('Setting off everyday water heating');
     }
 
-    await this._userRepository.save(user);
+    await this._cloudPreferencesRepository.save(cloudPreferences);
   }
 
   public isScheduledWaterHeating(): boolean {
