@@ -79,14 +79,13 @@ export class CircularPumpService {
   public setCircularPumpJob(cloudPreferences: CloudPreferences): void {
     const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
     if (cloudPreferences.isCircularPumpActive) {
-      const hours: number | undefined = cloudPreferences.circularPumpStartTime?.getHours();
-      const minutes: number | undefined = cloudPreferences.circularPumpEndTime?.getMinutes();
+      const startTime: Date | null = cloudPreferences.circularPumpStartTime;
 
-      if (minutes === undefined || hours === undefined) {
+      if (!startTime) {
         throw new HttpException('Invalid Circular Pump parameters configuration', HttpStatus.CONFLICT);
       }
 
-      cronJob.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+      cronJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
       Logger.log(`Setting Circular pump job - next run will be at: ${cronJob.nextDate()}`);
       cronJob.start();
     } else {
