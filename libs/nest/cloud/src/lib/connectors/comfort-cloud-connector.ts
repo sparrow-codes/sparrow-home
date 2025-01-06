@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Axios, AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 
@@ -86,5 +87,11 @@ export class ComfortCloudConnector {
         },
       ],
     };
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_NOON, { name: 'Cloud Access Token Reset' })
+  public clearAuthToken(): void {
+    this._oAuthClient.accessToken = '';
+    Logger.log('Scheduled reset cloud access token');
   }
 }
