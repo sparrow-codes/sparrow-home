@@ -152,7 +152,7 @@ export const CloudStore = signalStore(
             switchMap((isActive) =>
               cloudApiService.setCircularPumpScheduleStatus(isActive).pipe(
                 tapResponse({
-                  next: () => snackBar.open('Włączono harmonogram pracy pompy cyrkulacyjnej'),
+                  next: () => snackBar.open(isActive ? 'Harmonogram aktywny' : 'Harmonogram wyłączony'),
                   error: () => snackBar.open('Błąd uruchamiania harmonogramu pompy cyrkulacyjnej'),
                 }),
                 switchMap(() => _getCircularPumpPreferencesResponse()),

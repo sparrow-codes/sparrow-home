@@ -51,7 +51,7 @@ export class AquaDataService {
       .pipe(
         first(),
         tap({
-          next: () => this._snackBar.open('Harmonogram oświetlenia akwarium jest aktywny!'),
+          next: () => this._snackBar.open(isActive ? 'Harmonogram aktywny' : 'Harmonogram wyłączony'),
           error: () => this._snackBar.open('Błąd aktywowania harmonogramu. Zweryfikuj ustawienia!'),
         })
       )
