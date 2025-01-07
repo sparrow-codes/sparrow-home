@@ -52,8 +52,13 @@ export const appRoutes: Route[] = [
         component: PageNotFoundComponent,
       },
       {
+        path: '',
+        redirectTo: RoutePath.MAIN,
+        pathMatch: 'full',
+      },
+      {
         path: '**',
-        redirectTo: 'no-found',
+        redirectTo: RoutePath.NOT_FOUND,
       },
     ],
   },

@@ -44,3 +44,6 @@ Thumbs.db
 .angular
 /.npmrc
 /apps/server/.env
+
+
+storybook-static

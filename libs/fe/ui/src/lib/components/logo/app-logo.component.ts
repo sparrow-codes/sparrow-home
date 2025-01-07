@@ -1,0 +1,47 @@
+import { CommonModule } from '@angular/common';
+import { Component, input, InputSignal } from '@angular/core';
+
+@Component({
+  selector: 'sp-app-logo',
+  imports: [CommonModule],
+  template: `
+    @if (type() === 'vertical') {
+    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M40 10C40 5 35 0 30 0C25 0 20 5 20 10L20 90C20 95 25 100 30 100C35 75 40 95 40 90L40 10Z"
+        fill="#4e91b8"
+      />
+      <path
+        d="M60 10C60 5 55 0 50 0C45 0 40 5 40 10L40 90C40 95 45 100 50 100C55 75 60 95 60 90L60 10Z"
+        fill="#3e3e3e"
+      />
+      <text x="50" y="50" font-size="20" font-weight="600" font-family="Helvetica" text-anchor="middle" fill="#ffffff">
+        Sparrow
+      </text>
+      <text x="50" y="70" font-size="15" font-weight="400" font-family="Helvetica" text-anchor="middle" fill="#ffffff">
+        Home
+      </text>
+    </svg>
+    } @else {
+    <svg width="200" height="100" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M40 10C40 5 35 0 30 0C25 0 20 5 20 10L20 90C20 95 25 100 30 100C35 75 40 95 40 90L40 10Z"
+        fill="#4e91b8"
+      />
+      <path
+        d="M60 10C60 5 55 0 50 0C45 0 40 5 40 10L40 90C40 95 45 100 50 100C55 75 60 95 60 90L60 10Z"
+        fill="#3e3e3e"
+      />
+      <text x="110" y="50" font-size="20" font-weight="600" font-family="Helvetica" text-anchor="middle" fill="#3e3e3e">
+        Sparrow
+      </text>
+      <text x="90" y="70" font-size="15" font-weight="400" font-family="Helvetica" text-anchor="middle" fill="#3e3e3e">
+        Home
+      </text>
+    </svg>
+    }
+  `,
+})
+export class AppLogoComponent {
+  public readonly type: InputSignal<'vertical' | 'horizontal'> = input<'vertical' | 'horizontal'>('vertical');
+}

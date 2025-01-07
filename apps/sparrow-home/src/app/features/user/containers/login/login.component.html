@@ -1,9 +1,8 @@
 <div class="w-full h-full flex items-center justify-center bg-super-light-gray">
-  <div class="w-[300px] md:w-[450px]">
-    <mat-card @sparrowFadeIn>
-      <mat-card-header>
-        <mat-card-title>{{ appTitle }}</mat-card-title>
-      </mat-card-header>
+  <div @sparrowFadeIn class="w-[300px] md:w-[450px]">
+    <sp-app-logo [type]="'horizontal'"></sp-app-logo>
+    <mat-card class="mt-[-25px]">
+
       <app-login-form
         [hasError]="dataService.isLoginError()"
         (login)="dataService.login($event)"

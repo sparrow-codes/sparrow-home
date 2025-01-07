@@ -1,0 +1,21 @@
+<header class="flex items-center px-4 justify-between bg-dark-blue h-[60px] shadow-sm">
+  <div class="text-white uppercase text-xl font-light">
+    <span class="mt-4">
+      <sp-app-logo></sp-app-logo>
+    </span>
+
+  </div>
+  <div class="flex gap-2 items-center">
+    @for (item of navigationItems(); track $index) {
+      <sp-nav-item [currentUrl]="currentUrl()" [navItem]="item"></sp-nav-item>
+    }
+  </div>
+  <div class="flex gap-2 items-center">
+    <button mat-button (click)="logout.emit()">
+      <div class="flex gap-2 items-center">
+        <span class="text-white">WYLOGUJ</span>
+        <ng-icon class="text-lg text-white" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
+      </div>
+    </button>
+  </div>
+</header>
