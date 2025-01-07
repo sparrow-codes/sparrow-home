@@ -1,4 +1,6 @@
-<div class="h-[50px] text-md uppercase font-semibold whitespace-nowrap border-b border-light-gray py-3 mb-6 text-dark-gray flex gap-1 items-center">
+<div class="h-[50px] text-md uppercase whitespace-nowrap py-3 mb-6 text-dark-gray flex gap-1 items-center">
+  <div class="h-[1rem] border-dark-blue"></div>
+
   @if (routerLink(); as link) {
     <button mat-button [routerLink]="link">
       <div class="flex items-center">
@@ -7,4 +9,5 @@
     </button>
   }
   <ng-content></ng-content>
+
 </div>

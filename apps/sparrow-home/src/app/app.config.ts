@@ -7,11 +7,14 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { initializeApp, SHORT_APP_TITLE } from '@sparrow-home/core';
-import { apiUrlInterceptor } from '@sparrow-home/core';
-import { authInterceptor } from '@sparrow-home/core';
-import { DataFacadeService } from '@sparrow-home/core';
-import { APP_TITLE } from '@sparrow-home/core';
+import {
+  apiUrlInterceptor,
+  APP_TITLE,
+  authInterceptor,
+  DataFacadeService,
+  initializeApp,
+  SHORT_APP_TITLE,
+} from '@sparrow-home/core';
 
 import { appRoutes } from './app.routes';
 
