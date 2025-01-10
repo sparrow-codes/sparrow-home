@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowRightCircle, heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
 import { TuyaDevice, TuyaFacadeService } from '@sparrow-home/tuya-device-domain';
-import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { LayoutService, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 
 import { CreateDeviceDialogComponent } from '../../components/create-device-dialog/create-device-dialog.component';
@@ -45,12 +45,19 @@ export class TuyaDeviceFeatureComponent implements OnInit {
   private readonly _dialog: MatDialog = inject(MatDialog);
 
   protected readonly data: Signal<TuyaDevice[] | null> = this._facadeService.tuyaDevices;
-  protected readonly columns: string[] = ['id', 'type', 'name', 'tuyaDeviceId', 'actions'];
+  protected readonly columns: string[] = ['name', 'type', 'tuyaDeviceId', 'actions'];
+  protected readonly mobileColumns: string[] = ['name', 'type'];
   protected readonly searchControl: FormControl<string | null> = new FormControl('');
+  protected readonly layoutService: LayoutService = inject(LayoutService);
+  protected readonly isMobile: Signal<boolean> = this.layoutService.isMobile;
 
   public ngOnInit(): void {
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
+  }
+
+  protected onRowClick(row: unknown): void {
+    console.log(row);
   }
 
   protected onAddClick(): void {

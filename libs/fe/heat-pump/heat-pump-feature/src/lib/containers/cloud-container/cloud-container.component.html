@@ -2,7 +2,7 @@
 
 @if (heatPump() && formGroup) {
   <div class="flex justify-end gap-6 items-center flex-col md:flex-row md:gap-6 mb-4">
-    <div class="flex gap-2 items-center">
+    <div class="hidden sm:flex gap-2 items-center">
       <ng-icon name="heroClock"></ng-icon>
       <span>Ciśnienie Wody</span>
       <span>{{ heatPump()?.waterPressure }}</span>
@@ -17,31 +17,33 @@
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [formGroup]="formGroup">
     <mat-tab label="WODA UŻYTKOWA">
-      @if (heatPump()?.waterTank; as waterTank) {
-        <mat-card class="mt-4 mb-4">
-          <mat-card-header class="flex items-center gap-2 justify-between">
-            <mat-card-title>Woda użytkowa</mat-card-title>
-            <mat-slide-toggle [formControlName]="formName.IS_WATER_ON"></mat-slide-toggle>
-          </mat-card-header>
-          @if (waterTankOptions()) {
-            <mat-card-content>
-              <sp-water-tank
-                [waterTank]="waterTank"
-                [waterTankOptions]="waterTankOptions()"
-                (waterTankOptionsChange)="handleWaterTankOptionsChange($event)"
-              ></sp-water-tank>
-            </mat-card-content>
-          }
-        </mat-card>
-      }
+      <div class="max-h-[65vh] overflow-auto">
+        @if (heatPump()?.waterTank; as waterTank) {
+          <mat-card class="mt-4 mb-4">
+            <mat-card-header class="flex items-center gap-2 justify-between">
+              <mat-card-title>Woda użytkowa</mat-card-title>
+              <mat-slide-toggle [formControlName]="formName.IS_WATER_ON"></mat-slide-toggle>
+            </mat-card-header>
+            @if (waterTankOptions()) {
+              <mat-card-content>
+                <sp-water-tank
+                  [waterTank]="waterTank"
+                  [waterTankOptions]="waterTankOptions()"
+                  (waterTankOptionsChange)="handleWaterTankOptionsChange($event)"
+                ></sp-water-tank>
+              </mat-card-content>
+            }
+          </mat-card>
+        }
 
-      @if (circularPumpPreferences(); as circularPumpPreferences) {
-        <sp-circular-pump-settings [circularPumpPreferences]="circularPumpPreferences"
-                                   [tuyaDeviceOptions]="tuyaDeviceOptions() ?? []"
-                                   (preferencesUpdates)="setCircularPumpPreferences($event)"
-                                   (activated)="setCircularPumScheduled($event)"
-        ></sp-circular-pump-settings>
-      }
+        @if (circularPumpPreferences(); as circularPumpPreferences) {
+          <sp-circular-pump-settings [circularPumpPreferences]="circularPumpPreferences"
+                                     [tuyaDeviceOptions]="tuyaDeviceOptions() ?? []"
+                                     (preferencesUpdates)="setCircularPumpPreferences($event)"
+                                     (activated)="setCircularPumScheduled($event)"
+          ></sp-circular-pump-settings>
+        }
+      </div>
     </mat-tab>
     <mat-tab label="OGRZEWANIE">
       @if (heatPump()?.heatTank; as heatTank) {

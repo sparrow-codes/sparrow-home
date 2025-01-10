@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, Signal } from '@angular/core';
-import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -24,6 +24,8 @@ import { LcsSwitchManualControlComponent } from '../../components/manual-control
     MatDivider,
     NgIcon,
     LcsSwitchManualControlComponent,
+    MatCardHeader,
+    MatCardTitle,
   ],
   templateUrl: './tuya-device-details.component.html',
   styleUrl: './tuya-device-details.component.css',

@@ -11,13 +11,13 @@
 
   <div class="flex flex-col gap-1 w-full">
     <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-      <div class="w-full">Wybrana temperatura</div>
-      <div class="w-full text-right md:text-left">{{ waterTank.heatSet }} &#176;C</div>
+      <div class="w-full font-semibold">Temperatura wody</div>
+      <div class="w-full font-semibold text-right md:text-left">{{ waterTank.currentTemperature }} &#176;C</div>
     </div>
 
     <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-      <div class="w-full">Bieżąca temperatura na wyjściu z kotła</div>
-      <div class="w-full text-right md:text-left">{{ waterTank.currentTemperature }} &#176;C</div>
+      <div class="w-full">Wybrana temperatura</div>
+      <div class="w-full text-right md:text-left">{{ waterTank.heatSet }} &#176;C</div>
     </div>
 
     <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">

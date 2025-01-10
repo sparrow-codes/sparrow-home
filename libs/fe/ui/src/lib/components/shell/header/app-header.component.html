@@ -5,17 +5,26 @@
     </span>
 
   </div>
-  <div class="flex gap-2 items-center">
+  <div class="md:flex gap-2 items-center hidden">
     @for (item of navigationItems(); track $index) {
       <sp-nav-item [currentUrl]="currentUrl()" [navItem]="item"></sp-nav-item>
     }
   </div>
-  <div class="flex gap-2 items-center">
-    <button mat-button (click)="logout.emit()">
-      <div class="flex gap-2 items-center">
-        <span class="text-white">WYLOGUJ</span>
-        <ng-icon class="text-lg text-white" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
-      </div>
-    </button>
+  <div class="flex items-center">
+    <div class="md:hidden">
+      <button mat-button (click)="openLeftMenu.emit()">
+        <ng-icon class="text-lg text-white" name="heroBars3Solid"></ng-icon>
+      </button>
+    </div>
+
+    <div class="hidden md:block">
+      <button mat-button (click)="logout.emit()">
+        <div class="flex gap-2 items-center">
+          <span class="text-white">WYLOGUJ</span>
+          <ng-icon class="text-lg text-white" name="heroArrowLeftEndOnRectangleSolid"></ng-icon>
+        </div>
+      </button>
+    </div>
+
   </div>
 </header>
