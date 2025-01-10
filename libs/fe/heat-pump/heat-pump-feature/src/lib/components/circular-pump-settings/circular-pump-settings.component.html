@@ -7,13 +7,14 @@
           (change)="activated.emit($event.checked)"
           [checked]="circularPumpPreferences().isActive"
           [disabled]="!canScheduleBeActivated() || formGroup.enabled"
-        >Włącz/Wyłącz
+        >
+          <span class="hidden md:block">Włącz/Wyłącz</span>
         </mat-slide-toggle>
       </div>
     </mat-card-header>
 
     <mat-card-content [formGroup]="formGroup">
-      <mat-form-field class="mt-4">
+      <mat-form-field class="mt-4 mb-6 sm:mb-4 w-full sm:w-[unset]">
         <mat-label>Urządzenie Tuya:</mat-label>
         <mat-select [formControlName]="formName.TUYA_DEVICE">
           <mat-option>Brak</mat-option>
