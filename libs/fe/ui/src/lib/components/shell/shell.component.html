@@ -7,6 +7,8 @@
       @for (item of navigationItems(); track item.routerLink) {
         <sp-nav-item [currentUrl]="currentUrl()" [navItem]="item"></sp-nav-item>
       }
+      <mat-divider></mat-divider>
+      <sp-nav-item [navItem]="{label: 'Wyloguj', icon: 'heroArrowLeftEndOnRectangleSolid', routerLink: routePath.LOGIN }"></sp-nav-item>
     </div>
     <span class="p-4 text-sm mt-2 font-light">Sparrow Codes {{today | date: 'yyyy'}}</span>
   </mat-sidenav>

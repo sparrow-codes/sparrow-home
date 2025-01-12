@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatDivider } from '@angular/material/divider';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 import { heroArrowLeftEndOnRectangleSolid } from '@ng-icons/heroicons/solid';
+import { RoutePath } from '@sparrow-home/core';
 import { filter, map } from 'rxjs';
 
 import { NavigationItem } from '../../models/navigation-item';
@@ -22,6 +24,7 @@ import { NavItemComponent } from './nav-item/nav-item.component';
     MatSidenavContent,
     NavItemComponent,
     AppLogoComponent,
+    MatDivider,
   ],
   templateUrl: './shell.component.html',
   providers: [provideIcons({ heroArrowLeftEndOnRectangleSolid })],
@@ -43,4 +46,5 @@ export class ShellComponent {
   );
 
   protected readonly today: Date = new Date();
+  protected readonly routePath: typeof RoutePath = RoutePath;
 }
