@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { LoginRequest } from '@sparrow-home/api';
 
 import { LoginFormName } from './enum/loing-form-name';
@@ -16,6 +16,10 @@ export class LoginFormService {
     return this._form;
   }
 
+  public get passwordControl(): FormControl {
+    return this._form.get(LoginFormName.PASSWORD) as FormControl;
+  }
+
   public toRequest(): LoginRequest {
     return {
       email: this._form.value.email ?? '',
@@ -25,8 +29,8 @@ export class LoginFormService {
 
   private _prepareForm(): FormGroup<LoginForm> {
     return this._fb.group({
-      [LoginFormName.EMAIL]: this._fb.control('', Validators.required),
-      [LoginFormName.PASSWORD]: this._fb.control('', Validators.required),
+      [LoginFormName.EMAIL]: this._fb.control<string>('', Validators.required),
+      [LoginFormName.PASSWORD]: this._fb.control<string>('', Validators.required),
     });
   }
 }
