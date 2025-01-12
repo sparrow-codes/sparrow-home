@@ -1,9 +1,8 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
-import { ConfigKey, CronJobName } from '@sparrow-server/shared';
+import { CronJobName } from '@sparrow-server/shared';
 import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
@@ -15,7 +14,6 @@ import { HeatPump } from '../../models/panasonic-cloud-models';
 export class PanasonicService {
   public constructor(
     private readonly _connector: ComfortCloudConnector,
-    private readonly _configService: ConfigService,
     private readonly _scheduleRegistry: SchedulerRegistry,
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>
@@ -85,14 +83,7 @@ export class PanasonicService {
   }
 
   private async _connectToPanasonicCloud(): Promise<void> {
-    const userName: string | undefined = this._configService.get(ConfigKey.PANASONIC_CLOUD_LOGIN);
-    const password: string | undefined = this._configService.get(ConfigKey.PANASONIC_CLOUD_PASSWORD);
-
-    if (!userName || !password) {
-      throw new UnauthorizedException();
-    }
-
-    return this._connector.login(userName, password);
+    return this._connector.login();
   }
 
   private async _getUser(): Promise<User> {
