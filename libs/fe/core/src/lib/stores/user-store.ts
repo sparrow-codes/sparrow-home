@@ -50,7 +50,10 @@ export const UserStore = signalStore(
       ),
       login: rxMethod<LoginRequest>(
         pipe(
-          tap(() => (loaderService.showLoader = true)),
+          tap(() => {
+            loaderService.showLoader = true;
+            patchState(store, { isLoginError: false });
+          }),
           switchMap((request) =>
             userApiService.login(request.email, request.password).pipe(
               first(),
@@ -58,10 +61,12 @@ export const UserStore = signalStore(
                 next: (response) => {
                   patchState(store, { token: response.token });
                   localStorage.setItem(tokenKey, response.token);
-                  router.navigate([RoutePath.MAIN]);
+                  router.navigate([RoutePath.MAIN]).then(() => (loaderService.showLoader = false));
                 },
-                error: () => patchState(store, { isLoginError: true }),
-                finalize: () => (loaderService.showLoader = false),
+                error: () => {
+                  patchState(store, { isLoginError: true });
+                  loaderService.showLoader = false;
+                },
               })
             )
           )

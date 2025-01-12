@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  DestroyRef,
   effect,
   inject,
   Injector,
@@ -13,8 +12,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardActions, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,32 +47,27 @@ export class LoginFormComponent implements OnInit {
 
   protected readonly formService: LoginFormService = inject(LoginFormService);
   protected readonly formGroup: FormGroup<LoginForm> = this.formService.form;
-  protected readonly showInvalidLoginError: WritableSignal<boolean> = signal(false);
+  protected readonly showInvalidFormError: WritableSignal<boolean> = signal(false);
   protected readonly formName: typeof LoginFormName = LoginFormName;
+  protected readonly passwordControl: FormControl<string> = this.formService.passwordControl;
 
   private readonly _injector: Injector = inject(Injector);
-  private readonly _destroyRef: DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
     effect(
       () => {
-        this.showInvalidLoginError.set(this.hasError());
-
-        if (this.showInvalidLoginError()) {
-          this.formGroup.get('password')?.patchValue('' as never, { emitEvent: false });
+        if (this.hasError()) {
+          this.formService.passwordControl.reset('', { emitEvent: false });
         }
       },
-      { allowSignalWrites: true, injector: this._injector }
+      { injector: this._injector }
     );
-
-    this.formGroup.valueChanges.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
-      this.showInvalidLoginError.set(false);
-    });
   }
 
   protected onLoginClick(): void {
     if (this.formGroup.invalid) {
-      this.showInvalidLoginError.set(true);
+      this.showInvalidFormError.set(true);
+      this.formService.passwordControl.reset('', { emitEvent: false });
     } else {
       this.login.emit(this.formService.toRequest());
     }
