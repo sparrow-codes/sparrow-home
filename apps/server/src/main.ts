@@ -1,7 +1,9 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppInitService } from '@sparrow-server/init';
+import { ConfigKey } from '@sparrow-server/shared';
 
 import { AppModule } from './app/app.module';
 
@@ -13,11 +15,14 @@ async function bootstrap(): Promise<void> {
   app.enableCors();
 
   const initService: AppInitService = app.get(AppInitService);
+  const configService: ConfigService = app.get(ConfigService);
   const port: number = +process.env.PORT || 3000;
 
-  SwaggerModule.setup('api', app, () =>
-    SwaggerModule.createDocument(app, new DocumentBuilder().addBearerAuth().setVersion('1.0').build())
-  );
+  if (configService.get<'development' | 'production'>(ConfigKey.MODE) === 'development') {
+    SwaggerModule.setup('api', app, () =>
+      SwaggerModule.createDocument(app, new DocumentBuilder().addBearerAuth().setVersion('1.0').build())
+    );
+  }
 
   await app.listen(port).then(() => initService.onInit());
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);

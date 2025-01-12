@@ -1,4 +1,6 @@
 export enum ConfigKey {
+  MODE = 'mode',
+
   PANASONIC_CLOUD_LOGIN = 'panasonicCloudLogin',
   PANASONIC_CLOUD_PASSWORD = 'panasonicCloudPassword',
   PANASONIC_DEVICE_ID = 'panasonicDeviceId',
