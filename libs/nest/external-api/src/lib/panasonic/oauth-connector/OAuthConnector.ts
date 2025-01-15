@@ -1,20 +1,23 @@
-import { Logger } from '@nestjs/common';
-import axios from 'axios';
+import { HttpService } from '@nestjs/axios';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { decode } from 'html-entities';
-import qs from 'querystring';
+import { stringify } from 'querystring';
 
+@Injectable()
 export class OAuthClient {
-  public clientId = 'vf2i6hW5hA2BB2BQGfTHXM4YFyW4I06K';
-  public accessToken = '';
+  private readonly _clientId = 'vf2i6hW5hA2BB2BQGfTHXM4YFyW4I06K';
+  private readonly _axios: AxiosInstance;
 
-  public async ensureAuthenticated(username: string, password: string): Promise<void> {
-    if (this.accessToken) {
-      return;
-    }
+  public constructor(private readonly _httpService: HttpService) {
+    this._axios = this._httpService.axiosRef;
+  }
 
-    const clientId: string = this.clientId;
+  public async ensureAuthenticated(username: string, password: string): Promise<string> {
+    Logger.log('Logging into panasonic cloud!');
+    const clientId: string = this._clientId;
 
-    const response = await axios({
+    const response: AxiosResponse = await this._axios({
       method: 'POST',
       url: 'https://aquarea-smart.panasonic.com/remote/v1/api/auth/login',
       headers: {
@@ -27,13 +30,14 @@ export class OAuthClient {
       validateStatus: () => true,
     });
 
-    const auth0State =
+    const auth0State: string | undefined =
       response.headers['set-cookie']
         ?.map((cookie) => cookie?.match(/com.auth0.state=(.+?);/i)?.[1])
         .filter((c) => !!c)[0] ?? undefined;
-    const response1 = await axios({
+
+    const response1: AxiosResponse = await this._axios({
       method: 'GET',
-      url: `https://authglb.digital.panasonic.com/authorize?${qs.stringify({
+      url: `https://authglb.digital.panasonic.com/authorize?${stringify({
         audience: `https://digital.panasonic.com/${clientId}/api/v1/`,
         client_id: clientId,
         redirect_uri: 'https://aquarea-smart.panasonic.com/authorizationCallback',
@@ -64,7 +68,7 @@ export class OAuthClient {
 
     const location = response1.headers['location'];
     const state = new URL(`https://authglb.digital.panasonic.com${location}`).searchParams.get('state');
-    const response2 = await axios({
+    const response2 = await this._axios({
       method: 'GET',
       url: `https://authglb.digital.panasonic.com${location}`,
       headers: {
@@ -81,13 +85,13 @@ export class OAuthClient {
       response2.headers['set-cookie']?.map((cookie) => cookie?.match(/_csrf=(.+?);/i)?.[1]).filter((c) => !!c)[0] ??
       undefined;
 
-    const response3 = await axios({
+    const response3 = await this._axios({
       method: 'POST',
       url: 'https://authglb.digital.panasonic.com/usernamepassword/login',
       headers: {
         'Auth0-Client': 'eyJuYW1lIjoiYXV0aDAuanMtdWxwIiwidmVyc2lvbiI6IjkuMjMuMiJ9',
         'Content-Type': 'application/json; charset=UTF-8',
-        Referer: `https://authglb.digital.panasonic.com/login?${qs.stringify({
+        Referer: `https://authglb.digital.panasonic.com/login?${stringify({
           audience: `https://digital.panasonic.com/${clientId}/api/v1/`,
           client: clientId,
           protocol: 'oauth2',
@@ -125,7 +129,8 @@ export class OAuthClient {
     const actionUrl = response3.data.match(/action="(.+?)"/i)?.[1];
     const inputs = response3.data.match(/<input([^\0]+?)>/gi) ?? [];
     const formData: Record<string, string> = {};
-    inputs.forEach((input) => {
+
+    inputs.forEach((input: string) => {
       const name = input.match(/name="(.+?)"/i)?.[1];
       const value = input.match(/value="(.+?)"/i)?.[1];
       if (name && value) {
@@ -133,12 +138,12 @@ export class OAuthClient {
       }
     });
 
-    const response4 = await axios({
+    const response4 = await this._axios({
       method: 'POST',
       url: actionUrl,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        Referer: `https://authglb.digital.panasonic.com/login?${qs.stringify({
+        Referer: `https://authglb.digital.panasonic.com/login?${stringify({
           audience: `https://digital.panasonic.com/${clientId}/api/v1/`,
           client: clientId,
           protocol: 'oauth2',
@@ -149,14 +154,14 @@ export class OAuthClient {
         })}`,
         Cookie: `_csrf=${csrf}; auth0=${auth0}; auth0_compat=${auth0Compat}; did=${did}; did_compat=${didCompat};`,
       },
-      data: qs.stringify(formData),
+      data: stringify(formData),
       maxRedirects: 0,
       validateStatus: () => true,
     });
 
     const location1 = response4.headers['location'];
 
-    const response5 = await axios({
+    const response5 = await this._axios({
       method: 'GET',
       url: `https://authglb.digital.panasonic.com${location1}`,
       headers: {
@@ -175,7 +180,7 @@ export class OAuthClient {
 
     const location2 = response5.headers['location'];
 
-    const response6 = await axios({
+    const response6 = await this._axios({
       method: 'GET',
       url: location2,
       headers: {
@@ -184,14 +189,16 @@ export class OAuthClient {
       maxRedirects: 0,
       validateStatus: () => true,
     });
-    this.accessToken =
+    const accessToken: string | undefined =
       response6.headers['set-cookie']
         ?.map((cookie) => cookie?.match(/accessToken=(.+?);/i)?.[1])
         .filter((c) => !!c)[0] ?? undefined;
 
-    if (!this.accessToken) {
+    if (!accessToken) {
       Logger.error(`Could not authenticate to Aquarea Smart Panasonic. Headers: ${JSON.stringify(response.headers)}`);
+      throw new UnauthorizedException();
     }
     Logger.log('Authenticated to Aquarea Smart Panasonic');
+    return accessToken;
   }
 }
