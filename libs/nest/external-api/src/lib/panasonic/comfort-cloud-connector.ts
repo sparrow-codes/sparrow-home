@@ -14,11 +14,14 @@ import { OAuthClient } from './oauth-connector/OAuthConnector';
 @Injectable()
 export class ComfortCloudConnector {
   private _accessToken: string | null = null;
-  private readonly _oAuthClient: OAuthClient = new OAuthClient();
 
   private static readonly AQUAREA_URL: string = 'https://aquarea-smart.panasonic.com/remote/v1/api/devices';
 
-  public constructor(private readonly _http: HttpService, private readonly _configService: ConfigService) {}
+  public constructor(
+    private readonly _http: HttpService,
+    private readonly _configService: ConfigService,
+    private readonly _oAuthClient: OAuthClient
+  ) {}
 
   public getAuthToken(): Observable<string> {
     if (this._accessToken) {
