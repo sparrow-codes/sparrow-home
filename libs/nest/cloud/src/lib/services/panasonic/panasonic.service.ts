@@ -2,13 +2,12 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
+import { ComfortCloudConnector, HeatPump } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { first, firstValueFrom, from, Observable, switchMap } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { Repository } from 'typeorm';
 
-import { ComfortCloudConnector } from '../../connectors/comfort-cloud-connector';
 import { SetHeatPumpStatusRequest } from '../../controllers/models/panasonic/set-heat-pump-status.request';
-import { HeatPump } from '../../models/panasonic-cloud-models';
 
 @Injectable()
 export class PanasonicService {
@@ -20,10 +19,7 @@ export class PanasonicService {
   ) {}
 
   public getHeatPumpDetails(): Observable<HeatPump> {
-    return from(this._connectToPanasonicCloud()).pipe(
-      first(),
-      switchMap(() => this._connector.getDeviceDetails())
-    );
+    return this._connector.getDeviceDetails();
   }
 
   public async scheduledWaterHeating(active: boolean): Promise<void> {
@@ -52,8 +48,7 @@ export class PanasonicService {
   }
 
   public async setHeatOnly(isHeatOn: boolean): Promise<void> {
-    await this._connectToPanasonicCloud();
-    const heatPump: HeatPump = await this._connector.getDeviceDetails();
+    const heatPump: HeatPump = await firstValueFrom(this._connector.getDeviceDetails());
     const isWaterOn: boolean = heatPump.tankStatus[0].operationStatus === 1;
     const isHeatCurrentlyOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
     if (isHeatCurrentlyOn !== isHeatOn) {
@@ -65,8 +60,7 @@ export class PanasonicService {
   }
 
   public async setWaterOnly(isWaterOn: boolean): Promise<void> {
-    await this._connectToPanasonicCloud();
-    const heatPump: HeatPump = await this._connector.getDeviceDetails();
+    const heatPump: HeatPump = await firstValueFrom(this._connector.getDeviceDetails());
     const isWaterOnCurrently: boolean = heatPump.tankStatus[0].operationStatus === 1;
     const isHeatOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
     if (isWaterOnCurrently !== isWaterOn) {
@@ -78,12 +72,7 @@ export class PanasonicService {
   }
 
   public async setHeatPumpOperationMode(request: SetHeatPumpStatusRequest): Promise<void> {
-    await this._connectToPanasonicCloud();
-    await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn, request.deviceGuid));
-  }
-
-  private async _connectToPanasonicCloud(): Promise<void> {
-    return this._connector.login();
+    await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn));
   }
 
   private async _getUser(): Promise<User> {

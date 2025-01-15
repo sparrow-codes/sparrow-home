@@ -1,4 +1,5 @@
-import { HeatPump } from '../../models/panasonic-cloud-models';
+import { HeatPump } from '@sparrow-server/external-api';
+
 import { GetHeatPumpDetailsResponse } from '../models/panasonic/get-heat-pump-details.response';
 
 export class HeatPumpDetailsResponseMapper {

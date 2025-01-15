@@ -1,17 +1,15 @@
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import axios from 'axios';
 import { decode } from 'html-entities';
+// @ts-ignore
 import qs from 'querystring';
 
+@Injectable()
 export class OAuthClient {
-  public clientId = 'vf2i6hW5hA2BB2BQGfTHXM4YFyW4I06K';
-  public accessToken = '';
+  private readonly clientId = 'vf2i6hW5hA2BB2BQGfTHXM4YFyW4I06K';
 
-  public async ensureAuthenticated(username: string, password: string): Promise<void> {
-    if (this.accessToken) {
-      return;
-    }
-
+  public async ensureAuthenticated(username: string, password: string): Promise<string> {
+    Logger.log('Logging into panasonic cloud!');
     const clientId: string = this.clientId;
 
     const response = await axios({
@@ -31,6 +29,7 @@ export class OAuthClient {
       response.headers['set-cookie']
         ?.map((cookie) => cookie?.match(/com.auth0.state=(.+?);/i)?.[1])
         .filter((c) => !!c)[0] ?? undefined;
+
     const response1 = await axios({
       method: 'GET',
       url: `https://authglb.digital.panasonic.com/authorize?${qs.stringify({
@@ -125,6 +124,7 @@ export class OAuthClient {
     const actionUrl = response3.data.match(/action="(.+?)"/i)?.[1];
     const inputs = response3.data.match(/<input([^\0]+?)>/gi) ?? [];
     const formData: Record<string, string> = {};
+    // @ts-ignore
     inputs.forEach((input) => {
       const name = input.match(/name="(.+?)"/i)?.[1];
       const value = input.match(/value="(.+?)"/i)?.[1];
@@ -184,14 +184,18 @@ export class OAuthClient {
       maxRedirects: 0,
       validateStatus: () => true,
     });
-    this.accessToken =
+    const accessToken: string | undefined =
       response6.headers['set-cookie']
         ?.map((cookie) => cookie?.match(/accessToken=(.+?);/i)?.[1])
         .filter((c) => !!c)[0] ?? undefined;
 
-    if (!this.accessToken) {
+    console.log(response6.headers);
+
+    if (!accessToken) {
       Logger.error(`Could not authenticate to Aquarea Smart Panasonic. Headers: ${JSON.stringify(response.headers)}`);
+      throw new UnauthorizedException();
     }
     Logger.log('Authenticated to Aquarea Smart Panasonic');
+    return accessToken;
   }
 }
