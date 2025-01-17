@@ -2,18 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, User, UserRole } from '@sparrow-server/entities';
-import { TuyaApiService } from '@sparrow-server/external-api';
-import { Commands } from '@sparrow-server/external-api';
 import { CronJobName, TimeUtils } from '@sparrow-server/shared';
-import { first } from 'rxjs';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class AquaRegistryService {
-  public constructor(
-    @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    private readonly _tuyaAPiService: TuyaApiService
-  ) {}
+  public constructor(@InjectRepository(User) private readonly _userRepository: Repository<User>) {}
 
   @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_AQUA_LIGHT })
   public async setAquaLight(): Promise<void> {
@@ -25,7 +19,7 @@ export class AquaRegistryService {
       aquaPreferences &&
       aquaPreferences.lightStartTime &&
       aquaPreferences.lightEndTime &&
-      aquaPreferences.tuyaDevice
+      aquaPreferences.homeDevice
     ) {
       const timeInterval: number = TimeUtils.getTimeIntervalInSeconds(
         aquaPreferences.lightStartTime,
@@ -33,23 +27,6 @@ export class AquaRegistryService {
       );
 
       Logger.log(`Turning Aqua light on for ${timeInterval} seconds`);
-      this._tuyaAPiService
-        .sendCommands(aquaPreferences.tuyaDevice.tuyaDeviceId, this._prepareLightCommands(timeInterval))
-        .pipe(first())
-        .subscribe();
     }
-  }
-
-  private _prepareLightCommands(timeIntervalInSeconds: number): Commands<boolean | number>[] {
-    return [
-      {
-        code: 'switch_1',
-        value: true,
-      },
-      {
-        code: 'countdown_1',
-        value: timeIntervalInSeconds,
-      },
-    ];
   }
 }

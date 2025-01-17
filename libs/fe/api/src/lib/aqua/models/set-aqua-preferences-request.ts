@@ -1,5 +1,5 @@
 export interface SetAquaPreferencesRequest {
-  tuyaDeviceId?: string;
+  homeDeviceId?: string;
   from?: Date;
   to?: Date;
 }

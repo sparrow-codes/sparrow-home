@@ -3,7 +3,7 @@
 @if (aquaPreferences(); as aquaPreferences) {
   <sp-aquarium-light-settings @sparrowFadeIn
     [aquaPreferences]="aquaPreferences"
-    [tuyaDeviceOptions]="tuyaDeviceOptions() ?? []"
+    [homeDeviceOptions]="homeDeviceOptions() ?? []"
     (activated)="onScheduleChanged($event)"
     (preferencesUpdates)="onPreferenceChanged($event)"
   ></sp-aquarium-light-settings>

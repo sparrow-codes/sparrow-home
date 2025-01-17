@@ -49,7 +49,7 @@ import { CircularPumpForm } from './form-service/model/circular-pump-form';
   providers: [CircularPumpSettingsFormService],
 })
 export class CircularPumpSettingsComponent implements OnInit {
-  public readonly tuyaDeviceOptions: InputSignal<{ value: string; label: string }[]> = input.required();
+  public readonly homeDeviceOptions: InputSignal<{ value: string; label: string }[]> = input.required();
   public readonly circularPumpPreferences: InputSignal<CircularPumpPreferences> = input.required();
   public readonly preferencesUpdates: OutputEmitterRef<CircularPumpPreferences> = output();
   public readonly activated: OutputEmitterRef<boolean> = output();
@@ -79,7 +79,7 @@ export class CircularPumpSettingsComponent implements OnInit {
     this._formService.form?.reset({
       [CircularPumpSettingFormName.FROM]: this.circularPumpPreferences().scheduledStartTime,
       [CircularPumpSettingFormName.TO]: this.circularPumpPreferences().scheduledEndTime,
-      [CircularPumpSettingFormName.TUYA_DEVICE]: this.circularPumpPreferences().tuyaDeviceId,
+      [CircularPumpSettingFormName.HOME_DEVICE]: this.circularPumpPreferences().homeDeviceId,
     });
     this._formService.form?.disable();
   }
@@ -90,7 +90,7 @@ export class CircularPumpSettingsComponent implements OnInit {
       const newPreferences: CircularPumpPreferences = new CircularPumpPreferences();
       newPreferences.scheduledStartTime = this.formGroup?.value.from ?? undefined;
       newPreferences.scheduledEndTime = this.formGroup?.value.to ?? undefined;
-      newPreferences.tuyaDeviceId = this.formGroup?.value.tuyaDevice ?? undefined;
+      newPreferences.homeDeviceId = this.formGroup?.value.homeDevice ?? undefined;
       this.preferencesUpdates.emit(newPreferences);
 
       this._formService.form?.disable();

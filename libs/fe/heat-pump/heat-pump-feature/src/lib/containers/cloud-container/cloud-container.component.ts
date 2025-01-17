@@ -21,8 +21,7 @@ import {
   HeatPumpFacadeService,
   WaterTankOptions,
 } from '@sparrow-home/heat-pump-domain';
-import { PageTitleComponent } from '@sparrow-home/ui';
-import { LayoutService } from '@sparrow-home/ui';
+import { LayoutService, PageTitleComponent } from '@sparrow-home/ui';
 
 import { CircularPumpSettingsComponent } from '../../components/circular-pump-settings/circular-pump-settings.component';
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
@@ -60,8 +59,8 @@ export class CloudContainerComponent implements OnInit {
   protected readonly waterTankOptions: Signal<WaterTankOptions | null> = this.dataFacadeService.waterTankOptions;
   protected readonly circularPumpPreferences: Signal<CircularPumpPreferences | null> =
     this.dataFacadeService.circularPumpPreferences;
-  protected readonly tuyaDeviceOptions: Signal<{ value: string; label: string }[] | null> =
-    this.dataFacadeService.tuyaDeviceOptions;
+  protected readonly homeDeviceOptions: Signal<{ value: string; label: string }[] | null> =
+    this.dataFacadeService.homeDeviceOptions;
 
   private readonly _injector: Injector = inject(Injector);
   private readonly _formService: CloudFormService = inject(CloudFormService);

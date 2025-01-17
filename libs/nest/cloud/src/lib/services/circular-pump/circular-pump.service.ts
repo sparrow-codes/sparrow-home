@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CloudPreferences, TuyaDevice, TuyaDeviceType, User, UserRole } from '@sparrow-server/entities';
+import { CloudPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
 import { CronJobName } from '@sparrow-server/shared';
 import { CronJob } from 'cron/dist/job';
 import { CronTime } from 'cron/dist/time';
@@ -15,14 +15,14 @@ export class CircularPumpService {
   public constructor(
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
-    @InjectRepository(TuyaDevice) private readonly _tuyaDeviceRepository: Repository<TuyaDevice>,
+    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
     private readonly _scheduleRegistry: SchedulerRegistry
   ) {}
 
   public async getCircularPumpPreferences(): Promise<GetCircularPumpPreferences> {
     const user: User = await this._getUser();
     const response: GetCircularPumpPreferences = new GetCircularPumpPreferences();
-    response.tuyaDeviceId = user.cloudPreferences.tuyaDevice?.tuyaDeviceId;
+    response.homeDeviceId = user.cloudPreferences.homeDevice?.zigbeeDeviceId;
     response.isActive = user.cloudPreferences.isCircularPumpActive ?? false;
 
     if (user.cloudPreferences.circularPumpEndTime) {
@@ -51,22 +51,22 @@ export class CircularPumpService {
     cloudPreferences.circularPumpStartTime = request.from ?? null;
     cloudPreferences.circularPumpEndTime = request.to ?? null;
 
-    if (request.tuyaDeviceId && request.from && request.to) {
-      const tuyaDevice: TuyaDevice | null = await this._tuyaDeviceRepository.findOneBy({
-        tuyaDeviceId: request.tuyaDeviceId,
+    if (request.homeDeviceId && request.from && request.to) {
+      const homeDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({
+        zigbeeDeviceId: request.homeDeviceId,
       });
 
-      if (!tuyaDevice || tuyaDevice.deviceType !== TuyaDeviceType.LSC_POWER_PLUG) {
+      if (!homeDevice || homeDevice.deviceType !== DeviceType.POWER_PLUG) {
         throw new HttpException(
-          `Invalid device type or missing device for id: ${request.tuyaDeviceId}`,
+          `Invalid device type or missing device for id: ${request.homeDeviceId}`,
           HttpStatus.NOT_FOUND
         );
       }
 
-      cloudPreferences.tuyaDevice = tuyaDevice;
+      cloudPreferences.homeDevice = homeDevice;
       this.setCircularPumpJob(user.cloudPreferences);
     } else {
-      cloudPreferences.tuyaDevice = null;
+      cloudPreferences.homeDevice = null;
 
       const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
       cronJob.stop();

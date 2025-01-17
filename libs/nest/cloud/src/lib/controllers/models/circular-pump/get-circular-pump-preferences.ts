@@ -5,7 +5,7 @@ export class GetCircularPumpPreferences {
   public isActive!: boolean;
 
   @ApiProperty()
-  public tuyaDeviceId?: string;
+  public homeDeviceId?: string;
 
   @ApiProperty()
   public circularPumpStartTime?: Date;

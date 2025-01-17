@@ -28,7 +28,7 @@ export class AquariumLightFormService {
 
   public initForm(aquaPreferences: AquaPreferences): void {
     this._form = this._fb.group({
-      [AquariumLightFormName.TUYA_DEVICE]: this._fb.control(aquaPreferences.tuyaDeviceId ?? null),
+      [AquariumLightFormName.HOME_DEVICE]: this._fb.control(aquaPreferences.homeDeviceId ?? null),
       [AquariumLightFormName.FROM]: this._fb.control(aquaPreferences.lightStartTime ?? null),
       [AquariumLightFormName.TO]: this._fb.control(aquaPreferences.lightEndTime ?? null, {
         validators: [this._timeValidator()],

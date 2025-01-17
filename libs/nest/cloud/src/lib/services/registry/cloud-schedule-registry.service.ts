@@ -2,9 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
-import { Commands, TuyaApiService } from '@sparrow-server/external-api';
 import { CronJobName, TimeUtils } from '@sparrow-server/shared';
-import { first } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { PanasonicService } from '..';
@@ -13,7 +11,6 @@ import { PanasonicService } from '..';
 export class CloudScheduleRegistryService {
   public constructor(
     private readonly _cloudService: PanasonicService,
-    private readonly _tuyaApiService: TuyaApiService,
     @InjectRepository(User) private readonly _userRepository: Repository<User>
   ) {}
 
@@ -51,32 +48,15 @@ export class CloudScheduleRegistryService {
       cloudPreferences &&
       cloudPreferences.circularPumpStartTime &&
       cloudPreferences.circularPumpEndTime &&
-      cloudPreferences.tuyaDevice
+      cloudPreferences.homeDevice
     ) {
       const timeInterval: number = TimeUtils.getTimeIntervalInSeconds(
         cloudPreferences.circularPumpStartTime,
         cloudPreferences.circularPumpEndTime
       );
       Logger.log(`Turning Circular pump for ${timeInterval} seconds`);
-      this._tuyaApiService
-        .sendCommands(cloudPreferences.tuyaDevice.tuyaDeviceId, this._prepareLightCommands(timeInterval))
-        .pipe(first())
-        .subscribe();
     } else {
       Logger.warn('Invalid Circular pump configuration!');
     }
-  }
-
-  private _prepareLightCommands(timeIntervalInSeconds: number): Commands<boolean | number>[] {
-    return [
-      {
-        code: 'switch_1',
-        value: true,
-      },
-      {
-        code: 'countdown_1',
-        value: timeIntervalInSeconds,
-      },
-    ];
   }
 }

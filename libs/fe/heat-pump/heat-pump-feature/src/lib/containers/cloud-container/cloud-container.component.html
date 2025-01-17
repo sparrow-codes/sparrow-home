@@ -38,7 +38,7 @@
 
         @if (circularPumpPreferences(); as circularPumpPreferences) {
           <sp-circular-pump-settings [circularPumpPreferences]="circularPumpPreferences"
-                                     [tuyaDeviceOptions]="tuyaDeviceOptions() ?? []"
+                                     [homeDeviceOptions]="homeDeviceOptions() ?? []"
                                      (preferencesUpdates)="setCircularPumpPreferences($event)"
                                      (activated)="setCircularPumScheduled($event)"
           ></sp-circular-pump-settings>

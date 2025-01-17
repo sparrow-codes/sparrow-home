@@ -3,9 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 import { heroCloud, heroComputerDesktop, heroLightBulb } from '@ng-icons/heroicons/outline';
-import { RoutePath } from '@sparrow-home/core';
-import { DataFacadeService } from '@sparrow-home/core';
-import { APP_TITLE } from '@sparrow-home/core';
+import { APP_TITLE, DataFacadeService, RoutePath } from '@sparrow-home/core';
 
 import { ShellComponent } from '../shell/shell.component';
 

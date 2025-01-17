@@ -15,10 +15,10 @@
 
   <mat-card-content [formGroup]="formGroup">
     <mat-form-field class="mt-4 mb-6 sm:mb-4 w-full sm:w-[unset]">
-      <mat-label>Urządzenie Tuya:</mat-label>
-      <mat-select [formControlName]="formName.TUYA_DEVICE">
+      <mat-label>Urządzenie:</mat-label>
+      <mat-select [formControlName]="formName.HOME_DEVICE">
         <mat-option>Brak</mat-option>
-        @for (option of tuyaDeviceOptions(); track option.value) {
+        @for (option of homeDeviceOptions(); track option.value) {
         <mat-option [value]="option.value">{{ option.label }}</mat-option>
         }
       </mat-select>

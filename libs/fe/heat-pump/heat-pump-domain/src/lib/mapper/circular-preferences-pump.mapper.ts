@@ -10,7 +10,7 @@ export abstract class CircularPreferencesPumpMapper {
       ? new Date(response.circularPumpStartTime)
       : undefined;
     preferences.scheduledEndTime = response.circularPumpEndTime ? new Date(response.circularPumpEndTime) : undefined;
-    preferences.tuyaDeviceId = response.tuyaDeviceId;
+    preferences.homeDeviceId = response.homeDeviceId;
     return preferences;
   }
 }

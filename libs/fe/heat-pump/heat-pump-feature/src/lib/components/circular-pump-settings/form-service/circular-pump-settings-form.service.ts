@@ -28,7 +28,7 @@ export class CircularPumpSettingsFormService {
 
   public initForm(preferences: CircularPumpPreferences): void {
     this._form = this._fb.group({
-      [CircularPumpSettingFormName.TUYA_DEVICE]: this._fb.control(preferences.tuyaDeviceId ?? null),
+      [CircularPumpSettingFormName.HOME_DEVICE]: this._fb.control(preferences.homeDeviceId ?? null),
       [CircularPumpSettingFormName.FROM]: this._fb.control(preferences.scheduledStartTime ?? null),
       [CircularPumpSettingFormName.TO]: this._fb.control(preferences.scheduledEndTime ?? null, {
         validators: [this._timeValidator()],

@@ -21,8 +21,8 @@
       "@sparrow-home/core": ["libs/fe/core/src/index.ts"],
       "@sparrow-home/heat-pump-domain": ["libs/fe/heat-pump/heat-pump-domain/src/index.ts"],
       "@sparrow-home/heat-pump-feature": ["libs/fe/heat-pump/heat-pump-feature/src/index.ts"],
-      "@sparrow-home/tuya-device-domain": ["libs/fe/tuya/tuya-device-domain/src/index.ts"],
-      "@sparrow-home/tuya-device-feature": ["libs/fe/tuya/tuya-device-feature/src/index.ts"],
+      "@sparrow-home/home-device-domain": ["libs/fe/home-device/home-device-domain/src/index.ts"],
+      "@sparrow-home/home-device-feature": ["libs/fe/home-device/home-device-feature/src/index.ts"],
       "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"],
       "@sparrow-server/aqua": ["libs/nest/aqua/src/index.ts"],
       "@sparrow-server/auth": ["libs/nest/auth/src/index.ts"],
@@ -32,7 +32,7 @@
       "@sparrow-server/init": ["libs/nest/init/src/index.ts"],
       "@sparrow-server/setup": ["libs/nest/setup/src/index.ts"],
       "@sparrow-server/shared": ["libs/nest/shared/src/index.ts"],
-      "@sparrow-server/tuya": ["libs/nest/tuya/src/index.ts"],
+      "@sparrow-server/device": ["libs/nest/device/src/index.ts"],
       "@sparrow-server/user": ["libs/nest/user/src/index.ts"]
     }
   },

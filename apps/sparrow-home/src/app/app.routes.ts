@@ -34,7 +34,7 @@ export const appRoutes: Route[] = [
       {
         path: RoutePath.MAIN,
         title: pageTitleResolver,
-        loadChildren: () => import('@sparrow-home/tuya-device-feature').then((f) => f.tuyaDeviceRoutes),
+        loadChildren: () => import('@sparrow-home/home-device-feature').then((f) => f.homeDeviceRoutes),
       },
       {
         path: RoutePath.HEAT_PUMP,

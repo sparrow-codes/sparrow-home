@@ -1,6 +1,6 @@
 export interface GetCircularPumpPreferencesResponse {
   isActive: boolean;
-  tuyaDeviceId?: string;
+  homeDeviceId?: string;
   circularPumpStartTime?: Date;
   circularPumpEndTime?: Date;
 }
