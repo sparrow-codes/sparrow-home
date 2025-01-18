@@ -12,24 +12,24 @@ export class CreateAquaPreferencesTable1735998874554 implements MigrationInterfa
       { name: 'lightStartTime', type: 'timestamp', isNullable: true },
       { name: 'lightEndTime', type: 'timestamp', isNullable: true },
       { name: 'isActive', type: 'boolean', default: false },
-      { name: 'tuyaDeviceId', type: 'int', isNullable: true },
+      { name: 'homeDeviceId', type: 'int', isNullable: true },
     ],
   });
-  private readonly _tuyaDeviceForeignKey: TableForeignKey = new TableForeignKey({
-    columnNames: ['tuyaDeviceId'],
+  private readonly _homeDeviceForeignKey: TableForeignKey = new TableForeignKey({
+    columnNames: ['homeDeviceId'],
     referencedColumnNames: ['id'],
-    referencedTableName: 'tuya_device',
+    referencedTableName: 'home_device',
     onDelete: 'CASCADE',
     referencedSchema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
   });
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(this._aquaPreferencesTable);
-    await queryRunner.createForeignKey(this._aquaPreferencesTable, this._tuyaDeviceForeignKey);
+    await queryRunner.createForeignKey(this._aquaPreferencesTable, this._homeDeviceForeignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(this._aquaPreferencesTable, this._tuyaDeviceForeignKey);
+    await queryRunner.dropForeignKey(this._aquaPreferencesTable, this._homeDeviceForeignKey);
     await queryRunner.dropTable(this._aquaPreferencesTable);
   }
 }

@@ -13,24 +13,24 @@ export class CreateCloudPreferencesTable1735996227082 implements MigrationInterf
       { name: 'circularPumpStartTime', type: 'timestamp', isNullable: true },
       { name: 'circularPumpEndTime', type: 'timestamp', isNullable: true },
       { name: 'isCircularPumpActive', type: 'boolean', default: false },
-      { name: 'tuyaDeviceId', type: 'int', isNullable: true },
+      { name: 'homeDeviceId', type: 'int', isNullable: true },
     ],
   });
-  private readonly _tuyaDeviceForeignKey: TableForeignKey = new TableForeignKey({
-    columnNames: ['tuyaDeviceId'],
+  private readonly _homeDeviceForeignKey: TableForeignKey = new TableForeignKey({
+    columnNames: ['homeDeviceId'],
     referencedColumnNames: ['id'],
-    referencedTableName: 'tuya_device',
+    referencedTableName: 'home_device',
     onDelete: 'CASCADE',
     referencedSchema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
   });
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(this._cloudPreferencesTable);
-    await queryRunner.createForeignKey(this._cloudPreferencesTable, this._tuyaDeviceForeignKey);
+    await queryRunner.createForeignKey(this._cloudPreferencesTable, this._homeDeviceForeignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(this._cloudPreferencesTable, this._tuyaDeviceForeignKey);
+    await queryRunner.dropForeignKey(this._cloudPreferencesTable, this._homeDeviceForeignKey);
     await queryRunner.dropTable(this._cloudPreferencesTable);
   }
 }

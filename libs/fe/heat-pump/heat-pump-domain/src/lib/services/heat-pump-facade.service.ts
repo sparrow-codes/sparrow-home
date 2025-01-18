@@ -21,8 +21,8 @@ export class HeatPumpFacadeService {
     return this._cloudStore.circularPumpPreferences;
   }
 
-  public get tuyaDeviceOptions(): Signal<{ value: string; label: string }[] | null> {
-    return this._cloudStore.tuyaDeviceOptions;
+  public get homeDeviceOptions(): Signal<{ value: string; label: string }[] | null> {
+    return this._cloudStore.homeDeviceOptions;
   }
 
   public fetchInitData(): void {

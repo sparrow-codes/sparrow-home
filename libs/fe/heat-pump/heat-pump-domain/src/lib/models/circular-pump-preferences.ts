@@ -1,10 +1,10 @@
 export class CircularPumpPreferences {
   public isActive?: boolean;
-  public tuyaDeviceId?: string;
+  public homeDeviceId?: string;
   public scheduledStartTime?: Date;
   public scheduledEndTime?: Date;
 
   public canBeActivated(): boolean {
-    return !!this.tuyaDeviceId && !!this.scheduledStartTime && !!this.scheduledEndTime;
+    return !!this.homeDeviceId && !!this.scheduledStartTime && !!this.scheduledEndTime;
   }
 }

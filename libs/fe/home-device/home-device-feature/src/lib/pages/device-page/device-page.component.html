@@ -1,0 +1,87 @@
+<sp-page-title @sparrowFadeIn>Dostępne urząrzenia w domu</sp-page-title>
+
+@if (data(); as data) {
+<div @sparrowFadeIn class="flex justify-between">
+  <div class="flex gap-6">
+    <mat-form-field>
+      <mat-label>Wyszukaj</mat-label>
+      <input matInput placeholder="Wyszukaj po nazwie..." [formControl]="searchControl" />
+      <ng-icon name="heroMagnifyingGlass" matSuffix class="px-4"></ng-icon>
+    </mat-form-field>
+  </div>
+
+  <button mat-stroked-button (click)="onAddClick()">
+    <div class="flex gap-2 items-center">
+      <ng-icon [size]="'24px'" name="heroPlusCircle"></ng-icon>
+      <span class="hidden md:block">Dodaj</span>
+    </div>
+  </button>
+</div>
+
+<mat-card @sparrowFadeIn>
+  <mat-card-content>
+    @if (!isMobile()) {
+      <table mat-table [dataSource]="data">
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Typ</th>
+          <td mat-cell *matCellDef="let element" class="max-w-[124px]">
+            <sp-device-type [deviceType]="element.type"></sp-device-type>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="homeDeviceId">
+          <th mat-header-cell *matHeaderCellDef>Identyfikator Urządzenia</th>
+          <td mat-cell class="max-w-[125px]" *matCellDef="let element">{{ element.homeDeviceId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element" class="w-[150px]">
+            <button mat-icon-button [routerLink]="['details', element.id]">
+              <ng-icon class="text-primary" name="heroArrowRightCircle"></ng-icon>
+            </button>
+            <button mat-icon-button (click)="onRemoveDevice(element)">
+              <ng-icon class="text-primary" name="heroTrash"></ng-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row class="cursor-pointer" *matRowDef="let row; columns: columns;" ></tr>
+      </table>
+    } @else {
+      <table class="table md:hidden" mat-table [dataSource]="data">
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Typ</th>
+          <td mat-cell *matCellDef="let element" class="max-w-[120px] select-none">
+            <sp-device-type [deviceType]="element.type"></sp-device-type>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+          <td mat-cell *matCellDef="let element" class="font-semibold max-w-[80px] select-none">{{ element.name }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="mobileColumns; sticky: true"></tr>
+        <tr mat-row [routerLink]="['details', row.id]" *matRowDef="let row; columns: mobileColumns"></tr>
+      </table>
+    }
+
+    <div class="w-full mt-6 text-end">
+      <span class="text-sm">Liczba urządzeń: {{ data.length }}</span>
+    </div>
+
+    @if (data.length === 0) {
+    <div class="w-full text-center">
+      <span class="text-sm">Nie znaleziono wyników</span>
+    </div>
+    }
+  </mat-card-content>
+</mat-card>
+}

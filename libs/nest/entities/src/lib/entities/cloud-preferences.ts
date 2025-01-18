@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { TuyaDevice } from './tuya-device';
+import { HomeDevice } from './home-device';
 
 @Entity()
 export class CloudPreferences {
@@ -17,15 +17,15 @@ export class CloudPreferences {
   @Column({ nullable: true })
   public circularPumpEndTime!: Date | null;
 
-  @OneToOne(() => TuyaDevice, { eager: true, nullable: true })
+  @OneToOne(() => HomeDevice, { eager: true, nullable: true })
   @JoinColumn()
-  public tuyaDevice!: TuyaDevice | null;
+  public homeDevice!: HomeDevice | null;
 
   @Column({ default: false, name: 'isCircularPumpActive' })
   private _isCircularPumpActive!: boolean;
 
   public set isCircularPumpActive(value: boolean) {
-    if (this.circularPumpStartTime && this.circularPumpEndTime && this.tuyaDevice) {
+    if (this.circularPumpStartTime && this.circularPumpEndTime && this.homeDevice) {
       this._isCircularPumpActive = value;
     } else {
       Logger.warn('Invalid configuration. Activation is not possible');

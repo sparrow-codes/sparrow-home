@@ -9,8 +9,8 @@ import { AquaDataService } from './data/aqua-data.service';
 export class AquaFacadeService {
   private readonly _dataService: AquaDataService = inject(AquaDataService);
 
-  public get tuyaDeviceOptions(): Signal<{ value: string; label: string }[] | null> {
-    return this._dataService.tuyaDeviceOptions;
+  public get homeDeviceOptions(): Signal<{ value: string; label: string }[] | null> {
+    return this._dataService.homeDeviceOptions;
   }
 
   public get aquaPreferences(): Signal<AquaPreferences | null> {

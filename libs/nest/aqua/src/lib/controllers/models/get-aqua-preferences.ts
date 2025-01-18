@@ -5,7 +5,7 @@ export class GetAquaPreferences {
   public isActive!: boolean;
 
   @ApiProperty()
-  public tuyaDeviceId?: string;
+  public homeDeviceId?: string;
 
   @ApiProperty()
   public lightStartTime?: Date;

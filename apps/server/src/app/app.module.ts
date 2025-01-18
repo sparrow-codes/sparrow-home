@@ -5,15 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AquaModule } from '@sparrow-server/aqua';
 import { AuthModule } from '@sparrow-server/auth';
 import { CloudModule } from '@sparrow-server/cloud';
+import { HomeDeviceModule } from '@sparrow-server/device';
 import { ApiModule } from '@sparrow-server/external-api';
 import { InitModule } from '@sparrow-server/init';
 import { SetupModule } from '@sparrow-server/setup';
 import { ConfigKey } from '@sparrow-server/shared';
-import { TuyaModule } from '@sparrow-server/tuya';
 import { UserModule } from '@sparrow-server/user';
 
 import { CreateSetupTable1735995550693 } from '../db/migrations/1735995550693-CreateSetupTable';
-import { CreateTuyaDeviceTable1735995890303 } from '../db/migrations/1735995890303-CreateTuyaDeviceTable';
+import { CreateHomeDeviceTable1735995890303 } from '../db/migrations/1735995890303-CreateHomeDeviceTable';
 import { CreateCloudPreferencesTable1735996227082 } from '../db/migrations/1735996227082-CreateCloudPreferencesTable';
 import { CreateAquaPreferencesTable1735998874554 } from '../db/migrations/1735998874554-CreateAquaPreferencesTable';
 import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-CreateUserTable';
@@ -38,7 +38,7 @@ import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-Cre
         migrationsRun: true,
         migrations: [
           CreateSetupTable1735995550693,
-          CreateTuyaDeviceTable1735995890303,
+          CreateHomeDeviceTable1735995890303,
           CreateCloudPreferencesTable1735996227082,
           CreateAquaPreferencesTable1735998874554,
           CreateUserTable1735999040434,
@@ -50,7 +50,7 @@ import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-Cre
     SetupModule,
     ApiModule,
     InitModule,
-    TuyaModule,
+    HomeDeviceModule,
     AquaModule,
   ],
 })

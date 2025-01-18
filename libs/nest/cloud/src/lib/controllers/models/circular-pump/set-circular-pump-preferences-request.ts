@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 
 export class SetCircularPumpPreferencesRequest {
   @ApiProperty({ required: false })
-  public tuyaDeviceId?: string;
+  public homeDeviceId?: string;
 
   @ApiProperty({ required: false })
   @Type(() => Date)

@@ -3,12 +3,12 @@ import { Module } from '@nestjs/common';
 
 import { ComfortCloudConnector } from './panasonic';
 import { OAuthClient } from './panasonic/oauth-connector/OAuthConnector';
-import { TuyaApiService } from './tuya';
 import { WeatherApiService } from './weather/weather-api.service';
+import { ZigbeeMqttService } from './zigbee';
 
 @Module({
   imports: [HttpModule],
-  providers: [WeatherApiService, TuyaApiService, ComfortCloudConnector, OAuthClient],
-  exports: [WeatherApiService, TuyaApiService, ComfortCloudConnector],
+  providers: [WeatherApiService, ComfortCloudConnector, OAuthClient, ZigbeeMqttService],
+  exports: [WeatherApiService, ComfortCloudConnector, ZigbeeMqttService],
 })
 export class ApiModule {}

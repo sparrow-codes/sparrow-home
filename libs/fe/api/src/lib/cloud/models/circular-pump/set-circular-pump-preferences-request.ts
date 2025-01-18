@@ -1,5 +1,5 @@
 export interface SetCircularPumpPreferencesRequest {
-  tuyaDeviceId?: string;
+  homeDeviceId?: string;
   from?: Date;
   to?: Date;
 }

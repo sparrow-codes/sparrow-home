@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AquaPreferences, TuyaDevice, TuyaDeviceType, User, UserRole } from '@sparrow-server/entities';
+import { AquaPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
 import { CronJobName } from '@sparrow-server/shared';
 import { CronJob } from 'cron/dist/job';
 import { CronTime } from 'cron/dist/time';
@@ -14,7 +14,7 @@ import { SetAquaPreferencesRequest } from '../controllers/models/set-aqua-prefer
 export class AquaService {
   public constructor(
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    @InjectRepository(TuyaDevice) private readonly _tuyaDeviceRepository: Repository<TuyaDevice>,
+    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
     @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>,
     private readonly _scheduleRegistry: SchedulerRegistry
   ) {}
@@ -22,7 +22,7 @@ export class AquaService {
   public async getAquaPreferences(): Promise<GetAquaPreferences> {
     const user: User = await this._getUser();
     const response: GetAquaPreferences = new GetAquaPreferences();
-    response.tuyaDeviceId = user.aquaPreferences.tuyaDevice?.tuyaDeviceId;
+    response.homeDeviceId = user.aquaPreferences.homeDevice?.zigbeeDeviceId;
     response.isActive = user.aquaPreferences.isActive ?? false;
 
     if (user.aquaPreferences.lightStartTime) {
@@ -51,24 +51,24 @@ export class AquaService {
     aquaPreferences.lightStartTime = request.from ? new Date(request.from) : null;
     aquaPreferences.lightEndTime = request.to ? new Date(request.to) : null;
 
-    if (request.tuyaDeviceId && request.from && request.to) {
-      const tuyaDevice: TuyaDevice | null = await this._tuyaDeviceRepository.findOneBy({
-        tuyaDeviceId: request.tuyaDeviceId,
+    if (request.homeDeviceId && request.from && request.to) {
+      const homeDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({
+        zigbeeDeviceId: request.homeDeviceId,
       });
 
-      if (!tuyaDevice || tuyaDevice.deviceType !== TuyaDeviceType.LSC_POWER_PLUG) {
+      if (!homeDevice || homeDevice.deviceType !== DeviceType.POWER_PLUG) {
         throw new HttpException(
-          `Invalid device type or missing device for id: ${request.tuyaDeviceId}`,
+          `Invalid device type or missing device for id: ${request.homeDeviceId}`,
           HttpStatus.NOT_FOUND
         );
       }
 
       const aquaPreferences: AquaPreferences = user.aquaPreferences;
 
-      aquaPreferences.tuyaDevice = tuyaDevice;
+      aquaPreferences.homeDevice = homeDevice;
       this.setAquaLightJob(user.aquaPreferences);
     } else {
-      aquaPreferences.tuyaDevice = null;
+      aquaPreferences.homeDevice = null;
 
       const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
       cronJob.stop();

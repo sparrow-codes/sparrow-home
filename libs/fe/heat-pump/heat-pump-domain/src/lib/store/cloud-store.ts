@@ -8,8 +8,8 @@ import {
   GetCircularPumpPreferencesResponse,
   GetHeatPumpDetailsResponse,
   GetScheduleWaterHeatingResponse,
-  TuyaApiService,
-  TuyaDeviceApiModel,
+  HomeDeviceApiModel,
+  HomeDeviceApiService,
 } from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
 import { combineLatest, delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
@@ -22,7 +22,7 @@ interface CloudState {
   heatPump: HeatPump | null;
   waterTankOptions: WaterTankOptions | null;
   circularPumpPreferences: CircularPumpPreferences | null;
-  tuyaDeviceOptions: { value: string; label: string }[] | null;
+  homeDeviceOptions: { value: string; label: string }[] | null;
 }
 
 export const CloudStore = signalStore(
@@ -31,7 +31,7 @@ export const CloudStore = signalStore(
     heatPump: null,
     waterTankOptions: null,
     circularPumpPreferences: null,
-    tuyaDeviceOptions: null,
+    homeDeviceOptions: null,
   }),
   withMethods(
     (
@@ -39,7 +39,7 @@ export const CloudStore = signalStore(
       cloudApiService = inject(CloudApiService),
       snackBar = inject(MatSnackBar),
       loaderService = inject(LoaderService),
-      tuyaApiService = inject(TuyaApiService)
+      homeDeviceApiService = inject(HomeDeviceApiService)
     ) => {
       const _getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponse> = () =>
         cloudApiService.getHeatPumpDetails().pipe(
@@ -67,17 +67,17 @@ export const CloudStore = signalStore(
           })
         );
 
-      const _getTuyaDeviceOptions: () => Observable<TuyaDeviceApiModel[]> = () =>
-        tuyaApiService.getAll().pipe(
+      const _getHomeDeviceOptions: () => Observable<HomeDeviceApiModel[]> = () =>
+        homeDeviceApiService.getAll().pipe(
           tapResponse({
             next: (deviceList) =>
               patchState(store, {
-                tuyaDeviceOptions: deviceList.map((device) => ({
-                  value: device.tuyaDeviceId,
+                homeDeviceOptions: deviceList.map((device) => ({
+                  value: device.homeDeviceId,
                   label: device.name,
                 })),
               }),
-            error: () => snackBar.open('Błąd pobierania listy urządzeń Tuya!'),
+            error: () => snackBar.open('Błąd pobierania listy urządzeń!'),
           })
         );
 
@@ -90,7 +90,7 @@ export const CloudStore = signalStore(
                 _getHeatPumpDetails(),
                 _getScheduledWaterHeatStatus(),
                 _getCircularPumpPreferencesResponse(),
-                _getTuyaDeviceOptions(),
+                _getHomeDeviceOptions(),
               ]).pipe(finalize(() => (loaderService.showLoader = false)))
             )
           )
@@ -132,7 +132,7 @@ export const CloudStore = signalStore(
                 .setCircularPumpPreferences({
                   from: preferences.scheduledStartTime,
                   to: preferences.scheduledEndTime,
-                  tuyaDeviceId: preferences.tuyaDeviceId,
+                  homeDeviceId: preferences.homeDeviceId,
                 })
                 .pipe(
                   tapResponse({

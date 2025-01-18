@@ -1,5 +1,5 @@
 export enum CircularPumpSettingFormName {
-  TUYA_DEVICE = 'tuyaDevice',
+  HOME_DEVICE = 'homeDevice',
   FROM = 'from',
   TO = 'to',
 }

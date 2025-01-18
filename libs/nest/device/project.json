@@ -1,0 +1,16 @@
+{
+  "name": "device",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nest/device/src",
+  "projectType": "library",
+  "tags": ["scope: be-device"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nest/device/jest.config.ts"
+      }
+    }
+  }
+}

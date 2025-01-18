@@ -1,6 +1,6 @@
 export interface GetAquaPreferences {
   isActive: boolean;
-  tuyaDeviceId?: string;
+  homeDeviceId?: string;
   lightStartTime?: Date;
   lightEndTime?: Date;
 }

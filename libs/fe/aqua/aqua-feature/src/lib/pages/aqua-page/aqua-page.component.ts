@@ -14,8 +14,8 @@ import { AquariumLightSettingsComponent } from '../../components/aguarium-light-
 export class AquaPageComponent implements OnInit {
   private readonly _facadeService: AquaFacadeService = inject(AquaFacadeService);
 
-  protected readonly tuyaDeviceOptions: Signal<{ value: string; label: string }[] | null> =
-    this._facadeService.tuyaDeviceOptions;
+  protected readonly homeDeviceOptions: Signal<{ value: string; label: string }[] | null> =
+    this._facadeService.homeDeviceOptions;
   protected readonly aquaPreferences: Signal<AquaPreferences | null> = this._facadeService.aquaPreferences;
 
   public ngOnInit(): void {

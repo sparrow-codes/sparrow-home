@@ -51,7 +51,7 @@ import { AquariumLightForm } from './form-service/model/aquarium-light-form';
   providers: [AquariumLightFormService, provideIcons({ heroClock })],
 })
 export class AquariumLightSettingsComponent implements OnInit {
-  public readonly tuyaDeviceOptions: InputSignal<{ value: string; label: string }[]> = input.required();
+  public readonly homeDeviceOptions: InputSignal<{ value: string; label: string }[]> = input.required();
   public readonly aquaPreferences: InputSignal<AquaPreferences> = input.required();
   public readonly preferencesUpdates: OutputEmitterRef<AquaPreferences> = output();
   public readonly activated: OutputEmitterRef<boolean> = output();
@@ -79,7 +79,7 @@ export class AquariumLightSettingsComponent implements OnInit {
     this._formService.form?.reset({
       [AquariumLightFormName.FROM]: this.aquaPreferences().lightStartTime,
       [AquariumLightFormName.TO]: this.aquaPreferences().lightEndTime,
-      [AquariumLightFormName.TUYA_DEVICE]: this.aquaPreferences().tuyaDeviceId,
+      [AquariumLightFormName.HOME_DEVICE]: this.aquaPreferences().homeDeviceId,
     });
     this._formService.form?.disable();
   }
@@ -90,7 +90,7 @@ export class AquariumLightSettingsComponent implements OnInit {
       const newPreferences: AquaPreferences = new AquaPreferences();
       newPreferences.lightStartTime = this.formGroup?.value.from ?? undefined;
       newPreferences.lightEndTime = this.formGroup?.value.to ?? undefined;
-      newPreferences.tuyaDeviceId = this.formGroup?.value.tuyaDevice ?? undefined;
+      newPreferences.homeDeviceId = this.formGroup?.value.homeDevice ?? undefined;
       this.preferencesUpdates.emit(newPreferences);
 
       this._formService.form?.disable();
