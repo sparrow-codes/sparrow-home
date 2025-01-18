@@ -6,4 +6,5 @@ export interface HomeDevice {
   name: string;
   homeDeviceId: string;
   isOnline?: boolean;
+  signalStrength?: number;
 }

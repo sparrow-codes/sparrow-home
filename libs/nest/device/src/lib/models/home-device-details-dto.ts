@@ -11,4 +11,6 @@ export abstract class HomeDeviceDetailsDto {
   public name!: string;
   @ApiProperty({ type: 'boolean' })
   public isOnline!: boolean;
+  @ApiProperty()
+  public signalStrength!: number;
 }

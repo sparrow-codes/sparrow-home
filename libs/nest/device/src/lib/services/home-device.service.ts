@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 
 import { HomeDeviceDto } from '../models/home-device-dto';
 import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
+import { calculatePercentage } from '../utils/calculate-percentage';
 
 @Injectable()
 export class HomeDeviceService {
@@ -46,13 +47,14 @@ export class HomeDeviceService {
 
         return combineLatest([of(entity), this.zigbeeMqttService.getSwitchStatus(entity.zigbeeDeviceId)]);
       }),
-      map(([entity, isOn]) => ({
+      map(([entity, response]) => ({
         type: DeviceType.POWER_PLUG,
         name: entity.deviceName,
         homeDeviceId: entity.zigbeeDeviceId,
         id: entity.id,
-        isOnline: true,
-        isOn: isOn,
+        isOnline: response.payload.linkquality > 0,
+        isOn: response.payload.state === 'ON',
+        signalStrength: calculatePercentage(0, 255, response.payload.linkquality),
       }))
     );
   }

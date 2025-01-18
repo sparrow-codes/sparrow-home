@@ -4,9 +4,9 @@ import { ConfigKey } from '@sparrow-server/shared';
 import mqtt, { MqttClient } from 'mqtt';
 import { combineLatest, first, map, Observable, Subject, tap } from 'rxjs';
 
-import { DeviceResponse } from './model/device-response';
+import { DeviceResponse } from './model';
+import { IkeaSwitchStatusResponse } from './model';
 import { IkeaSwitchRequest } from './model/ikea-switch-request';
-import { IkeaSwitchStatusResponse } from './model/ikea-switch-status.response';
 
 @Injectable()
 export class ZigbeeMqttService {
@@ -46,7 +46,7 @@ export class ZigbeeMqttService {
     ]).pipe(map(([, response]) => response.payload.state === 'ON'));
   }
 
-  public getSwitchStatus(homeDeviceId: string): Observable<boolean> {
+  public getSwitchStatus(homeDeviceId: string): Observable<DeviceResponse<IkeaSwitchStatusResponse>> {
     const request: IkeaSwitchRequest = { state: '' };
 
     this.client.subscribe(`zigbee2mqtt/${homeDeviceId}`);
@@ -61,7 +61,7 @@ export class ZigbeeMqttService {
         first(),
         tap((response) => console.log(response))
       ),
-    ]).pipe(map(([, response]) => response.payload.state === 'ON'));
+    ]).pipe(map(([, response]) => response));
   }
 
   private _toMessage(request: object): Buffer {
