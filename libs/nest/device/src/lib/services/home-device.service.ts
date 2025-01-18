@@ -1,15 +1,19 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeviceType, HomeDevice } from '@sparrow-server/entities';
-import { Observable, of } from 'rxjs';
+import { ZigbeeMqttService } from '@sparrow-server/external-api';
+import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
-import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
 import { HomeDeviceDto } from '../models/home-device-dto';
+import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
 
 @Injectable()
 export class HomeDeviceService {
-  public constructor(@InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>) {}
+  public constructor(
+    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
+    private readonly zigbeeMqttService: ZigbeeMqttService
+  ) {}
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
     const devices: HomeDevice[] = await this._homeDeviceRepository.find();
@@ -32,12 +36,42 @@ export class HomeDeviceService {
     await this._homeDeviceRepository.delete({ id });
   }
 
-  public getDeviceDetails(id: number): Observable<HomeDeviceDetailsDto> {
-    return of({} as HomeDeviceDetailsDto);
+  public getDeviceDetails(id: number): Observable<PluginSwitchDetailsDto> {
+    return from(this._homeDeviceRepository.findOneBy({ id })).pipe(
+      first(),
+      switchMap((entity) => {
+        if (!entity) {
+          throw new NotFoundException(`Home Device not found for id: ${id}`);
+        }
+
+        return combineLatest([of(entity), this.zigbeeMqttService.getSwitchStatus(entity.zigbeeDeviceId)]);
+      }),
+      map(([entity, isOn]) => ({
+        type: DeviceType.POWER_PLUG,
+        name: entity.deviceName,
+        homeDeviceId: entity.zigbeeDeviceId,
+        id: entity.id,
+        isOnline: true,
+        isOn: isOn,
+      }))
+    );
   }
 
   public setPluginSwitchStatus(id: number, isOn: boolean): Observable<boolean> {
-    return of(true);
+    return from(this._homeDeviceRepository.findOneBy({ id })).pipe(
+      first(),
+      switchMap((entity) => {
+        if (!entity) {
+          throw new NotFoundException(`Home Device not found for id: ${id}`);
+        }
+
+        return this.zigbeeMqttService.setSwitchOn(entity.zigbeeDeviceId, isOn);
+      })
+    );
+  }
+
+  public enableParingMode(): Observable<void> {
+    return from(this.zigbeeMqttService.allowDeviceJoin());
   }
 
   private _toDeviceDto(device: HomeDevice): HomeDeviceDto {
@@ -45,7 +79,7 @@ export class HomeDeviceService {
       id: device.id,
       name: device.deviceName,
       type: device.deviceType,
-      zigbeeDeviceId: device.zigbeeDeviceId,
+      homeDeviceId: device.zigbeeDeviceId,
     };
   }
 }

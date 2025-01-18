@@ -1,5 +1,5 @@
 export interface CreateDeviceRequest {
   type: number;
-  zigbeeDeviceId: string;
+  homeDeviceId: string;
   name: string;
 }

@@ -16,4 +16,8 @@ export enum ConfigKey {
 
   JWT_SECRET = 'jwtSecret',
   JWT_EXPIRATION = 'jwtExpiry',
+
+  MQTT_URL = 'mqttUrl',
+  MQTT_USERNAME = 'mqttUserName',
+  MQTT_PASSWORD = 'mqttPassword',
 }

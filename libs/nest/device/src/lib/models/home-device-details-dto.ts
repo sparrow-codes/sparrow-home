@@ -6,7 +6,7 @@ export abstract class HomeDeviceDetailsDto {
   @ApiProperty()
   public type!: number;
   @ApiProperty()
-  public zigbeeDeviceId!: string;
+  public homeDeviceId!: string;
   @ApiProperty()
   public name!: string;
   @ApiProperty({ type: 'boolean' })

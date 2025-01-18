@@ -8,7 +8,7 @@ export class CreateDeviceRequest {
 
   @IsNotEmpty({ message: 'Type is required' })
   @ApiProperty({ required: true })
-  public zigbeeDeviceId!: string;
+  public homeDeviceId!: string;
 
   @MaxLength(100)
   @IsNotEmpty({ message: 'Type is required' })

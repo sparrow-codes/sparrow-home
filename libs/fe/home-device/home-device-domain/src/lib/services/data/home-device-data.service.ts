@@ -56,7 +56,7 @@ export class HomeDeviceDataService {
     this._apiService
       .createDevice({
         type: deviceType,
-        zigbeeDeviceId: homeDeviceId,
+        homeDeviceId: homeDeviceId,
         name,
       })
       .pipe(

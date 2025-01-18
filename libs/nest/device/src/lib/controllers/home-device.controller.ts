@@ -25,7 +25,7 @@ export class HomeDeviceController {
   @ApiBody({ type: CreateDeviceRequest })
   @Post('create')
   public async createDevice(@Body() request: CreateDeviceRequest): Promise<void> {
-    await this._homeDeviceService.addDevice(request.type, request.zigbeeDeviceId, request.name);
+    await this._homeDeviceService.addDevice(request.type, request.homeDeviceId, request.name);
   }
 
   @Delete('delete/:id')
@@ -39,11 +39,16 @@ export class HomeDeviceController {
     return this._homeDeviceService.getDeviceDetails(Number(id)).pipe(map((details) => ({ deviceDetails: details })));
   }
 
-  @Post('plugin-switch/status/:id')
+  @Post('switch/status/:id')
   public setPluginSwitchStatus(
     @Param('id') id: string,
     @Body() request: SetPluginSwitchStatusRequest
   ): Observable<boolean> {
     return this._homeDeviceService.setPluginSwitchStatus(Number(id), request.isOn);
+  }
+
+  @Get('paring-mode')
+  public enableParingMode(): Observable<void> {
+    return this._homeDeviceService.enableParingMode();
   }
 }

@@ -27,12 +27,12 @@
       "@sparrow-server/aqua": ["libs/nest/aqua/src/index.ts"],
       "@sparrow-server/auth": ["libs/nest/auth/src/index.ts"],
       "@sparrow-server/cloud": ["libs/nest/cloud/src/index.ts"],
+      "@sparrow-server/device": ["libs/nest/device/src/index.ts"],
       "@sparrow-server/entities": ["libs/nest/entities/src/index.ts"],
       "@sparrow-server/external-api": ["libs/nest/external-api/src/index.ts"],
       "@sparrow-server/init": ["libs/nest/init/src/index.ts"],
       "@sparrow-server/setup": ["libs/nest/setup/src/index.ts"],
       "@sparrow-server/shared": ["libs/nest/shared/src/index.ts"],
-      "@sparrow-server/device": ["libs/nest/device/src/index.ts"],
       "@sparrow-server/user": ["libs/nest/user/src/index.ts"]
     }
   },

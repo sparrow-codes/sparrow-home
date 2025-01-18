@@ -6,7 +6,7 @@ export class HomeDeviceDto {
   @ApiProperty()
   public type!: number;
   @ApiProperty()
-  public zigbeeDeviceId!: string;
+  public homeDeviceId!: string;
   @ApiProperty()
   public name!: string;
 }
