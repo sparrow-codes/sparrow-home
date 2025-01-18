@@ -4,7 +4,7 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/m
 import { MatDivider } from '@angular/material/divider';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroAdjustmentsHorizontal, heroNoSymbol } from '@ng-icons/heroicons/outline';
+import { heroAdjustmentsHorizontal, heroNoSymbol, heroWifi } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { DeviceFacadeService, DeviceType, HomeDevice, SwitchDevice } from '@sparrow-home/home-device-domain';
 import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
@@ -28,7 +28,7 @@ import { LcsSwitchManualControlComponent } from '../../components/manual-control
     MatCardTitle,
   ],
   templateUrl: './device-details.component.html',
-  providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal })],
+  providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi })],
   animations: [sparrowFadeIn],
 })
 export class DeviceDetailsComponent implements OnInit {

@@ -4,4 +4,5 @@ export interface HomeDeviceDetailsApiModel {
   homeDeviceId: string;
   name: string;
   isOnline: boolean;
+  signalStrength: number;
 }

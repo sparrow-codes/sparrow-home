@@ -22,6 +22,7 @@ export class HomeDeviceMapper {
       return {
         ...device,
         isOn: switchDevice.isOn,
+        signalStrength: switchDevice.signalStrength,
       } as SwitchDevice;
     }
 
