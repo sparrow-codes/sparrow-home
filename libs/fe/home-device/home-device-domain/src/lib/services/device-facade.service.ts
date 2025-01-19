@@ -1,4 +1,5 @@
 import { inject, Injectable, Signal } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { HomeDevice } from '../models';
 import { HomeDeviceDataService } from './data/home-device-data.service';
@@ -27,8 +28,8 @@ export class DeviceFacadeService {
     this._dataService.setSearchQuery(query);
   }
 
-  public createDevice(deviceType: number, homeDeviceId: string, name: string): void {
-    this._dataService.createDevices(deviceType, homeDeviceId, name);
+  public createDevice(deviceType: number, name: string): Observable<boolean> {
+    return this._dataService.createDevices(deviceType, name);
   }
 
   public deleteDevice(id: number, deviceName: string): void {

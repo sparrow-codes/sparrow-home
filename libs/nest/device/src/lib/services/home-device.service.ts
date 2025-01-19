@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, CloudPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
@@ -28,16 +28,22 @@ export class HomeDeviceService {
     return devices.map(this._toDeviceDto);
   }
 
-  public async addDevice(type: DeviceType, zigbeeDeviceId: string, name: string): Promise<void> {
-    if (await this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: zigbeeDeviceId })) {
-      throw new ForbiddenException('Home Device already exists!');
-    }
+  public addDevice(type: DeviceType, name: string): Observable<boolean> {
+    return this._zigbeeManageDeviceService.joinDeviceAndSetId().pipe(
+      first(),
+      switchMap((zigbeeDeviceId) => {
+        if (!zigbeeDeviceId) {
+          return of(false);
+        }
 
-    const device: HomeDevice = new HomeDevice();
-    device.deviceType = type;
-    device.zigbeeDeviceId = zigbeeDeviceId;
-    device.deviceName = name;
-    await this._homeDeviceRepository.save(device);
+        const device: HomeDevice = new HomeDevice();
+        device.deviceType = type;
+        device.zigbeeDeviceId = zigbeeDeviceId;
+        device.deviceName = name;
+
+        return from(this._homeDeviceRepository.save(device)).pipe(map(() => true));
+      })
+    );
   }
 
   public async removeDevice(id: number): Promise<void> {
@@ -102,10 +108,6 @@ export class HomeDeviceService {
         return this._zigbeeSwitchMqttService.setSwitchOn(entity.zigbeeDeviceId, isOn);
       })
     );
-  }
-
-  public enableParingMode(): Observable<void> {
-    return from(this._zigbeeManageDeviceService.allowDeviceJoin());
   }
 
   private _toDeviceDto(device: HomeDevice): HomeDeviceDto {

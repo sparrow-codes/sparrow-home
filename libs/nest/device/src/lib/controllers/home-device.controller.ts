@@ -24,8 +24,8 @@ export class HomeDeviceController {
 
   @ApiBody({ type: CreateDeviceRequest })
   @Post('create')
-  public async createDevice(@Body() request: CreateDeviceRequest): Promise<void> {
-    await this._homeDeviceService.addDevice(request.type, request.homeDeviceId, request.name);
+  public createDevice(@Body() request: CreateDeviceRequest): Observable<boolean> {
+    return this._homeDeviceService.addDevice(request.type, request.name);
   }
 
   @Delete('delete/:id')
@@ -45,10 +45,5 @@ export class HomeDeviceController {
     @Body() request: SetPluginSwitchStatusRequest
   ): Observable<boolean> {
     return this._homeDeviceService.setPluginSwitchStatus(Number(id), request.isOn);
-  }
-
-  @Get('paring-mode')
-  public enableParingMode(): Observable<void> {
-    return this._homeDeviceService.enableParingMode();
   }
 }

@@ -6,10 +6,6 @@ export class CreateDeviceRequest {
   @ApiProperty({ required: true })
   public type!: number;
 
-  @IsNotEmpty({ message: 'Type is required' })
-  @ApiProperty({ required: true })
-  public homeDeviceId!: string;
-
   @MaxLength(100)
   @IsNotEmpty({ message: 'Type is required' })
   @ApiProperty({ required: true })

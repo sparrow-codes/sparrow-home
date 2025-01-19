@@ -21,23 +21,17 @@ export class CreateDeviceFormService {
     return this._form.get(CreateDeviceFormName.NAME) as FormControl<string>;
   }
 
-  public get deviceIdControl(): FormControl<string> {
-    return this._form.get(CreateDeviceFormName.HOME_DEVICE_ID) as FormControl<string>;
-  }
-
   public constructor() {
     this._form = this._prepareForm();
   }
 
   private _prepareForm(): FormGroup<CreateDeviceForm> {
     return this._fb.group({
-      [CreateDeviceFormName.DEVICE_TYPE]: this._fb.control<number | null>(null, { updateOn: 'blur' }),
+      [CreateDeviceFormName.DEVICE_TYPE]: this._fb.control<number | null>(null, {
+        validators: [Validators.required],
+      }),
       [CreateDeviceFormName.NAME]: this._fb.control<string>('', {
         validators: [Validators.required, Validators.maxLength(100)],
-        updateOn: 'blur',
-      }),
-      [CreateDeviceFormName.HOME_DEVICE_ID]: this._fb.control<string>('', {
-        validators: [Validators.required],
         updateOn: 'blur',
       }),
     });

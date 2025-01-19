@@ -37,7 +37,7 @@ export class HomeDeviceDataService {
   });
 
   public get homeDeviceDetails(): Signal<HomeDevice | null> {
-    return this._homeDeviceDetails;
+    return this._homeDeviceDetails.asReadonly();
   }
 
   public setSearchQuery(query: string): void {
@@ -51,24 +51,20 @@ export class HomeDeviceDataService {
       .subscribe();
   }
 
-  public createDevices(deviceType: number, homeDeviceId: string, name: string): void {
-    this._loadingService.showLoader = true;
-    this._apiService
+  public createDevices(deviceType: number, name: string): Observable<boolean> {
+    return this._apiService
       .createDevice({
         type: deviceType,
-        homeDeviceId: homeDeviceId,
         name,
       })
       .pipe(
         first(),
         tap({
-          next: () => this._snackBar.open('Utworzono urządzenie!'),
+          next: (isCreated) =>
+            this._snackBar.open(isCreated ? 'Połączono urządzenie!' : 'Nie udało się nawiązać połączenia'),
           error: () => this._snackBar.open('Błąd podczas towrzenia urządzenia'),
-        }),
-        switchMap(() => this._fetchDevices()),
-        finalize(() => (this._loadingService.showLoader = false))
-      )
-      .subscribe();
+        })
+      );
   }
 
   public removeDevice(id: number, deviceName: string): void {
@@ -91,12 +87,11 @@ export class HomeDeviceDataService {
               next: () => this._snackBar.open('Usunięto urządzenie!'),
               error: () => this._snackBar.open('Błąd podczas usuwania urządzenia!'),
             }),
-            switchMap(() => this._fetchDevices()),
             finalize(() => (this._loadingService.showLoader = false))
           )
         )
       )
-      .subscribe();
+      .subscribe(() => this._router.navigate([RoutePath.MAIN]));
   }
 
   public fetchDeviceDetailsById(id: number): void {
