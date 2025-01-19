@@ -10,21 +10,12 @@ import { IkeaSwitchRequest } from './model/ikea-switch-request';
 export class ZigbeeSwitchMqttService {
   private readonly _ikeaSwitchStatusResponse$: Subject<DeviceResponse<IkeaSwitchStatusResponse>> = new Subject();
 
-  private static readonly _PARING_MODE_RUNTIME: number = 120;
-  private static readonly _ZIGBEE_MQTT_BRIDGE_REQUEST_URL: string = 'zigbee2mqtt/bridge/request/permit_join';
   private static readonly _DEVICE_CONNECTION_TIMEOUT: number = 5000;
 
   private readonly client: MqttClient;
 
   public constructor(private readonly mqttService: MqttConnectorService) {
     this.client = this.mqttService.client;
-  }
-
-  public async allowDeviceJoin(): Promise<void> {
-    await this.client.publishAsync(
-      ZigbeeSwitchMqttService._ZIGBEE_MQTT_BRIDGE_REQUEST_URL,
-      this.mqttService.toMessage({ time: ZigbeeSwitchMqttService._PARING_MODE_RUNTIME })
-    );
   }
 
   public setSwitchOn(homeDeviceId: string, isOn: boolean, onTime?: number): Observable<boolean> {

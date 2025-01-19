@@ -1,7 +1,9 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeviceType, HomeDevice } from '@sparrow-server/entities';
-import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
+import { AquaPreferences, CloudPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
+import { ZigbeeManageDeviceService, ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
+import { CronJobName } from '@sparrow-server/shared';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
@@ -13,7 +15,12 @@ import { calculatePercentage } from '../utils/calculate-percentage';
 export class HomeDeviceService {
   public constructor(
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
-    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService
+    @InjectRepository(User) private readonly _userRepository: Repository<User>,
+    @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>,
+    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
+    private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
+    private readonly scheduledRegistry: SchedulerRegistry
   ) {}
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
@@ -34,6 +41,31 @@ export class HomeDeviceService {
   }
 
   public async removeDevice(id: number): Promise<void> {
+    const homDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
+
+    if (!homDevice) {
+      return;
+    }
+
+    const user: User = await this._getUser();
+    const aquaPreferences: AquaPreferences = user.aquaPreferences;
+    const cloudPreferences: CloudPreferences = user.cloudPreferences;
+
+    if (aquaPreferences.homeDevice?.id === homDevice.id) {
+      aquaPreferences.homeDevice = null;
+      aquaPreferences.isActive = false;
+      await this._aquaPreferencesRepository.save(aquaPreferences);
+      this.scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
+    }
+
+    if (cloudPreferences.homeDevice?.id === homDevice.id) {
+      cloudPreferences.homeDevice = null;
+      cloudPreferences.isCircularPumpActive = false;
+      await this._cloudPreferencesRepository.save(cloudPreferences);
+      this.scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
+    }
+
+    await this._zigbeeManageDeviceService.removeDevice(homDevice.zigbeeDeviceId);
     await this._homeDeviceRepository.delete({ id });
   }
 
@@ -73,7 +105,7 @@ export class HomeDeviceService {
   }
 
   public enableParingMode(): Observable<void> {
-    return from(this._zigbeeSwitchMqttService.allowDeviceJoin());
+    return from(this._zigbeeManageDeviceService.allowDeviceJoin());
   }
 
   private _toDeviceDto(device: HomeDevice): HomeDeviceDto {
@@ -83,5 +115,14 @@ export class HomeDeviceService {
       type: device.deviceType,
       homeDeviceId: device.zigbeeDeviceId,
     };
+  }
+
+  private async _getUser(): Promise<User> {
+    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
+    if (!user) {
+      throw new NotFoundException(`User not found!`);
+    }
+
+    return user;
   }
 }
