@@ -52,9 +52,9 @@ export class HomeDeviceService {
         name: entity.deviceName,
         homeDeviceId: entity.zigbeeDeviceId,
         id: entity.id,
-        isOnline: response.payload.linkquality > 0,
-        isOn: response.payload.state === 'ON',
-        signalStrength: calculatePercentage(0, 255, response.payload.linkquality),
+        isOnline: !!(response && response.payload.linkquality > 0),
+        isOn: !!(response && response?.payload.state === 'ON'),
+        signalStrength: response ? calculatePercentage(0, 255, response.payload.linkquality) : 0,
       }))
     );
   }

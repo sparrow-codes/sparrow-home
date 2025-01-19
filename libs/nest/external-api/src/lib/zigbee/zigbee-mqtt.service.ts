@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigKey } from '@sparrow-server/shared';
 import mqtt, { MqttClient } from 'mqtt';
-import { combineLatest, first, map, Observable, Subject, tap } from 'rxjs';
+import { catchError, combineLatest, first, map, Observable, of, Subject, timeout } from 'rxjs';
 
 import { DeviceResponse } from './model';
 import { IkeaSwitchStatusResponse } from './model';
@@ -13,7 +13,8 @@ export class ZigbeeMqttService {
   private readonly _ikeaSwitchStatusResponse$: Subject<DeviceResponse<IkeaSwitchStatusResponse>> = new Subject();
 
   private static readonly _PARING_MODE_RUNTIME: number = 120;
-  private static readonly ZIGBEE_MQTT_BRIDGE_REQUEST_URL: string = 'zigbee2mqtt/bridge/request/permit_join';
+  private static readonly _ZIGBEE_MQTT_BRIDGE_REQUEST_URL: string = 'zigbee2mqtt/bridge/request/permit_join';
+  private static readonly _DEVICE_CONNECTION_TIMEOUT: number = 5000;
 
   private readonly client: MqttClient;
 
@@ -23,7 +24,7 @@ export class ZigbeeMqttService {
 
   public async allowDeviceJoin(): Promise<void> {
     await this.client.publishAsync(
-      ZigbeeMqttService.ZIGBEE_MQTT_BRIDGE_REQUEST_URL,
+      ZigbeeMqttService._ZIGBEE_MQTT_BRIDGE_REQUEST_URL,
       this._toMessage({ time: ZigbeeMqttService._PARING_MODE_RUNTIME })
     );
   }
@@ -38,15 +39,12 @@ export class ZigbeeMqttService {
     });
 
     return combineLatest([
-      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/set`, Buffer.from(JSON.stringify(request), 'utf8')),
-      this._ikeaSwitchStatusResponse$.asObservable().pipe(
-        first(),
-        tap((response) => console.log(response))
-      ),
+      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/set`, this._toMessage(request)),
+      this._ikeaSwitchStatusResponse$.asObservable().pipe(first()),
     ]).pipe(map(([, response]) => response.payload.state === 'ON'));
   }
 
-  public getSwitchStatus(homeDeviceId: string): Observable<DeviceResponse<IkeaSwitchStatusResponse>> {
+  public getSwitchStatus(homeDeviceId: string): Observable<DeviceResponse<IkeaSwitchStatusResponse> | null> {
     const request: IkeaSwitchRequest = { state: '' };
 
     this.client.subscribe(`zigbee2mqtt/${homeDeviceId}`);
@@ -56,10 +54,11 @@ export class ZigbeeMqttService {
     });
 
     return combineLatest([
-      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/get`, Buffer.from(JSON.stringify(request), 'utf8')),
+      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/get`, this._toMessage(request)),
       this._ikeaSwitchStatusResponse$.asObservable().pipe(
+        timeout(ZigbeeMqttService._DEVICE_CONNECTION_TIMEOUT),
         first(),
-        tap((response) => console.log(response))
+        catchError(() => of(null))
       ),
     ]).pipe(map(([, response]) => response));
   }

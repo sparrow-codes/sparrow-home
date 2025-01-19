@@ -13,6 +13,7 @@ import { SwitchDevice } from '@sparrow-home/home-device-domain';
 export class LcsSwitchManualControlComponent implements OnInit {
   public readonly switchChange: OutputEmitterRef<boolean> = output();
   public readonly lcsSwitch: InputSignal<SwitchDevice> = input.required();
+  public readonly disabled: InputSignal<boolean> = input(false);
 
   protected switch?: FormControl<boolean>;
 
@@ -20,7 +21,7 @@ export class LcsSwitchManualControlComponent implements OnInit {
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
-    this.switch = this._fb.control(this.lcsSwitch().isOn);
+    this.switch = this._fb.control({ value: this.lcsSwitch().isOn, disabled: this.disabled() });
     this.switch.valueChanges
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((value) => this.switchChange.emit(value));

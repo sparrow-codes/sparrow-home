@@ -12,6 +12,7 @@ import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
 import { LcsSwitchManualControlComponent } from '../../components/manual-control/lcs-switch-manual-control/lcs-switch-manual-control.component';
+import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
 
 @Component({
   selector: 'sp-device-device-details',
@@ -26,6 +27,7 @@ import { LcsSwitchManualControlComponent } from '../../components/manual-control
     LcsSwitchManualControlComponent,
     MatCardHeader,
     MatCardTitle,
+    SignalStrengthComponent,
   ],
   templateUrl: './device-details.component.html',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi })],
