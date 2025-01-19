@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, User, UserRole } from '@sparrow-server/entities';
-import { ZigbeeMqttService } from '@sparrow-server/external-api';
+import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { CronJobName, TimeUtils } from '@sparrow-server/shared';
 import { Repository } from 'typeorm';
 
@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 export class AquaRegistryService {
   public constructor(
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    private readonly zigbeeMqttService: ZigbeeMqttService
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService
   ) {}
 
   @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_AQUA_LIGHT })
@@ -30,7 +30,7 @@ export class AquaRegistryService {
         aquaPreferences.lightEndTime
       );
 
-      this.zigbeeMqttService.setSwitchOn(aquaPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
+      this._zigbeeSwitchMqttService.setSwitchOn(aquaPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
       Logger.log(`Turning Aqua light on for ${timeInterval} seconds`);
     }
   }

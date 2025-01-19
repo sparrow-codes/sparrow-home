@@ -37,10 +37,18 @@
 
       <mat-divider></mat-divider>
       <div class="flex w-full py-2 justify-between flex-wrap">
-        <div>Id urządzenia w sieci:</div>
+        <div>Id urządzenia:</div>
         <div>{{ homeDevice.homeDeviceId }}</div>
       </div>
     </div>
   </mat-card-content>
+  <mat-card-actions class="max-w-[532px] mt-5" align="end">
+    <button mat-stroked-button (click)="onDeviceDelete(homeDevice.id, homeDevice.name)">
+      <div class="flex items-center gap-2">
+        <ng-icon class="text-error" name="heroTrash" size="1rem"></ng-icon>
+        <span class="text-error">Usuń</span>
+      </div>
+    </button>
+  </mat-card-actions>
 </mat-card>
 }

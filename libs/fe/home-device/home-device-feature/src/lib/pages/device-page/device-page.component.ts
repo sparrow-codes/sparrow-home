@@ -56,10 +56,6 @@ export class DevicePageComponent implements OnInit {
     this._handleSearchEvent();
   }
 
-  protected onRowClick(row: unknown): void {
-    console.log(row);
-  }
-
   protected onAddClick(): void {
     this._dialog
       .open(CreateDeviceDialogComponent)
@@ -75,10 +71,6 @@ export class DevicePageComponent implements OnInit {
           value[CreateDeviceFormName.NAME]
         )
       );
-  }
-
-  protected onRemoveDevice(device: HomeDevice): void {
-    this._facadeService.deleteDevice(device.id, device.name);
   }
 
   private _handleSearchEvent(): void {

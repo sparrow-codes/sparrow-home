@@ -40,7 +40,7 @@ export class AppInitService {
 
     const circularPumpStartTime: Date | null = cloudPreferences.circularPumpStartTime;
 
-    if (cloudPreferences.isCircularPumpActive && circularPumpStartTime) {
+    if (cloudPreferences.isCircularPumpActive && circularPumpStartTime && cloudPreferences.homeDevice) {
       const cronJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
       cronJob.setTime(
         new CronTime(`0 ${circularPumpStartTime.getMinutes()} ${circularPumpStartTime.getHours()} * * *`)
@@ -54,7 +54,7 @@ export class AppInitService {
     const aquaPreferences: AquaPreferences = owner.aquaPreferences;
     const startTime: Date | null = aquaPreferences.lightStartTime;
 
-    if (aquaPreferences.isActive && startTime) {
+    if (aquaPreferences.isActive && startTime && aquaPreferences.homeDevice) {
       const cronJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
       cronJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
       cronJob.start();

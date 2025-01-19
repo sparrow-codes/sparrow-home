@@ -1,32 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { ConfigKey } from '@sparrow-server/shared';
-import mqtt, { MqttClient } from 'mqtt';
+import { MqttClient } from 'mqtt';
 import { catchError, combineLatest, first, map, Observable, of, Subject, timeout } from 'rxjs';
 
-import { DeviceResponse } from './model';
-import { IkeaSwitchStatusResponse } from './model';
+import { MqttConnectorService } from './connector/mqtt-connector.service';
+import { DeviceResponse, IkeaSwitchStatusResponse } from './model';
 import { IkeaSwitchRequest } from './model/ikea-switch-request';
 
 @Injectable()
-export class ZigbeeMqttService {
+export class ZigbeeSwitchMqttService {
   private readonly _ikeaSwitchStatusResponse$: Subject<DeviceResponse<IkeaSwitchStatusResponse>> = new Subject();
 
-  private static readonly _PARING_MODE_RUNTIME: number = 120;
-  private static readonly _ZIGBEE_MQTT_BRIDGE_REQUEST_URL: string = 'zigbee2mqtt/bridge/request/permit_join';
   private static readonly _DEVICE_CONNECTION_TIMEOUT: number = 5000;
 
   private readonly client: MqttClient;
 
-  public constructor(private readonly configService: ConfigService) {
-    this.client = mqtt.connect(this.configService.get<string>(ConfigKey.MQTT_URL) ?? '');
-  }
-
-  public async allowDeviceJoin(): Promise<void> {
-    await this.client.publishAsync(
-      ZigbeeMqttService._ZIGBEE_MQTT_BRIDGE_REQUEST_URL,
-      this._toMessage({ time: ZigbeeMqttService._PARING_MODE_RUNTIME })
-    );
+  public constructor(private readonly mqttService: MqttConnectorService) {
+    this.client = this.mqttService.client;
   }
 
   public setSwitchOn(homeDeviceId: string, isOn: boolean, onTime?: number): Observable<boolean> {
@@ -39,7 +28,7 @@ export class ZigbeeMqttService {
     });
 
     return combineLatest([
-      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/set`, this._toMessage(request)),
+      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/set`, this.mqttService.toMessage(request)),
       this._ikeaSwitchStatusResponse$.asObservable().pipe(first()),
     ]).pipe(map(([, response]) => response.payload.state === 'ON'));
   }
@@ -54,16 +43,12 @@ export class ZigbeeMqttService {
     });
 
     return combineLatest([
-      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/get`, this._toMessage(request)),
+      this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/get`, this.mqttService.toMessage(request)),
       this._ikeaSwitchStatusResponse$.asObservable().pipe(
-        timeout(ZigbeeMqttService._DEVICE_CONNECTION_TIMEOUT),
+        timeout(ZigbeeSwitchMqttService._DEVICE_CONNECTION_TIMEOUT),
         first(),
         catchError(() => of(null))
       ),
     ]).pipe(map(([, response]) => response));
-  }
-
-  private _toMessage(request: object): Buffer {
-    return Buffer.from(JSON.stringify(request), 'utf8');
   }
 }

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
-import { ZigbeeMqttService } from '@sparrow-server/external-api';
+import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { CronJobName, TimeUtils } from '@sparrow-server/shared';
 import { Repository } from 'typeorm';
 
@@ -13,7 +13,7 @@ export class CloudScheduleRegistryService {
   public constructor(
     private readonly _cloudService: PanasonicService,
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    private readonly _zigbeeMqttService: ZigbeeMqttService
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1PM, { disabled: true, name: CronJobName.EVERY_DAY_WATER_ON })
@@ -56,7 +56,7 @@ export class CloudScheduleRegistryService {
         cloudPreferences.circularPumpStartTime,
         cloudPreferences.circularPumpEndTime
       );
-      this._zigbeeMqttService.setSwitchOn(cloudPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
+      this._zigbeeSwitchMqttService.setSwitchOn(cloudPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
       Logger.log(`Turning Circular pump for ${timeInterval} seconds`);
     } else {
       Logger.warn('Invalid Circular pump configuration!');

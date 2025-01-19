@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, Signal } from '@angular/core';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroAdjustmentsHorizontal, heroNoSymbol, heroWifi } from '@ng-icons/heroicons/outline';
+import { heroAdjustmentsHorizontal, heroNoSymbol, heroTrash, heroWifi } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { DeviceFacadeService, DeviceType, HomeDevice, SwitchDevice } from '@sparrow-home/home-device-domain';
 import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
@@ -28,9 +29,11 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     MatCardHeader,
     MatCardTitle,
     SignalStrengthComponent,
+    MatCardActions,
+    MatButton,
   ],
   templateUrl: './device-details.component.html',
-  providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi })],
+  providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],
   animations: [sparrowFadeIn],
 })
 export class DeviceDetailsComponent implements OnInit {
@@ -69,5 +72,9 @@ export class DeviceDetailsComponent implements OnInit {
     if (this.id) {
       this._facadeService.setLscSwitchOperationStatus(this.id, value);
     }
+  }
+
+  protected onDeviceDelete(id: number, name: string): void {
+    this._facadeService.deleteDevice(id, name);
   }
 }

@@ -1,1 +1,2 @@
-export * from './zigbee-mqtt.service';
+export * from './zigbee-manage-device.service';
+export * from './zigbee-switch-mqtt.service';
