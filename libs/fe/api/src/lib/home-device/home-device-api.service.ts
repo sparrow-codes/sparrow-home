@@ -22,8 +22,8 @@ export class HomeDeviceApiService {
     return this._http.get<HomeDeviceApiModel[]>(HomeDeviceUrl.ALL);
   }
 
-  public createDevice(request: CreateDeviceRequest): Observable<void> {
-    return this._http.post<void>(HomeDeviceUrl.CREATE, request);
+  public createDevice(request: CreateDeviceRequest): Observable<boolean> {
+    return this._http.post<boolean>(HomeDeviceUrl.CREATE, request);
   }
 
   public deleteDevice(id: number): Observable<void> {

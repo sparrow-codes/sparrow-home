@@ -16,7 +16,6 @@ import { LayoutService, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 
 import { CreateDeviceDialogComponent } from '../../components/create-device-dialog/create-device-dialog.component';
-import { CreateDeviceFormName } from '../../components/create-device-dialog/form-service/enum/create-device-form-name';
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
 
 @Component({
@@ -58,19 +57,10 @@ export class DevicePageComponent implements OnInit {
 
   protected onAddClick(): void {
     this._dialog
-      .open(CreateDeviceDialogComponent)
+      .open(CreateDeviceDialogComponent, { disableClose: true, width: '350px' })
       .afterClosed()
-      .pipe(
-        take(1),
-        filter((result) => !!result)
-      )
-      .subscribe((value) =>
-        this._facadeService.createDevice(
-          value[CreateDeviceFormName.DEVICE_TYPE],
-          value[CreateDeviceFormName.HOME_DEVICE_ID],
-          value[CreateDeviceFormName.NAME]
-        )
-      );
+      .pipe(take(1))
+      .subscribe(() => this._facadeService.fetchDevices());
   }
 
   private _handleSearchEvent(): void {

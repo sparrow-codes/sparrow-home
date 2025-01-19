@@ -1,0 +1,9 @@
+:root {
+  --mdc-dialog-subhead-font: 'Inter', sans-serif;
+  --mdc-dialog-subhead-size: 1rem;
+  --mdc-dialog-container-shape: 5px;
+
+  .mat-mdc-dialog-title {
+    text-transform: uppercase;
+  }
+}
