@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeviceType, HomeDevice } from '@sparrow-server/entities';
-import { ZigbeeMqttService } from '@sparrow-server/external-api';
+import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
@@ -13,7 +13,7 @@ import { calculatePercentage } from '../utils/calculate-percentage';
 export class HomeDeviceService {
   public constructor(
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
-    private readonly zigbeeMqttService: ZigbeeMqttService
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService
   ) {}
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
@@ -45,7 +45,7 @@ export class HomeDeviceService {
           throw new NotFoundException(`Home Device not found for id: ${id}`);
         }
 
-        return combineLatest([of(entity), this.zigbeeMqttService.getSwitchStatus(entity.zigbeeDeviceId)]);
+        return combineLatest([of(entity), this._zigbeeSwitchMqttService.getSwitchStatus(entity.zigbeeDeviceId)]);
       }),
       map(([entity, response]) => ({
         type: DeviceType.POWER_PLUG,
@@ -67,13 +67,13 @@ export class HomeDeviceService {
           throw new NotFoundException(`Home Device not found for id: ${id}`);
         }
 
-        return this.zigbeeMqttService.setSwitchOn(entity.zigbeeDeviceId, isOn);
+        return this._zigbeeSwitchMqttService.setSwitchOn(entity.zigbeeDeviceId, isOn);
       })
     );
   }
 
   public enableParingMode(): Observable<void> {
-    return from(this.zigbeeMqttService.allowDeviceJoin());
+    return from(this._zigbeeSwitchMqttService.allowDeviceJoin());
   }
 
   private _toDeviceDto(device: HomeDevice): HomeDeviceDto {

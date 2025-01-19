@@ -9,7 +9,7 @@ import { IkeaSwitchStatusResponse } from './model';
 import { IkeaSwitchRequest } from './model/ikea-switch-request';
 
 @Injectable()
-export class ZigbeeMqttService {
+export class ZigbeeSwitchMqttService {
   private readonly _ikeaSwitchStatusResponse$: Subject<DeviceResponse<IkeaSwitchStatusResponse>> = new Subject();
 
   private static readonly _PARING_MODE_RUNTIME: number = 120;
@@ -24,8 +24,8 @@ export class ZigbeeMqttService {
 
   public async allowDeviceJoin(): Promise<void> {
     await this.client.publishAsync(
-      ZigbeeMqttService._ZIGBEE_MQTT_BRIDGE_REQUEST_URL,
-      this._toMessage({ time: ZigbeeMqttService._PARING_MODE_RUNTIME })
+      ZigbeeSwitchMqttService._ZIGBEE_MQTT_BRIDGE_REQUEST_URL,
+      this._toMessage({ time: ZigbeeSwitchMqttService._PARING_MODE_RUNTIME })
     );
   }
 
@@ -56,7 +56,7 @@ export class ZigbeeMqttService {
     return combineLatest([
       this.client.publishAsync(`zigbee2mqtt/${homeDeviceId}/get`, this._toMessage(request)),
       this._ikeaSwitchStatusResponse$.asObservable().pipe(
-        timeout(ZigbeeMqttService._DEVICE_CONNECTION_TIMEOUT),
+        timeout(ZigbeeSwitchMqttService._DEVICE_CONNECTION_TIMEOUT),
         first(),
         catchError(() => of(null))
       ),
