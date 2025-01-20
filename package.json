@@ -1,6 +1,6 @@
 {
   "name": "@sparrow-home/source",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "license": "MIT",
   "scripts": {
     "build:web": "nx run sparrow-home:build:production",
