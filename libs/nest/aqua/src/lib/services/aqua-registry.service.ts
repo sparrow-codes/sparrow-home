@@ -30,8 +30,8 @@ export class AquaRegistryService {
         aquaPreferences.lightEndTime
       );
 
-      this._zigbeeSwitchMqttService.setSwitchOn(aquaPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
       Logger.log(`Turning Aqua light on for ${timeInterval} seconds`);
+      this._zigbeeSwitchMqttService.setSwitchOn(aquaPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
     }
   }
 }
