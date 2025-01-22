@@ -15,7 +15,7 @@ export class MqttConnectorService {
     this._client = mqtt.connect(this.configService.get<string>(ConfigKey.MQTT_URL) ?? '');
   }
 
-  public toMessage(request: object): Buffer {
-    return Buffer.from(JSON.stringify(request), 'utf8');
+  public toMessage(request: object): string {
+    return JSON.stringify(request);
   }
 }

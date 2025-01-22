@@ -19,7 +19,10 @@ export class ZigbeeSwitchMqttService {
   }
 
   public setSwitchOn(homeDeviceId: string, isOn: boolean, onTime?: number): Observable<boolean> {
-    const request: IkeaSwitchRequest = { state: isOn ? 'ON' : 'OFF', on_time: onTime ? onTime / 10 : undefined };
+    const request: IkeaSwitchRequest = {
+      state: isOn ? 'ON' : 'OFF',
+      on_time: onTime,
+    };
 
     this.client.subscribe(`zigbee2mqtt/${homeDeviceId}`);
     this.client.on('message', (_topic: string, message) => {
