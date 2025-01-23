@@ -44,6 +44,6 @@ Thumbs.db
 .angular
 /.npmrc
 /apps/server/.env
-
+/apps/sparrow-home/src/config.json
 
 storybook-static

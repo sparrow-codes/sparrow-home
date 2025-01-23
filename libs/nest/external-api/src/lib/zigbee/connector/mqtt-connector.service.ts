@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigKey } from '@sparrow-server/shared';
 import mqtt, { MqttClient } from 'mqtt';
@@ -16,6 +16,8 @@ export class MqttConnectorService {
   }
 
   public toMessage(request: object): string {
-    return JSON.stringify(request);
+    const message: string = JSON.stringify(request);
+    Logger.log(message, 'MQTT MESSAGE');
+    return message;
   }
 }
