@@ -29,9 +29,17 @@ export class AquaRegistryService {
         aquaPreferences.lightStartTime,
         aquaPreferences.lightEndTime
       );
+      const zigbeeDeviceId: string = aquaPreferences.homeDevice.zigbeeDeviceId;
 
       Logger.log(`Turning Aqua light on for ${timeInterval} seconds`);
-      this._zigbeeSwitchMqttService.setSwitchOn(aquaPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
+      this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, true);
+
+      setTimeout(() => {
+        Logger.log('Switching off Aqua light');
+        this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
+      }, timeInterval * 1000);
+    } else {
+      Logger.warn('Invalid Aqua light configuration');
     }
   }
 }

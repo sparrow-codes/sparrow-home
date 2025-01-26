@@ -56,8 +56,16 @@ export class CloudScheduleRegistryService {
         cloudPreferences.circularPumpStartTime,
         cloudPreferences.circularPumpEndTime
       );
-      this._zigbeeSwitchMqttService.setSwitchOn(cloudPreferences.homeDevice.zigbeeDeviceId, true, timeInterval);
+
+      const zigbeeDeviceId: string = cloudPreferences.homeDevice.zigbeeDeviceId;
+
+      this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, true);
       Logger.log(`Turning Circular pump for ${timeInterval} seconds`);
+
+      setTimeout(() => {
+        Logger.log('Turning Circular pump off');
+        this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
+      }, timeInterval * 1000);
     } else {
       Logger.warn('Invalid Circular pump configuration!');
     }
