@@ -17,6 +17,7 @@ import { CreateHomeDeviceTable1735995890303 } from '../db/migrations/17359958903
 import { CreateCloudPreferencesTable1735996227082 } from '../db/migrations/1735996227082-CreateCloudPreferencesTable';
 import { CreateAquaPreferencesTable1735998874554 } from '../db/migrations/1735998874554-CreateAquaPreferencesTable';
 import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-CreateUserTable';
+import { AlterHomeDevice1738173688939 } from '../db/migrations/1738173688939-AlterHomeDevice';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-Cre
           CreateCloudPreferencesTable1735996227082,
           CreateAquaPreferencesTable1735998874554,
           CreateUserTable1735999040434,
+          AlterHomeDevice1738173688939,
         ],
       }),
     }),

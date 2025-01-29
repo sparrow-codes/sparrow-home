@@ -5,7 +5,7 @@ import { HomeDeviceDetailsDto } from '../../models/home-device-details-dto';
 export class GetDeviceDetailsResponse {
   @ApiProperty({
     type: HomeDeviceDetailsDto,
-    required: true,
+    nullable: true,
   })
-  public deviceDetails!: HomeDeviceDetailsDto;
+  public deviceDetails!: HomeDeviceDetailsDto | null;
 }

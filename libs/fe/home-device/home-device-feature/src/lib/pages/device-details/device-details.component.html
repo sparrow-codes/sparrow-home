@@ -1,54 +1,66 @@
 @if (deviceDetails(); as homeDevice) {
-<sp-page-title @sparrowFadeIn [routerLink]="['/main']">szczegóły urządzenia</sp-page-title>
+  <sp-page-title @sparrowFadeIn [routerLink]="['/main']">szczegóły urządzenia</sp-page-title>
 
-<mat-card @sparrowFadeIn>
-  <mat-card-header class="flex justify-between items-center">
-    <div mat-card-title>{{ homeDevice.name }}</div>
-    @if (switchDevice(); as lcsSwitch) {
-    <sp-lcs-switch-manual-control
-      [lcsSwitch]="lcsSwitch"
-      [disabled]="!homeDevice.isOnline"
-      (switchChange)="onLscSwitchChange($event)"
-    ></sp-lcs-switch-manual-control>
-    }
-  </mat-card-header>
-  <mat-card-content>
-    <div class="flex flex-col gap-2 max-w-[500px]">
-      <div class="flex w-full py-2 justify-between">
-        <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
-        @if (homeDevice.signalStrength !== undefined) {
-        <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
-        }
-      </div>
-
-      <mat-divider></mat-divider>
-      <div class="flex w-full py-2 justify-between">
-        <div>Status:</div>
-        <div class="flex gap-2 items-center">
-          @if (homeDevice.isOnline) {
-          <span>Online</span>
-          <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
-          } @else {
-          <span>Offline</span>
-          <ng-icon name="heroNoSymbol"></ng-icon>
+  <mat-card @sparrowFadeIn>
+    <mat-card-header class="flex justify-between items-center">
+      <div mat-card-title>{{ homeDevice.name }}</div>
+      @if (switchDevice(); as lcsSwitch) {
+        <sp-lcs-switch-manual-control
+          [lcsSwitch]="lcsSwitch"
+          [disabled]="!homeDevice.isOnline"
+          (switchChange)="onLscSwitchChange($event)"
+        ></sp-lcs-switch-manual-control>
+      }
+    </mat-card-header>
+    <mat-card-content>
+      <div class="flex flex-col gap-2 max-w-[500px]">
+        <div class="flex w-full py-2 justify-between">
+          <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
+          @if (homeDevice.signalStrength !== undefined) {
+            <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
           }
         </div>
-      </div>
 
-      <mat-divider></mat-divider>
-      <div class="flex w-full py-2 justify-between flex-wrap">
-        <div>Id urządzenia:</div>
-        <div>{{ homeDevice.homeDeviceId }}</div>
+        @if (temperatureSensor(); as temperatureSensor) {
+          @if (temperatureSensor.battery !== undefined) {
+            <sp-battery-status [batteryStatus]="temperatureSensor.battery"></sp-battery-status>
+          }
+
+          <mat-divider></mat-divider>
+          <div class="flex w-full py-2 justify-between flex-wrap">
+            <div>Temperatura:</div>
+            <div>{{ temperatureSensor.temperature }} &#176;C</div>
+          </div>
+        }
+
+        <mat-divider></mat-divider>
+        <div class="flex w-full py-2 justify-between">
+          <div>Status:</div>
+          <div class="flex gap-2 items-center">
+            @if (homeDevice.isOnline) {
+              <span>Online</span>
+              <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
+            } @else {
+              <span>Offline</span>
+              <ng-icon name="heroNoSymbol"></ng-icon>
+            }
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <div class="flex w-full py-2 justify-between flex-wrap">
+          <div>Id urządzenia:</div>
+          <div>{{ homeDevice.homeDeviceId }}</div>
+        </div>
       </div>
-    </div>
-  </mat-card-content>
-  <mat-card-actions class="max-w-[532px] mt-5" align="end">
-    <button mat-stroked-button (click)="onDeviceDelete(homeDevice.id, homeDevice.name)">
-      <div class="flex items-center gap-2">
-        <ng-icon class="text-error" name="heroTrash" size="1rem"></ng-icon>
-        <span class="text-error">Usuń</span>
-      </div>
-    </button>
-  </mat-card-actions>
-</mat-card>
+    </mat-card-content>
+    <mat-card-actions class="max-w-[532px] mt-5" align="end">
+      <button mat-stroked-button (click)="onDeviceDelete(homeDevice.id, homeDevice.name)">
+        <div class="flex items-center gap-2">
+          <ng-icon class="text-error" name="heroTrash" size="1rem"></ng-icon>
+          <span class="text-error">Usuń</span>
+        </div>
+      </button>
+    </mat-card-actions>
+  </mat-card>
 }

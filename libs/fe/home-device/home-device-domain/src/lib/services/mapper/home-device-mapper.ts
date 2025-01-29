@@ -1,8 +1,14 @@
-import { HomeDeviceApiModel, HomeDeviceDetailsApiModel, SwitchDetailsApiModel } from '@sparrow-home/api';
+import {
+  HomeDeviceApiModel,
+  HomeDeviceDetailsApiModel,
+  SwitchDetailsApiModel,
+  TemperatureSensorDetailsApiModel,
+} from '@sparrow-home/api';
 
 import { DeviceType } from '../../enums';
 import { HomeDevice } from '../../models';
 import { SwitchDevice } from '../../models/switch-device';
+import { TemperatureSensor } from '../../models/temperature-sensor';
 
 export class HomeDeviceMapper {
   public static map(device: HomeDeviceApiModel): HomeDevice {
@@ -20,10 +26,19 @@ export class HomeDeviceMapper {
     if (device.type === DeviceType.POWER_PLUG) {
       const switchDevice: SwitchDetailsApiModel = device as SwitchDetailsApiModel;
       return {
-        ...device,
+        ...homeDevice,
         isOn: switchDevice.isOn,
-        signalStrength: switchDevice.signalStrength,
       } as SwitchDevice;
+    }
+
+    if (device.type === DeviceType.TEMPERATURE_SENSOR) {
+      const temperatureSensor: TemperatureSensorDetailsApiModel = device as TemperatureSensorDetailsApiModel;
+      return {
+        ...homeDevice,
+        battery: temperatureSensor.battery,
+        temperature: temperatureSensor.temperature,
+        humidity: temperatureSensor.humidity,
+      } as TemperatureSensor;
     }
 
     return homeDevice;
@@ -35,6 +50,7 @@ export class HomeDeviceMapper {
       homeDeviceId: device.homeDeviceId,
       name: device.name,
       type: device.type,
+      signalStrength: device.signalStrength,
       isOnline: device.isOnline,
     };
   }

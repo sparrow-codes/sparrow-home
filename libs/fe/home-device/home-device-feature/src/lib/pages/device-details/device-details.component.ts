@@ -7,8 +7,14 @@ import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol, heroTrash, heroWifi } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
-import { DeviceFacadeService, DeviceType, HomeDevice, SwitchDevice } from '@sparrow-home/home-device-domain';
-import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import {
+  DeviceFacadeService,
+  DeviceType,
+  HomeDevice,
+  SwitchDevice,
+  TemperatureSensor,
+} from '@sparrow-home/home-device-domain';
+import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
@@ -31,6 +37,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     SignalStrengthComponent,
     MatCardActions,
     MatButton,
+    BatteryStatusComponent,
   ],
   templateUrl: './device-details.component.html',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],
@@ -46,6 +53,13 @@ export class DeviceDetailsComponent implements OnInit {
   protected readonly switchDevice: Signal<SwitchDevice | null> = computed(() => {
     if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.POWER_PLUG) {
       return this.deviceDetails() as SwitchDevice;
+    } else {
+      return null;
+    }
+  });
+  protected readonly temperatureSensor: Signal<TemperatureSensor | null> = computed(() => {
+    if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.TEMPERATURE_SENSOR) {
+      return this.deviceDetails() as TemperatureSensor;
     } else {
       return null;
     }
