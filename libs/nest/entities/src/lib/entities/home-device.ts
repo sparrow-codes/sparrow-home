@@ -15,4 +15,13 @@ export class HomeDevice {
 
   @Column({ length: 100 })
   public deviceName!: string;
+
+  @Column({ nullable: true })
+  public temperature: number | null = null;
+
+  @Column({ nullable: true })
+  public battery: number | null = null;
+
+  @Column({ nullable: true })
+  public signalStrength: number | null = null;
 }

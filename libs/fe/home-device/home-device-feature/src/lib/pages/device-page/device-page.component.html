@@ -55,8 +55,8 @@
       <table class="table md:hidden" mat-table [dataSource]="data">
         <ng-container matColumnDef="type">
           <th mat-header-cell *matHeaderCellDef>Typ</th>
-          <td mat-cell *matCellDef="let element" class="max-w-[120px] select-none">
-            <sp-device-type [deviceType]="element.type"></sp-device-type>
+          <td mat-cell *matCellDef="let element" class="select-none w-10">
+            <sp-device-type [deviceType]="element.type" [fullLabel]="false"></sp-device-type>
           </td>
         </ng-container>
 

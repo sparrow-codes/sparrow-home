@@ -9,6 +9,8 @@ module.exports = {
       primary: 'var(--sp-primary-color)',
       white: '#ffffff',
       success: '#2CA42C',
+      warning: '#FFC107',
+      error: '#ba1a1a',
       'dark-blue': 'var(--app-dark-blue)',
       'light-gray': 'var(--app-light-gray)',
       'light-blue': 'var(--app-light-blue)',

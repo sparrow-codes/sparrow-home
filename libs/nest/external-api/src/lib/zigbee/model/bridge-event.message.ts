@@ -3,5 +3,6 @@ export interface BridgeEventMessage {
   data: {
     friendly_name: string;
     ieee_address: string;
+    status: string;
   };
 }
