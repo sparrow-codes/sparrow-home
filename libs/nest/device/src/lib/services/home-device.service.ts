@@ -4,20 +4,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, CloudPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
 import {
   DeviceResponse,
+  OpenDoorSensorDetails,
+  SensorDetails,
   SonoffTemperatureSensorDetails,
   ZigbeeManageDeviceService,
+  ZigbeeSensorService,
   ZigbeeSwitchMqttService,
-  ZigbeeTemperatureSensorService,
 } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
 import { first, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
+import { DeviceDetailsMapper } from '../mappers/device-details-mapper';
 import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
 import { HomeDeviceDto } from '../models/home-device-dto';
-import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
-import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-details-dto';
-import { calculatePercentage } from '../utils/calculate-percentage';
 
 @Injectable()
 export class HomeDeviceService {
@@ -28,13 +28,11 @@ export class HomeDeviceService {
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
     private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
-    private readonly _zigbeeTemperatureSensorService: ZigbeeTemperatureSensorService,
+    private readonly _zigbeeSensorService: ZigbeeSensorService,
     private readonly scheduledRegistry: SchedulerRegistry
   ) {
     this._subscribeToSensors();
-    this._zigbeeTemperatureSensorService.sonoffTemperatureSensorDetails$.subscribe((response) =>
-      this.handleTemperatureSensorEvent(response)
-    );
+    this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleTemperatureSensorEvent(response));
   }
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
@@ -103,9 +101,13 @@ export class HomeDeviceService {
 
         switch (entity.deviceType) {
           case DeviceType.POWER_PLUG:
-            return this._getSwitchStatus(entity);
+            return this._zigbeeSwitchMqttService
+              .getSwitchStatus(entity.zigbeeDeviceId)
+              .pipe(map((response) => DeviceDetailsMapper.getSwitchDetails(entity, response)));
           case DeviceType.SONOFF_TEMPERATURE_SENSOR:
-            return this._getTemperatureSensorDetails(entity);
+            return of(DeviceDetailsMapper.getTemperatureSensorDetails(entity));
+          case DeviceType.OPEN_DOOR_SENSOR:
+            return of(DeviceDetailsMapper.getOpenDoorSensorDetails(entity));
           default:
             Logger.error(`Unsupported device type for device ${entity.deviceName}`);
             return of(null);
@@ -127,33 +129,6 @@ export class HomeDeviceService {
     );
   }
 
-  private _getSwitchStatus(entity: HomeDevice): Observable<PluginSwitchDetailsDto> {
-    return this._zigbeeSwitchMqttService.getSwitchStatus(entity.zigbeeDeviceId).pipe(
-      map((response) => ({
-        type: DeviceType.POWER_PLUG,
-        name: entity.deviceName,
-        homeDeviceId: entity.zigbeeDeviceId,
-        id: entity.id,
-        isOnline: !!(response && response.payload.linkquality > 0),
-        isOn: !!(response && response?.payload.state === 'ON'),
-        signalStrength: response ? calculatePercentage(0, 255, response.payload.linkquality) : 0,
-      }))
-    );
-  }
-
-  private _getTemperatureSensorDetails(entity: HomeDevice): Observable<TemperatureSensorDetailsDto> {
-    return of({
-      type: entity.deviceType,
-      homeDeviceId: entity.zigbeeDeviceId,
-      name: entity.deviceName,
-      temperature: entity.temperature != null ? entity.temperature : undefined,
-      signalStrength: entity.signalStrength ? calculatePercentage(0, 255, entity.signalStrength) : 0,
-      isOnline: !!entity.signalStrength && entity.signalStrength > 0,
-      battery: entity.battery !== null ? entity.battery : undefined,
-      id: entity.id,
-    });
-  }
-
   private _toDeviceDto(device: HomeDevice): HomeDeviceDto {
     return {
       id: device.id,
@@ -173,18 +148,24 @@ export class HomeDeviceService {
   }
 
   private async _subscribeToSensors(): Promise<void> {
-    const sensorDevices: HomeDevice[] = await this._homeDeviceRepository.findBy({
+    const temperatureSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
       deviceType: DeviceType.SONOFF_TEMPERATURE_SENSOR,
     });
 
-    this._zigbeeTemperatureSensorService.clearListeners(sensorDevices.map((device) => device.zigbeeDeviceId));
+    const openDoorSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
+      deviceType: DeviceType.OPEN_DOOR_SENSOR,
+    });
+
+    const sensorDevices: HomeDevice[] = [...temperatureSensors, ...openDoorSensors];
+
+    this._zigbeeSensorService.clearListeners(sensorDevices.map((device) => device.zigbeeDeviceId));
     sensorDevices.forEach((device: HomeDevice) => {
       Logger.log(`Subscribing to ${device.deviceName}`);
-      this._zigbeeTemperatureSensorService.subscribeToTemperatureSensor(device.zigbeeDeviceId);
+      this._zigbeeSensorService.subscribeToSensor(device.zigbeeDeviceId);
     });
   }
 
-  private async handleTemperatureSensorEvent(response: DeviceResponse<SonoffTemperatureSensorDetails>): Promise<void> {
+  private async handleTemperatureSensorEvent(response: DeviceResponse<SensorDetails>): Promise<void> {
     const sensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: response.deviceId });
 
     if (!sensor) {
@@ -192,7 +173,14 @@ export class HomeDeviceService {
       return;
     }
 
-    sensor.temperature = response.payload.temperature;
+    if (sensor.deviceType === DeviceType.SONOFF_TEMPERATURE_SENSOR) {
+      sensor.temperature = (response.payload as SonoffTemperatureSensorDetails).temperature;
+    }
+
+    if (sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR) {
+      sensor.isOpen = !(response.payload as OpenDoorSensorDetails).contact;
+    }
+
     sensor.signalStrength = response.payload.linkquality;
     sensor.battery = response.payload.battery;
 

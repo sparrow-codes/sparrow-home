@@ -11,15 +11,18 @@ import {
   DeviceFacadeService,
   DeviceType,
   HomeDevice,
+  OpenDoorSensor,
   SwitchDevice,
   TemperatureSensor,
 } from '@sparrow-home/home-device-domain';
-import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
 import { LcsSwitchManualControlComponent } from '../../components/manual-control/lcs-switch-manual-control/lcs-switch-manual-control.component';
+import { OpenDoorSensorDetailsComponent } from '../../components/open-door-sensor-details/open-door-sensor-details.component';
 import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
+import { TemperatureSensorDetailsComponent } from '../../components/temperature-sensor-details/temperature-sensor-details.component';
 
 @Component({
   selector: 'sp-device-device-details',
@@ -37,7 +40,8 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     SignalStrengthComponent,
     MatCardActions,
     MatButton,
-    BatteryStatusComponent,
+    TemperatureSensorDetailsComponent,
+    OpenDoorSensorDetailsComponent,
   ],
   templateUrl: './device-details.component.html',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],
@@ -60,6 +64,13 @@ export class DeviceDetailsComponent implements OnInit {
   protected readonly temperatureSensor: Signal<TemperatureSensor | null> = computed(() => {
     if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.TEMPERATURE_SENSOR) {
       return this.deviceDetails() as TemperatureSensor;
+    } else {
+      return null;
+    }
+  });
+  protected readonly openDoorSensor: Signal<OpenDoorSensor | null> = computed(() => {
+    if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.OPEN_DOOR_SENSOR) {
+      return this.deviceDetails() as OpenDoorSensor;
     } else {
       return null;
     }

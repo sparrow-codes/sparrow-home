@@ -1,18 +1,13 @@
 <div
   class="px-4 py-1 rounded max-w-fit font-bold truncate flex gap-2 items-center"
-  [ngClass]="{ 'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG, 'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR }"
+  [ngClass]="{
+    'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG,
+    'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
+    'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR
+  }"
 >
-  @switch (deviceType()) {
-    @case (deviceTypes.POWER_PLUG) {
-      <ng-icon name="bootstrapPlugin" size="1.2rem"></ng-icon>
-    }
-
-    @case (deviceTypes.TEMPERATURE_SENSOR) {
-      <ng-icon name="bootstrapThermometerHalf" size="1.2rem"></ng-icon>
-    }
-  }
+  <ng-icon [name]="iconName()" size="1.2rem"></ng-icon>
   @if (fullLabel()) {
-    {{ label() }}
+  {{ label() }}
   }
-
 </div>

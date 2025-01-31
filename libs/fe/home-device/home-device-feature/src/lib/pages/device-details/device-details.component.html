@@ -22,15 +22,11 @@
         </div>
 
         @if (temperatureSensor(); as temperatureSensor) {
-          @if (temperatureSensor.battery !== undefined) {
-            <sp-battery-status [batteryStatus]="temperatureSensor.battery"></sp-battery-status>
-          }
+          <sp-temperature-sensor-details [temperatureSensor]="temperatureSensor"></sp-temperature-sensor-details>
+        }
 
-          <mat-divider></mat-divider>
-          <div class="flex w-full py-2 justify-between flex-wrap">
-            <div>Temperatura:</div>
-            <div>{{ temperatureSensor.temperature }} &#176;C</div>
-          </div>
+        @if (openDoorSensor(); as openDoorSensor) {
+          <sp-open-door-sensor-details [openDoorSensor]="openDoorSensor"></sp-open-door-sensor-details>
         }
 
         <mat-divider></mat-divider>

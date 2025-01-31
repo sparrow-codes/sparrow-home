@@ -8,7 +8,7 @@ import { ComfortCloudConnector } from './panasonic';
 import { OAuthClient } from './panasonic/oauth-connector/OAuthConnector';
 import { WeatherApiService } from './weather/weather-api.service';
 import { ZigbeeManageDeviceService, ZigbeeSwitchMqttService } from './zigbee';
-import { ZigbeeTemperatureSensorService } from './zigbee';
+import { ZigbeeSensorService } from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
 
 @Module({
@@ -37,14 +37,14 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
     ZigbeeSwitchMqttService,
     MqttConnectorService,
     ZigbeeManageDeviceService,
-    ZigbeeTemperatureSensorService,
+    ZigbeeSensorService,
   ],
   exports: [
     WeatherApiService,
     ComfortCloudConnector,
     ZigbeeSwitchMqttService,
     ZigbeeManageDeviceService,
-    ZigbeeTemperatureSensorService,
+    ZigbeeSensorService,
   ],
 })
 export class ApiModule {}

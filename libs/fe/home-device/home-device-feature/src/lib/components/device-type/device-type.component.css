@@ -1,9 +1,14 @@
 .lsc-plug-in {
-    background-color: #63afe1;
-    color: white;
+  background-color: #63afe1;
+  color: white;
 }
 
 .temperature-sensor {
   background-color: #a84d08;
+  color: white;
+}
+
+.open-door-sensor {
+  background-color: #048444;
   color: white;
 }
