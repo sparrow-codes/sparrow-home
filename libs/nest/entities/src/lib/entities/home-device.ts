@@ -16,7 +16,7 @@ export class HomeDevice {
   @Column({ length: 100 })
   public deviceName!: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'decimal' })
   public temperature: number | null = null;
 
   @Column({ nullable: true })
