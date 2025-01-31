@@ -1,0 +1,12 @@
+@if (temperatureSensor().battery; as battery) {
+  @if (battery !== undefined) {
+    <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
+  }
+}
+
+<mat-divider></mat-divider>
+
+<div class="flex w-full py-2 justify-between flex-wrap">
+  <div>Temperatura:</div>
+  <div>{{ temperatureSensor().temperature }} &#176;C</div>
+</div>

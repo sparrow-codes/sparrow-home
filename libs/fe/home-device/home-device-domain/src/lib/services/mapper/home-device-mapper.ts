@@ -1,12 +1,14 @@
 import {
   HomeDeviceApiModel,
   HomeDeviceDetailsApiModel,
+  OpenDoorSensorDetailsApiModel,
   SwitchDetailsApiModel,
   TemperatureSensorDetailsApiModel,
 } from '@sparrow-home/api';
 
 import { DeviceType } from '../../enums';
 import { HomeDevice } from '../../models';
+import { OpenDoorSensor } from '../../models/open-door-sensor';
 import { SwitchDevice } from '../../models/switch-device';
 import { TemperatureSensor } from '../../models/temperature-sensor';
 
@@ -39,6 +41,15 @@ export class HomeDeviceMapper {
         temperature: temperatureSensor.temperature,
         humidity: temperatureSensor.humidity,
       } as TemperatureSensor;
+    }
+
+    if (device.type === DeviceType.OPEN_DOOR_SENSOR) {
+      const openDoorSensor: OpenDoorSensorDetailsApiModel = device as OpenDoorSensorDetailsApiModel;
+      return {
+        ...homeDevice,
+        battery: openDoorSensor.battery,
+        isOpen: openDoorSensor.isOpen,
+      } as OpenDoorSensor;
     }
 
     return homeDevice;

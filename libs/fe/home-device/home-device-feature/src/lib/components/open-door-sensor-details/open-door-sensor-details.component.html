@@ -1,0 +1,10 @@
+@if (openDoorSensor().battery; as battery) {
+  <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
+}
+
+
+<mat-divider></mat-divider>
+<div class="flex w-full py-2 justify-between flex-wrap">
+  <div>Stan:</div>
+  <div>{{openDoorSensor().isOpen ? 'Otwarte' : 'Zamknięte'}}</div>
+</div>
