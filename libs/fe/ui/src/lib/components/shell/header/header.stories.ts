@@ -1,6 +1,7 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideIcons } from '@ng-icons/core';
 import { heroHome } from '@ng-icons/heroicons/outline';
+import { matHeatPumpOutline } from '@ng-icons/material-icons/outline';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { AppHeaderComponent } from './app-header.component';
@@ -11,7 +12,7 @@ const meta: Meta<AppHeaderComponent> = {
   decorators: [
     moduleMetadata({
       imports: [RouterTestingModule],
-      providers: [provideIcons({ heroHome })],
+      providers: [provideIcons({ heroHome, matHeatPumpOutline })],
     }),
   ],
   args: {
@@ -25,7 +26,7 @@ const meta: Meta<AppHeaderComponent> = {
       {
         label: 'Second Page',
         routerLink: 'second',
-        icon: 'heroHome',
+        icon: 'matHeatPumpOutline',
       },
       {
         label: 'Third Page',
