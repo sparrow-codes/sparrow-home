@@ -32,7 +32,7 @@ export class HomeDeviceService {
     private readonly scheduledRegistry: SchedulerRegistry
   ) {
     this._subscribeToSensors();
-    this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleTemperatureSensorEvent(response));
+    this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
   }
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
@@ -165,8 +165,9 @@ export class HomeDeviceService {
     });
   }
 
-  private async handleTemperatureSensorEvent(response: DeviceResponse<SensorDetails>): Promise<void> {
+  private async handleSensorEvent(response: DeviceResponse<SensorDetails>): Promise<void> {
     const sensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: response.deviceId });
+    Logger.log(response, 'Sensor Message');
 
     if (!sensor) {
       Logger.warn(`Event from unsupported device. ID: ${response.deviceId}`);
