@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
 import { MqttClient } from '@nestjs/microservices/external/mqtt-client.interface';
 import { Observable, Subject } from 'rxjs';
@@ -20,7 +20,7 @@ export class ZigbeeSensorService {
   }
 
   public subscribeToSensor(zigbeeDeviceId: string): void {
-    const subscription: (_topic: string, message: BufferSource) => void = this._handleSensorResponse(zigbeeDeviceId);
+    const subscription: (topic: string, message: BufferSource) => void = this._handleSensorResponse();
     this._client.subscribe(`zigbee2mqtt/${zigbeeDeviceId}`, () => {
       this._client.on('message', subscription);
     });
@@ -33,8 +33,21 @@ export class ZigbeeSensorService {
     });
   }
 
-  private _handleSensorResponse(homeDeviceId: string) {
-    return (_topic: string, message: BufferSource): void =>
-      this._sensorDetails$.next({ deviceId: homeDeviceId, payload: JSON.parse(message.toString()) });
+  private _handleSensorResponse() {
+    return (topic: string, message: BufferSource): void =>
+      this._sensorDetails$.next({
+        deviceId: this._getDeviceMessageFromTopic(topic),
+        payload: JSON.parse(message.toString()),
+      });
+  }
+
+  private _getDeviceMessageFromTopic(topic: string): string {
+    const deviceId: string | undefined = topic.split('/')[1];
+    if (!deviceId) {
+      Logger.warn(`Invalid topic format ${topic}`);
+      return '';
+    }
+
+    return deviceId;
   }
 }
