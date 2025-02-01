@@ -4,9 +4,12 @@
   }
 }
 
-<mat-divider></mat-divider>
+<div class="w-full mt-4">
+  <mat-divider></mat-divider>
+</div>
+
 
 <div class="flex w-full py-2 justify-between flex-wrap">
   <div>Temperatura:</div>
-  <div>{{ temperatureSensor().temperature }} &#176;C</div>
+  <div class="font-semibold">{{ temperatureSensor().temperature }} &#176;C</div>
 </div>

@@ -14,15 +14,12 @@ export const appRoutes: Route[] = [
     path: RoutePath.CREATE_USER,
     title: pageTitleResolver,
     canActivate: [configurationNotReadyGuard],
-    loadComponent: () =>
-      import('./features/user/containers/create-user/create-user-page.component').then(
-        (m) => m.CreateUserPageComponent
-      ),
+    loadComponent: () => import('@sparrow-home/user-feature').then((m) => m.CreateUserPageComponent),
   },
   {
     path: RoutePath.LOGIN,
     title: pageTitleResolver,
-    loadComponent: () => import('./features/user/containers/login/login.component').then((c) => c.LoginComponent),
+    loadComponent: () => import('@sparrow-home/user-feature').then((c) => c.LoginComponent),
     canActivate: [configurationReadyGuard],
   },
   {
