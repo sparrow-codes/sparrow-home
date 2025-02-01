@@ -26,7 +26,7 @@ import { LoginFormService } from './form-service/login-form.service';
 import { LoginForm } from './form-service/model/login-form';
 
 @Component({
-  selector: 'app-login-form',
+  selector: 'sp-login-form',
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -14,7 +14,7 @@ import { CreateUserFormName } from './form-service/enum/create-user-form.name';
 import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 
 @Component({
-  selector: 'app-create-user-form',
+  selector: 'sp-create-user-form',
   imports: [CommonModule, ReactiveFormsModule, NgIcon, MatFormField, MatInput, MatButton, MatFormFieldModule],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',

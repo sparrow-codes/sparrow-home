@@ -3,8 +3,11 @@
 }
 
 
-<mat-divider></mat-divider>
+<div class="w-full mt-4">
+  <mat-divider></mat-divider>
+</div>
+
 <div class="flex w-full py-2 justify-between flex-wrap">
   <div>Stan:</div>
-  <div>{{openDoorSensor().isOpen ? 'Otwarte' : 'Zamknięte'}}</div>
+  <div class="font-semibold">{{openDoorSensor().isOpen ? 'Otwarte' : 'Zamknięte'}}</div>
 </div>

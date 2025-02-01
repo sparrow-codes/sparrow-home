@@ -3,10 +3,10 @@
     <sp-app-logo [type]="'horizontal'"></sp-app-logo>
     <mat-card class="mt-[-25px]">
 
-      <app-login-form
+      <sp-login-form
         [hasError]="dataService.isLoginError()"
         (login)="dataService.login($event)"
-      ></app-login-form>
+      ></sp-login-form>
     </mat-card>
   </div>
 </div>

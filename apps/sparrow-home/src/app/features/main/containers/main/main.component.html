@@ -1,7 +1,0 @@
-<sp-page-title>Panel Główny</sp-page-title>
-
-<section class="w-full flex flex-col gap-6">
-  @if(configuration(); as config) {
-      <app-configuration-form [configuration]="config" (save)="saveConfiguration($event)"></app-configuration-form>
-  }
-</section>
