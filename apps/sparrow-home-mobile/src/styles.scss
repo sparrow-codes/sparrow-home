@@ -1,0 +1,21 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+@import "app/styles/material/material.css";
+@import "app/styles/colors/colors.css";
+
+@tailwind components;
+@tailwind utilities;
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body, button, input, textarea {
+  color: var(--app-gray);
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+}

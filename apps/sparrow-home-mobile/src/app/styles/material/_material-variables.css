@@ -1,0 +1,5 @@
+:root {
+  --mat-divider-color: var(--sp-home-divider-color);
+
+  --mat-sidenav-container-shape: 0;
+}

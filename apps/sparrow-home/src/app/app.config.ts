@@ -1,9 +1,16 @@
 import { HttpBackend, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { APP_TITLE, authInterceptor, DataFacadeService, initializeApp, SHORT_APP_TITLE } from '@sparrow-home/core';
+import {
+  APP_TITLE,
+  authInterceptor,
+  AuthService,
+  DataFacadeService,
+  initializeApp,
+  SHORT_APP_TITLE,
+  WebAuthenticationService,
+} from '@sparrow-home/core';
 import { MaterialConfiguration } from '@sparrow-home/ui';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 
@@ -25,13 +32,15 @@ export const appConfig: ApplicationConfig = {
       deps: [HttpBackend, DataFacadeService],
       multi: true,
     },
-    provideEnvironmentNgxMask({ validation: false }),
     provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(appRoutes),
-    provideAnimationsAsync(),
     ...MaterialConfiguration,
+    {
+      provide: AuthService,
+      useClass: WebAuthenticationService,
+    },
     provideEnvironmentNgxMask({ validation: false }),
   ],
 };

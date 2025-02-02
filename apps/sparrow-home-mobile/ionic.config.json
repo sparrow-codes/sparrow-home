@@ -1,0 +1,7 @@
+{
+  "name": "sparrow-home-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

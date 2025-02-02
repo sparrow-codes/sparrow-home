@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
 
 import { RoutePath } from '../enum';
-import { DataFacadeService } from '../services';
+import { AuthService } from '../models';
 
 export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEvent<unknown>> => {
-  const dataService: DataFacadeService = inject(DataFacadeService);
-  const authToken: string | null = dataService.authToken;
+  const authService: AuthService = inject(AuthService);
+  const authToken: string | null = authService.token;
   const router: Router = inject(Router);
 
   if (!authToken) {
@@ -17,7 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEv
 
   const request: HttpRequest<unknown> = req.clone({
     setHeaders: {
-      Authorization: 'Bearer ' + (dataService.authToken ?? ''),
+      Authorization: 'Bearer ' + (authService.token ?? ''),
     },
   });
   return handleRequest(request);

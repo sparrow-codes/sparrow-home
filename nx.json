@@ -87,6 +87,7 @@
         "testStorybookTargetName": "test-storybook",
         "staticStorybookTargetName": "static-storybook"
       }
-    }
+    },
+    "@nxext/capacitor/plugin"
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "manifest-web-dev",
+  "short_name": "manifest-web-dev",
+  "theme_color": "#262c40",
+  "background_color": "#fafafa",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/main",
+  "icons": []
+}

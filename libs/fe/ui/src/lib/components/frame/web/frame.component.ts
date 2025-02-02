@@ -7,7 +7,7 @@ import { heroComputerDesktop, heroLightBulb } from '@ng-icons/heroicons/outline'
 import { matHeatPump } from '@ng-icons/material-icons/baseline';
 import { APP_TITLE, DataFacadeService, RoutePath } from '@sparrow-home/core';
 
-import { ShellComponent } from '../shell/shell.component';
+import { ShellComponent } from '../../shell/shell.component';
 
 @Component({
   imports: [CommonModule, RouterOutlet, ShellComponent],

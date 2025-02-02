@@ -4,34 +4,28 @@ import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import {
-  AuthenticationApiService,
-  CreateNewUserRequestApiModel,
-  LoginRequestApiModel,
-  UserApiService,
-} from '@sparrow-home/api';
+import { CreateNewUserRequestApiModel, LoginRequestApiModel, UserApiService } from '@sparrow-home/api';
 import { first, pipe, switchMap, tap } from 'rxjs';
 
 import { RoutePath } from '../enum/route-path';
+import { AuthService } from '../models';
 import { User } from '../models/user';
-import { LoaderService } from '../services';
+import { LoaderService, WebAuthenticationService } from '../services';
 
 type UserState = {
   user: User | null;
-  token: string | null;
   isLoginError: boolean;
+  isUserLoggedIn: boolean;
 };
-
-const tokenKey: string = 'SP_ACCESS_TOKEN';
 
 export const UserStore = signalStore(
   { providedIn: 'root' },
-  withState<UserState>({ token: null, user: null, isLoginError: false }),
+  withState<UserState>({ user: null, isLoginError: false, isUserLoggedIn: false }),
   withMethods(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
-      authService: AuthenticationApiService = inject(AuthenticationApiService),
+      authService: AuthService = inject(AuthService),
       snackBar: MatSnackBar = inject(MatSnackBar),
       router: Router = inject(Router),
       loaderService = inject(LoaderService)
@@ -61,12 +55,11 @@ export const UserStore = signalStore(
             patchState(store, { isLoginError: false });
           }),
           switchMap((request) =>
-            authService.login({ body: request }).pipe(
+            authService.login(request.email, request.password).pipe(
               first(),
               tapResponse({
-                next: (response) => {
-                  patchState(store, { token: response.token });
-                  localStorage.setItem(tokenKey, response.token);
+                next: () => {
+                  patchState(store, { isUserLoggedIn: true });
                   router.navigate([RoutePath.MAIN]).then(() => (loaderService.showLoader = false));
                 },
                 error: () => {
@@ -79,13 +72,12 @@ export const UserStore = signalStore(
         )
       ),
       logout: (): void => {
-        localStorage.clear();
-        patchState(store, { token: null });
+        authService.logout();
         router.navigate([RoutePath.LOGIN]);
       },
     })
   ),
-  withHooks((store) => ({
-    onInit: (): void => patchState(store, { token: localStorage.getItem(tokenKey) }),
+  withHooks((store, authService = inject(WebAuthenticationService)) => ({
+    onInit: (): void => patchState(store, { isUserLoggedIn: !!authService.token }),
   }))
 );
