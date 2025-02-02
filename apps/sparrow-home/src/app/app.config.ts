@@ -1,9 +1,5 @@
 import { HttpBackend, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { MAT_CARD_CONFIG } from '@angular/material/card';
-import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -15,6 +11,7 @@ import {
   initializeApp,
   SHORT_APP_TITLE,
 } from '@sparrow-home/core';
+import { MaterialConfiguration } from '@sparrow-home/ui';
 
 import { appRoutes } from './app.routes';
 
@@ -39,17 +36,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([apiUrlInterceptor, authInterceptor])),
     provideRouter(appRoutes),
     provideAnimationsAsync(),
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    {
-      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-      useValue: { duration: 3000, horizontalPosition: 'center', verticalPosition: 'top' },
-    },
-    {
-      provide: MAT_CARD_CONFIG,
-      useValue: { appearance: 'outlined' },
-    },
-    provideAnimationsAsync(),
-    provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
+    ...MaterialConfiguration,
   ],
 };

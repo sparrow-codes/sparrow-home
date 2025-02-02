@@ -1,0 +1,9 @@
+{
+  "name": "alarm",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nest/alarm/src",
+  "projectType": "library",
+  "tags": ["scope: be-alarm"],
+  "// targets": "to see all targets run: nx show project alarm --web",
+  "targets": {}
+}

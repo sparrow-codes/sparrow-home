@@ -5,4 +5,5 @@ export enum RoutePath {
   LOGIN = 'login',
   AQUARIUM = 'aquarium',
   NOT_FOUND = 'not-found',
+  ALARM = 'alarm',
 }

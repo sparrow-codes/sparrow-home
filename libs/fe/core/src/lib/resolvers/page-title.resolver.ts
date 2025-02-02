@@ -21,6 +21,8 @@ export const pageTitleResolver: ResolveFn<string> = (route, state) => {
       return `${appTitle} - Pompa Ciepła`;
     case RoutePath.AQUARIUM:
       return `${appTitle} - Akwarium`;
+    case RoutePath.ALARM:
+      return `${appTitle} - Alarm`;
     default:
       return `${appTitle}`;
   }

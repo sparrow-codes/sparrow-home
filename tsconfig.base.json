@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@sparrow-home/alarm-domain": ["libs/fe/alarm/alarm-domain/src/index.ts"],
+      "@sparrow-home/alarm-feature": ["libs/fe/alarm/alarm-feature/src/index.ts"],
       "@sparrow-home/api": ["libs/fe/api/src/index.ts"],
       "@sparrow-home/aqua-domain": ["libs/fe/aqua/aqua-domain/src/index.ts"],
       "@sparrow-home/aqua-feature": ["libs/fe/aqua/aqua-feature/src/index.ts"],
@@ -25,6 +27,7 @@
       "@sparrow-home/home-device-feature": ["libs/fe/home-device/home-device-feature/src/index.ts"],
       "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"],
       "@sparrow-home/user-feature": ["libs/fe/user/user-feature/src/index.ts"],
+      "@sparrow-server/alarm": ["libs/nest/alarm/src/index.ts"],
       "@sparrow-server/aqua": ["libs/nest/aqua/src/index.ts"],
       "@sparrow-server/auth": ["libs/nest/auth/src/index.ts"],
       "@sparrow-server/cloud": ["libs/nest/cloud/src/index.ts"],

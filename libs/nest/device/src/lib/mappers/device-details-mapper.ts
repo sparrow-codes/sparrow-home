@@ -3,6 +3,7 @@ import { DeviceResponse, IkeaSwitchStatusResponse } from '@sparrow-server/extern
 
 import { OpenDoorSensorDetailsDto } from '../models/open-door-sensor-details-dto';
 import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
+import { SirenDetailsDto } from '../models/siren-details-dto';
 import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-details-dto';
 import { calculatePercentage } from '../utils/calculate-percentage';
 
@@ -44,6 +45,18 @@ export class DeviceDetailsMapper {
       isOnline: !!entity.signalStrength && entity.signalStrength > 0,
       battery: entity.battery !== null ? entity.battery : undefined,
       isOpen: entity.isOpen !== null ? entity.isOpen : undefined,
+      id: entity.id,
+    };
+  }
+
+  public static getSirenDetailsDto(entity: HomeDevice): SirenDetailsDto {
+    return {
+      type: entity.deviceType,
+      homeDeviceId: entity.zigbeeDeviceId,
+      name: entity.deviceName,
+      signalStrength: entity.signalStrength ? calculatePercentage(0, 255, entity.signalStrength) : 0,
+      isOnline: !!entity.signalStrength && entity.signalStrength > 0,
+      battery: entity.battery !== null ? entity.battery : undefined,
       id: entity.id,
     };
   }
