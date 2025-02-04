@@ -1,0 +1,15 @@
+<div class="w-full h-full flex justify-center items-center flex-col gap-[100px]">
+  <div class="min-h-[50px]">
+    @if (!isOn()) {
+    <button @sparrowFadeIn mat-stroked-button mat-dialog-close>Zamknij</button>
+    }
+  </div>
+
+  <div
+    (click)="isOn.set(!isOn())"
+    class="w-[200px] h-[200px] flex flex-col gap-[20px] items-center bg-error p-4 rounded-full transition-all shadow-xl active:opacity-75"
+  >
+    <ng-icon class="text-white" [name]="icon()" size="100px"></ng-icon>
+    <span class="text-[55px] font-semibold text-white">SOS</span>
+  </div>
+</div>

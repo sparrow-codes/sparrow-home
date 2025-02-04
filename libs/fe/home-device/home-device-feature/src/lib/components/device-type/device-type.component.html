@@ -3,7 +3,8 @@
   [ngClass]="{
     'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG,
     'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
-    'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR
+    'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
+    'siren': deviceType() === deviceTypes.SIREN
   }"
 >
   <ng-icon [name]="iconName()" size="1.2rem"></ng-icon>

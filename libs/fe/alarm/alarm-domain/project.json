@@ -1,0 +1,20 @@
+{
+  "name": "alarm-domain",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/fe/alarm/alarm-domain/src",
+  "prefix": "sp",
+  "projectType": "library",
+  "tags": ["scope: fe-alarm-domain"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/fe/alarm/alarm-domain/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

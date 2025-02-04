@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
-import { bootstrapDoorOpen, bootstrapPlugin, bootstrapThermometerHalf } from '@ng-icons/bootstrap-icons';
+import {
+  bootstrapBellFill,
+  bootstrapDoorOpen,
+  bootstrapPlugin,
+  bootstrapThermometerHalf,
+} from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DeviceType } from '@sparrow-home/home-device-domain';
 
@@ -11,7 +16,7 @@ import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
   imports: [CommonModule, NgIcon],
   templateUrl: './device-type.component.html',
   styleUrl: './device-type.component.css',
-  providers: [provideIcons({ bootstrapPlugin, bootstrapThermometerHalf, bootstrapDoorOpen })],
+  providers: [provideIcons({ bootstrapPlugin, bootstrapThermometerHalf, bootstrapDoorOpen, bootstrapBellFill })],
 })
 export class DeviceTypeComponent {
   public readonly deviceType: InputSignal<DeviceType> = input.required();
@@ -27,6 +32,8 @@ export class DeviceTypeComponent {
         return 'bootstrapThermometerHalf';
       case DeviceType.OPEN_DOOR_SENSOR:
         return 'bootstrapDoorOpen';
+      case DeviceType.SIREN:
+        return 'bootstrapBellFill';
       default:
         return '';
     }

@@ -2,6 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AlarmModule } from '@sparrow-server/alarm';
 import { AquaModule } from '@sparrow-server/aqua';
 import { AuthModule } from '@sparrow-server/auth';
 import { CloudModule } from '@sparrow-server/cloud';
@@ -56,6 +57,7 @@ import { AlterHomeDeviceForOpenDoorSensor1738349248890 } from '../db/migrations/
     InitModule,
     HomeDeviceModule,
     AquaModule,
+    AlarmModule,
   ],
 })
 export class AppModule {}

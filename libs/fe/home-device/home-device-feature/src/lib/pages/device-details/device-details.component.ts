@@ -12,10 +12,11 @@ import {
   DeviceType,
   HomeDevice,
   OpenDoorSensor,
+  Siren,
   SwitchDevice,
   TemperatureSensor,
 } from '@sparrow-home/home-device-domain';
-import { PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
@@ -42,6 +43,7 @@ import { TemperatureSensorDetailsComponent } from '../../components/temperature-
     MatButton,
     TemperatureSensorDetailsComponent,
     OpenDoorSensorDetailsComponent,
+    BatteryStatusComponent,
   ],
   templateUrl: './device-details.component.html',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],
@@ -71,6 +73,14 @@ export class DeviceDetailsComponent implements OnInit {
   protected readonly openDoorSensor: Signal<OpenDoorSensor | null> = computed(() => {
     if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.OPEN_DOOR_SENSOR) {
       return this.deviceDetails() as OpenDoorSensor;
+    } else {
+      return null;
+    }
+  });
+
+  protected readonly siren: Signal<Siren | null> = computed(() => {
+    if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.SIREN) {
+      return this.deviceDetails() as Siren;
     } else {
       return null;
     }

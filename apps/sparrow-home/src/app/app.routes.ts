@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { AlarmPageComponent } from '@sparrow-home/alarm-feature';
 import {
   authGuard,
   configurationNotReadyGuard,
@@ -47,6 +48,11 @@ export const appRoutes: Route[] = [
         path: RoutePath.NOT_FOUND,
         title: pageTitleResolver,
         component: PageNotFoundComponent,
+      },
+      {
+        path: RoutePath.ALARM,
+        title: pageTitleResolver,
+        component: AlarmPageComponent,
       },
       {
         path: '',

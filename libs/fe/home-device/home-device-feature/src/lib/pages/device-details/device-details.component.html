@@ -29,6 +29,10 @@
           <sp-open-door-sensor-details [openDoorSensor]="openDoorSensor"></sp-open-door-sensor-details>
         }
 
+        @if (siren()?.battery; as battery) {
+          <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
+        }
+
         <mat-divider class="mt-2"></mat-divider>
         <div class="flex w-full py-2 justify-between">
           <div>Status:</div>

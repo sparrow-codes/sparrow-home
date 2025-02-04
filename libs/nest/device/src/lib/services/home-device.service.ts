@@ -12,7 +12,7 @@ import {
   ZigbeeSwitchMqttService,
 } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { first, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, first, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { DeviceDetailsMapper } from '../mappers/device-details-mapper';
@@ -32,7 +32,9 @@ export class HomeDeviceService {
     private readonly scheduledRegistry: SchedulerRegistry
   ) {
     this._subscribeToSensors();
-    this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
+    this._zigbeeSensorService.sensorDetails$
+      .pipe(distinctUntilChanged((previous, current) => JSON.stringify(previous) !== JSON.stringify(current)))
+      .subscribe((response) => this.handleSensorEvent(response));
   }
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
@@ -108,6 +110,8 @@ export class HomeDeviceService {
             return of(DeviceDetailsMapper.getTemperatureSensorDetails(entity));
           case DeviceType.OPEN_DOOR_SENSOR:
             return of(DeviceDetailsMapper.getOpenDoorSensorDetails(entity));
+          case DeviceType.SIREN:
+            return of(DeviceDetailsMapper.getSirenDetailsDto(entity));
           default:
             Logger.error(`Unsupported device type for device ${entity.deviceName}`);
             return of(null);
@@ -156,7 +160,11 @@ export class HomeDeviceService {
       deviceType: DeviceType.OPEN_DOOR_SENSOR,
     });
 
-    const sensorDevices: HomeDevice[] = [...temperatureSensors, ...openDoorSensors];
+    const sirens: HomeDevice[] = await this._homeDeviceRepository.findBy({
+      deviceType: DeviceType.SIREN,
+    });
+
+    const sensorDevices: HomeDevice[] = [...temperatureSensors, ...openDoorSensors, ...sirens];
 
     this._zigbeeSensorService.clearListeners(sensorDevices.map((device) => device.zigbeeDeviceId));
     sensorDevices.forEach((device: HomeDevice) => {

@@ -7,8 +7,7 @@ import { ConfigKey } from '@sparrow-server/shared';
 import { ComfortCloudConnector } from './panasonic';
 import { OAuthClient } from './panasonic/oauth-connector/OAuthConnector';
 import { WeatherApiService } from './weather/weather-api.service';
-import { ZigbeeManageDeviceService, ZigbeeSwitchMqttService } from './zigbee';
-import { ZigbeeSensorService } from './zigbee';
+import { ZigbeeManageDeviceService, ZigbeeSensorService, ZigbeeSirenService, ZigbeeSwitchMqttService } from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
 
 @Module({
@@ -38,6 +37,7 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
     MqttConnectorService,
     ZigbeeManageDeviceService,
     ZigbeeSensorService,
+    ZigbeeSirenService,
   ],
   exports: [
     WeatherApiService,
@@ -45,6 +45,7 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
     ZigbeeSwitchMqttService,
     ZigbeeManageDeviceService,
     ZigbeeSensorService,
+    ZigbeeSirenService,
   ],
 })
 export class ApiModule {}
