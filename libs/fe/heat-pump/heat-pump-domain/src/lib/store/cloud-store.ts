@@ -11,7 +11,7 @@ import {
   HomeDeviceApiModel,
   HomeDeviceApiService,
 } from '@sparrow-home/api';
-import { LoaderService } from '@sparrow-home/core';
+import { DeviceType, LoaderService } from '@sparrow-home/core';
 import { combineLatest, delay, finalize, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { CircularPreferencesPumpMapper } from '../mapper/circular-preferences-pump.mapper';
@@ -72,10 +72,12 @@ export const CloudStore = signalStore(
           tapResponse({
             next: (deviceList) =>
               patchState(store, {
-                homeDeviceOptions: deviceList.map((device) => ({
-                  value: device.homeDeviceId,
-                  label: device.name,
-                })),
+                homeDeviceOptions: deviceList
+                  .filter((device) => device.type === DeviceType.POWER_PLUG)
+                  .map((device) => ({
+                    value: device.homeDeviceId,
+                    label: device.name,
+                  })),
               }),
             error: () => snackBar.open('Błąd pobierania listy urządzeń!'),
           })

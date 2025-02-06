@@ -13,7 +13,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:fe-home-device-feature",
-                "onlyDependOnLibsWithTags": ["scope:fe-home-device-domain", "scope: fe-ui"]
+                "onlyDependOnLibsWithTags": ["scope:fe-home-device-domain", "scope: fe-ui", "scope: fe-core"]
               }
             ]
           }

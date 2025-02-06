@@ -1,4 +1,4 @@
-import { DeviceType } from '../enums';
+import { DeviceType } from '@sparrow-home/core';
 
 export interface HomeDevice {
   id: number;

@@ -7,7 +7,7 @@ import {
   bootstrapThermometerHalf,
 } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { DeviceType } from '@sparrow-home/home-device-domain';
+import { DeviceType } from '@sparrow-home/core';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 
