@@ -7,9 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol, heroTrash, heroWifi } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
+import { DeviceType } from '@sparrow-home/core';
 import {
   DeviceFacadeService,
-  DeviceType,
   HomeDevice,
   OpenDoorSensor,
   Siren,

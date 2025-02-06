@@ -5,8 +5,8 @@ import {
   SwitchDetailsApiModel,
   TemperatureSensorDetailsApiModel,
 } from '@sparrow-home/api';
+import { DeviceType } from '@sparrow-home/core';
 
-import { DeviceType } from '../../enums';
 import { HomeDevice } from '../../models';
 import { OpenDoorSensor } from '../../models/open-door-sensor';
 import { SwitchDevice } from '../../models/switch-device';
