@@ -3,7 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
 import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
-import { CronJobName, TimeUtils } from '@sparrow-server/shared';
+import { CronJobName } from '@sparrow-server/shared';
 import { Repository } from 'typeorm';
 
 import { PanasonicService } from '..';
@@ -41,31 +41,28 @@ export class CloudScheduleRegistryService {
   }
 
   @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_CIRCULAR_PUMP })
-  public async everyDayCircularPump(): Promise<void> {
+  public async everyDayCircularPumpOn(): Promise<void> {
     Logger.log('Starting scheduled task: Setting up water circular pump');
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     const cloudPreferences: CloudPreferences | undefined = user?.cloudPreferences;
 
-    if (
-      cloudPreferences &&
-      cloudPreferences.circularPumpStartTime &&
-      cloudPreferences.circularPumpEndTime &&
-      cloudPreferences.homeDevice
-    ) {
-      const timeInterval: number = TimeUtils.getTimeIntervalInSeconds(
-        cloudPreferences.circularPumpStartTime,
-        cloudPreferences.circularPumpEndTime
-      );
-
+    if (cloudPreferences && cloudPreferences.homeDevice) {
       const zigbeeDeviceId: string = cloudPreferences.homeDevice.zigbeeDeviceId;
-
       this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, true);
-      Logger.log(`Turning Circular pump for ${timeInterval} seconds`);
+    } else {
+      Logger.warn('Invalid Circular pump configuration!');
+    }
+  }
 
-      setTimeout(() => {
-        Logger.log('Turning Circular pump off');
-        this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
-      }, timeInterval * 1000);
+  @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF })
+  public async everyDayCircularPumpOff(): Promise<void> {
+    Logger.log('Starting scheduled task: Setting up water circular pump');
+    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
+    const cloudPreferences: CloudPreferences | undefined = user?.cloudPreferences;
+
+    if (cloudPreferences && cloudPreferences.homeDevice) {
+      const zigbeeDeviceId: string = cloudPreferences.homeDevice.zigbeeDeviceId;
+      this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
     } else {
       Logger.warn('Invalid Circular pump configuration!');
     }

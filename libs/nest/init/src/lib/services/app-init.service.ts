@@ -39,14 +39,28 @@ export class AppInitService {
     }
 
     const circularPumpStartTime: Date | null = cloudPreferences.circularPumpStartTime;
+    const circularPumpEndTime: Date | null = cloudPreferences.circularPumpEndTime;
 
-    if (cloudPreferences.isCircularPumpActive && circularPumpStartTime && cloudPreferences.homeDevice) {
-      const cronJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
-      cronJob.setTime(
+    if (
+      cloudPreferences.isCircularPumpActive &&
+      circularPumpStartTime &&
+      circularPumpEndTime &&
+      cloudPreferences.homeDevice
+    ) {
+      const circularPumpStartJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
+      const circularPumpEndJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF);
+
+      circularPumpStartJob.setTime(
         new CronTime(`0 ${circularPumpStartTime.getMinutes()} ${circularPumpStartTime.getHours()} * * *`)
       );
-      cronJob.start();
-      Logger.log(`Starting everyday circular pump: start at ${cronJob.nextDate()}`);
+      circularPumpEndJob.setTime(
+        new CronTime(`0 ${circularPumpEndTime.getMinutes()} ${circularPumpEndTime.getHours()} * * *`)
+      );
+
+      circularPumpStartJob.start();
+      circularPumpEndJob.start();
+      Logger.log(`Starting everyday circular pump: start at ${circularPumpStartJob.nextDate()}`);
+      Logger.log(`Starting everyday circular pump: end at ${circularPumpEndJob.nextDate()}`);
     }
   }
 

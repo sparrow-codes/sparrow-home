@@ -41,7 +41,7 @@ export class CircularPumpService {
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
     cloudPreferences.isCircularPumpActive = isActive;
     await this._cloudPreferencesRepository.save(cloudPreferences);
-    this.setCircularPumpJob(cloudPreferences);
+    this._setCircularPumpJob(cloudPreferences);
   }
 
   public async setCircularPumpPreferences(request: SetCircularPumpPreferencesRequest): Promise<void> {
@@ -64,32 +64,43 @@ export class CircularPumpService {
       }
 
       cloudPreferences.homeDevice = homeDevice;
-      this.setCircularPumpJob(user.cloudPreferences);
+      this._setCircularPumpJob(user.cloudPreferences);
     } else {
       cloudPreferences.homeDevice = null;
 
-      const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
-      cronJob.stop();
-      Logger.log('Circular pump job Stopped.');
+      const startCircularPumpJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
+      const endCircularPumpJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF);
+
+      startCircularPumpJob.stop();
+      endCircularPumpJob.stop();
+      Logger.log('Circular pump jobs Stopped.');
     }
 
     await this._cloudPreferencesRepository.save(cloudPreferences);
   }
 
-  public setCircularPumpJob(cloudPreferences: CloudPreferences): void {
-    const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
+  private _setCircularPumpJob(cloudPreferences: CloudPreferences): void {
+    const startCircularPumpJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
+    const endCircularPumpJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF);
+
     if (cloudPreferences.isCircularPumpActive) {
       const startTime: Date | null = cloudPreferences.circularPumpStartTime;
+      const endTime: Date | null = cloudPreferences.circularPumpEndTime;
 
-      if (!startTime) {
+      if (!startTime || !endTime) {
         throw new HttpException('Invalid Circular Pump parameters configuration', HttpStatus.CONFLICT);
       }
 
-      cronJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
-      Logger.log(`Setting Circular pump job - next run will be at: ${cronJob.nextDate()}`);
-      cronJob.start();
+      startCircularPumpJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
+      startCircularPumpJob.start();
+      Logger.log(`Setting Circular pump start job - next run will be at: ${startCircularPumpJob.nextDate()}`);
+
+      endCircularPumpJob.setTime(new CronTime(`0 ${endTime.getMinutes()} ${endTime.getHours()} * * *`));
+      endCircularPumpJob.start();
+      Logger.log(`Setting Circular pump stop job - next run will be at: ${endCircularPumpJob.nextDate()}`);
     } else {
-      cronJob.stop();
+      startCircularPumpJob.stop();
+      endCircularPumpJob.stop();
       Logger.log('Circular pump job Stopped.');
     }
   }
