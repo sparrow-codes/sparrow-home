@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, User, UserRole } from '@sparrow-server/entities';
 import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
-import { CronJobName, TimeUtils } from '@sparrow-server/shared';
+import { CronJobName } from '@sparrow-server/shared';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -14,30 +14,28 @@ export class AquaRegistryService {
   ) {}
 
   @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_AQUA_LIGHT })
-  public async setAquaLight(): Promise<void> {
-    Logger.log('Starting scheduled task: Every day aqua light');
+  public async turnOnAquaLight(): Promise<void> {
+    Logger.log('Starting scheduled task: Every day aqua light on');
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     const aquaPreferences: AquaPreferences | undefined = user?.aquaPreferences;
 
-    if (
-      aquaPreferences &&
-      aquaPreferences.lightStartTime &&
-      aquaPreferences.lightEndTime &&
-      aquaPreferences.homeDevice
-    ) {
-      const timeInterval: number = TimeUtils.getTimeIntervalInSeconds(
-        aquaPreferences.lightStartTime,
-        aquaPreferences.lightEndTime
-      );
+    if (aquaPreferences && aquaPreferences.homeDevice) {
       const zigbeeDeviceId: string = aquaPreferences.homeDevice.zigbeeDeviceId;
-
-      Logger.log(`Turning Aqua light on for ${timeInterval} seconds`);
       this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, true);
+    } else {
+      Logger.warn('Invalid Aqua light configuration');
+    }
+  }
 
-      setTimeout(() => {
-        Logger.log('Switching off Aqua light');
-        this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
-      }, timeInterval * 1000);
+  @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_AQUA_LIGHT_OFF })
+  public async turnOffAquaLight(): Promise<void> {
+    Logger.log('Starting scheduled task: Every day aqua light off');
+    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
+    const aquaPreferences: AquaPreferences | undefined = user?.aquaPreferences;
+
+    if (aquaPreferences && aquaPreferences.homeDevice) {
+      const zigbeeDeviceId: string = aquaPreferences.homeDevice.zigbeeDeviceId;
+      this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
     } else {
       Logger.warn('Invalid Aqua light configuration');
     }

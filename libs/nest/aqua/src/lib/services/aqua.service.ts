@@ -41,7 +41,7 @@ export class AquaService {
     const aquaPreferences: AquaPreferences = user.aquaPreferences;
     aquaPreferences.isActive = isActive;
     await this._aquaPreferencesRepository.save(aquaPreferences);
-    this.setAquaLightJob(aquaPreferences);
+    this._setAquaLightJob(aquaPreferences);
   }
 
   public async setAquaPreferences(request: SetAquaPreferencesRequest): Promise<void> {
@@ -66,34 +66,48 @@ export class AquaService {
       const aquaPreferences: AquaPreferences = user.aquaPreferences;
 
       aquaPreferences.homeDevice = homeDevice;
-      this.setAquaLightJob(user.aquaPreferences);
+      this._setAquaLightJob(user.aquaPreferences);
     } else {
       aquaPreferences.homeDevice = null;
 
-      const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
-      cronJob.stop();
+      const aquaLightStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+      const aquaLightEndJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF);
+      aquaLightStartJob.stop();
+      aquaLightEndJob.stop();
       Logger.log('Aqua light job Stopped.');
     }
 
     await this._aquaPreferencesRepository.save(aquaPreferences);
   }
 
-  public setAquaLightJob(aquaPreferences: AquaPreferences): void {
-    const cronJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
-    if (aquaPreferences.isActive) {
-      const hours: number | undefined = aquaPreferences.lightStartTime?.getHours();
-      const minutes: number | undefined = aquaPreferences.lightStartTime?.getMinutes();
+  private _setAquaLightJob(aquaPreferences: AquaPreferences): void {
+    const lightStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+    const lightEndJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF);
 
-      if (minutes === undefined || hours === undefined) {
+    if (aquaPreferences.isActive) {
+      const lightStartTime: Date | null = aquaPreferences.lightStartTime;
+      const lightEndTime: Date | null = aquaPreferences.lightEndTime;
+
+      if (lightStartTime?.getMinutes() === undefined || lightStartTime.getHours() === undefined) {
         throw new HttpException('Invalid Aqua parameters configuration', HttpStatus.CONFLICT);
       }
 
-      cronJob.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
-      Logger.log(`Setting Aqua light job - next run will be at: ${cronJob.nextDate()}`);
-      cronJob.start();
+      if (lightEndTime?.getMinutes() === undefined || lightEndTime.getHours() === undefined) {
+        throw new HttpException('Invalid Aqua parameters configuration', HttpStatus.CONFLICT);
+      }
+
+      lightStartJob.setTime(new CronTime(`0 ${lightStartTime.getMinutes()} ${lightStartTime.getHours()} * * *`));
+      Logger.log(`Setting Aqua light job - next run will be at: ${lightStartJob.nextDate()}`);
+      lightStartJob.start();
+
+      lightEndJob.setTime(new CronTime(`0 ${lightEndTime.getMinutes()} ${lightEndTime.getHours()} * * *`));
+      Logger.log(`Setting Aqua light job - next run will be at: ${lightEndJob.nextDate()}`);
+      lightEndJob.start();
     } else {
-      cronJob.stop();
-      Logger.log('Aqua light job Stopped.');
+      lightStartJob.stop();
+      lightEndJob.stop();
+
+      Logger.log('Aqua light scheduled tasks stopped');
     }
   }
 

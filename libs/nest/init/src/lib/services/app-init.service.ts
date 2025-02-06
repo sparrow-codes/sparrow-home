@@ -53,12 +53,20 @@ export class AppInitService {
   private async _verifyAquaPreferences(owner: User): Promise<void> {
     const aquaPreferences: AquaPreferences = owner.aquaPreferences;
     const startTime: Date | null = aquaPreferences.lightStartTime;
+    const endTime: Date | null = aquaPreferences.lightEndTime;
 
-    if (aquaPreferences.isActive && startTime && aquaPreferences.homeDevice) {
-      const cronJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
-      cronJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
-      cronJob.start();
-      Logger.log(`Starting everyday aqua light: start at ${cronJob.nextDate()}`);
+    if (aquaPreferences.isActive && startTime && endTime && aquaPreferences.homeDevice) {
+      const aquaLightStartJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+      const aquaLightEndJob: CronJob = this._schedulerRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF);
+
+      aquaLightStartJob.setTime(new CronTime(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`));
+      aquaLightEndJob.setTime(new CronTime(`0 ${endTime.getMinutes()} ${endTime.getHours()} * * *`));
+
+      aquaLightStartJob.start();
+      aquaLightEndJob.start();
+
+      Logger.log(`Starting everyday aqua start light: start at ${aquaLightStartJob.nextDate()}`);
+      Logger.log(`Starting everyday aqua end light: start at ${aquaLightEndJob.nextDate()}`);
     }
   }
 
