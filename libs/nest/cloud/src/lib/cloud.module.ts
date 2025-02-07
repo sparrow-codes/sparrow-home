@@ -8,6 +8,7 @@ import { ApiModule } from '@sparrow-server/external-api';
 import { CloudController } from './controllers/cloud.controller';
 import { PanasonicService } from './services';
 import { CircularPumpService } from './services/circular-pump/circular-pump.service';
+import { HeatingPreferencesService } from './services/heating-preferences/heating-preferences.service';
 import { CloudScheduleRegistryService } from './services/registry/cloud-schedule-registry.service';
 
 @Module({
@@ -17,7 +18,7 @@ import { CloudScheduleRegistryService } from './services/registry/cloud-schedule
     TypeOrmModule.forFeature([User, CloudPreferences, HomeDevice]),
     ApiModule,
   ],
-  providers: [PanasonicService, CloudScheduleRegistryService, CircularPumpService],
+  providers: [PanasonicService, CloudScheduleRegistryService, CircularPumpService, HeatingPreferencesService],
   controllers: [CloudController],
 })
 export class CloudModule {}

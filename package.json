@@ -43,6 +43,7 @@
     "html-entities": "^2.5.2",
     "local-devices": "^4.0.0",
     "mqtt": "^5.10.3",
+    "ngx-mask": "^19.0.6",
     "pg": "^8.13.0",
     "query-string": "^9.1.0",
     "reflect-metadata": "^0.1.13",

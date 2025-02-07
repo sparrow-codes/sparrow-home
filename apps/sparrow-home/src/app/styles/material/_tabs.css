@@ -1,0 +1,4 @@
+:root {
+  --mdc-tab-indicator-active-indicator-color: var(--sp-primary-color);
+  --mat-tab-header-inactive-label-text-color: var(--app-gray);
+}

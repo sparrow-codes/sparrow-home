@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { GetCircularPumpPreferencesResponse } from './models/circular-pump/get-circular-pump-preferences-response';
 import { SetCircularPumpPreferencesRequest } from './models/circular-pump/set-circular-pump-preferences-request';
+import { GetHeatingPreferencesResponse } from './models/heating/get-heating-preferences.response';
+import { SetHeatingPreferencesRequest } from './models/heating/set-heating-preferences.request';
 import { ChangeHeatPumpOperationRequest } from './models/panasonic/change-heat-pump-operation.request';
 import { GetHeatPumpDetailsResponse } from './models/panasonic/get-heat-pump-details-response';
 import { GetScheduleWaterHeatingResponse } from './models/panasonic/get-schedule-water-heating.response';
@@ -16,6 +18,8 @@ enum CLOUD_URLS {
   SCHEDULE_WATER_HEATING_STATUS = 'panasonic-cloud/scheduled-water-heating-status',
   CIRCULAR_PUMP_PREFERENCES = 'panasonic-cloud/circular-pump/preferences',
   CIRCULAR_PUMP_STATUS = 'panasonic-cloud/circular-pump/status',
+  HEATING_PREFERENCES = 'panasonic-cloud/heating-preferences',
+  SET_AUTOMATIC_HEATING = 'panasonic-cloud/heating-preferences/auto',
 }
 
 @Injectable({
@@ -50,5 +54,17 @@ export class CloudApiService {
 
   public setCircularPumpScheduleStatus(isActive: boolean): Observable<void> {
     return this._http.put<void>(CLOUD_URLS.CIRCULAR_PUMP_STATUS, { isActive });
+  }
+
+  public getHeatingPreferences(): Observable<GetHeatingPreferencesResponse> {
+    return this._http.get<GetHeatingPreferencesResponse>(CLOUD_URLS.HEATING_PREFERENCES);
+  }
+
+  public setHeatingPreferences(request: SetHeatingPreferencesRequest): Observable<GetHeatingPreferencesResponse> {
+    return this._http.put<GetHeatingPreferencesResponse>(CLOUD_URLS.HEATING_PREFERENCES, request);
+  }
+
+  public setAutomaticHeating(isAutomaticHeating: boolean): Observable<void> {
+    return this._http.put<void>(CLOUD_URLS.SET_AUTOMATIC_HEATING, { isAutomaticHeating });
   }
 }

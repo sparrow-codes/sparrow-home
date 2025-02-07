@@ -11,7 +11,9 @@ export class ZigbeeSensorService {
   private readonly _sensorDetails$: Subject<DeviceResponse<SensorDetails>> = new Subject();
 
   public get sensorDetails$(): Observable<DeviceResponse<SensorDetails>> {
-    return this._sensorDetails$.asObservable().pipe(distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current)));
+    return this._sensorDetails$
+      .asObservable()
+      .pipe(distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current)));
   }
 
   public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {

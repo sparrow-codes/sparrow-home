@@ -1,10 +1,10 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
-import { ComfortCloudConnector, HeatPump } from '@sparrow-server/external-api';
+import { CloudPreferences, HomeDevice, User, UserRole } from '@sparrow-server/entities';
+import { ComfortCloudConnector, HeatPump, ZigbeeSensorService } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { firstValueFrom, Observable } from 'rxjs';
+import { combineLatest, debounceTime, filter, first, firstValueFrom, from, Observable, of, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { SetHeatPumpStatusRequest } from '../../controllers/models/panasonic/set-heat-pump-status.request';
@@ -14,9 +14,37 @@ export class PanasonicService {
   public constructor(
     private readonly _connector: ComfortCloudConnector,
     private readonly _scheduleRegistry: SchedulerRegistry,
+    private readonly _zigbeeSensorService: ZigbeeSensorService,
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>
-  ) {}
+    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
+    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>
+  ) {
+    combineLatest([this.getHeatPumpDetails(), this._getUser()])
+      .pipe(
+        first(),
+        switchMap(([heatPump, user]) => {
+          const cloudPreferences: CloudPreferences = user.cloudPreferences;
+          cloudPreferences.isHeatOn = !!heatPump.zoneStatus[0].operationStatus;
+          return this._cloudPreferencesRepository.save(cloudPreferences);
+        })
+      )
+      .subscribe();
+
+    this._zigbeeSensorService.sensorDetails$
+      .pipe(
+        debounceTime(10000),
+        switchMap((deviceDetails) => {
+          return combineLatest([of(deviceDetails), from(this._getUser())]);
+        }),
+        filter(
+          ([device, user]) =>
+            device.deviceId === user.cloudPreferences.firstFlorTemperatureSensorZigbeeId ||
+            device.deviceId === user.cloudPreferences.groundFlorTemperatureSensorZigbeeId
+        ),
+        filter(([, user]) => user.cloudPreferences.isAutomaticHeat)
+      )
+      .subscribe(([, user]) => this._verifyTemperatureFromSensors(user));
+  }
 
   public getHeatPumpDetails(): Observable<HeatPump> {
     return this._connector.getDeviceDetails();
@@ -48,6 +76,17 @@ export class PanasonicService {
   }
 
   public async setHeatOnly(isHeatOn: boolean): Promise<void> {
+    const user: User = await this._getUser();
+    const cloudPreferences: CloudPreferences = user.cloudPreferences;
+
+    if (user.cloudPreferences.isHeatOn === isHeatOn) {
+      Logger.log('Heat status is already in desired state');
+      return;
+    }
+
+    cloudPreferences.isHeatOn = isHeatOn;
+    await this._cloudPreferencesRepository.save(cloudPreferences);
+
     const heatPump: HeatPump = await firstValueFrom(this._connector.getDeviceDetails());
     const isWaterOn: boolean = heatPump.tankStatus[0].operationStatus === 1;
     const isHeatCurrentlyOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
@@ -75,6 +114,29 @@ export class PanasonicService {
     await firstValueFrom(this._connector.setDeviceStatus(request.isWaterOn, request.isHeatOn));
   }
 
+  private async _verifyTemperatureFromSensors(user: User): Promise<void> {
+    const cloudPreferences: CloudPreferences = user.cloudPreferences;
+
+    if (
+      cloudPreferences.minTargetTemperature &&
+      cloudPreferences.maxTargetTemperature &&
+      cloudPreferences.isAutomaticHeat
+    ) {
+      const listOfTemperatures: number[] = await this.getListOfCurrentTemperatures(cloudPreferences);
+
+      if (listOfTemperatures.find((temp) => temp < cloudPreferences.minTargetTemperature!)) {
+        Logger.log('Temperature is lower than on one of the sensors - turning heat on');
+        await this.setHeatOnly(true);
+        return;
+      }
+
+      if (listOfTemperatures.every((temp) => temp >= cloudPreferences.maxTargetTemperature!)) {
+        Logger.log('Temperature reached its destination - turning heat off');
+        await this.setHeatOnly(false);
+      }
+    }
+  }
+
   private async _getUser(): Promise<User> {
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     if (!user) {
@@ -82,5 +144,26 @@ export class PanasonicService {
     }
 
     return user;
+  }
+
+  private async getListOfCurrentTemperatures(cloudPreferences: CloudPreferences): Promise<number[]> {
+    const groundFlorSensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({
+      zigbeeDeviceId: cloudPreferences.groundFlorTemperatureSensorZigbeeId ?? undefined,
+    });
+    const firstFlorSensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({
+      zigbeeDeviceId: cloudPreferences.firstFlorTemperatureSensorZigbeeId ?? undefined,
+    });
+
+    const listOfTemperatures: number[] = [];
+
+    if (groundFlorSensor?.temperature) {
+      listOfTemperatures.push(groundFlorSensor.temperature);
+    }
+
+    if (firstFlorSensor?.temperature) {
+      listOfTemperatures.push(firstFlorSensor.temperature);
+    }
+
+    return listOfTemperatures;
   }
 }

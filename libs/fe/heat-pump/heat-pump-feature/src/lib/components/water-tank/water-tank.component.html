@@ -9,32 +9,20 @@
     }
   </div>
 
-  <div class="flex flex-col gap-1 w-full">
-    <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-      <div class="w-full font-semibold">Temperatura wody</div>
-      <div class="w-full font-semibold text-right md:text-left">{{ waterTank.currentTemperature }} &#176;C</div>
+  <div class="flex flex-col gap-4 w-full md:w-[400px]">
+    <div class="w-full flex gap-4 items-center justify-between">
+      <div class="font-semibold">Temperatura wody</div>
+      <div class="text-nowrap font-semibold">{{ waterTank.currentTemperature }} &#176;C</div>
     </div>
 
-    <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-      <div class="w-full">Wybrana temperatura</div>
-      <div class="w-full text-right md:text-left">{{ waterTank.heatSet }} &#176;C</div>
-    </div>
-
-    <div class="w-full flex gap-4 items-center border-b border-light-gray py-2">
-      <div class="w-full">Maksymalna temperatura grzania wody</div>
-      <div class="w-full text-right md:text-left">{{ waterTank.heatMax }} &#176;C</div>
-    </div>
-
-    <div class="w-full flex gap-4 items-center">
-      <div class="w-full">Minimalna temperatura grzania wody</div>
-      <div class="w-full text-right md:text-left">{{ waterTank.heatMin }} &#176;C</div>
+    <div class="w-full flex gap-4 items-center justify-between">
+      <div>Wybrana temperatura</div>
+      <div class="text-nowrap">{{ waterTank.heatSet }} &#176;C</div>
     </div>
   </div>
 
-  <form [formGroup]="formGroup" class="mt-4 flex flex-col gap-2">
-    <ng-icon class="text-2xl text-dark-blue" name="heroAdjustmentsHorizontal"></ng-icon>
-    <div class="flex gap-4 items-center">
-      <mat-slide-toggle [formControlName]="formName.SCHEDULE_WATER_HEATING">Codzienne grzanie wody w okresie pracy paneli</mat-slide-toggle>
-    </div>
+  <form [formGroup]="formGroup" class="mt-8 flex justify-end gap-2 items-center">
+      <span class="uppercase text-sm">Automatyczne grzanie wody</span>
+      <mat-slide-toggle [formControlName]="formName.SCHEDULE_WATER_HEATING"></mat-slide-toggle>
   </form>
 }
