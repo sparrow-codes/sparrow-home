@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, User, UserRole } from '@sparrow-server/entities';
 import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
+import { CronJob } from 'cron/dist/job';
 import { Repository } from 'typeorm';
 
 import { PanasonicService } from '..';
@@ -13,7 +14,8 @@ export class CloudScheduleRegistryService {
   public constructor(
     private readonly _cloudService: PanasonicService,
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
+    private readonly _scheduleRegistry: SchedulerRegistry
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1PM, { disabled: true, name: CronJobName.EVERY_DAY_WATER_ON })
@@ -63,6 +65,10 @@ export class CloudScheduleRegistryService {
     if (cloudPreferences && cloudPreferences.homeDevice) {
       const zigbeeDeviceId: string = cloudPreferences.homeDevice.zigbeeDeviceId;
       this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
+
+      const nextStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
+      Logger.log(`Next circular pump will run at ${nextStartJob.nextDate()}`);
+
     } else {
       Logger.warn('Invalid Circular pump configuration!');
     }

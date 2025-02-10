@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
 import { MqttClient } from '@nestjs/microservices/external/mqtt-client.interface';
-import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, Observable, Subject } from 'rxjs';
 
 import { DeviceResponse, SensorDetails } from './model';
 
@@ -11,7 +11,7 @@ export class ZigbeeSensorService {
   private readonly _sensorDetails$: Subject<DeviceResponse<SensorDetails>> = new Subject();
 
   public get sensorDetails$(): Observable<DeviceResponse<SensorDetails>> {
-    return this._sensorDetails$.asObservable();
+    return this._sensorDetails$.asObservable().pipe(distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current)));
   }
 
   public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {

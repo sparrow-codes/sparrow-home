@@ -1,6 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@sparrow-server/auth';
 import { CloudPreferences, HomeDevice, User } from '@sparrow-server/entities';
@@ -15,7 +14,6 @@ import { CloudScheduleRegistryService } from './services/registry/cloud-schedule
   imports: [
     HttpModule,
     AuthModule,
-    ScheduleModule.forRoot(),
     TypeOrmModule.forFeature([User, CloudPreferences, HomeDevice]),
     ApiModule,
   ],

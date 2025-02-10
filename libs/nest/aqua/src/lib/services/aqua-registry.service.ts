@@ -1,16 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, User, UserRole } from '@sparrow-server/entities';
 import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
+import { CronJob } from 'cron/dist/job';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class AquaRegistryService {
   public constructor(
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
+    private readonly _scheduleRegistry: SchedulerRegistry
   ) {}
 
   @Cron(new Date(), { disabled: true, name: CronJobName.EVERY_DAY_AQUA_LIGHT })
@@ -36,6 +38,10 @@ export class AquaRegistryService {
     if (aquaPreferences && aquaPreferences.homeDevice) {
       const zigbeeDeviceId: string = aquaPreferences.homeDevice.zigbeeDeviceId;
       this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
+
+      const nextStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+      Logger.log(`Next aqua light will run at ${nextStartJob.nextDate()}`);
+
     } else {
       Logger.warn('Invalid Aqua light configuration');
     }

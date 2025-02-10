@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@sparrow-server/auth';
 import { AquaPreferences, HomeDevice, User } from '@sparrow-server/entities';
@@ -13,7 +12,6 @@ import { AquaRegistryService } from './services/aqua-registry.service';
   controllers: [AquaController],
   imports: [
     TypeOrmModule.forFeature([User, HomeDevice, AquaPreferences]),
-    ScheduleModule.forRoot(),
     AuthModule,
     ApiModule,
   ],

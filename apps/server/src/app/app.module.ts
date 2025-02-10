@@ -1,6 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlarmModule } from '@sparrow-server/alarm';
 import { AquaModule } from '@sparrow-server/aqua';
@@ -25,6 +26,7 @@ import { AlterHomeDeviceForOpenDoorSensor1738349248890 } from '../db/migrations/
   imports: [
     CloudModule,
     HttpModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

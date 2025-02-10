@@ -12,7 +12,7 @@ import {
   ZigbeeSwitchMqttService,
 } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { distinctUntilChanged, first, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { first, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { DeviceDetailsMapper } from '../mappers/device-details-mapper';
@@ -32,9 +32,7 @@ export class HomeDeviceService {
     private readonly scheduledRegistry: SchedulerRegistry
   ) {
     this._subscribeToSensors();
-    this._zigbeeSensorService.sensorDetails$
-      .pipe(distinctUntilChanged((previous, current) => JSON.stringify(previous) !== JSON.stringify(current)))
-      .subscribe((response) => this.handleSensorEvent(response));
+    this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
   }
 
   public async getListOfDevices(): Promise<HomeDeviceDto[]> {
