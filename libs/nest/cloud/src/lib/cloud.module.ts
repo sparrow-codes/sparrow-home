@@ -19,6 +19,5 @@ import { CloudScheduleRegistryService } from './services/registry/cloud-schedule
   ],
   providers: [PanasonicService, CloudScheduleRegistryService, CircularPumpService],
   controllers: [CloudController],
-  exports: [PanasonicService],
 })
 export class CloudModule {}
