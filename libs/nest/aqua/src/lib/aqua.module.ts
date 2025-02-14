@@ -6,16 +6,11 @@ import { ApiModule } from '@sparrow-server/external-api';
 
 import { AquaController } from './controllers/aqua.controller';
 import { AquaService } from './services/aqua.service';
-import { AquaRegistryService } from './services/aqua-registry.service';
 
 @Module({
   controllers: [AquaController],
-  imports: [
-    TypeOrmModule.forFeature([User, HomeDevice, AquaPreferences]),
-    AuthModule,
-    ApiModule,
-  ],
-  providers: [AquaService, AquaRegistryService],
+  imports: [TypeOrmModule.forFeature([User, HomeDevice, AquaPreferences]), AuthModule, ApiModule],
+  providers: [AquaService],
   exports: [],
 })
 export class AquaModule {}

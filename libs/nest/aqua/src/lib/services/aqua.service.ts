@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AquaPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
+import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
 import { CronJob } from 'cron/dist/job';
-import { CronTime } from 'cron/dist/time';
 import { Repository } from 'typeorm';
 
 import { GetAquaPreferences } from '../controllers/models/get-aqua-preferences';
@@ -16,8 +16,11 @@ export class AquaService {
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
     @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>,
+    private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
     private readonly _scheduleRegistry: SchedulerRegistry
-  ) {}
+  ) {
+    this._onInit();
+  }
 
   public async getAquaPreferences(): Promise<GetAquaPreferences> {
     const user: User = await this._getUser();
@@ -69,24 +72,24 @@ export class AquaService {
       this._setAquaLightJob(user.aquaPreferences);
     } else {
       aquaPreferences.homeDevice = null;
-
-      const aquaLightStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
-      const aquaLightEndJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF);
-      aquaLightStartJob.stop();
-      aquaLightEndJob.stop();
-      Logger.log('Aqua light job Stopped.');
+      this._stopAquaLightJobs();
     }
 
     await this._aquaPreferencesRepository.save(aquaPreferences);
   }
 
-  private _setAquaLightJob(aquaPreferences: AquaPreferences): void {
-    const lightStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
-    const lightEndJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF);
+  private async _onInit(): Promise<void> {
+    const user: User = await this._getUser();
+    const aquaPreferences: AquaPreferences = user.aquaPreferences;
 
+    this._setAquaLightJob(aquaPreferences);
+  }
+
+  private _setAquaLightJob(aquaPreferences: AquaPreferences): void {
     if (aquaPreferences.isActive) {
       const lightStartTime: Date | null = aquaPreferences.lightStartTime;
       const lightEndTime: Date | null = aquaPreferences.lightEndTime;
+      const zigbeeDeviceId: string | undefined = aquaPreferences.homeDevice?.zigbeeDeviceId;
 
       if (lightStartTime?.getMinutes() === undefined || lightStartTime.getHours() === undefined) {
         throw new HttpException('Invalid Aqua parameters configuration', HttpStatus.CONFLICT);
@@ -96,16 +99,26 @@ export class AquaService {
         throw new HttpException('Invalid Aqua parameters configuration', HttpStatus.CONFLICT);
       }
 
-      lightStartJob.setTime(new CronTime(`0 ${lightStartTime.getMinutes()} ${lightStartTime.getHours()} * * *`));
-      Logger.log(`Setting Aqua light job - next run will be at: ${lightStartJob.nextDate()}`);
-      lightStartJob.start();
+      if (!zigbeeDeviceId) {
+        throw new HttpException('Invalid Aqua parameters configuration', HttpStatus.CONFLICT);
+      }
 
-      lightEndJob.setTime(new CronTime(`0 ${lightEndTime.getMinutes()} ${lightEndTime.getHours()} * * *`));
-      Logger.log(`Setting Aqua light job - next run will be at: ${lightEndJob.nextDate()}`);
+      const lightStartJob: CronJob = new CronJob(
+        `0 ${lightStartTime.getMinutes()} ${lightStartTime.getHours()} * * *`,
+        () => this._turnOnAquaLight(zigbeeDeviceId)
+      );
+      this._scheduleRegistry.addCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT, lightStartJob);
+      lightStartJob.start();
+      Logger.log(`Setting Aqua light job - next run will be at: ${lightStartJob.nextDate()}`);
+
+      const lightEndJob: CronJob = new CronJob(`0 ${lightEndTime.getMinutes()} ${lightEndTime.getHours()} * * *`, () =>
+        this._turnOffAquaLight(zigbeeDeviceId)
+      );
+      this._scheduleRegistry.addCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF, lightEndJob);
       lightEndJob.start();
+      Logger.log(`Setting Aqua light stop job - next run will be at: ${lightEndJob.nextDate()}`);
     } else {
-      lightStartJob.stop();
-      lightEndJob.stop();
+      this._stopAquaLightJobs();
 
       Logger.log('Aqua light scheduled tasks stopped');
     }
@@ -118,5 +131,30 @@ export class AquaService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     return user;
+  }
+
+  private _turnOnAquaLight(zigbeeDeviceId: string): void {
+    Logger.log('Starting scheduled task: Every day aqua light on');
+    this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, true);
+  }
+
+  private _turnOffAquaLight(zigbeeDeviceId: string): void {
+    Logger.log('Starting scheduled task: Every day aqua light off');
+
+    this._zigbeeSwitchMqttService.setSwitchOn(zigbeeDeviceId, false);
+    const nextStartJob: CronJob = this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+    Logger.log(`Next aqua light will run at ${nextStartJob.nextDate()}`);
+  }
+
+  private _stopAquaLightJobs(): void {
+    if (this._scheduleRegistry.doesExist('cron', CronJobName.EVERY_DAY_AQUA_LIGHT)) {
+      this._scheduleRegistry.deleteCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT);
+    }
+
+    if (this._scheduleRegistry.doesExist('cron', CronJobName.EVERY_DAY_AQUA_LIGHT_OFF)) {
+      this._scheduleRegistry.deleteCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT_OFF);
+    }
+
+    Logger.log('Aqua light job Stopped.');
   }
 }
