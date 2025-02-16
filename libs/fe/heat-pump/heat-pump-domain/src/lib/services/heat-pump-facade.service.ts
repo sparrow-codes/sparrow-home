@@ -1,6 +1,7 @@
 import { inject, Injectable, Signal } from '@angular/core';
+import { SelectOption } from '@sparrow-home/ui';
 
-import { CircularPumpPreferences, HeatPump, WaterTankOptions } from '../models';
+import { CircularPumpPreferences, HeatingPreferences, HeatPump, WaterTankOptions } from '../models';
 import { CloudStore } from '../store/cloud-store';
 
 @Injectable({
@@ -25,6 +26,14 @@ export class HeatPumpFacadeService {
     return this._cloudStore.homeDeviceOptions;
   }
 
+  public get temperatureSensorsOptions(): Signal<SelectOption<number>[] | null> {
+    return this._cloudStore.temperatureSensorsOptions;
+  }
+
+  public get heatingPreferences(): Signal<HeatingPreferences | null> {
+    return this._cloudStore.heatingPreferences;
+  }
+
   public fetchInitData(): void {
     this._cloudStore.fetchInitData();
   }
@@ -43,5 +52,13 @@ export class HeatPumpFacadeService {
 
   public setCircularPumpScheduleStatus(isActive: boolean): void {
     this._cloudStore.setCircularPumpScheduleStatus(isActive);
+  }
+
+  public setHeatingPreferences(preferences: HeatingPreferences): void {
+    this._cloudStore.setHeatPreferences(preferences);
+  }
+
+  public activateAutomaticHeating(isActive: boolean): void {
+    this._cloudStore.activateAutomaticHeating(isActive);
   }
 }

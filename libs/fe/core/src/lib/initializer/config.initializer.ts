@@ -9,5 +9,5 @@ export function initializeApp(httpBackend: HttpBackend, dataService: DataFacadeS
   const configFileName: string = 'config.json';
 
   return (): Observable<unknown> =>
-    http.get<AppConfig>(`./${configFileName}`).pipe(tap((config) => dataService.saveAppConfig(config)));
+    http.get<AppConfig>(`./${configFileName}`).pipe(tap((config: AppConfig) => dataService.saveAppConfig(config)));
 }

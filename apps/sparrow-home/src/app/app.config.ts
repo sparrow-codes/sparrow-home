@@ -12,6 +12,7 @@ import {
   SHORT_APP_TITLE,
 } from '@sparrow-home/core';
 import { MaterialConfiguration } from '@sparrow-home/ui';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { appRoutes } from './app.routes';
 
@@ -31,11 +32,13 @@ export const appConfig: ApplicationConfig = {
       deps: [HttpBackend, DataFacadeService],
       multi: true,
     },
+    provideEnvironmentNgxMask({ validation: false }),
     provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
     provideHttpClient(withInterceptors([apiUrlInterceptor, authInterceptor])),
     provideRouter(appRoutes),
     provideAnimationsAsync(),
     ...MaterialConfiguration,
+    provideEnvironmentNgxMask({ validation: false }),
   ],
 };

@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-header>
       <div class="flex w-full justify-between items-center">
-        <span>Harmonogram pompy cyrculacyjnej</span>
+        <span>pompa cyrculacyjna</span>
         <mat-slide-toggle
           (change)="activated.emit($event.checked)"
           [checked]="circularPumpPreferences().isActive"
@@ -19,12 +19,12 @@
         <mat-select [formControlName]="formName.HOME_DEVICE">
           <mat-option>Brak</mat-option>
           @for (option of homeDeviceOptions(); track option.value) {
-            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            <mat-option [value]="option.value">{{option.label}}</mat-option>
           }
         </mat-select>
       </mat-form-field>
 
-      <div class="flex gap-6 items-center">
+      <div class="flex gap-4 items-center">
         <mat-form-field>
           <mat-label>Start pracy pompy:</mat-label>
           <input matInput [matTimepicker]="fromPicker" [formControlName]="formName.FROM" />

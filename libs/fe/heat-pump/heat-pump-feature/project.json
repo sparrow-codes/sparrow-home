@@ -15,6 +15,39 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "libs/fe/heat-pump/heat-pump-feature/.storybook",
+        "browserTarget": "heat-pump-feature:build-storybook",
+        "compodoc": false,
+        "styles": [
+          "@angular/material/prebuilt-themes/azure-blue.css",
+          "apps/sparrow-home/src/styles.css"
+        ]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/heat-pump-feature",
+        "configDir": "libs/fe/heat-pump/heat-pump-feature/.storybook",
+        "browserTarget": "heat-pump-feature:build-storybook",
+        "compodoc": false
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
     }
   }
 }

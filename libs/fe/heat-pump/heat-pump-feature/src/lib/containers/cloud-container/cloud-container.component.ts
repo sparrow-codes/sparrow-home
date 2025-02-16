@@ -13,18 +13,22 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { bootstrapThermometerHalf } from '@ng-icons/bootstrap-icons';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroClock, heroPresentationChartLine } from '@ng-icons/heroicons/outline';
+import { heroPresentationChartLine } from '@ng-icons/heroicons/outline';
+import { matWaterDrop } from '@ng-icons/material-icons/baseline';
 import {
   CircularPumpPreferences,
+  HeatingPreferences,
   HeatPump,
   HeatPumpFacadeService,
   WaterTankOptions,
 } from '@sparrow-home/heat-pump-domain';
-import { LayoutService, PageTitleComponent } from '@sparrow-home/ui';
+import { LayoutService, PageTitleComponent, SelectOption } from '@sparrow-home/ui';
 
 import { CircularPumpSettingsComponent } from '../../components/circular-pump-settings/circular-pump-settings.component';
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
+import { HeatingSettingsComponent } from '../../components/heating-settings/heating-settings.component';
 import { WaterTankComponent } from '../../components/water-tank/water-tank.component';
 import { CloudFormService } from './form-service/cloud-form.service';
 import { CloudFormName } from './form-service/enum/cloud-form-name';
@@ -44,9 +48,10 @@ import { CloudForm } from './form-service/model/cloud-form';
     MatTabGroup,
     MatTab,
     CircularPumpSettingsComponent,
+    HeatingSettingsComponent,
   ],
   templateUrl: './cloud-container.component.html',
-  providers: [provideIcons({ heroPresentationChartLine, heroClock }), CloudFormService],
+  providers: [provideIcons({ heroPresentationChartLine, bootstrapThermometerHalf, matWaterDrop }), CloudFormService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloudContainerComponent implements OnInit {
@@ -54,13 +59,16 @@ export class CloudContainerComponent implements OnInit {
 
   protected readonly formName: typeof CloudFormName = CloudFormName;
   protected readonly dataFacadeService: HeatPumpFacadeService = inject(HeatPumpFacadeService);
-  protected readonly layoutService: LayoutService = inject(LayoutService);
   protected readonly heatPump: Signal<HeatPump | null> = this.dataFacadeService.heatPump;
   protected readonly waterTankOptions: Signal<WaterTankOptions | null> = this.dataFacadeService.waterTankOptions;
   protected readonly circularPumpPreferences: Signal<CircularPumpPreferences | null> =
     this.dataFacadeService.circularPumpPreferences;
   protected readonly homeDeviceOptions: Signal<{ value: string; label: string }[] | null> =
     this.dataFacadeService.homeDeviceOptions;
+  protected readonly heatingPreferences: Signal<HeatingPreferences | null> = this.dataFacadeService.heatingPreferences;
+  protected readonly temperatureSensorsOptions: Signal<SelectOption<number>[] | null> =
+    this.dataFacadeService.temperatureSensorsOptions;
+  protected readonly layoutService: LayoutService = inject(LayoutService);
 
   private readonly _injector: Injector = inject(Injector);
   private readonly _formService: CloudFormService = inject(CloudFormService);
@@ -91,6 +99,14 @@ export class CloudContainerComponent implements OnInit {
 
   protected setCircularPumScheduled(isActive: boolean): void {
     this.dataFacadeService.setCircularPumpScheduleStatus(isActive);
+  }
+
+  protected setHeatPreferences(heatPreferences: HeatingPreferences): void {
+    this.dataFacadeService.setHeatingPreferences(heatPreferences);
+  }
+
+  protected changeAutomaticHeatingStatus(isAutomatic: boolean): void {
+    this.dataFacadeService.activateAutomaticHeating(isAutomatic);
   }
 
   private _createCloudForm(heatPump: HeatPump): void {

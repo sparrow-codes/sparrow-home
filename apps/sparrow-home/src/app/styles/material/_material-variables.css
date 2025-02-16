@@ -1,5 +1,7 @@
 :root {
   --mat-divider-color: var(--sp-home-divider-color);
+  --mat-sys-primary: var(--sp-primary-color);
 
   --mat-sidenav-container-shape: 0;
+  --mdc-outlined-text-field-focus-outline-color: var(--sp-primary-color);
 }

@@ -17,12 +17,30 @@ export class CloudPreferences {
   @Column({ nullable: true })
   public circularPumpEndTime!: Date | null;
 
+  @Column({ default: false })
+  public isHeatOn: boolean = false;
+
+  @Column({ nullable: true })
+  public groundFlorTemperatureSensorZigbeeId: string | null = null;
+
+  @Column({ nullable: true })
+  public firstFlorTemperatureSensorZigbeeId: string | null = null;
+
+  @Column({ nullable: true, type: 'decimal' })
+  public minTargetTemperature: number | null = null;
+
+  @Column({ nullable: true, type: 'decimal' })
+  public maxTargetTemperature: number | null = null;
+
   @OneToOne(() => HomeDevice, { eager: true, nullable: true })
   @JoinColumn()
   public homeDevice!: HomeDevice | null;
 
   @Column({ default: false, name: 'isCircularPumpActive' })
   private _isCircularPumpActive!: boolean;
+
+  @Column({ default: false, name: 'isAutomaticHeat' })
+  public _isAutomaticHeat: boolean = false;
 
   public set isCircularPumpActive(value: boolean) {
     if (this.circularPumpStartTime && this.circularPumpEndTime && this.homeDevice) {
@@ -34,5 +52,22 @@ export class CloudPreferences {
 
   public get isCircularPumpActive(): boolean {
     return this._isCircularPumpActive;
+  }
+
+  public set isAutomaticHeat(value: boolean) {
+    if (
+      (!this.firstFlorTemperatureSensorZigbeeId && !this.groundFlorTemperatureSensorZigbeeId!) ||
+      this.maxTargetTemperature === null ||
+      this.minTargetTemperature === null
+    ) {
+      Logger.warn('Invalid configuration. Activation of automatic heating is not possible');
+      return;
+    }
+
+    this._isAutomaticHeat = value;
+  }
+
+  public get isAutomaticHeat(): boolean {
+    return this._isAutomaticHeat;
   }
 }
