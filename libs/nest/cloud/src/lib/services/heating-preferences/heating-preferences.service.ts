@@ -31,7 +31,7 @@ export class HeatingPreferencesService {
     });
 
     const firstFlorSensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({
-      id: request.groundFlorSensorId,
+      id: request.firstFlorSensorId,
     });
 
     preferences.groundFlorTemperatureSensorZigbeeId = groundFlorSensor?.zigbeeDeviceId ?? null;
