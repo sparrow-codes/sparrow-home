@@ -1,15 +1,15 @@
-import { GetHeatingPreferencesResponse } from '@sparrow-home/api';
+import { GetHeatingPreferencesResponseApiModel } from '@sparrow-home/api';
 
 import { HeatingPreferences } from '../models';
 
 export class HeatingPreferencesMapper {
-  public static map(response: GetHeatingPreferencesResponse): HeatingPreferences {
+  public static map(response: GetHeatingPreferencesResponseApiModel): HeatingPreferences {
     return {
       isAutomaticHeat: response.isAutomaticHeat,
-      groundFlorTemperatureSensorId: response.groundFlorTemperatureSensorId,
-      firstFlorTemperatureSensorId: response.firstFlorTemperatureSensorId,
-      maxTargetTemperature: response.maxTargetTemperature,
-      minTargetTemperature: response.minTargetTemperature,
+      groundFlorTemperatureSensorId: response.groundFlorTemperatureSensorId ?? undefined,
+      firstFlorTemperatureSensorId: response.firstFlorTemperatureSensorId ?? undefined,
+      maxTargetTemperature: response.maxTargetTemperature ?? undefined,
+      minTargetTemperature: response.minTargetTemperature ?? undefined,
     };
   }
 }

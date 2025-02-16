@@ -6,7 +6,7 @@ import { pipe, switchMap } from 'rxjs';
 
 export const AlarmStore = signalStore(
   { providedIn: 'root' },
-  withMethods((store, apiService: AlarmApiService = inject(AlarmApiService)) => ({
-    setAlarm: rxMethod<boolean>(pipe(switchMap((isOn) => apiService.setAlarm(isOn)))),
+  withMethods((_store, apiService: AlarmApiService = inject(AlarmApiService)) => ({
+    setAlarm: rxMethod<boolean>(pipe(switchMap((isOn) => apiService.setAlarm({ body: { isOn } })))),
   }))
 );

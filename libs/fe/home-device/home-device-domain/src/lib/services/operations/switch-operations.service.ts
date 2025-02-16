@@ -12,7 +12,7 @@ export class SwitchOperationsService {
 
   public setSwitchStatus(id: number, isOn: boolean): void {
     this._apiService
-      .setSwitchStatus(id, isOn)
+      .setPluginSwitchStatus({ id: id.toString(), body: { isOn } })
       .pipe(
         first(),
         tap({

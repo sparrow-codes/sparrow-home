@@ -1,9 +1,9 @@
-import { GetHeatPumpDetailsResponse } from '@sparrow-home/api';
+import { GetHeatPumpDetailsResponseApiModel } from '@sparrow-home/api';
 
 import { HeatPump } from '../models/heat-pump';
 
 export abstract class HeatPumpMapper {
-  public static map(response: GetHeatPumpDetailsResponse): HeatPump {
+  public static map(response: GetHeatPumpDetailsResponseApiModel): HeatPump {
     return {
       deviceGuid: response.deviceGuid,
       outdoorNow: response.outdoorNow,

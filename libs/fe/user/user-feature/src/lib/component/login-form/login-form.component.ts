@@ -19,7 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroLockOpen } from '@ng-icons/heroicons/outline';
-import { LoginRequest } from '@sparrow-home/api';
+import { LoginRequestApiModel } from '@sparrow-home/api';
 
 import { LoginFormName } from './form-service/enum/loing-form-name';
 import { LoginFormService } from './form-service/login-form.service';
@@ -42,7 +42,7 @@ import { LoginForm } from './form-service/model/login-form';
   providers: [LoginFormService, provideIcons({ heroLockOpen })],
 })
 export class LoginFormComponent implements OnInit {
-  public readonly login: OutputEmitterRef<LoginRequest> = output();
+  public readonly login: OutputEmitterRef<LoginRequestApiModel> = output();
   public readonly hasError: InputSignal<boolean> = input(false);
 
   protected readonly formService: LoginFormService = inject(LoginFormService);

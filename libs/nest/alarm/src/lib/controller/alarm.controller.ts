@@ -1,9 +1,9 @@
 import { Body, Controller, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 
 import { AlarmService } from '../services/alarm.service';
-import { SetAlarmRequest } from './model/set-alarm-request';
+import { SetAlarm } from './model/set-alarm';
 
 @ApiTags('Alarm')
 @UseGuards(AuthGuard)
@@ -12,8 +12,9 @@ import { SetAlarmRequest } from './model/set-alarm-request';
 export class AlarmController {
   public constructor(private readonly _alarmService: AlarmService) {}
 
+  @ApiOperation({ operationId: 'setAlarm' })
   @Put('set')
-  public async setAlarm(@Body() request: SetAlarmRequest): Promise<void> {
+  public async setAlarm(@Body() request: SetAlarm): Promise<void> {
     await this._alarmService.setAlarm(request.isOn);
   }
 }

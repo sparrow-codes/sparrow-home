@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 
 import { AquaService } from '../services/aqua.service';
 import { GetAquaPreferences } from './models/get-aqua-preferences';
-import { SetAquaPreferencesRequest } from './models/set-aqua-preferences-request';
-import { SetLightJobStatusRequest } from './models/set-light-job-status-request';
+import { SetAquaPreferences } from './models/set-aqua-preferences';
+import { SetLightJobStatus } from './models/set-light-job-status';
 
 @ApiTags('Aqua Preferences')
 @UseGuards(AuthGuard)
@@ -14,19 +14,22 @@ import { SetLightJobStatusRequest } from './models/set-light-job-status-request'
 export class AquaController {
   public constructor(private readonly _aquaService: AquaService) {}
 
+  @ApiOperation({ operationId: 'setAquaPreference' })
   @Put('preferences')
-  public setPreferences(@Body() request: SetAquaPreferencesRequest): Promise<void> {
+  public setAquaPreference(@Body() request: SetAquaPreferences): Promise<void> {
     return this._aquaService.setAquaPreferences(request);
   }
 
+  @ApiOperation({ operationId: 'setAquaStatus' })
   @Put('status')
-  public setAquaStatus(@Body() request: SetLightJobStatusRequest): Promise<void> {
+  public setAquaStatus(@Body() request: SetLightJobStatus): Promise<void> {
     return this._aquaService.setLightJobStatusLightJob(request.isActive);
   }
 
+  @ApiOperation({ operationId: 'getAquaPreference' })
   @ApiResponse({ type: GetAquaPreferences })
   @Get('preferences')
-  public getPreferences(): Promise<GetAquaPreferences> {
+  public getAquaPreference(): Promise<GetAquaPreferences> {
     return this._aquaService.getAquaPreferences();
   }
 }

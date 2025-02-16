@@ -56,8 +56,10 @@ export const SetupStore = signalStore(
         switchMap((configuration) =>
           apiService
             .changeConfiguration({
-              lng: configuration.lng,
-              lat: configuration.lat,
+              body: {
+                lng: configuration.lng,
+                lat: configuration.lat,
+              },
             })
             .pipe(
               first(),

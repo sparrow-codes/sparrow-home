@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Post, UseGuards } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { AuthGuard } from '../guards/auth.guard';
 import { AuthService } from '../services/auth.service';
@@ -12,6 +12,7 @@ import { RefreshTokenResponse } from './models/refresh-token.response';
 export class AuthController {
   public constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ operationId: 'login' })
   @ApiResponse({ type: LoginResponse })
   @Post('/login')
   public async login(@Body() request: LoginRequest): Promise<LoginResponse> {
@@ -20,6 +21,7 @@ export class AuthController {
     };
   }
 
+  @ApiOperation({ operationId: 'refreshToken' })
   @UseGuards(AuthGuard)
   @ApiResponse({ type: RefreshTokenResponse })
   @Get('/refresh')

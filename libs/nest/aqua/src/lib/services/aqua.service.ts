@@ -8,7 +8,7 @@ import { CronJob } from 'cron/dist/job';
 import { Repository } from 'typeorm';
 
 import { GetAquaPreferences } from '../controllers/models/get-aqua-preferences';
-import { SetAquaPreferencesRequest } from '../controllers/models/set-aqua-preferences-request';
+import { SetAquaPreferences } from '../controllers/models/set-aqua-preferences';
 
 @Injectable()
 export class AquaService {
@@ -23,8 +23,13 @@ export class AquaService {
   }
 
   public async getAquaPreferences(): Promise<GetAquaPreferences> {
-    const user: User = await this._getUser();
+    const user: User | null = await this._getUser();
     const response: GetAquaPreferences = new GetAquaPreferences();
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
     response.homeDeviceId = user.aquaPreferences.homeDevice?.zigbeeDeviceId;
     response.isActive = user.aquaPreferences.isActive ?? false;
 
@@ -40,15 +45,23 @@ export class AquaService {
   }
 
   public async setLightJobStatusLightJob(isActive: boolean): Promise<void> {
-    const user: User = await this._getUser();
+    const user: User | null = await this._getUser();
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
     const aquaPreferences: AquaPreferences = user.aquaPreferences;
     aquaPreferences.isActive = isActive;
     await this._aquaPreferencesRepository.save(aquaPreferences);
     this._setAquaLightJob(aquaPreferences);
   }
 
-  public async setAquaPreferences(request: SetAquaPreferencesRequest): Promise<void> {
-    const user: User = await this._getUser();
+  public async setAquaPreferences(request: SetAquaPreferences): Promise<void> {
+    const user: User | null = await this._getUser();
+    if (!user) {
+      return;
+    }
+
     const aquaPreferences: AquaPreferences = user.aquaPreferences;
 
     aquaPreferences.lightStartTime = request.from ? new Date(request.from) : null;
@@ -79,10 +92,12 @@ export class AquaService {
   }
 
   private async _onInit(): Promise<void> {
-    const user: User = await this._getUser();
-    const aquaPreferences: AquaPreferences = user.aquaPreferences;
+    const user: User | null = await this._getUser();
+    if (user) {
+      const aquaPreferences: AquaPreferences = user.aquaPreferences;
 
-    this._setAquaLightJob(aquaPreferences);
+      this._setAquaLightJob(aquaPreferences);
+    }
   }
 
   private _setAquaLightJob(aquaPreferences: AquaPreferences): void {
@@ -124,11 +139,11 @@ export class AquaService {
     }
   }
 
-  private async _getUser(): Promise<User> {
+  private async _getUser(): Promise<User | null> {
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      Logger.warn('No user found');
     }
     return user;
   }

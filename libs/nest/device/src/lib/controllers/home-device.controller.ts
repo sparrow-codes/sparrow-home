@@ -1,9 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
 
 import { HomeDeviceDto } from '../models/home-device-dto';
+import { OpenDoorSensorDetailsDto } from '../models/open-door-sensor-details-dto';
+import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
+import { SirenDetailsDto } from '../models/siren-details-dto';
+import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-details-dto';
 import { HomeDeviceService } from '../services/home-device.service';
 import { CreateDeviceRequest } from './models/create-device-request';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
@@ -16,29 +20,36 @@ import { SetPluginSwitchStatusRequest } from './models/set-plugin-switch-status.
 export class HomeDeviceController {
   public constructor(private readonly _homeDeviceService: HomeDeviceService) {}
 
+  @ApiOperation({ operationId: 'getAllDevices' })
   @Get('all')
   @ApiResponse({ type: HomeDeviceDto, isArray: true })
-  public async getAll(): Promise<HomeDeviceDto[]> {
+  public async getAllDevices(): Promise<HomeDeviceDto[]> {
     return this._homeDeviceService.getListOfDevices();
   }
 
+  @ApiOperation({ operationId: 'createDevice' })
   @ApiBody({ type: CreateDeviceRequest })
   @Post('create')
   public createDevice(@Body() request: CreateDeviceRequest): Observable<boolean> {
     return this._homeDeviceService.addDevice(request.type, request.name);
   }
 
+  @ApiOperation({ operationId: 'deleteDevice' })
   @Delete('delete/:id')
   public async deleteDevice(@Param('id') id: string): Promise<void> {
     await this._homeDeviceService.removeDevice(Number(id));
   }
 
+  @ApiOperation({ operationId: 'getDeviceDetails' })
   @ApiResponse({ type: GetDeviceDetailsResponse })
+  @ApiExtraModels(OpenDoorSensorDetailsDto, PluginSwitchDetailsDto, SirenDetailsDto, TemperatureSensorDetailsDto)
   @Get('details/:id')
-  public getDetails(@Param('id') id: string): Observable<GetDeviceDetailsResponse> {
+  public getDeviceDetails(@Param('id') id: string): Observable<GetDeviceDetailsResponse> {
     return this._homeDeviceService.getDeviceDetails(Number(id)).pipe(map((details) => ({ deviceDetails: details })));
   }
 
+  @ApiOperation({ operationId: 'setPluginSwitchStatus' })
+  @ApiBody({ type: SetPluginSwitchStatusRequest })
   @Post('switch/status/:id')
   public setPluginSwitchStatus(
     @Param('id') id: string,

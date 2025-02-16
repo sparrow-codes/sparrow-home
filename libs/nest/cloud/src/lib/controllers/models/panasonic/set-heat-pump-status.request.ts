@@ -1,12 +1,16 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class SetHeatPumpStatusRequest {
   @IsNotEmpty()
-  public isWaterOn: boolean;
+  @ApiProperty()
+  public isWaterOn!: boolean;
 
   @IsNotEmpty()
-  public isHeatOn: boolean;
+  @ApiProperty()
+  public isHeatOn!: boolean;
 
   @IsNotEmpty()
-  public deviceGuid: string;
+  @ApiProperty()
+  public deviceGuid!: string;
 }

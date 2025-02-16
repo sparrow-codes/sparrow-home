@@ -1,7 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpInterceptorFn, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { SetupUrl } from '@sparrow-home/api';
 import { catchError, Observable } from 'rxjs';
 
 import { RoutePath } from '../enum';
@@ -24,7 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEv
   return handleRequest(request);
 
   function handleRequest(request: HttpRequest<unknown>): Observable<HttpEvent<unknown>> {
-    if (request.url.endsWith(SetupUrl.READY)) {
+    if (request.url.endsWith('setup/ready')) {
       return next(request);
     }
 

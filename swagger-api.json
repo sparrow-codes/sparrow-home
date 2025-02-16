@@ -1,0 +1,1311 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/panasonic-cloud/pump-heat-details": {
+      "get": {
+        "operationId": "getHeatPumpDetails",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHeatPumpDetailsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/change-operation-status": {
+      "put": {
+        "operationId": "changeOperationStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetHeatPumpStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/scheduled-water-heating": {
+      "put": {
+        "operationId": "scheduledWaterHeating",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/scheduled-water-heating-status": {
+      "get": {
+        "operationId": "getScheduledWaterHeatingStatus",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetScheduledWaterHeatingStatusResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/circular-pump/preferences": {
+      "put": {
+        "operationId": "setCircularPumpPreferences",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCircularPumpPreferencesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      },
+      "get": {
+        "operationId": "getCircularPumpPreferences",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCircularPumpPreferences"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/circular-pump/status": {
+      "put": {
+        "operationId": "setCircularPumpStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCircularPumpJobStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/heating-preferences": {
+      "get": {
+        "operationId": "getHeatingPreferences",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHeatingPreferencesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      },
+      "put": {
+        "operationId": "setHeatingPreferences",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetHeatingPreferencesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/panasonic-cloud/heating-preferences/auto": {
+      "put": {
+        "operationId": "setAutomaticHeating",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Panasonic Cloud"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/api/auth/refresh": {
+      "get": {
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/api/user/create-first": {
+      "post": {
+        "operationId": "createNewUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/setup/ready": {
+      "get": {
+        "operationId": "isConfigurationReady",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Setup"
+        ]
+      }
+    },
+    "/api/setup/current": {
+      "get": {
+        "operationId": "getCurrentSetup",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSetupResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Setup"
+        ]
+      }
+    },
+    "/api/setup/config-change": {
+      "put": {
+        "operationId": "changeConfiguration",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Setup"
+        ]
+      }
+    },
+    "/api/home-device/all": {
+      "get": {
+        "operationId": "getAllDevices",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HomeDeviceDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
+    "/api/home-device/create": {
+      "post": {
+        "operationId": "createDevice",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeviceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
+    "/api/home-device/delete/{id}": {
+      "delete": {
+        "operationId": "deleteDevice",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
+    "/api/home-device/details/{id}": {
+      "get": {
+        "operationId": "getDeviceDetails",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDeviceDetailsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
+    "/api/home-device/switch/status/{id}": {
+      "post": {
+        "operationId": "setPluginSwitchStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetPluginSwitchStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
+    "/api/aqua/preferences": {
+      "put": {
+        "operationId": "setAquaPreference",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetAquaPreferences"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Aqua Preferences"
+        ]
+      },
+      "get": {
+        "operationId": "getAquaPreference",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAquaPreferences"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Aqua Preferences"
+        ]
+      }
+    },
+    "/api/aqua/status": {
+      "put": {
+        "operationId": "setAquaStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetLightJobStatus"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Aqua Preferences"
+        ]
+      }
+    },
+    "/api/alarm/set": {
+      "put": {
+        "operationId": "setAlarm",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetAlarm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Alarm"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "",
+    "description": "",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "ZoneStatusDto": {
+        "type": "object",
+        "properties": {
+          "operationStatus": {
+            "type": "number"
+          },
+          "temparatureNow": {
+            "type": "number",
+            "nullable": true
+          },
+          "heatSet": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "operationStatus",
+          "temparatureNow",
+          "heatSet"
+        ]
+      },
+      "TankStatusDto": {
+        "type": "object",
+        "properties": {
+          "operationStatus": {
+            "type": "number"
+          },
+          "temparatureNow": {
+            "type": "number"
+          },
+          "heatMax": {
+            "type": "number"
+          },
+          "heatMin": {
+            "type": "number"
+          },
+          "heatSet": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "operationStatus",
+          "temparatureNow",
+          "heatMax",
+          "heatMin",
+          "heatSet"
+        ]
+      },
+      "GetHeatPumpDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "deviceGuid": {
+            "type": "string"
+          },
+          "outdoorNow": {
+            "type": "number"
+          },
+          "waterPressure": {
+            "type": "string"
+          },
+          "zoneStatus": {
+            "$ref": "#/components/schemas/ZoneStatusDto"
+          },
+          "tankStatus": {
+            "$ref": "#/components/schemas/TankStatusDto"
+          }
+        },
+        "required": [
+          "deviceGuid",
+          "outdoorNow",
+          "waterPressure",
+          "zoneStatus",
+          "tankStatus"
+        ]
+      },
+      "SetHeatPumpStatusRequest": {
+        "type": "object",
+        "properties": {
+          "isWaterOn": {
+            "type": "boolean"
+          },
+          "isHeatOn": {
+            "type": "boolean"
+          },
+          "deviceGuid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "isWaterOn",
+          "isHeatOn",
+          "deviceGuid"
+        ]
+      },
+      "GetScheduledWaterHeatingStatusResponse": {
+        "type": "object",
+        "properties": {
+          "isScheduled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isScheduled"
+        ]
+      },
+      "SetCircularPumpPreferencesRequest": {
+        "type": "object",
+        "properties": {
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "from": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "to": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "SetCircularPumpJobStatusRequest": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "nullable": false
+          }
+        },
+        "required": [
+          "isActive"
+        ]
+      },
+      "GetCircularPumpPreferences": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "circularPumpStartTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "circularPumpEndTime": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "isActive",
+          "homeDeviceId",
+          "circularPumpStartTime",
+          "circularPumpEndTime"
+        ]
+      },
+      "GetHeatingPreferencesResponse": {
+        "type": "object",
+        "properties": {
+          "isAutomaticHeat": {
+            "type": "boolean"
+          },
+          "groundFlorTemperatureSensorId": {
+            "type": "number",
+            "nullable": true
+          },
+          "firstFlorTemperatureSensorId": {
+            "type": "number",
+            "nullable": true
+          },
+          "minTargetTemperature": {
+            "type": "number",
+            "nullable": true
+          },
+          "maxTargetTemperature": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "isAutomaticHeat",
+          "groundFlorTemperatureSensorId",
+          "firstFlorTemperatureSensorId",
+          "minTargetTemperature",
+          "maxTargetTemperature"
+        ]
+      },
+      "SetHeatingPreferencesRequest": {
+        "type": "object",
+        "properties": {
+          "firstFlorSensorId": {
+            "type": "number",
+            "nullable": true
+          },
+          "groundFlorSensorId": {
+            "type": "number",
+            "nullable": true
+          },
+          "minTargetTemperature": {
+            "type": "number",
+            "nullable": true
+          },
+          "maxTargetTemperature": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "firstFlorSensorId",
+          "groundFlorSensorId",
+          "minTargetTemperature",
+          "maxTargetTemperature"
+        ]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "RefreshTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "CreateNewUserRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "firstName",
+          "password",
+          "email",
+          "lastName"
+        ]
+      },
+      "GetSetupResponse": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number"
+          },
+          "lng": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lng"
+        ]
+      },
+      "HomeDeviceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name"
+        ]
+      },
+      "CreateDeviceRequest": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "name"
+        ]
+      },
+      "OpenDoorSensorDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          },
+          "battery": {
+            "type": "number"
+          },
+          "isOpen": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "battery",
+          "isOpen"
+        ]
+      },
+      "PluginSwitchDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          },
+          "isOn": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "isOn"
+        ]
+      },
+      "SirenDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          },
+          "battery": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "battery"
+        ]
+      },
+      "TemperatureSensorDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          },
+          "battery": {
+            "type": "number"
+          },
+          "temperature": {
+            "type": "number"
+          },
+          "humidity": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "battery",
+          "temperature",
+          "humidity"
+        ]
+      },
+      "HomeDeviceDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength"
+        ]
+      },
+      "GetDeviceDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "deviceDetails": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HomeDeviceDetailsDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "deviceDetails"
+        ]
+      },
+      "SetPluginSwitchStatusRequest": {
+        "type": "object",
+        "properties": {
+          "isOn": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isOn"
+        ]
+      },
+      "SetAquaPreferences": {
+        "type": "object",
+        "properties": {
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "from": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "to": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "SetLightJobStatus": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isActive"
+        ]
+      },
+      "GetAquaPreferences": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "lightStartTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "lightEndTime": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "isActive",
+          "homeDeviceId",
+          "lightStartTime",
+          "lightEndTime"
+        ]
+      },
+      "SetAlarm": {
+        "type": "object",
+        "properties": {
+          "isOn": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isOn"
+        ]
+      }
+    }
+  }
+}

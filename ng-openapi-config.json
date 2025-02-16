@@ -1,0 +1,9 @@
+{
+  "input": "swagger-api.json",
+  "output": "libs/fe/api/src/",
+  "serviceSuffix": "ApiService",
+  "modelSuffix": "ApiModel",
+  "indexFile": true,
+  "skipJsonSuffix": true,
+  "ignoreUnusedModels": false
+}

@@ -4,13 +4,13 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
-  CloudApiService,
-  GetCircularPumpPreferencesResponse,
-  GetHeatingPreferencesResponse,
-  GetHeatPumpDetailsResponse,
-  GetScheduleWaterHeatingResponse,
-  HomeDeviceApiModel,
+  GetCircularPumpPreferencesApiModel,
+  GetHeatingPreferencesResponseApiModel,
+  GetHeatPumpDetailsResponseApiModel,
+  GetScheduledWaterHeatingStatusResponseApiModel,
   HomeDeviceApiService,
+  HomeDeviceDtoApiModel,
+  PanasonicCloudApiService,
 } from '@sparrow-home/api';
 import { DeviceType, LoaderService } from '@sparrow-home/core';
 import { SelectOption } from '@sparrow-home/ui';
@@ -43,12 +43,12 @@ export const CloudStore = signalStore(
   withMethods(
     (
       store,
-      cloudApiService = inject(CloudApiService),
+      cloudApiService = inject(PanasonicCloudApiService),
       snackBar = inject(MatSnackBar),
       loaderService = inject(LoaderService),
       homeDeviceApiService = inject(HomeDeviceApiService)
     ) => {
-      const _getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponse> = () =>
+      const _getHeatPumpDetails: () => Observable<GetHeatPumpDetailsResponseApiModel> = () =>
         cloudApiService.getHeatPumpDetails().pipe(
           tapResponse({
             next: (response) => patchState(store, { heatPump: HeatPumpMapper.map(response) }),
@@ -56,7 +56,7 @@ export const CloudStore = signalStore(
           })
         );
 
-      const _getScheduledWaterHeatStatus: () => Observable<GetScheduleWaterHeatingResponse> = () =>
+      const _getScheduledWaterHeatStatus: () => Observable<GetScheduledWaterHeatingStatusResponseApiModel> = () =>
         cloudApiService.getScheduledWaterHeatingStatus().pipe(
           tapResponse({
             next: (response) =>
@@ -65,7 +65,7 @@ export const CloudStore = signalStore(
           })
         );
 
-      const _getCircularPumpPreferencesResponse: () => Observable<GetCircularPumpPreferencesResponse> = () =>
+      const _getCircularPumpPreferencesResponse: () => Observable<GetCircularPumpPreferencesApiModel> = () =>
         cloudApiService.getCircularPumpPreferences().pipe(
           tapResponse({
             next: (response) =>
@@ -74,7 +74,7 @@ export const CloudStore = signalStore(
           })
         );
 
-      const _getHeatPreferences: () => Observable<GetHeatingPreferencesResponse> = () =>
+      const _getHeatPreferences: () => Observable<GetHeatingPreferencesResponseApiModel> = () =>
         cloudApiService.getHeatingPreferences().pipe(
           tapResponse({
             next: (response) => patchState(store, { heatingPreferences: HeatingPreferencesMapper.map(response) }),
@@ -82,8 +82,8 @@ export const CloudStore = signalStore(
           })
         );
 
-      const _getHomeDeviceOptions: () => Observable<HomeDeviceApiModel[]> = () =>
-        homeDeviceApiService.getAll().pipe(
+      const _getHomeDeviceOptions: () => Observable<HomeDeviceDtoApiModel[]> = () =>
+        homeDeviceApiService.getAllDevices().pipe(
           tapResponse({
             next: (deviceList) =>
               patchState(store, {
@@ -124,7 +124,7 @@ export const CloudStore = signalStore(
             tap(() => (loaderService.showLoader = true)),
             switchMap((request) =>
               cloudApiService
-                .changeOperationsStatus({ ...request, deviceGuid: store.heatPump()?.deviceGuid ?? '' })
+                .changeOperationStatus({ body: { ...request, deviceGuid: store.heatPump()?.deviceGuid ?? '' } })
                 .pipe(
                   delay(10000),
                   switchMap(() => _getHeatPumpDetails()),
@@ -137,7 +137,7 @@ export const CloudStore = signalStore(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap((isActive) =>
-              cloudApiService.scheduleWaterHeating({ active: isActive }).pipe(
+              cloudApiService.scheduledWaterHeating({ body: { active: isActive } }).pipe(
                 tapResponse({
                   next: () => snackBar.open('Pomyślnie zmieniono ustawienie grzania wody', 'Zamknij'),
                   error: () => snackBar.open('Błąd podczas zmiany ustawień grzania wody!', 'Zamknij'),
@@ -154,9 +154,11 @@ export const CloudStore = signalStore(
             switchMap((preferences) =>
               cloudApiService
                 .setCircularPumpPreferences({
-                  from: preferences.scheduledStartTime,
-                  to: preferences.scheduledEndTime,
-                  homeDeviceId: preferences.homeDeviceId,
+                  body: {
+                    from: JSON.stringify(preferences.scheduledStartTime),
+                    to: JSON.stringify(preferences.scheduledEndTime),
+                    homeDeviceId: preferences.homeDeviceId,
+                  },
                 })
                 .pipe(
                   tapResponse({
@@ -174,7 +176,7 @@ export const CloudStore = signalStore(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap((isActive) =>
-              cloudApiService.setCircularPumpScheduleStatus(isActive).pipe(
+              cloudApiService.setCircularPumpStatus({ body: { isActive } }).pipe(
                 tapResponse({
                   next: () => snackBar.open(isActive ? 'Harmonogram aktywny' : 'Harmonogram wyłączony'),
                   error: () => snackBar.open('Błąd uruchamiania harmonogramu pompy cyrkulacyjnej'),
@@ -191,10 +193,12 @@ export const CloudStore = signalStore(
             switchMap((preferences) =>
               cloudApiService
                 .setHeatingPreferences({
-                  maxTargetTemperature: preferences.maxTargetTemperature,
-                  groundFlorSensorId: preferences.groundFlorTemperatureSensorId,
-                  minTargetTemperature: preferences.minTargetTemperature,
-                  firstFlorSensorId: preferences.firstFlorTemperatureSensorId,
+                  body: {
+                    maxTargetTemperature: preferences.maxTargetTemperature ?? null,
+                    groundFlorSensorId: preferences.groundFlorTemperatureSensorId ?? null,
+                    minTargetTemperature: preferences.minTargetTemperature ?? null,
+                    firstFlorSensorId: preferences.firstFlorTemperatureSensorId ?? null,
+                  },
                 })
                 .pipe(
                   switchMap(() => _getHeatPreferences()),
