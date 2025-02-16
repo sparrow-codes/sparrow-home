@@ -26,13 +26,13 @@
 
       <div class="flex gap-4 items-center">
         <mat-form-field>
-          <mat-label>Start pracy pompy:</mat-label>
+          <mat-label>Start:</mat-label>
           <input matInput [matTimepicker]="fromPicker" [formControlName]="formName.FROM" />
           <mat-timepicker-toggle matIconSuffix [for]="fromPicker"/>
           <mat-timepicker interval="15min" #fromPicker />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Koniec pracy pompy:</mat-label>
+          <mat-label>Stop:</mat-label>
           <input matInput [matTimepicker]="toPicker" [formControlName]="formName.TO" />
           <mat-timepicker-toggle matIconSuffix [for]="toPicker"/>
           <mat-timepicker interval="15min" #toPicker />
