@@ -7,7 +7,7 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroUser } from '@ng-icons/heroicons/outline';
-import { CreateUserRequest } from '@sparrow-home/api';
+import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
 
 import { CreateUserFormService } from './form-service/create-user-form.service';
 import { CreateUserFormName } from './form-service/enum/create-user-form.name';
@@ -21,7 +21,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
   providers: [CreateUserFormService, provideIcons({ heroUser })],
 })
 export class CreateUserFormComponent implements OnInit {
-  public readonly formSave: OutputEmitterRef<CreateUserRequest> = output();
+  public readonly formSave: OutputEmitterRef<CreateNewUserRequestApiModel> = output();
 
   protected readonly formService: CreateUserFormService = inject(CreateUserFormService);
   protected readonly formGroup: FormGroup<CreateNewUserForm> = this.formService.form;

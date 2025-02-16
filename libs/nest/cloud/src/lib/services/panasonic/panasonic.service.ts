@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, HomeDevice, User, UserRole } from '@sparrow-server/entities';
@@ -22,8 +22,9 @@ export class PanasonicService {
     combineLatest([this.getHeatPumpDetails(), this._getUser()])
       .pipe(
         first(),
+        filter(([, user]) => Boolean(user)),
         switchMap(([heatPump, user]) => {
-          const cloudPreferences: CloudPreferences = user.cloudPreferences;
+          const cloudPreferences: CloudPreferences = user!.cloudPreferences;
           cloudPreferences.isHeatOn = !!heatPump.zoneStatus[0].operationStatus;
           return this._cloudPreferencesRepository.save(cloudPreferences);
         })
@@ -36,14 +37,15 @@ export class PanasonicService {
         switchMap((deviceDetails) => {
           return combineLatest([of(deviceDetails), from(this._getUser())]);
         }),
+        filter(([, user]) => Boolean(user)),
         filter(
           ([device, user]) =>
-            device.deviceId === user.cloudPreferences.firstFlorTemperatureSensorZigbeeId ||
-            device.deviceId === user.cloudPreferences.groundFlorTemperatureSensorZigbeeId
+            device.deviceId === user!.cloudPreferences.firstFlorTemperatureSensorZigbeeId ||
+            device.deviceId === user!.cloudPreferences.groundFlorTemperatureSensorZigbeeId
         ),
-        filter(([, user]) => user.cloudPreferences.isAutomaticHeat)
+        filter(([, user]) => user!.cloudPreferences.isAutomaticHeat)
       )
-      .subscribe(([, user]) => this._verifyTemperatureFromSensors(user));
+      .subscribe(([, user]) => this._verifyTemperatureFromSensors(user!));
   }
 
   public getHeatPumpDetails(): Observable<HeatPump> {
@@ -51,7 +53,10 @@ export class PanasonicService {
   }
 
   public async scheduledWaterHeating(active: boolean): Promise<void> {
-    const user: User = await this._getUser();
+    const user: User | null = await this._getUser();
+    if (!user) {
+      return;
+    }
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
     if (active) {
       this._scheduleRegistry.getCronJob(CronJobName.EVERY_DAY_WATER_ON).start();
@@ -76,7 +81,11 @@ export class PanasonicService {
   }
 
   public async setHeatOnly(isHeatOn: boolean): Promise<void> {
-    const user: User = await this._getUser();
+    const user: User | null = await this._getUser();
+    if (!user) {
+      return;
+    }
+
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
 
     if (user.cloudPreferences.isHeatOn === isHeatOn) {
@@ -137,12 +146,8 @@ export class PanasonicService {
     }
   }
 
-  private async _getUser(): Promise<User> {
+  private async _getUser(): Promise<User | null> {
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-
     return user;
   }
 

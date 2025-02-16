@@ -3,14 +3,7 @@ import { APP_INITIALIZER, ApplicationConfig, provideExperimentalZonelessChangeDe
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import {
-  apiUrlInterceptor,
-  APP_TITLE,
-  authInterceptor,
-  DataFacadeService,
-  initializeApp,
-  SHORT_APP_TITLE,
-} from '@sparrow-home/core';
+import { APP_TITLE, authInterceptor, DataFacadeService, initializeApp, SHORT_APP_TITLE } from '@sparrow-home/core';
 import { MaterialConfiguration } from '@sparrow-home/ui';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 
@@ -35,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideEnvironmentNgxMask({ validation: false }),
     provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
-    provideHttpClient(withInterceptors([apiUrlInterceptor, authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(appRoutes),
     provideAnimationsAsync(),
     ...MaterialConfiguration,

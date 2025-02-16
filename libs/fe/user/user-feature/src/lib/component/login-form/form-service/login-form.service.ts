@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { LoginRequest } from '@sparrow-home/api';
+import { LoginRequestApiModel } from '@sparrow-home/api';
 
 import { LoginFormName } from './enum/loing-form-name';
 import { LoginForm } from './model/login-form';
@@ -20,7 +20,7 @@ export class LoginFormService {
     return this._form.get(LoginFormName.PASSWORD) as FormControl;
   }
 
-  public toRequest(): LoginRequest {
+  public toRequest(): LoginRequestApiModel {
     return {
       email: this._form.value.email ?? '',
       password: this._form.value.password ?? '',

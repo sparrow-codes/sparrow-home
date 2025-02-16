@@ -1,6 +1,6 @@
 import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AquaApiService, GetAquaPreferences, HomeDeviceApiService } from '@sparrow-home/api';
+import { AquaPreferencesApiService, GetAquaPreferencesApiModel, HomeDeviceApiService } from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
 import { combineLatest, finalize, first, map, Observable, switchMap, tap } from 'rxjs';
 
@@ -14,7 +14,7 @@ export class AquaDataService {
   private readonly _aquaPreferences: WritableSignal<AquaPreferences | null> = signal(null);
 
   private readonly _homeDeviceApiService: HomeDeviceApiService = inject(HomeDeviceApiService);
-  private readonly _aquaApiService: AquaApiService = inject(AquaApiService);
+  private readonly _aquaApiService: AquaPreferencesApiService = inject(AquaPreferencesApiService);
   private readonly _snackBar: MatSnackBar = inject(MatSnackBar);
   private readonly _loaderService: LoaderService = inject(LoaderService);
 
@@ -28,10 +28,12 @@ export class AquaDataService {
 
   public setPreferences(preferences: AquaPreferences): void {
     this._aquaApiService
-      .setPreferences({
-        from: preferences.lightStartTime,
-        to: preferences.lightEndTime,
-        homeDeviceId: preferences.homeDeviceId,
+      .setAquaPreference({
+        body: {
+          from: JSON.stringify(preferences.lightStartTime),
+          to: JSON.stringify(preferences.lightEndTime),
+          homeDeviceId: preferences.homeDeviceId,
+        },
       })
       .pipe(
         first(),
@@ -46,7 +48,7 @@ export class AquaDataService {
 
   public setAquaLightScheduler(isActive: boolean): void {
     this._aquaApiService
-      .setActiveStatus(isActive)
+      .setAquaStatus({ body: { isActive } })
       .pipe(
         first(),
         tap({
@@ -68,7 +70,7 @@ export class AquaDataService {
   }
 
   private _fetchHomeDeviceOptions(): Observable<{ value: string; label: string }[]> {
-    return this._homeDeviceApiService.getAll().pipe(
+    return this._homeDeviceApiService.getAllDevices().pipe(
       first(),
       tap({ error: () => this._snackBar.open('Błąd pobierania listy urządzeń!') }),
       map((response) =>
@@ -81,8 +83,8 @@ export class AquaDataService {
     );
   }
 
-  private _fetchPreferences(): Observable<GetAquaPreferences> {
-    return this._aquaApiService.getPreferences().pipe(
+  private _fetchPreferences(): Observable<GetAquaPreferencesApiModel> {
+    return this._aquaApiService.getAquaPreference().pipe(
       first(),
       tap({
         next: (response) => {

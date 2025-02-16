@@ -3,9 +3,10 @@
   "version": "1.6.0",
   "license": "MIT",
   "scripts": {
-    "build:web": "nx run sparrow-home:build:production",
+    "build:web": "npm run generate-fe-api && nx run sparrow-home:build:production",
     "build:server": "nx run server:build && cp -a apps/server/.env dist/apps/server",
-    "build:app": "npm run build:web && npm run build:server"
+    "build:app": "npm run build:web && npm run build:server",
+    "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json"
   },
   "private": true,
   "dependencies": {
@@ -44,6 +45,7 @@
     "local-devices": "^4.0.0",
     "mqtt": "^5.10.3",
     "ngx-mask": "^19.0.6",
+    "ng-openapi-gen": "^0.52.0",
     "pg": "^8.13.0",
     "query-string": "^9.1.0",
     "reflect-metadata": "^0.1.13",

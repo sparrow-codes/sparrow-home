@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { CreateUserRequest } from '@sparrow-home/api';
+import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
 
 import { CreateUserFormName } from './enum/create-user-form.name';
 import { CreateNewUserForm } from './model/create-new-user-form';
@@ -14,7 +14,7 @@ export class CreateUserFormService {
     return this._form;
   }
 
-  public toRequest(): CreateUserRequest {
+  public toRequest(): CreateNewUserRequestApiModel {
     const formValue: Partial<{
       firstName: string;
       email: string;
@@ -26,7 +26,7 @@ export class CreateUserFormService {
       firstName: formValue.firstName ?? '',
       password: formValue.password ?? '',
       email: formValue.email ?? '',
-      lastName: formValue.lastName,
+      lastName: formValue.lastName ?? null,
     };
   }
 

@@ -3,10 +3,10 @@ import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@a
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HomeDeviceApiModel, HomeDeviceApiService } from '@sparrow-home/api';
+import { HomeDeviceApiService, HomeDeviceDtoApiModel } from '@sparrow-home/api';
 import { LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
-import { filter, finalize, first, Observable, switchMap, take, tap } from 'rxjs';
+import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
 
 import { HomeDevice } from '../../models';
 import { HomeDeviceMapper } from '../mapper/home-device-mapper';
@@ -54,16 +54,20 @@ export class HomeDeviceDataService {
   public createDevices(deviceType: number, name: string): Observable<boolean> {
     return this._apiService
       .createDevice({
-        type: deviceType,
-        name,
+        body: {
+          type: deviceType,
+          name,
+        },
       })
       .pipe(
         first(),
+        map(() => true),
         tap({
           next: (isCreated) =>
             this._snackBar.open(isCreated ? 'Połączono urządzenie!' : 'Nie udało się nawiązać połączenia'),
           error: () => this._snackBar.open('Błąd podczas towrzenia urządzenia'),
-        })
+        }),
+        catchError(() => of(false))
       );
   }
 
@@ -81,7 +85,7 @@ export class HomeDeviceDataService {
         filter((result) => !!result),
         tap(() => (this._loadingService.showLoader = true)),
         switchMap(() =>
-          this._apiService.deleteDevice(id).pipe(
+          this._apiService.deleteDevice({ id: id.toString() }).pipe(
             first(),
             tap({
               next: () => this._snackBar.open('Usunięto urządzenie!'),
@@ -98,11 +102,15 @@ export class HomeDeviceDataService {
     this._loadingService.showLoader = true;
     this._homeDeviceDetails.set(null);
     this._apiService
-      .getDeviceDetails(id)
+      .getDeviceDetails({ id: id.toString() })
       .pipe(
         first(),
         tap({
-          next: (details) => this._homeDeviceDetails.set(HomeDeviceMapper.mapDetails(details)),
+          next: (details) => {
+            if (details.deviceDetails) {
+              this._homeDeviceDetails.set(HomeDeviceMapper.mapDetails(details.deviceDetails));
+            }
+          },
           error: (error: HttpErrorResponse) => {
             if (error.status === HttpStatusCode.NotFound) {
               this._router.navigate([RoutePath.NOT_FOUND]);
@@ -116,8 +124,8 @@ export class HomeDeviceDataService {
       .subscribe();
   }
 
-  private _fetchDevices(): Observable<HomeDeviceApiModel[]> {
-    return this._apiService.getAll().pipe(
+  private _fetchDevices(): Observable<HomeDeviceDtoApiModel[]> {
+    return this._apiService.getAllDevices().pipe(
       first(),
       tap({
         next: (devices) => this._homeDevices.set(devices.map(HomeDeviceMapper.map)),

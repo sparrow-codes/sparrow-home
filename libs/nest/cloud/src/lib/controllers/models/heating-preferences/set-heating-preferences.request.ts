@@ -1,20 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
 
 export class SetHeatingPreferencesRequest {
-  @IsNotEmpty()
-  @ApiProperty()
-  public firstFlorSensorId?: number;
+  @ApiProperty({ nullable: true })
+  public firstFlorSensorId!: number | null;
 
-  @IsNotEmpty()
-  @ApiProperty()
-  public groundFlorSensorId?: number;
+  @ApiProperty({ nullable: true })
+  public groundFlorSensorId!: number | null;
 
-  @IsNotEmpty()
-  @ApiProperty()
-  public minTargetTemperature?: number;
+  @ApiProperty({ nullable: true })
+  public minTargetTemperature!: number | null;
 
-  @IsNotEmpty()
-  @ApiProperty()
-  public maxTargetTemperature?: number;
+  @ApiProperty({ nullable: true })
+  public maxTargetTemperature!: number | null;
 }

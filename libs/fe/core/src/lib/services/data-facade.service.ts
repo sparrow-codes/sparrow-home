@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
-import { CreateUserRequest, LoginRequest } from '@sparrow-home/api';
+import { CreateNewUserRequestApiModel, LoginRequestApiModel } from '@sparrow-home/api';
 import { Observable } from 'rxjs';
 
 import { AppConfig, Configuration } from '../models';
@@ -51,11 +51,11 @@ export class DataFacadeService {
     this._setupStore.setConfiguration(configuration);
   }
 
-  public createFirstUser(request: CreateUserRequest): void {
+  public createFirstUser(request: CreateNewUserRequestApiModel): void {
     this._userStore.createUser(request);
   }
 
-  public login(request: LoginRequest): void {
+  public login(request: LoginRequestApiModel): void {
     this._userStore.login(request);
   }
 

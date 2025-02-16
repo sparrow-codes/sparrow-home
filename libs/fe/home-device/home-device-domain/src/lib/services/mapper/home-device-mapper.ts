@@ -1,9 +1,9 @@
 import {
-  HomeDeviceApiModel,
-  HomeDeviceDetailsApiModel,
-  OpenDoorSensorDetailsApiModel,
-  SwitchDetailsApiModel,
-  TemperatureSensorDetailsApiModel,
+  HomeDeviceDetailsDtoApiModel,
+  HomeDeviceDtoApiModel,
+  OpenDoorSensorDetailsDtoApiModel,
+  PluginSwitchDetailsDtoApiModel,
+  TemperatureSensorDetailsDtoApiModel,
 } from '@sparrow-home/api';
 import { DeviceType } from '@sparrow-home/core';
 
@@ -13,7 +13,7 @@ import { SwitchDevice } from '../../models/switch-device';
 import { TemperatureSensor } from '../../models/temperature-sensor';
 
 export class HomeDeviceMapper {
-  public static map(device: HomeDeviceApiModel): HomeDevice {
+  public static map(device: HomeDeviceDtoApiModel): HomeDevice {
     return {
       id: device.id,
       homeDeviceId: device.homeDeviceId,
@@ -22,11 +22,11 @@ export class HomeDeviceMapper {
     };
   }
 
-  public static mapDetails(device: HomeDeviceDetailsApiModel): HomeDevice {
+  public static mapDetails(device: HomeDeviceDetailsDtoApiModel): HomeDevice {
     const homeDevice: HomeDevice = this._mapDevice(device);
 
     if (device.type === DeviceType.POWER_PLUG) {
-      const switchDevice: SwitchDetailsApiModel = device as SwitchDetailsApiModel;
+      const switchDevice: PluginSwitchDetailsDtoApiModel = device as PluginSwitchDetailsDtoApiModel;
       return {
         ...homeDevice,
         isOn: switchDevice.isOn,
@@ -34,7 +34,7 @@ export class HomeDeviceMapper {
     }
 
     if (device.type === DeviceType.TEMPERATURE_SENSOR) {
-      const temperatureSensor: TemperatureSensorDetailsApiModel = device as TemperatureSensorDetailsApiModel;
+      const temperatureSensor: TemperatureSensorDetailsDtoApiModel = device as TemperatureSensorDetailsDtoApiModel;
       return {
         ...homeDevice,
         battery: temperatureSensor.battery,
@@ -44,7 +44,7 @@ export class HomeDeviceMapper {
     }
 
     if (device.type === DeviceType.OPEN_DOOR_SENSOR) {
-      const openDoorSensor: OpenDoorSensorDetailsApiModel = device as OpenDoorSensorDetailsApiModel;
+      const openDoorSensor: OpenDoorSensorDetailsDtoApiModel = device as OpenDoorSensorDetailsDtoApiModel;
       return {
         ...homeDevice,
         battery: openDoorSensor.battery,
@@ -55,7 +55,7 @@ export class HomeDeviceMapper {
     return homeDevice;
   }
 
-  private static _mapDevice(device: HomeDeviceDetailsApiModel): HomeDevice {
+  private static _mapDevice(device: HomeDeviceDetailsDtoApiModel): HomeDevice {
     return {
       id: device.id,
       homeDeviceId: device.homeDeviceId,

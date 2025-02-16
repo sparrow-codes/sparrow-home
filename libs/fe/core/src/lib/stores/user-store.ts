@@ -4,7 +4,12 @@ import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { CreateUserRequest, LoginRequest, UserApiService } from '@sparrow-home/api';
+import {
+  AuthenticationApiService,
+  CreateNewUserRequestApiModel,
+  LoginRequestApiModel,
+  UserApiService,
+} from '@sparrow-home/api';
 import { first, pipe, switchMap, tap } from 'rxjs';
 
 import { RoutePath } from '../enum/route-path';
@@ -26,15 +31,16 @@ export const UserStore = signalStore(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
+      authService: AuthenticationApiService = inject(AuthenticationApiService),
       snackBar: MatSnackBar = inject(MatSnackBar),
       router: Router = inject(Router),
       loaderService = inject(LoaderService)
     ) => ({
-      createUser: rxMethod<CreateUserRequest>(
+      createUser: rxMethod<CreateNewUserRequestApiModel>(
         pipe(
           tap(() => (loaderService.showLoader = true)),
           switchMap((request) =>
-            userApiService.createUser(request).pipe(
+            userApiService.createNewUser({ body: request }).pipe(
               first(),
               tapResponse({
                 next: () => {
@@ -48,14 +54,14 @@ export const UserStore = signalStore(
           )
         )
       ),
-      login: rxMethod<LoginRequest>(
+      login: rxMethod<LoginRequestApiModel>(
         pipe(
           tap(() => {
             loaderService.showLoader = true;
             patchState(store, { isLoginError: false });
           }),
           switchMap((request) =>
-            userApiService.login(request.email, request.password).pipe(
+            authService.login({ body: request }).pipe(
               first(),
               tapResponse({
                 next: (response) => {

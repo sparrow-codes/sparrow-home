@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SetLightJobStatusRequest {
+export class SetLightJobStatus {
   @ApiProperty()
   public isActive!: boolean;
 }

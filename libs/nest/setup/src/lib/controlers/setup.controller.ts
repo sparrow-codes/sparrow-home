@@ -1,5 +1,5 @@
 import { Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { Request } from 'express';
 
@@ -12,11 +12,13 @@ import { SetConfigurationRequest } from './models/set-configuration.request';
 export class SetupController {
   public constructor(private readonly _setupService: SetupService) {}
 
+  @ApiOperation({ operationId: 'isConfigurationReady' })
   @Get('ready')
   public isConfigurationReady(): Promise<void> {
     return this._setupService.isConfigurationReady();
   }
 
+  @ApiOperation({ operationId: 'getCurrentSetup' })
   @UseGuards(AuthGuard)
   @ApiResponse({ type: GetSetupResponse })
   @Get('current')
@@ -24,6 +26,7 @@ export class SetupController {
     return this._setupService.getUserConfiguration();
   }
 
+  @ApiOperation({ operationId: 'changeConfiguration' })
   @UseGuards(AuthGuard)
   @Put('config-change')
   public async changeConfiguration(@Req() request: Request<SetConfigurationRequest>): Promise<void> {

@@ -47,3 +47,4 @@ Thumbs.db
 /apps/sparrow-home/src/config.json
 
 storybook-static
+/libs/fe/api/src/

@@ -1,9 +1,9 @@
-import { GetCircularPumpPreferencesResponse } from '@sparrow-home/api';
+import { GetCircularPumpPreferencesApiModel } from '@sparrow-home/api';
 
 import { CircularPumpPreferences } from '../models';
 
 export abstract class CircularPreferencesPumpMapper {
-  public static map(response: GetCircularPumpPreferencesResponse): CircularPumpPreferences {
+  public static map(response: GetCircularPumpPreferencesApiModel): CircularPumpPreferences {
     const preferences: CircularPumpPreferences = new CircularPumpPreferences();
     preferences.isActive = response.isActive ?? false;
     preferences.scheduledStartTime = response.circularPumpStartTime

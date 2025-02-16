@@ -2,8 +2,8 @@ export interface HeatPump {
   deviceGuid: string;
   outdoorNow: number;
   waterPressure: string;
-  waterTank?: WaterTank;
-  heatTank?: HeatTank;
+  waterTank: WaterTank | null;
+  heatTank: HeatTank | null;
 }
 
 export interface WaterTank {
@@ -16,6 +16,6 @@ export interface WaterTank {
 
 export interface HeatTank {
   operationStatus: number;
-  currentTemperature?: number;
+  currentTemperature: number | null;
   heatSet: number;
 }
