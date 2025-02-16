@@ -116,21 +116,21 @@ export class PanasonicService {
 
   private async _verifyTemperatureFromSensors(user: User): Promise<void> {
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
+    const minTargetTemperature: number | null = cloudPreferences.minTargetTemperature;
+    const maxTargetTemperature: number | null = cloudPreferences.maxTargetTemperature;
 
-    if (
-      cloudPreferences.minTargetTemperature &&
-      cloudPreferences.maxTargetTemperature &&
-      cloudPreferences.isAutomaticHeat
-    ) {
+    if (minTargetTemperature !== null && maxTargetTemperature !== null && cloudPreferences.isAutomaticHeat) {
       const listOfTemperatures: number[] = await this.getListOfCurrentTemperatures(cloudPreferences);
 
-      if (listOfTemperatures.find((temp) => temp < cloudPreferences.minTargetTemperature!)) {
+      Logger.log(`Temperature on sensors: ${JSON.stringify(listOfTemperatures)}`);
+
+      if (listOfTemperatures.find((temp) => temp < minTargetTemperature)) {
         Logger.log('Temperature is lower than on one of the sensors - turning heat on');
         await this.setHeatOnly(true);
         return;
       }
 
-      if (listOfTemperatures.every((temp) => temp >= cloudPreferences.maxTargetTemperature!)) {
+      if (listOfTemperatures.every((temp) => temp >= maxTargetTemperature)) {
         Logger.log('Temperature reached its destination - turning heat off');
         await this.setHeatOnly(false);
       }
