@@ -44,6 +44,11 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@sparrow-home/aqua-feature').then((feature) => feature.aquaFeatureRoutes),
       },
       {
+        path: RoutePath.ALARM,
+        title: pageTitleResolver,
+        loadComponent: () => import('@sparrow-home/alarm-feature').then((c) => c.AlarmPageComponent),
+      },
+      {
         path: RoutePath.NOT_FOUND,
         title: pageTitleResolver,
         component: PageNotFoundComponent,

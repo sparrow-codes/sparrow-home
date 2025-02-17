@@ -1,6 +1,6 @@
 {
-  "name": "manifest-web-dev",
-  "short_name": "manifest-web-dev",
+  "name": "Sparrow Home",
+  "short_name": "SP",
   "theme_color": "#262c40",
   "background_color": "#fafafa",
   "display": "standalone",
