@@ -89,7 +89,7 @@ export class PanasonicService {
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
 
     if (user.cloudPreferences.isHeatOn === isHeatOn) {
-      Logger.log('Heat status is already in desired state');
+      Logger.log('Heat status is already in desired state based on DB');
       return;
     }
 
