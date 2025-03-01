@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, HomeDevice, User, UserRole } from '@sparrow-server/entities';
 import { ComfortCloudConnector, HeatPump, ZigbeeSensorService } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { combineLatest, debounceTime, filter, first, firstValueFrom, from, Observable, of, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, filter, first, firstValueFrom, from, Observable, of, switchMap, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { SetHeatPumpStatusRequest } from '../../controllers/models/panasonic/set-heat-pump-status.request';
@@ -49,7 +49,17 @@ export class PanasonicService {
   }
 
   public getHeatPumpDetails(): Observable<HeatPump> {
-    return this._connector.getDeviceDetails();
+    return this._connector.getDeviceDetails().pipe(tap({
+      next: heatPump => {
+        this._getUser().then(user => {
+          if (user) {
+            const cloudPreferences: CloudPreferences = user.cloudPreferences;
+            cloudPreferences.isHeatOn = heatPump.zoneStatus[0].operationStatus === 1;
+            this._cloudPreferencesRepository.save(cloudPreferences);
+          }
+        });
+      }
+    }));
   }
 
   public async scheduledWaterHeating(active: boolean): Promise<void> {
@@ -86,15 +96,10 @@ export class PanasonicService {
       return;
     }
 
-    const cloudPreferences: CloudPreferences = user.cloudPreferences;
-
     if (user.cloudPreferences.isHeatOn === isHeatOn) {
       Logger.log('Heat status is already in desired state based on DB');
       return;
     }
-
-    cloudPreferences.isHeatOn = isHeatOn;
-    await this._cloudPreferencesRepository.save(cloudPreferences);
 
     const heatPump: HeatPump = await firstValueFrom(this._connector.getDeviceDetails());
     const isWaterOn: boolean = heatPump.tankStatus[0].operationStatus === 1;
@@ -147,8 +152,7 @@ export class PanasonicService {
   }
 
   private async _getUser(): Promise<User | null> {
-    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
-    return user;
+    return await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
   }
 
   private async getListOfCurrentTemperatures(cloudPreferences: CloudPreferences): Promise<number[]> {
