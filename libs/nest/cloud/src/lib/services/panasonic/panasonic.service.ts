@@ -19,17 +19,7 @@ export class PanasonicService {
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>
   ) {
-    combineLatest([this.getHeatPumpDetails(), this._getUser()])
-      .pipe(
-        first(),
-        filter(([, user]) => Boolean(user)),
-        switchMap(([heatPump, user]) => {
-          const cloudPreferences: CloudPreferences = user!.cloudPreferences;
-          cloudPreferences.isHeatOn = !!heatPump.zoneStatus[0].operationStatus;
-          return this._cloudPreferencesRepository.save(cloudPreferences);
-        })
-      )
-      .subscribe();
+    this.getHeatPumpDetails().pipe(first()).subscribe();
 
     this._zigbeeSensorService.sensorDetails$
       .pipe(
@@ -54,7 +44,7 @@ export class PanasonicService {
         this._getUser().then(user => {
           if (user) {
             const cloudPreferences: CloudPreferences = user.cloudPreferences;
-            cloudPreferences.isHeatOn = heatPump.zoneStatus[0].operationStatus === 1;
+            cloudPreferences.isHeatOn = this._isHeatOn(heatPump);
             this._cloudPreferencesRepository.save(cloudPreferences);
           }
         });
@@ -103,7 +93,7 @@ export class PanasonicService {
 
     const heatPump: HeatPump = await firstValueFrom(this._connector.getDeviceDetails());
     const isWaterOn: boolean = heatPump.tankStatus[0].operationStatus === 1;
-    const isHeatCurrentlyOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
+    const isHeatCurrentlyOn: boolean = this._isHeatOn(heatPump);
     if (isHeatCurrentlyOn !== isHeatOn) {
       await this.setHeatPumpOperationMode({ isWaterOn, isHeatOn, deviceGuid: heatPump.deviceGuid });
       Logger.log(`Setting heat: ${isHeatOn ? 'ON' : 'OFF'}`);
@@ -115,7 +105,7 @@ export class PanasonicService {
   public async setWaterOnly(isWaterOn: boolean): Promise<void> {
     const heatPump: HeatPump = await firstValueFrom(this._connector.getDeviceDetails());
     const isWaterOnCurrently: boolean = heatPump.tankStatus[0].operationStatus === 1;
-    const isHeatOn: boolean = heatPump.zoneStatus[0].operationStatus === 1;
+    const isHeatOn: boolean = this._isHeatOn(heatPump);
     if (isWaterOnCurrently !== isWaterOn) {
       await this.setHeatPumpOperationMode({ isWaterOn, isHeatOn, deviceGuid: heatPump.deviceGuid });
       Logger.log(`Setting water: ${isWaterOn ? 'ON' : 'OFF'}`);
@@ -174,5 +164,9 @@ export class PanasonicService {
     }
 
     return listOfTemperatures;
+  }
+
+  private _isHeatOn(heatPump: HeatPump): boolean {
+    return heatPump.zoneStatus[0].operationStatus === 1;
   }
 }
