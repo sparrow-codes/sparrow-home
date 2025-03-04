@@ -100,6 +100,10 @@ export class PanasonicService {
     } else {
       Logger.log('Heat status is already in desired state');
     }
+
+    const cloudPreferences: CloudPreferences = user.cloudPreferences;
+    cloudPreferences.isHeatOn = isHeatOn;
+    await this._cloudPreferencesRepository.save(cloudPreferences);
   }
 
   public async setWaterOnly(isWaterOn: boolean): Promise<void> {
@@ -167,6 +171,6 @@ export class PanasonicService {
   }
 
   private _isHeatOn(heatPump: HeatPump): boolean {
-    return heatPump.zoneStatus[0].operationStatus === 1;
+    return heatPump.zoneStatus[0].operationStatus == 1;
   }
 }
