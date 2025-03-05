@@ -102,7 +102,7 @@ export class PanasonicService {
     }
 
     const cloudPreferences: CloudPreferences = user.cloudPreferences;
-    cloudPreferences.isHeatOn = isHeatOn;
+    cloudPreferences.isHeatOn = isHeatCurrentlyOn;
     await this._cloudPreferencesRepository.save(cloudPreferences);
   }
 
