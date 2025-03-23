@@ -29,8 +29,11 @@ export class HomeDevice {
   public temperature: number | null = null;
 
   /**
-   * Custom filed only for open door sensor
+   * Custom fields only for open door sensor
    */
   @Column({ nullable: true })
   public isOpen: boolean | null = null;
+
+  @Column({ nullable: true })
+  public lastOpened: Date | null = null;
 }

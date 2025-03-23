@@ -23,6 +23,7 @@ import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-Cre
 import { AlterHomeDevice1738173688939 } from '../db/migrations/1738173688939-AlterHomeDevice';
 import { AlterHomeDeviceForOpenDoorSensor1738349248890 } from '../db/migrations/1738349248890-alterHomeDeviceForOpenDoorSensor';
 import { AlterCloudPreferences1738866928125 } from '../db/migrations/1738866928125-AlterCloudPreferences';
+import { AlterHomeDevice1742753620205 } from '../db/migrations/1742753620205-AlterHomeDevice';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { AlterCloudPreferences1738866928125 } from '../db/migrations/17388669281
           AlterHomeDevice1738173688939,
           AlterHomeDeviceForOpenDoorSensor1738349248890,
           AlterCloudPreferences1738866928125,
+          AlterHomeDevice1742753620205,
         ],
       }),
     }),

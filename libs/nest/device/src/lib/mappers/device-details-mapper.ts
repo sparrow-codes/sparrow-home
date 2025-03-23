@@ -46,6 +46,7 @@ export class DeviceDetailsMapper {
       battery: entity.battery !== null ? entity.battery : undefined,
       isOpen: entity.isOpen !== null ? entity.isOpen : undefined,
       id: entity.id,
+      lastOpened: entity.lastOpened,
     };
   }
 

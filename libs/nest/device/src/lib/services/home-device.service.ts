@@ -186,6 +186,10 @@ export class HomeDeviceService {
 
     if (sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR) {
       sensor.isOpen = !(response.payload as OpenDoorSensorDetails).contact;
+
+      if (sensor.isOpen) {
+        sensor.lastOpened = new Date();
+      }
     }
 
     sensor.signalStrength = response.payload.linkquality;

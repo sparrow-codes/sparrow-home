@@ -49,6 +49,7 @@ export class HomeDeviceMapper {
         ...homeDevice,
         battery: openDoorSensor.battery,
         isOpen: openDoorSensor.isOpen,
+        lastOpened: openDoorSensor.lastOpened ? new Date(openDoorSensor.lastOpened) : undefined,
       } as OpenDoorSensor;
     }
 

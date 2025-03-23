@@ -654,21 +654,6 @@
         ]
       }
     },
-    "/api/push-notification/add-subscription": {
-      "post": {
-        "operationId": "addSubscription",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Push Notification"
-        ]
-      }
-    },
     "/api/alarm/set": {
       "put": {
         "operationId": "setAlarm",
@@ -696,6 +681,21 @@
         "summary": "",
         "tags": [
           "Alarm"
+        ]
+      }
+    },
+    "/api/push-notification/add-subscription": {
+      "post": {
+        "operationId": "addSubscription",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Push Notification"
         ]
       }
     }
@@ -1074,6 +1074,11 @@
           },
           "isOpen": {
             "type": "boolean"
+          },
+          "lastOpened": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
@@ -1084,7 +1089,8 @@
           "isOnline",
           "signalStrength",
           "battery",
-          "isOpen"
+          "isOpen",
+          "lastOpened"
         ]
       },
       "PluginSwitchDetailsDto": {

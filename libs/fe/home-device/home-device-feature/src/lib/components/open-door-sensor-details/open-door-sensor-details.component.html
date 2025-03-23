@@ -11,3 +11,13 @@
   <div>Stan:</div>
   <div class="font-semibold">{{openDoorSensor().isOpen ? 'Otwarte' : 'Zamknięte'}}</div>
 </div>
+
+<div class="flex w-full py-2 justify-between flex-wrap">
+  <div>Ostatnio otwarte:</div>
+  @if (openDoorSensor().lastOpened) {
+    <div>{{openDoorSensor().lastOpened | date: 'dd.MM.yyyy HH:mm'}}</div>
+  } @else {
+    <div>-</div>
+  }
+
+</div>
