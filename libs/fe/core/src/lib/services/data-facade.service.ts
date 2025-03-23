@@ -1,8 +1,8 @@
-import { computed, inject, Injectable, Signal } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { CreateNewUserRequestApiModel, LoginRequestApiModel } from '@sparrow-home/api';
 import { Observable } from 'rxjs';
 
-import { AppConfig, Configuration } from '../models';
+import { AppConfig } from '../models';
 import { RootStore } from '../stores/root-store';
 import { SetupStore } from '../stores/setup-store';
 import { UserStore } from '../stores/user-store';
@@ -15,20 +15,12 @@ export class DataFacadeService {
   private readonly _setupStore = inject(SetupStore);
   private readonly _userStore = inject(UserStore);
 
-  public get authToken(): string | null {
-    return this._userStore.token();
-  }
-
   public get isLoginError(): Signal<boolean> {
     return this._userStore.isLoginError;
   }
 
-  public get configuration(): Signal<Configuration | null> {
-    return this._setupStore.configuration;
-  }
-
   public get isUserLoggedIn(): Signal<boolean> {
-    return computed(() => !!this._userStore.token());
+    return this._userStore.isUserLoggedIn;
   }
 
   public get configurationReady(): Signal<boolean | null> {
@@ -45,10 +37,6 @@ export class DataFacadeService {
 
   public fetchCurrentConfiguration(): Observable<void> {
     return this._setupStore.getCurrentSetup();
-  }
-
-  public saveConfiguration(configuration: Configuration): void {
-    this._setupStore.setConfiguration(configuration);
   }
 
   public createFirstUser(request: CreateNewUserRequestApiModel): void {

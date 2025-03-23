@@ -1,0 +1,22 @@
+:root {
+  --mdc-outlined-card-container-color: white;
+  --mdc-outlined-card-outline-width: 0;
+
+  --mdc-outlined-card-container-elevation: 0px 0px 35px 0px rgba(154, 161, 171, 0.15);
+
+  mat-card-header, .mat-mdc-card-title {
+    padding-bottom: 16px;
+    color: var(--app-gray);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .mat-mdc-card-title {
+    padding: 0;
+  }
+
+  .mat-mdc-card-actions {
+    padding: 16px;
+  }
+}

@@ -1,19 +1,44 @@
-.lsc-plug-in {
-  background-color: #63afe1;
-  color: white;
+:host {
+  --plugin: #63afe1;
+  --temperature-sensor: #a84d08;
+  --door-sensor: #048444;
+  --siren: #840404;
+
+  .lsc-plug-in {
+    background-color: var(--plugin);
+    color: white;
+  }
+
+  .temperature-sensor {
+    background-color: var(--temperature-sensor);
+    color: white;
+  }
+
+  .open-door-sensor {
+    background-color: var(--door-sensor);
+    color: white;
+  }
+
+  .siren {
+    background-color: #840404;
+    color: white;
+  }
+
+  .plugin-color {
+    color: var(--plugin);
+  }
+
+  .temperature-sensor-color {
+    color: var(--temperature-sensor);
+  }
+
+  .door-sensor-color {
+    color: var(--door-sensor);
+  }
+
+  .siren-sensor-color {
+    color: var(--siren);
+  }
 }
 
-.temperature-sensor {
-  background-color: #a84d08;
-  color: white;
-}
 
-.open-door-sensor {
-  background-color: #048444;
-  color: white;
-}
-
-.siren {
-  background-color: #840404;
-  color: white;
-}

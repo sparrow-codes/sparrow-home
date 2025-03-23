@@ -1,0 +1,3 @@
+ion-toolbar.my-custom-color {
+  --ion-toolbar-background: var(--app-dark-blue);
+}

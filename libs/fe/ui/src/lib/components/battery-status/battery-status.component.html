@@ -1,5 +1,5 @@
 <div class="flex gap-2 items-center justify-end" [class.text-success]="batteryStatus() >= 50"
      [class.text-warning]="batteryStatus() < 50 && batteryStatus() > 20" [class.text-error]="batteryStatus() <= 20">
   <ng-icon [name]="batteryIconName()" size="1.8rem"></ng-icon>
-  <span class="font-semibold w-[40px] text-end">{{ batteryStatus() }}%</span>
+  <span class="font-semibold w-[40px] text-end whitespace-nowrap">{{ batteryStatus() }}%</span>
 </div>

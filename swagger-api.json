@@ -654,6 +654,21 @@
         ]
       }
     },
+    "/api/push-notification/add-subscription": {
+      "post": {
+        "operationId": "addSubscription",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Push Notification"
+        ]
+      }
+    },
     "/api/alarm/set": {
       "put": {
         "operationId": "setAlarm",
