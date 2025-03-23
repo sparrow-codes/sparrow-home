@@ -1,0 +1,9 @@
+{
+  "name": "push",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nest/push/src",
+  "projectType": "library",
+  "tags": ["scope: be-push"],
+  "// targets": "to see all targets run: nx show project push --web",
+  "targets": {}
+}

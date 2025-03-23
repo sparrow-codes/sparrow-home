@@ -1,10 +1,5 @@
 import { HttpBackend, provideHttpClient, withInterceptors } from '@angular/common/http';
-import {
-  APP_INITIALIZER,
-  ApplicationConfig,
-  isDevMode,
-  provideExperimentalZonelessChangeDetection,
-} from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
@@ -16,6 +11,7 @@ import {
   DataFacadeService,
   initializeApp,
   MobileAuthenticationService,
+  MobilePushNotificationService,
   SHORT_APP_TITLE,
 } from '@sparrow-home/core';
 import { MaterialConfiguration } from '@sparrow-home/ui';
@@ -51,9 +47,10 @@ export const appConfig: ApplicationConfig = {
       useClass: MobileAuthenticationService,
     },
     provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
+      enabled: true,
       registrationStrategy: 'registerWhenStable:30000',
     }),
     provideEnvironmentNgxMask({ validation: false }),
+    MobilePushNotificationService,
   ],
 };

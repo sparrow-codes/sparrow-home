@@ -10,6 +10,7 @@ import { CloudModule } from '@sparrow-server/cloud';
 import { HomeDeviceModule } from '@sparrow-server/device';
 import { ApiModule } from '@sparrow-server/external-api';
 import { InitModule } from '@sparrow-server/init';
+import { PushModule } from '@sparrow-server/push';
 import { SetupModule } from '@sparrow-server/setup';
 import { ConfigKey } from '@sparrow-server/shared';
 import { UserModule } from '@sparrow-server/user';
@@ -62,6 +63,7 @@ import { AlterCloudPreferences1738866928125 } from '../db/migrations/17388669281
     HomeDeviceModule,
     AquaModule,
     AlarmModule,
+    PushModule,
   ],
 })
 export class AppModule {}
