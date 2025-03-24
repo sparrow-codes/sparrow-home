@@ -34,6 +34,10 @@ export class HeatPumpFacadeService {
     return this._cloudStore.heatingPreferences;
   }
 
+  public get initialDataLoaded(): Signal<boolean> {
+    return this._cloudStore.initialDataLoaded;
+  }
+
   public fetchInitData(): void {
     this._cloudStore.fetchInitData();
   }

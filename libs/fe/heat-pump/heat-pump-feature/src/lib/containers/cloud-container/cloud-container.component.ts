@@ -69,6 +69,7 @@ export class CloudContainerComponent implements OnInit {
   protected readonly temperatureSensorsOptions: Signal<SelectOption<number>[] | null> =
     this.dataFacadeService.temperatureSensorsOptions;
   protected readonly layoutService: LayoutService = inject(LayoutService);
+  protected readonly initialDataLoaded: Signal<void> = this.dataFacadeService.initialDataLoaded;
 
   private readonly _injector: Injector = inject(Injector);
   private readonly _formService: CloudFormService = inject(CloudFormService);
