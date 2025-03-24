@@ -34,7 +34,6 @@ import { DeviceTypeComponent } from '../../components/device-type/device-type.co
     RouterLink,
   ],
   templateUrl: './device-page.component.html',
-  styleUrl: './device-page.component.css',
   providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash, heroArrowRightCircle })],
   animations: [sparrowFadeIn],
 })
