@@ -1,6 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { MobilePushNotificationService } from '@sparrow-home/core';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +7,4 @@ import { MobilePushNotificationService } from '@sparrow-home/core';
   standalone: true,
   imports: [IonApp, IonRouterOutlet],
 })
-export class AppComponent implements OnInit {
-  private readonly _pushNotificationsService: MobilePushNotificationService = inject(MobilePushNotificationService);
-
-  public ngOnInit(): void {
-    this._pushNotificationsService.subscribeMessage();
-  }
-}
+export class AppComponent {}

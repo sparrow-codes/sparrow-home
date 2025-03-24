@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceType } from '@sparrow-home/core';
 import { DeviceFacadeService, OpenDoorSensor } from '@sparrow-home/home-device-domain';
+import { MaterialConfiguration } from '@sparrow-home/ui';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { of } from 'rxjs';
 
@@ -22,6 +23,7 @@ export const OpenDoorSensorDetails: Story = {
     moduleMetadata({
       imports: [BrowserAnimationsModule],
       providers: [
+        MaterialConfiguration,
         {
           provide: DeviceFacadeService,
           useValue: { homeDeviceDetails: signal(prepareSensorDetails()), fetchDeviceDetailsById: () => void 0 },
