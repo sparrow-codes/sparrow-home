@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "license": "MIT",
   "scripts": {
-    "build:web": "npm run generate-fe-api && nx run sparrow-home:build:production",
+    "build:mobile": "npm run generate-fe-api && nx run sparrow-home-mobile:build:production",
     "build:server": "nx run server:build && cp -a apps/server/.env dist/apps/server",
-    "build:app": "npm run build:web && npm run build:server",
+    "build:app": "npm run build:mobile && npm run build:server",
     "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json"
   },
   "private": true,
