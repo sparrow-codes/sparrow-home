@@ -24,7 +24,7 @@ import {
   HeatPumpFacadeService,
   WaterTankOptions,
 } from '@sparrow-home/heat-pump-domain';
-import { LayoutService, PageTitleComponent, SelectOption } from '@sparrow-home/ui';
+import { LayoutService, PageTitleComponent, SelectOption, sparrowFadeIn } from '@sparrow-home/ui';
 
 import { CircularPumpSettingsComponent } from '../../components/circular-pump-settings/circular-pump-settings.component';
 import { HeatTankComponent } from '../../components/heat-tank/heat-tank.component';
@@ -53,6 +53,7 @@ import { CloudForm } from './form-service/model/cloud-form';
   templateUrl: './cloud-container.component.html',
   providers: [provideIcons({ heroPresentationChartLine, bootstrapThermometerHalf, matWaterDrop }), CloudFormService],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [sparrowFadeIn],
 })
 export class CloudContainerComponent implements OnInit {
   protected formGroup?: FormGroup<CloudForm>;
