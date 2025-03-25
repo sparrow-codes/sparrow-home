@@ -28,6 +28,7 @@ interface CloudState {
   homeDeviceOptions: { value: string; label: string }[] | null;
   heatingPreferences: HeatingPreferences | null;
   temperatureSensorsOptions: SelectOption<number>[] | null;
+  initialDataLoaded: boolean;
 }
 
 export const CloudStore = signalStore(
@@ -39,6 +40,7 @@ export const CloudStore = signalStore(
     homeDeviceOptions: null,
     heatingPreferences: null,
     temperatureSensorsOptions: null,
+    initialDataLoaded: false,
   }),
   withMethods(
     (
@@ -107,7 +109,10 @@ export const CloudStore = signalStore(
       return {
         fetchInitData: rxMethod<void>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => {
+              loaderService.showLoader = true;
+              patchState(store, { initialDataLoaded: false });
+            }),
             switchMap(() =>
               combineLatest([
                 _getHeatPumpDetails(),
@@ -115,7 +120,12 @@ export const CloudStore = signalStore(
                 _getCircularPumpPreferencesResponse(),
                 _getHomeDeviceOptions(),
                 _getHeatPreferences(),
-              ]).pipe(finalize(() => (loaderService.showLoader = false)))
+              ]).pipe(
+                finalize(() => {
+                  loaderService.showLoader = false;
+                  patchState(store, { initialDataLoaded: true });
+                })
+              )
             )
           )
         ),
