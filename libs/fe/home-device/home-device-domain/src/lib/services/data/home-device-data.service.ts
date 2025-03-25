@@ -128,9 +128,21 @@ export class HomeDeviceDataService {
     return this._apiService.getAllDevices().pipe(
       first(),
       tap({
-        next: (devices) => this._homeDevices.set(devices.map(HomeDeviceMapper.map)),
+        next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.map)),
         error: () => this._snackBar.open('Błąd pobierania listy urządzeń'),
       })
     );
+  }
+
+  private _homeDeviceSort(device1: HomeDevice, device2: HomeDevice): number {
+    if (device1.name > device2.name) {
+      return 1;
+    }
+
+    if (device1.name < device2.name) {
+      return -1;
+    }
+
+    return 0;
   }
 }
