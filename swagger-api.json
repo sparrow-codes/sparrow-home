@@ -704,6 +704,56 @@
         ]
       }
     },
+    "/api/alarm/set-mode": {
+      "put": {
+        "operationId": "setAlarmMode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetAlarmModeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Alarm"
+        ]
+      }
+    },
+    "/api/alarm/mode": {
+      "get": {
+        "operationId": "getAlarmMode",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Alarm"
+        ]
+      }
+    },
     "/api/push-notification/add-subscription": {
       "post": {
         "operationId": "addSubscription",
@@ -1368,6 +1418,17 @@
         },
         "required": [
           "isOn"
+        ]
+      },
+      "SetAlarmModeRequest": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isActive"
         ]
       }
     }

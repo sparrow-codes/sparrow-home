@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AquaPreferences, CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
+import { AlarmPreferences, AquaPreferences, CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
 import * as bcrypt from 'bcrypt';
 import { combineLatest, first, from, lastValueFrom, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -15,7 +15,8 @@ export class UserService {
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>,
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
-    @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>
+    @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>,
+    @InjectRepository(AlarmPreferences) private readonly _alarmPreferencesRepository: Repository<AlarmPreferences>
   ) {}
 
   public async createFirstUser(request: CreateNewUserRequest): Promise<void> {
@@ -32,17 +33,9 @@ export class UserService {
     user.setup = await this._setupRepository.save(new Setup());
     user.cloudPreferences = await this._cloudPreferencesRepository.save(new CloudPreferences());
     user.aquaPreferences = await this._aquaPreferencesRepository.save(new AquaPreferences());
+    user.alarmPreferences = await this._alarmPreferencesRepository.save(new AlarmPreferences());
 
     await this.save(user);
-  }
-
-  public async getUserByEmail(email: string): Promise<User | null> {
-    const user: User | null = await this._userRepository.findOneBy({ email });
-    if (user) {
-      return user;
-    } else {
-      throw new UnauthorizedException();
-    }
   }
 
   public async save(user: User): Promise<User> {
