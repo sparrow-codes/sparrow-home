@@ -32,6 +32,7 @@ export class AlarmService {
       return;
     }
 
+    Logger.log(isOn ? 'Turning SOS mode ON!' : 'Turning SOS mode OFF!');
     sirens.forEach((siren) => {
       this._zigbeeSirenService.setAlarm(siren.zigbeeDeviceId, isOn);
     });
@@ -43,6 +44,7 @@ export class AlarmService {
 
     alarmPreferences.isActive = isActive;
     await this._alarmPreferencesRepository.save(alarmPreferences);
+    Logger.log(isActive ? 'Alarm is on!' : 'Alarm is off!');
   }
 
   public async getAlarmMode(): Promise<boolean> {
@@ -66,6 +68,7 @@ export class AlarmService {
       !(response.payload as OpenDoorSensorDetails).contact &&
       alarmPreferences
     ) {
+      Logger.log('House has been opened! Notify users!');
       this._pushNotificationService.notify({
         title: 'Alarm!',
         body: `Otwarto: ${sensor.deviceName}`,

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 
 import { AlarmService } from '../services/alarm.service';
@@ -26,6 +26,7 @@ export class AlarmController {
   }
 
   @ApiOperation({ operationId: 'getAlarmMode' })
+  @ApiResponse({ type: Boolean })
   @Get('mode')
   public async getAlarmMode(): Promise<boolean> {
     return this._alarmService.getAlarmMode();
