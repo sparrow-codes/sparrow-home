@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
-import { Request } from 'express';
 import { map, Observable } from 'rxjs';
 
 import { PanasonicService } from '../services';
@@ -12,6 +11,7 @@ import { GetCircularPumpPreferences } from './models/circular-pump/get-circular-
 import { SetCircularPumpJobStatusRequest } from './models/circular-pump/set-circular-pump-job-status-request';
 import { SetCircularPumpPreferencesRequest } from './models/circular-pump/set-circular-pump-preferences-request';
 import { GetHeatingPreferencesResponse } from './models/heating-preferences/get-heating-preferences.response';
+import { SetAutomaticHeatingRequest } from './models/heating-preferences/set-automatic-heatin-request';
 import { SetHeatingPreferencesRequest } from './models/heating-preferences/set-heating-preferences.request';
 import { GetHeatPumpDetailsResponse } from './models/panasonic/get-heat-pump-details.response';
 import { GetScheduledWaterHeatingStatusResponse } from './models/panasonic/get-scheduled-water-heating-status.response';
@@ -44,8 +44,8 @@ export class CloudController {
 
   @ApiOperation({ operationId: 'scheduledWaterHeating' })
   @Put('/scheduled-water-heating')
-  public scheduledWaterHeating(@Req() request: Request<ScheduledWaterHeatingRequest>): Promise<void> {
-    return this._cloudService.scheduledWaterHeating(request.body.active);
+  public scheduledWaterHeating(@Body() request: ScheduledWaterHeatingRequest): Promise<void> {
+    return this._cloudService.scheduledWaterHeating(request.active);
   }
 
   @ApiResponse({ type: GetScheduledWaterHeatingStatusResponse })
@@ -89,7 +89,7 @@ export class CloudController {
 
   @ApiOperation({ operationId: 'setAutomaticHeating' })
   @Put('/heating-preferences/auto')
-  public setAutomaticHeating(@Body() request: { isAutomaticHeating: boolean }): Promise<void> {
+  public setAutomaticHeating(@Body() request: SetAutomaticHeatingRequest): Promise<void> {
     return this._heatingPreferences.setAutomaticHeating(request.isAutomaticHeating);
   }
 }

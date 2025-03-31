@@ -62,6 +62,16 @@
       "put": {
         "operationId": "scheduledWaterHeating",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduledWaterHeatingRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": ""
@@ -249,6 +259,16 @@
       "put": {
         "operationId": "setAutomaticHeating",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetAutomaticHeatingRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": ""
@@ -810,6 +830,17 @@
           "deviceGuid"
         ]
       },
+      "ScheduledWaterHeatingRequest": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "active"
+        ]
+      },
       "GetScheduledWaterHeatingStatusResponse": {
         "type": "object",
         "properties": {
@@ -930,6 +961,18 @@
           "groundFlorSensorId",
           "minTargetTemperature",
           "maxTargetTemperature"
+        ]
+      },
+      "SetAutomaticHeatingRequest": {
+        "type": "object",
+        "properties": {
+          "isAutomaticHeating": {
+            "type": "boolean",
+            "nullable": false
+          }
+        },
+        "required": [
+          "isAutomaticHeating"
         ]
       },
       "LoginRequest": {

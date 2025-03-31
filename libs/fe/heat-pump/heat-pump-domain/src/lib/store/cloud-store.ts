@@ -225,7 +225,7 @@ export const CloudStore = signalStore(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap((isActive) =>
-              cloudApiService.setAutomaticHeating(isActive).pipe(
+              cloudApiService.setAutomaticHeating({body: {isAutomaticHeating: isActive}}).pipe(
                 tapResponse({
                   next: () => snackBar.open('Automatyczne ogrzewanie aktywne!'),
                   error: () => snackBar.open('Błąd podczas włączania automatycznego ogrzewania'),
