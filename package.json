@@ -6,7 +6,8 @@
     "build:mobile": "npm run generate-fe-api && nx run sparrow-home-mobile:build:production",
     "build:server": "nx run server:build && cp -a apps/server/.env dist/apps/server",
     "build:app": "npm run build:mobile && npm run build:server",
-    "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json"
+    "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json",
+    "run-dev-http-mobile": "http-server dist/apps/sparrow-home-mobile/browser -S -C cert.pem -o"
   },
   "private": true,
   "dependencies": {

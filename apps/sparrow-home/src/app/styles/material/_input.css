@@ -1,4 +1,8 @@
 :root {
   --mat-form-field-container-vertical-padding: 8px;
   --mat-form-field-container-height: 38px;
+
+  .mat-mdc-text-field-wrapper {
+    height: 38px !important;
+  }
 }
