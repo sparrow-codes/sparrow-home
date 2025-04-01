@@ -15,9 +15,6 @@
         "outputPath": "dist/apps/sparrow-home-mobile",
         "index": "apps/sparrow-home-mobile/src/index.html",
         "browser": "apps/sparrow-home-mobile/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
         "tsConfig": "apps/sparrow-home-mobile/tsconfig.app.json",
         "assets": [
           "apps/sparrow-home-mobile/src/config.json",
