@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroArrowRightCircle, heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
+import { MobilePushNotificationService } from '@sparrow-home/core';
 import { DeviceFacadeService, HomeDevice } from '@sparrow-home/home-device-domain';
 import { LayoutService, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
@@ -41,6 +42,7 @@ export class DevicePageComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
   private readonly _dialog: MatDialog = inject(MatDialog);
+  private readonly _pushNotificationService: MobilePushNotificationService = inject(MobilePushNotificationService);
 
   protected readonly data: Signal<HomeDevice[] | null> = this._facadeService.homeDevices;
   protected readonly columns: string[] = ['name', 'type', 'homeDeviceId', 'actions'];
@@ -52,6 +54,7 @@ export class DevicePageComponent implements OnInit {
   public ngOnInit(): void {
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
+    this._pushNotificationService.subscribeToNotifications();
   }
 
   protected onAddClick(): void {

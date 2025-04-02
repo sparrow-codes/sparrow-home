@@ -12,6 +12,7 @@ export class PushNotificationService {
   public constructor(private readonly _configService: ConfigService) {}
 
   public addSubscription(subscription: PushSubscription): void {
+    Logger.log('Adding subscription to push notifications');
     this._subscriptions.push(subscription);
   }
 
