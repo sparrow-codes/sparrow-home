@@ -1,3 +1,4 @@
+export * from './lib/entities/alarm-preferences';
 export * from './lib/entities/aqua-preferences';
 export * from './lib/entities/cloud-preferences';
 export * from './lib/entities/home-device';

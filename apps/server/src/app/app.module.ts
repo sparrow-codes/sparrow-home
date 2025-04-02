@@ -24,6 +24,7 @@ import { AlterHomeDevice1738173688939 } from '../db/migrations/1738173688939-Alt
 import { AlterHomeDeviceForOpenDoorSensor1738349248890 } from '../db/migrations/1738349248890-alterHomeDeviceForOpenDoorSensor';
 import { AlterCloudPreferences1738866928125 } from '../db/migrations/1738866928125-AlterCloudPreferences';
 import { AlterHomeDevice1742753620205 } from '../db/migrations/1742753620205-AlterHomeDevice';
+import { CreateAlarmPreferences1743010222859 } from '../db/migrations/1743010222859-CreateAlarmPreferences';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { AlterHomeDevice1742753620205 } from '../db/migrations/1742753620205-Alt
           AlterHomeDeviceForOpenDoorSensor1738349248890,
           AlterCloudPreferences1738866928125,
           AlterHomeDevice1742753620205,
+          CreateAlarmPreferences1743010222859,
         ],
       }),
     }),

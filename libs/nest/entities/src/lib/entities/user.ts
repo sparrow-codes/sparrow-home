@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserRole } from '../enum/user-role';
+import { AlarmPreferences } from './alarm-preferences';
 import { AquaPreferences } from './aqua-preferences';
 import { CloudPreferences } from './cloud-preferences';
 import { Setup } from './setup';
@@ -36,4 +37,8 @@ export class User {
   @OneToOne(() => AquaPreferences, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   public aquaPreferences!: AquaPreferences;
+
+  @OneToOne(() => AlarmPreferences, { onDelete: 'CASCADE', eager: true })
+  @JoinColumn()
+  public alarmPreferences!: AlarmPreferences;
 }
