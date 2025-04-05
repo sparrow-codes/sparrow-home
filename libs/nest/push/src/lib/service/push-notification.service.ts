@@ -45,7 +45,7 @@ export class PushNotificationService {
       vapidDetails: {
         privateKey: webPushPrivateKey,
         publicKey: webPushPublicKey,
-        subject: 'Push Notification',
+        subject: 'https://sparrow-home-test-env',
       },
     };
   }
