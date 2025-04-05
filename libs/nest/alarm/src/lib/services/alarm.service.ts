@@ -9,7 +9,7 @@ import {
   ZigbeeSirenService,
 } from '@sparrow-server/external-api';
 import { PushNotificationService } from '@sparrow-server/push';
-import { distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -23,7 +23,10 @@ export class AlarmService {
     @InjectRepository(User) private readonly _userRepository: Repository<User>
   ) {
     this._zigbeeSensorService.sensorDetails$
-      .pipe(distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current)))
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current))
+      )
       .subscribe((response) => this._handleSensorEvent(response));
   }
 
