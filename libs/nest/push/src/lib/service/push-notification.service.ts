@@ -12,7 +12,8 @@ export class PushNotificationService {
   public constructor(private readonly _configService: ConfigService) {}
 
   public addSubscription(subscription: PushSubscription): void {
-    Logger.log('Adding subscription to push notifications');
+    Logger.log(`Adding subscription to push notifications`);
+    Logger.log(JSON.stringify(subscription));
     this._subscriptions.push(subscription);
   }
 
@@ -22,6 +23,8 @@ export class PushNotificationService {
     if (this._subscriptions.length === 0) {
       Logger.log('No subscription clients.');
     }
+
+    Logger.log(`Number of clients: ${this._subscriptions.length}`);
 
     this._subscriptions.forEach((subscription, index) => {
       sendNotification(subscription, JSON.stringify({ notification: message }), options).then(() =>

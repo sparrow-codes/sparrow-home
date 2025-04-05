@@ -66,7 +66,7 @@ export class AlarmService {
     if (
       sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR &&
       !(response.payload as OpenDoorSensorDetails).contact &&
-      alarmPreferences
+      alarmPreferences.isActive
     ) {
       Logger.log('House has been opened! Notify users!');
       this._pushNotificationService.notify({
