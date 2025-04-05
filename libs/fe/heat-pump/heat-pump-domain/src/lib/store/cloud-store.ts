@@ -165,8 +165,8 @@ export const CloudStore = signalStore(
               cloudApiService
                 .setCircularPumpPreferences({
                   body: {
-                    from: JSON.stringify(preferences.scheduledStartTime),
-                    to: JSON.stringify(preferences.scheduledEndTime),
+                    from: preferences.scheduledStartTime?.toISOString(),
+                    to: preferences.scheduledEndTime?.toISOString(),
                     homeDeviceId: preferences.homeDeviceId,
                   },
                 })
@@ -225,7 +225,7 @@ export const CloudStore = signalStore(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap((isActive) =>
-              cloudApiService.setAutomaticHeating({body: {isAutomaticHeating: isActive}}).pipe(
+              cloudApiService.setAutomaticHeating({ body: { isAutomaticHeating: isActive } }).pipe(
                 tapResponse({
                   next: () => snackBar.open('Automatyczne ogrzewanie aktywne!'),
                   error: () => snackBar.open('Błąd podczas włączania automatycznego ogrzewania'),

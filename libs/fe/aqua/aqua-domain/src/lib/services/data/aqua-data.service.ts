@@ -30,8 +30,8 @@ export class AquaDataService {
     this._aquaApiService
       .setAquaPreference({
         body: {
-          from: JSON.stringify(preferences.lightStartTime),
-          to: JSON.stringify(preferences.lightEndTime),
+          from: preferences.lightStartTime?.toISOString(),
+          to: preferences.lightEndTime?.toISOString(),
           homeDeviceId: preferences.homeDeviceId,
         },
       })
