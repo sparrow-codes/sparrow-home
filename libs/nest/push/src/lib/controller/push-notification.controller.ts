@@ -13,7 +13,7 @@ export class PushNotificationController {
 
   @ApiOperation({ operationId: 'addSubscription' })
   @Post('add-subscription')
-  public addSubscription(@Body() subscription: PushSubscription): void {
-    this._pushNotificationService.addSubscription(subscription);
+  public async addSubscription(@Body() subscription: PushSubscription): Promise<void> {
+    await this._pushNotificationService.addSubscription(subscription);
   }
 }

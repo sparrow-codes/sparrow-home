@@ -21,4 +21,5 @@ export enum ConfigKey {
 
   PUSH_PUBLIC_KEY = 'pushPublicKey',
   PUSH_PRIVATE_KEY = 'pushPrivateKey',
+  PUSH_ADMIN_EMAIL = 'pushAdminEmail',
 }
