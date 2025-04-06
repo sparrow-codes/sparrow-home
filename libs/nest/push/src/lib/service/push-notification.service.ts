@@ -13,7 +13,6 @@ export class PushNotificationService {
 
   public addSubscription(subscription: PushSubscription): void {
     Logger.log(`Adding subscription to push notifications`);
-    Logger.log(JSON.stringify(subscription));
     this._subscriptions.push(subscription);
 
     Logger.log(`Number of active subscriptions: ${this._subscriptions.length}`);
@@ -47,7 +46,7 @@ export class PushNotificationService {
       vapidDetails: {
         privateKey: webPushPrivateKey,
         publicKey: webPushPublicKey,
-        subject: 'https://sparrow-home-test-env',
+        subject: 'mailto:wrobel.j.piotr@gmail.com',
       },
     };
   }
