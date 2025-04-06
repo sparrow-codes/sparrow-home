@@ -15,6 +15,8 @@ export class PushNotificationService {
     Logger.log(`Adding subscription to push notifications`);
     Logger.log(JSON.stringify(subscription));
     this._subscriptions.push(subscription);
+
+    Logger.log(`Number of active subscriptions: ${this._subscriptions.length}`);
   }
 
   public notify(message: PushMessage): void {
