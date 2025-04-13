@@ -4,7 +4,7 @@
   "sourceRoot": "libs/fe/user/user-feature/src",
   "prefix": "sp",
   "projectType": "library",
-  "tags": [],
+  "tags": ["scope:fe-user-feature"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -15,6 +15,17 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "compodoc": true,
+      "port": 6006,
+      "options": {
+        "styles": [
+          "@angular/material/prebuilt-themes/azure-blue.css",
+          "apps/sparrow-home/src/styles.css"
+        ]
+      }
     }
   }
 }

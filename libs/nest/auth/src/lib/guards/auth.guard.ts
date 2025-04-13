@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@sparrow-server/entities';
 import { Request } from 'express';
 
 import { AuthService } from '../services/auth.service';
@@ -19,6 +20,12 @@ export class AuthGuard implements CanActivate {
     const token: string | null = this._authService.extractTokenFromHeader(headerValue);
 
     if (!token) {
+      throw new UnauthorizedException();
+    }
+
+    const user: User = await this._authService.getUserFromToken(token);
+
+    if (!user.isActive) {
       throw new UnauthorizedException();
     }
 

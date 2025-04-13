@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, HomeDevice, User, UserRole } from '@sparrow-server/entities';
 import { ComfortCloudConnector, HeatPump, ZigbeeSensorService } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { combineLatest, debounceTime, filter, first, firstValueFrom, from, Observable, of, switchMap, tap } from 'rxjs';
+import { combineLatest, debounceTime, filter, firstValueFrom, from, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { SetHeatPumpStatusRequest } from '../../controllers/models/panasonic/set-heat-pump-status.request';
@@ -19,7 +19,7 @@ export class PanasonicService {
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>
   ) {
-    this.getHeatPumpDetails().pipe(first()).subscribe();
+    this.getHeatPumpDetails().pipe(take(1)).subscribe();
 
     this._zigbeeSensorService.sensorDetails$
       .pipe(
@@ -39,17 +39,21 @@ export class PanasonicService {
   }
 
   public getHeatPumpDetails(): Observable<HeatPump> {
-    return this._connector.getDeviceDetails().pipe(tap({
-      next: heatPump => {
-        this._getUser().then(user => {
-          if (user) {
-            const cloudPreferences: CloudPreferences = user.cloudPreferences;
-            cloudPreferences.isHeatOn = this._isHeatOn(heatPump);
-            this._cloudPreferencesRepository.save(cloudPreferences);
-          }
-        });
-      }
-    }));
+    return from(this._getUser()).pipe(
+      filter((user) => !!user),
+      switchMap(() => this._connector.getDeviceDetails()),
+      tap({
+        next: (heatPump) => {
+          this._getUser().then((user) => {
+            if (user) {
+              const cloudPreferences: CloudPreferences = user.cloudPreferences;
+              cloudPreferences.isHeatOn = this._isHeatOn(heatPump);
+              this._cloudPreferencesRepository.save(cloudPreferences);
+            }
+          });
+        },
+      })
+    );
   }
 
   public async scheduledWaterHeating(active: boolean): Promise<void> {

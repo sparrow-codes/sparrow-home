@@ -10,6 +10,7 @@ export const pageTitleResolver: ResolveFn<string> = (route, state) => {
 
   switch (url) {
     case RoutePath.CREATE_USER:
+    case RoutePath.CREATE_ADDITIONAL_USER:
       return `${appTitle} - Nowy użytkownik`;
     case RoutePath.MAIN:
       return `${appTitle} - Panel Główny`;
@@ -23,6 +24,8 @@ export const pageTitleResolver: ResolveFn<string> = (route, state) => {
       return `${appTitle} - Akwarium`;
     case RoutePath.ALARM:
       return `${appTitle} - Alarm`;
+    case RoutePath.USER_PROFILE:
+      return `${appTitle} - Profil`;
     default:
       return `${appTitle}`;
   }

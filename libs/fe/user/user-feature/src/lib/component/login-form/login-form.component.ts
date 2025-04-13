@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardActions, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroLockOpen } from '@ng-icons/heroicons/outline';
 import { LoginRequestApiModel } from '@sparrow-home/api';
@@ -36,6 +37,7 @@ import { LoginForm } from './form-service/model/login-form';
     MatFormFieldModule,
     MatCardActions,
     MatCardContent,
+    RouterLink,
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
@@ -44,6 +46,7 @@ import { LoginForm } from './form-service/model/login-form';
 export class LoginFormComponent implements OnInit {
   public readonly login: OutputEmitterRef<LoginRequestApiModel> = output();
   public readonly hasError: InputSignal<boolean> = input(false);
+  public readonly createAdditionalUserLink: InputSignal<string> = input('');
 
   protected readonly formService: LoginFormService = inject(LoginFormService);
   protected readonly formGroup: FormGroup<LoginForm> = this.formService.form;

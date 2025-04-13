@@ -3,6 +3,10 @@
   --mat-sys-primary: var(--sp-primary-color);
   --mat-sys-body-medium-font: 'Inter', sans-serif;
 
+  --mat-menu-item-label-text-font: 'Inter', sans-serif;
+  --mat-menu-container-color: var(--app-super-light-grey);
+  --mat-menu-item-label-text-color: var(--app-gray);
+
   --mat-sidenav-container-shape: 0;
   --mdc-outlined-text-field-focus-outline-color: var(--sp-primary-color);
 }

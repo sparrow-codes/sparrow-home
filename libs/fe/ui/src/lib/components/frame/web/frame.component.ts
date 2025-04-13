@@ -5,7 +5,8 @@ import { bootstrapBellFill } from '@ng-icons/bootstrap-icons';
 import { provideIcons } from '@ng-icons/core';
 import { heroComputerDesktop, heroLightBulb } from '@ng-icons/heroicons/outline';
 import { matHeatPump } from '@ng-icons/material-icons/baseline';
-import { APP_TITLE, DataFacadeService, RoutePath } from '@sparrow-home/core';
+import { APP_TITLE, RoutePath } from '@sparrow-home/core';
+import { UserDataFacadeService } from '@sparrow-home/user-domain';
 
 import { ShellComponent } from '../../shell/shell.component';
 
@@ -18,7 +19,7 @@ export class FrameComponent {
   protected readonly appTitle: string = inject(APP_TITLE);
   protected readonly routePath: typeof RoutePath = RoutePath;
 
-  private readonly dataService: DataFacadeService = inject(DataFacadeService);
+  private readonly dataService: UserDataFacadeService = inject(UserDataFacadeService);
 
   protected logout(): void {
     this.dataService.logout();

@@ -1,11 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AlarmPreferences, AquaPreferences, CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
 import * as bcrypt from 'bcrypt';
-import { combineLatest, first, from, lastValueFrom, switchMap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { CreateNewUserRequest } from '../controller/model/create-new-user-request';
+import { GetUserDetailsResponse } from '../controller/model/get-user-details.response';
+import { AdditionalUserDto } from '../model/additional-user-dto';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
   ) {}
 
   public async createFirstUser(request: CreateNewUserRequest): Promise<void> {
-    if ((await this._userRepository.find()).length) {
+    if ((await this._userRepository.findBy({ userRole: UserRole.OWNER })).length) {
       throw new UnauthorizedException();
     }
 
@@ -30,23 +31,78 @@ export class UserService {
     user.email = request.email;
     user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
     user.userRole = UserRole.OWNER;
+    user.isActive = true;
     user.setup = await this._setupRepository.save(new Setup());
     user.cloudPreferences = await this._cloudPreferencesRepository.save(new CloudPreferences());
     user.aquaPreferences = await this._aquaPreferencesRepository.save(new AquaPreferences());
-    user.alarmPreferences = await this._alarmPreferencesRepository.save(new AlarmPreferences());
 
-    await this.save(user);
+    const alarms: AlarmPreferences[] = await this._alarmPreferencesRepository.find();
+    user.alarmPreferences = alarms[0];
+
+    await this._userRepository.save(user);
   }
 
-  public async save(user: User): Promise<User> {
-    return lastValueFrom(
-      combineLatest([
-        from(this._setupRepository.save(user.setup)),
-        from(this._cloudPreferencesRepository.save(user.cloudPreferences)),
-      ]).pipe(
-        first(),
-        switchMap(() => this._userRepository.save(user))
-      )
-    );
+  public async getUserDetails(userId: number): Promise<GetUserDetailsResponse> {
+    const user: User | null = await this._userRepository.findOneBy({ id: userId });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return {
+      firstName: user.firstName,
+      email: user.email,
+      lastName: user.lastName,
+      id: user.id,
+      role: user.userRole,
+    };
+  }
+
+  public async createAdditionalUser(request: CreateNewUserRequest): Promise<void> {
+    const owner: User = await this._getOwner();
+
+    const user: User = new User();
+    user.firstName = request.firstName;
+    user.lastName = request.lastName;
+    user.email = request.email;
+    user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
+    user.userRole = UserRole.ADDITIONAL;
+    user.isActive = false;
+
+    user.setup = owner.setup;
+    user.cloudPreferences = owner.cloudPreferences;
+    user.aquaPreferences = owner.aquaPreferences;
+
+    await this._userRepository.save(user);
+  }
+
+  public async getListOfAdditionalUsers(): Promise<AdditionalUserDto[]> {
+    const users: User[] = await this._userRepository.findBy({ userRole: UserRole.ADDITIONAL });
+
+    return users.map((user) => ({
+      id: user.id,
+      isActive: user.isActive,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    }));
+  }
+
+  public async activateUser(userId: number): Promise<void> {
+    const user: User | null = await this._userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    user.isActive = true;
+    await this._userRepository.save(user);
+  }
+
+  private async _getOwner(): Promise<User> {
+    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
   }
 }

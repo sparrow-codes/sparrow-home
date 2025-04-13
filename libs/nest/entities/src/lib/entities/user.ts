@@ -26,6 +26,9 @@ export class User {
   @Column({ enum: UserRole })
   public userRole!: number;
 
+  @Column()
+  public isActive: boolean = false;
+
   @OneToOne(() => Setup, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   public setup!: Setup;

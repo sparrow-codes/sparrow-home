@@ -3,13 +3,15 @@ import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 
 import { RoutePath } from '../enum';
+import { AuthService } from '../models';
 import { DataFacadeService } from '../services';
 
 export const configurationReadyGuard: CanActivateFn = (): Observable<boolean | UrlTree> | boolean => {
   const dataFacadeService: DataFacadeService = inject(DataFacadeService);
+  const authService: AuthService = inject(AuthService);
   const router: Router = inject(Router);
 
-  if (dataFacadeService.configurationReady() || dataFacadeService.isUserLoggedIn()) {
+  if (dataFacadeService.configurationReady() || authService.token) {
     return true;
   }
 
