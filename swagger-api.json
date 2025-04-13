@@ -373,6 +373,100 @@
         ]
       }
     },
+    "/api/user/create-additional": {
+      "post": {
+        "operationId": "createAdditionalUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/user/activate-user": {
+      "post": {
+        "operationId": "activateUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/user/additional-users": {
+      "get": {
+        "operationId": "getListOfAdditionalUsers",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetListOfAdditionalUsersResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/user/details": {
+      "get": {
+        "operationId": "getUserDetails",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserDetailsResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "User"
+        ]
+      }
+    },
     "/api/setup/ready": {
       "get": {
         "operationId": "isConfigurationReady",
@@ -1093,6 +1187,82 @@
           "password",
           "email",
           "lastName"
+        ]
+      },
+      "ActivateUserRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "AdditionalUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "isActive",
+          "lastName"
+        ]
+      },
+      "GetListOfAdditionalUsersResponse": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalUserDto"
+            }
+          }
+        },
+        "required": [
+          "users"
+        ]
+      },
+      "GetUserDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "email",
+          "lastName",
+          "role"
         ]
       },
       "GetSetupResponse": {

@@ -5,6 +5,6 @@ export class AlarmPreferences {
   @PrimaryGeneratedColumn()
   public id!: number;
 
-  @Column()
+  @Column({ default: false })
   public isActive: boolean = false;
 }

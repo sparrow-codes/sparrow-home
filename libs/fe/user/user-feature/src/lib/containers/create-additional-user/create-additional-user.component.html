@@ -1,0 +1,17 @@
+<div @sparrowFadeIn class="w-full h-full flex items-center justify-center bg-super-light-gray">
+  <div class="w-[300px] md:w-[450px]">
+    <sp-app-logo [type]="'horizontal'"></sp-app-logo>
+    <mat-card class="mt-[-25px]">
+      <button mat-button class="w-fit mt-2 mb-2" [routerLink]="['./', loginPath]">
+        <div class="flex gap-2 items-center">
+          <ng-icon name="heroArrowLeftCircle" size="2rem"></ng-icon>
+          <span>Powrót</span>
+        </div>
+      </button>
+      <mat-card-content>
+        <span class="text-md mb-2 mt-2 block">Utwórz nowego użytkownika:</span>
+        <sp-create-user-form (formSave)="dataService.createAdditionalUser($event)"></sp-create-user-form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

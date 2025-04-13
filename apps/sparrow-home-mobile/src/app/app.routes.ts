@@ -14,17 +14,32 @@ export const appRoutes: Route[] = [
     path: RoutePath.CREATE_USER,
     title: pageTitleResolver,
     canActivate: [configurationNotReadyGuard],
-    loadComponent: () => import('@sparrow-home/user-feature').then((m) => m.CreateUserPageComponent),
+    loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.CreateUserPageComponent),
   },
   {
     path: RoutePath.LOGIN,
+    data: {
+      createNewUserLink: RoutePath.CREATE_ADDITIONAL_USER,
+    },
     title: pageTitleResolver,
-    loadComponent: () => import('@sparrow-home/user-feature').then((c) => c.LoginComponent),
+    loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.LoginComponent),
     canActivate: [configurationReadyGuard],
+  },
+  {
+    path: RoutePath.CREATE_ADDITIONAL_USER,
+    data: {
+      loginPath: RoutePath.LOGIN,
+    },
+    title: pageTitleResolver,
+    loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.CreateAdditionalUserComponent),
   },
   {
     path: '',
     component: MobileFrameComponent,
+    data: {
+      loginPath: RoutePath.LOGIN,
+      profilePath: RoutePath.USER_PROFILE,
+    },
     resolve: { data: setupResolver },
     canActivate: [configurationReadyGuard, authGuard],
     children: [
@@ -52,6 +67,11 @@ export const appRoutes: Route[] = [
         path: RoutePath.NOT_FOUND,
         title: pageTitleResolver,
         component: PageNotFoundComponent,
+      },
+      {
+        path: RoutePath.USER_PROFILE,
+        title: pageTitleResolver,
+        loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.UserDetailsComponent),
       },
       {
         path: '',

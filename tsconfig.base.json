@@ -26,6 +26,7 @@
       "@sparrow-home/home-device-domain": ["libs/fe/home-device/home-device-domain/src/index.ts"],
       "@sparrow-home/home-device-feature": ["libs/fe/home-device/home-device-feature/src/index.ts"],
       "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"],
+      "@sparrow-home/user-domain": ["libs/fe/user/user-domain/src/index.ts"],
       "@sparrow-home/user-feature": ["libs/fe/user/user-feature/src/index.ts"],
       "@sparrow-server/alarm": ["libs/nest/alarm/src/index.ts"],
       "@sparrow-server/aqua": ["libs/nest/aqua/src/index.ts"],

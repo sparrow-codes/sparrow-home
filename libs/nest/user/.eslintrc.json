@@ -10,7 +10,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope: be-user",
-                "onlyDependOnLibsWithTags": ["scope: be-entities", "scope: be-shared"]
+                "onlyDependOnLibsWithTags": ["scope: be-entities", "scope: be-shared", "scope: be-auth"]
               }
             ]
           }

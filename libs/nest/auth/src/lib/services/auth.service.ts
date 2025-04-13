@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     const user: User | null = await this._userRepository.findOneBy({ email });
-    if (user === null || !(await bcrypt.compare(password, user.password))) {
+    if (user === null || !(await bcrypt.compare(password, user.password)) || !user.isActive) {
       throw new UnauthorizedException();
     }
 
@@ -54,5 +54,21 @@ export class AuthService {
   public extractTokenFromHeader(authHeaderValue: string): string | null {
     const [type, token] = authHeaderValue?.split(' ') ?? [];
     return type === AuthService.AUTH_HEADER_PREFIX ? token : null;
+  }
+
+  public async getUserFromToken(token: string): Promise<User> {
+    const payload: TokenPayload = await this._jwtService.verifyAsync(token);
+    const user: User | null = await this._userRepository.findOneBy({ id: payload.userId });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return user;
+  }
+
+  public async getUserIdFromToken(token: string): Promise<number> {
+    const payload: TokenPayload = await this._jwtService.verifyAsync(token);
+    return payload.userId;
   }
 }

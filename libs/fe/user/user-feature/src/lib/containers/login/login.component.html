@@ -1,9 +1,10 @@
-<div class="w-full h-full flex items-center justify-center bg-super-light-gray">
-  <div @sparrowFadeIn class="w-[300px] md:w-[450px]">
+<div @sparrowFadeIn class="w-full h-full flex items-center justify-center bg-super-light-gray">
+  <div class="w-[300px] md:w-[450px]">
     <sp-app-logo [type]="'horizontal'"></sp-app-logo>
     <mat-card class="mt-[-25px]">
 
       <sp-login-form
+        [createAdditionalUserLink]="createNewUserLink"
         [hasError]="dataService.isLoginError()"
         (login)="dataService.login($event)"
       ></sp-login-form>
