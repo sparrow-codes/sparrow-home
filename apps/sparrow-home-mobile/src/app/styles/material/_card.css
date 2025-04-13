@@ -1,6 +1,7 @@
 :root {
   --mdc-outlined-card-container-color: white;
   --mdc-outlined-card-outline-width: 0;
+  --mat-card-title-text-font: 'Ubuntu', sans-serif;
 
   --mdc-outlined-card-container-elevation: 0px 0px 35px 0px rgba(154, 161, 171, 0.15);
 
@@ -10,6 +11,8 @@
     text-transform: uppercase;
     font-size: 0.875rem;
     font-weight: 500;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .mat-mdc-card-title {

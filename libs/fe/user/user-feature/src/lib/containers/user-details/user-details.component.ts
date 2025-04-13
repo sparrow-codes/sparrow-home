@@ -29,6 +29,7 @@ export class UserDetailsComponent implements OnInit {
     effect(
       () => {
         if (this.user()?.role === UserRole.OWNER) {
+          console.log(this.user());
           this._dataService.fetchAdditionalUsers();
         }
       },

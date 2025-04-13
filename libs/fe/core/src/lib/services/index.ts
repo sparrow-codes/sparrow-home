@@ -3,4 +3,3 @@ export * from './loader.service';
 export * from './mobile-authentication.service';
 export * from './mobile-push-notification.service';
 export * from './visibility.service';
-export * from './web-authentication.service';

@@ -24,7 +24,7 @@ type UserState = {
 
 export const UserStore = signalStore(
   { providedIn: 'root' },
-  withState<UserState>({ user: null, isLoginError: false, additionalUsers: [] }),
+  withState<UserState>({ user: null, isLoginError: false, additionalUsers: null }),
   withMethods(
     (
       store,

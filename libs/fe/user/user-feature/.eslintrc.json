@@ -13,7 +13,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:fe-user-feature",
-                "onlyDependOnLibsWithTags": ["scope:fe-user-domain", "scope: fe-ui", "scope: fe-core"]
+                "onlyDependOnLibsWithTags": ["scope:fe-user-domain", "scope: fe-ui", "scope: fe-core", "scope:fe-api"]
               }
             ]
           }

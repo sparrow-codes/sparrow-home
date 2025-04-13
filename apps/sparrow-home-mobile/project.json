@@ -37,7 +37,7 @@
           "node_modules/@ionic/angular/css/text-transformation.css",
           "node_modules/@ionic/angular/css/flex-utils.css",
           "@angular/material/prebuilt-themes/azure-blue.css",
-          "apps/sparrow-home/src/styles.css",
+          "apps/sparrow-home-mobile/src/styles.scss",
           "apps/sparrow-home-mobile/src/theme/variables.scss"
         ],
         "scripts": []

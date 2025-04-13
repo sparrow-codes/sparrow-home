@@ -12,8 +12,8 @@ import { matHeatPump, matSettings } from '@ng-icons/material-icons/baseline';
 import { RoutePath } from '@sparrow-home/core';
 import { filter, first, map } from 'rxjs';
 
-import { NavigationItem } from '../../../models/navigation-item';
-import { AppLogoComponent } from '../../logo/app-logo.component';
+import { NavigationItem } from '../../models/navigation-item';
+import { AppLogoComponent } from '../logo/app-logo.component';
 
 @Component({
   selector: 'sp-mobile-frame',

@@ -2,15 +2,17 @@
   <div class="flex gap-7 flex-col p-2">
     <sp-user-basic-data [user]="user()"></sp-user-basic-data>
 
-    <div class="w-full flex gap-2 flex-col">
-      <span>Lista użytkowników:</span>
-      @for (user of additionalUsers(); track user.id) {
-        <div class="w-full flex justify-between items-center border-light-gray border-0 border-b border-solid py-2">
-          <span>{{user.firstName}} {{user.lastName}}</span>
-          <mat-slide-toggle [disabled]="user.isActive" (change)="handleUserActivatedToggle($event.checked, user.id)"></mat-slide-toggle>
-        </div>
-      }
-    </div>
+    @if (additionalUsers()) {
+      <div class="w-full flex gap-2 flex-col">
+        <span>Lista użytkowników:</span>
+        @for (user of additionalUsers(); track user.id) {
+          <div class="w-full flex justify-between items-center border-light-gray border-0 border-b border-solid py-2">
+            <span>{{user.firstName}} {{user.lastName}}</span>
+            <mat-slide-toggle [disabled]="user.isActive" (change)="handleUserActivatedToggle($event.checked, user.id)"></mat-slide-toggle>
+          </div>
+        }
+      </div>
+    }
 
     <button mat-button class="mb-2" (click)="handleLogout()">
       <div class="flex items-center gap-2">
