@@ -26,6 +26,7 @@ import { AlterCloudPreferences1738866928125 } from '../db/migrations/17388669281
 import { AlterHomeDevice1742753620205 } from '../db/migrations/1742753620205-AlterHomeDevice';
 import { CreateAlarmPreferences1743010222859 } from '../db/migrations/1743010222859-CreateAlarmPreferences';
 import { AlterUserTable1744444867595 } from '../db/migrations/1744444867595-AlterUserTable';
+import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092803-CreatePushSubscription';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { AlterUserTable1744444867595 } from '../db/migrations/1744444867595-Alte
           AlterHomeDevice1742753620205,
           CreateAlarmPreferences1743010222859,
           AlterUserTable1744444867595,
+          CreatePushSubscription1744656092803,
         ],
       }),
     }),

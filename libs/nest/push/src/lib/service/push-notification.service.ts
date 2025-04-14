@@ -1,44 +1,63 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PushSubscriptionClient, User } from '@sparrow-server/entities';
 import { ConfigKey } from '@sparrow-server/shared';
+import { Repository } from 'typeorm';
 import { PushSubscription, RequestOptions, sendNotification } from 'web-push';
 
 import { PushMessage } from '../models';
 
 @Injectable()
 export class PushNotificationService {
-  private readonly _subscriptions: PushSubscription[] = [];
+  public constructor(
+    @InjectRepository(PushSubscriptionClient)
+    private readonly _pushSubscriptionsClientRepository: Repository<PushSubscriptionClient>,
+    @InjectRepository(User) private readonly _userRepository: Repository<User>,
+    private readonly _configService: ConfigService
+  ) {}
 
-  public constructor(private readonly _configService: ConfigService) {}
-
-  public addSubscription(subscription: PushSubscription): void {
-    Logger.log(`Adding subscription to push notifications`);
-    this._subscriptions.push(subscription);
-
-    Logger.log(`Number of active subscriptions: ${this._subscriptions.length}`);
+  public async addSubscription(subscription: PushSubscription, user: User): Promise<void> {
+    const client: PushSubscriptionClient = user.pushSubscriptionClient ?? new PushSubscriptionClient();
+    client.endpoint = subscription.endpoint;
+    client.p256dh = subscription.keys.p256dh;
+    client.auth = subscription.keys.auth;
+    await this._pushSubscriptionsClientRepository.save(client);
+    user.pushSubscriptionClient = client;
+    await this._userRepository.save(user);
   }
 
-  public notify(message: PushMessage): void {
+  public async notify(message: PushMessage): Promise<void> {
     const options: RequestOptions = this._prepareOptions();
+    const subscriptions: PushSubscriptionClient[] = await this._pushSubscriptionsClientRepository.find();
 
-    if (this._subscriptions.length === 0) {
+    if (subscriptions.length === 0) {
       Logger.log('No subscription clients.');
     }
 
-    Logger.log(`Number of clients: ${this._subscriptions.length}`);
+    Logger.log(`Number of clients: ${subscriptions.length}`);
 
-    this._subscriptions.forEach((subscription, index) => {
-      sendNotification(subscription, JSON.stringify({ notification: message }), options).then(() =>
-        Logger.log(`Notified ${index + 1} subscriber`)
-      );
+    subscriptions.forEach((subscription, index) => {
+      sendNotification(
+        {
+          endpoint: subscription.endpoint,
+          keys: {
+            auth: subscription.auth,
+            p256dh: subscription.p256dh,
+          },
+        },
+        JSON.stringify({ notification: message }),
+        options
+      ).then(() => Logger.log(`Notified ${index + 1} subscriber`));
     });
   }
 
   private _prepareOptions(): RequestOptions {
     const webPushPrivateKey: string | undefined = this._configService.get(ConfigKey.PUSH_PRIVATE_KEY);
     const webPushPublicKey: string | undefined = this._configService.get(ConfigKey.PUSH_PUBLIC_KEY);
+    const pushAdminEmail: string | undefined = this._configService.get(ConfigKey.PUSH_ADMIN_EMAIL);
 
-    if (!webPushPrivateKey || !webPushPublicKey) {
+    if (!webPushPrivateKey || !webPushPublicKey || !pushAdminEmail) {
       throw Error('Missing configuration for Push Notification Service!');
     }
 
@@ -46,7 +65,7 @@ export class PushNotificationService {
       vapidDetails: {
         privateKey: webPushPrivateKey,
         publicKey: webPushPublicKey,
-        subject: 'mailto:wrobel.j.piotr@gmail.com',
+        subject: `mailto:${pushAdminEmail}`,
       },
     };
   }
