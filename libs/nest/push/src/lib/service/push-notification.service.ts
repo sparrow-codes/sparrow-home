@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PushSubscriptionsClient } from '@sparrow-server/entities';
+import { PushSubscriptionClient, User } from '@sparrow-server/entities';
 import { ConfigKey } from '@sparrow-server/shared';
 import { Repository } from 'typeorm';
 import { PushSubscription, RequestOptions, sendNotification } from 'web-push';
@@ -11,32 +11,25 @@ import { PushMessage } from '../models';
 @Injectable()
 export class PushNotificationService {
   public constructor(
-    @InjectRepository(PushSubscriptionsClient)
-    private readonly _pushSubscriptionsClientRepository: Repository<PushSubscriptionsClient>,
+    @InjectRepository(PushSubscriptionClient)
+    private readonly _pushSubscriptionsClientRepository: Repository<PushSubscriptionClient>,
+    @InjectRepository(User) private readonly _userRepository: Repository<User>,
     private readonly _configService: ConfigService
   ) {}
 
-  public async addSubscription(subscription: PushSubscription): Promise<void> {
-    const existingSubscription: PushSubscriptionsClient | null =
-      await this._pushSubscriptionsClientRepository.findOneBy({ auth: subscription.keys.auth });
-
-    if (existingSubscription) {
-      Logger.log('Subscription already exists');
-      return;
-    }
-
-    Logger.log(`Adding subscription to push notifications`);
-
-    const client: PushSubscriptionsClient = new PushSubscriptionsClient();
+  public async addSubscription(subscription: PushSubscription, user: User): Promise<void> {
+    const client: PushSubscriptionClient = user.pushSubscriptionClient ?? new PushSubscriptionClient();
     client.endpoint = subscription.endpoint;
     client.p256dh = subscription.keys.p256dh;
     client.auth = subscription.keys.auth;
     await this._pushSubscriptionsClientRepository.save(client);
+    user.pushSubscriptionClient = client;
+    await this._userRepository.save(user);
   }
 
   public async notify(message: PushMessage): Promise<void> {
     const options: RequestOptions = this._prepareOptions();
-    const subscriptions: PushSubscriptionsClient[] = await this._pushSubscriptionsClientRepository.find();
+    const subscriptions: PushSubscriptionClient[] = await this._pushSubscriptionsClientRepository.find();
 
     if (subscriptions.length === 0) {
       Logger.log('No subscription clients.');

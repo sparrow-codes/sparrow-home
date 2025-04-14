@@ -38,10 +38,4 @@ export class MobilePushNotificationService {
         .subscribe();
     }
   }
-
-  public subscribeMessage(): void {
-    this._swPush.messages.subscribe((res: object) => {
-      console.log('Received push notification', res);
-    });
-  }
 }

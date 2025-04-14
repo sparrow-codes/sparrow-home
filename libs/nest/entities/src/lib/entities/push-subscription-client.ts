@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class PushSubscriptionsClient {
+export class PushSubscriptionClient {
   @PrimaryGeneratedColumn()
   public id!: number;
 

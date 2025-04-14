@@ -4,6 +4,7 @@ import { UserRole } from '../enum/user-role';
 import { AlarmPreferences } from './alarm-preferences';
 import { AquaPreferences } from './aqua-preferences';
 import { CloudPreferences } from './cloud-preferences';
+import { PushSubscriptionClient } from './push-subscription-client';
 import { Setup } from './setup';
 
 @Entity()
@@ -44,4 +45,8 @@ export class User {
   @OneToOne(() => AlarmPreferences, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   public alarmPreferences!: AlarmPreferences;
+
+  @OneToOne(() => PushSubscriptionClient, { onDelete: 'CASCADE', eager: true, nullable: true })
+  @JoinColumn()
+  public pushSubscriptionClient: PushSubscriptionClient | null = null;
 }
