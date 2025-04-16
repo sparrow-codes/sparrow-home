@@ -14,6 +14,8 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlarmService {
+  private _isSirensWorking: boolean = false;
+
   public constructor(
     private readonly _zigbeeSirenService: ZigbeeSirenService,
     private readonly _zigbeeSensorService: ZigbeeSensorService,
@@ -31,17 +33,8 @@ export class AlarmService {
   }
 
   public async setAlarm(isOn: boolean): Promise<void> {
-    const sirens: HomeDevice[] = await this._homeDeviceRepository.findBy({ deviceType: DeviceType.SIREN });
-
-    if (sirens.length < 1) {
-      Logger.log('No sirens found connected to your home!');
-      return;
-    }
-
     Logger.log(isOn ? 'Turning SOS mode ON!' : 'Turning SOS mode OFF!');
-    sirens.forEach((siren) => {
-      this._zigbeeSirenService.setAlarm(siren.zigbeeDeviceId, isOn);
-    });
+    await this._setSirensMode(isOn);
   }
 
   public async setAlarmMode(isActive: boolean): Promise<void> {
@@ -60,6 +53,10 @@ export class AlarmService {
     return alarmPreferences.isActive;
   }
 
+  public getSirensStatus(): boolean {
+    return this._isSirensWorking;
+  }
+
   private async _handleSensorEvent(response: DeviceResponse<SensorDetails>): Promise<void> {
     const sensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: response.deviceId });
     const user: User = await this._getUser();
@@ -75,7 +72,8 @@ export class AlarmService {
       alarmPreferences.isActive
     ) {
       Logger.log('House has been opened! Notify users!');
-      this._pushNotificationService.notify({
+      await this._setSirensMode(true);
+      await this._pushNotificationService.notify({
         title: 'Alarm!',
         body: `Otwarto: ${sensor.deviceName}`,
       });
@@ -90,5 +88,19 @@ export class AlarmService {
     }
 
     return user;
+  }
+
+  private async _setSirensMode(isOn: boolean): Promise<void> {
+    const sirens: HomeDevice[] = await this._homeDeviceRepository.findBy({ deviceType: DeviceType.SIREN });
+
+    if (sirens.length < 1) {
+      Logger.log('No sirens found connected to your home!');
+      return;
+    }
+
+    sirens.forEach((siren) => {
+      this._zigbeeSirenService.setAlarm(siren.zigbeeDeviceId, isOn);
+    });
+    this._isSirensWorking = isOn;
   }
 }
