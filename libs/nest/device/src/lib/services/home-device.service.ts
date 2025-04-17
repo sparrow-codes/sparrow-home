@@ -110,6 +110,8 @@ export class HomeDeviceService {
             return of(DeviceDetailsMapper.getOpenDoorSensorDetails(entity));
           case DeviceType.SIREN:
             return of(DeviceDetailsMapper.getSirenDetailsDto(entity));
+          case DeviceType.PILOT:
+            return of(DeviceDetailsMapper.getPilotDetailDto(entity));
           default:
             Logger.error(`Unsupported device type for device ${entity.deviceName}`);
             return of(null);
@@ -162,7 +164,9 @@ export class HomeDeviceService {
       deviceType: DeviceType.SIREN,
     });
 
-    const sensorDevices: HomeDevice[] = [...temperatureSensors, ...openDoorSensors, ...sirens];
+    const pilots: HomeDevice[] = await this._homeDeviceRepository.findBy({ deviceType: DeviceType.PILOT });
+
+    const sensorDevices: HomeDevice[] = [...temperatureSensors, ...openDoorSensors, ...sirens, ...pilots];
 
     this._zigbeeSensorService.clearListeners(sensorDevices.map((device) => device.zigbeeDeviceId));
     sensorDevices.forEach((device: HomeDevice) => {

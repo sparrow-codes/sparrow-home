@@ -3,6 +3,7 @@
   --temperature-sensor: #a84d08;
   --door-sensor: #048444;
   --siren: #840404;
+  --pilot: #989898;
 
   .lsc-plug-in {
     background-color: var(--plugin);
@@ -20,7 +21,12 @@
   }
 
   .siren {
-    background-color: #840404;
+    background-color: var(--siren);
+    color: white;
+  }
+
+  .pilot {
+    background-color: var(--pilot);
     color: white;
   }
 
@@ -38,6 +44,10 @@
 
   .siren-sensor-color {
     color: var(--siren);
+  }
+
+  .pilot-color {
+    color: var(--pilot);
   }
 }
 
