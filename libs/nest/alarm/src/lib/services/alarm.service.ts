@@ -4,6 +4,7 @@ import { AlarmPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparr
 import {
   DeviceResponse,
   OpenDoorSensorDetails,
+  PilotDetails,
   SensorDetails,
   ZigbeeSensorService,
   ZigbeeSirenService,
@@ -80,7 +81,7 @@ export class AlarmService {
     }
 
     if (sensor.deviceType === DeviceType.PILOT) {
-      Logger.log(response.payload);
+      await this._handlePilotActions(response.payload as PilotDetails);
     }
   }
 
@@ -92,6 +93,24 @@ export class AlarmService {
     }
 
     return user;
+  }
+
+  private async _handlePilotActions(pilotDetails: PilotDetails): Promise<void> {
+    switch (pilotDetails.action) {
+      case 'arm_all_zones':
+      case 'arm_day_zones':
+        await this.setAlarmMode(true);
+        break;
+      case 'disarm':
+        await this.setAlarmMode(false);
+        await this._setSirensMode(false);
+        break;
+      case 'panic':
+        await this._setSirensMode(true);
+        break;
+      default:
+        Logger.log('Unsupported action: ', pilotDetails.action);
+    }
   }
 
   private async _setSirensMode(isOn: boolean): Promise<void> {
