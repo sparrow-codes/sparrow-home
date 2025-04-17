@@ -34,20 +34,22 @@
         }
 
         <mat-divider class="mt-2"></mat-divider>
-        <div class="flex w-full py-2 justify-between">
-          <div>Status:</div>
-          <div class="flex gap-2 items-center">
-            @if (homeDevice.isOnline) {
-              <span>Online</span>
-              <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
-            } @else {
-              <span>Offline</span>
-              <ng-icon name="heroNoSymbol"></ng-icon>
-            }
+        @if (homeDevice.isOnline !== null) {
+          <div class="flex w-full py-2 justify-between">
+            <div>Status:</div>
+            <div class="flex gap-2 items-center">
+              @if (homeDevice.isOnline) {
+                <span>Online</span>
+                <ng-icon class="text-success" name="heroCheckCircleSolid"></ng-icon>
+              } @else {
+                <span>Offline</span>
+                <ng-icon name="heroNoSymbol"></ng-icon>
+              }
+            </div>
           </div>
-        </div>
+          <mat-divider></mat-divider>
+        }
 
-        <mat-divider></mat-divider>
         <div class="flex w-full py-2 justify-between flex-wrap">
           <div>Id urządzenia:</div>
           <div>{{ homeDevice.homeDeviceId }}</div>

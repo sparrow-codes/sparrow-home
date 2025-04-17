@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 
 import { HomeDeviceDto } from '../models/home-device-dto';
 import { OpenDoorSensorDetailsDto } from '../models/open-door-sensor-details-dto';
+import { PilotDetailsDto } from '../models/pilot-details.dto';
 import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
 import { SirenDetailsDto } from '../models/siren-details-dto';
 import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-details-dto';
@@ -42,7 +43,13 @@ export class HomeDeviceController {
 
   @ApiOperation({ operationId: 'getDeviceDetails' })
   @ApiResponse({ type: GetDeviceDetailsResponse })
-  @ApiExtraModels(OpenDoorSensorDetailsDto, PluginSwitchDetailsDto, SirenDetailsDto, TemperatureSensorDetailsDto)
+  @ApiExtraModels(
+    OpenDoorSensorDetailsDto,
+    PluginSwitchDetailsDto,
+    SirenDetailsDto,
+    TemperatureSensorDetailsDto,
+    PilotDetailsDto
+  )
   @Get('details/:id')
   public getDeviceDetails(@Param('id') id: string): Observable<GetDeviceDetailsResponse> {
     return this._homeDeviceService.getDeviceDetails(Number(id)).pipe(map((details) => ({ deviceDetails: details })));

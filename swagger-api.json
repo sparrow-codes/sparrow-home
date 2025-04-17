@@ -855,15 +855,57 @@
         ]
       }
     },
+    "/api/alarm/siren-status": {
+      "get": {
+        "operationId": "getSirensStatus",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Alarm"
+        ]
+      }
+    },
     "/api/push-notification/add-subscription": {
       "post": {
         "operationId": "addSubscription",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushSubscriptionRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": [
           "Push Notification"
@@ -1476,6 +1518,41 @@
           "humidity"
         ]
       },
+      "PilotDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          },
+          "battery": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "battery"
+        ]
+      },
       "HomeDeviceDetailsDto": {
         "type": "object",
         "properties": {
@@ -1606,6 +1683,21 @@
         },
         "required": [
           "isActive"
+        ]
+      },
+      "PushSubscriptionRequest": {
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "type": "string"
+          },
+          "keys": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "endpoint",
+          "keys"
         ]
       }
     }

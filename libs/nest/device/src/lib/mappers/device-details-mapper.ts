@@ -2,6 +2,7 @@ import { DeviceType, HomeDevice } from '@sparrow-server/entities';
 import { DeviceResponse, IkeaSwitchStatusResponse } from '@sparrow-server/external-api';
 
 import { OpenDoorSensorDetailsDto } from '../models/open-door-sensor-details-dto';
+import { PilotDetailsDto } from '../models/pilot-details.dto';
 import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
 import { SirenDetailsDto } from '../models/siren-details-dto';
 import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-details-dto';
@@ -51,6 +52,18 @@ export class DeviceDetailsMapper {
   }
 
   public static getSirenDetailsDto(entity: HomeDevice): SirenDetailsDto {
+    return {
+      type: entity.deviceType,
+      homeDeviceId: entity.zigbeeDeviceId,
+      name: entity.deviceName,
+      signalStrength: entity.signalStrength ? calculatePercentage(0, 255, entity.signalStrength) : 0,
+      isOnline: !!entity.signalStrength && entity.signalStrength > 0,
+      battery: entity.battery !== null ? entity.battery : undefined,
+      id: entity.id,
+    };
+  }
+
+  public static getPilotDetailDto(entity: HomeDevice): PilotDetailsDto {
     return {
       type: entity.deviceType,
       homeDeviceId: entity.zigbeeDeviceId,

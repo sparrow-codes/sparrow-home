@@ -2,7 +2,7 @@ import { signal } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceType } from '@sparrow-home/core';
-import { DeviceFacadeService, OpenDoorSensor } from '@sparrow-home/home-device-domain';
+import { DeviceFacadeService, OpenDoorSensor, Pilot } from '@sparrow-home/home-device-domain';
 import { MaterialConfiguration } from '@sparrow-home/ui';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { of } from 'rxjs';
@@ -39,6 +39,27 @@ export const OpenDoorSensorDetails: Story = {
   ],
 };
 
+export const PilotDetails: Story = {
+  decorators: [
+    moduleMetadata({
+      imports: [BrowserAnimationsModule],
+      providers: [
+        MaterialConfiguration,
+        {
+          provide: DeviceFacadeService,
+          useValue: { homeDeviceDetails: signal(preparePilotDetails()), fetchDeviceDetailsById: () => void 0 },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of({ get: (id: string) => id }),
+          },
+        },
+      ],
+    }),
+  ],
+};
+
 function prepareSensorDetails(): OpenDoorSensor {
   return {
     battery: 98,
@@ -50,5 +71,16 @@ function prepareSensorDetails(): OpenDoorSensor {
     name: 'Open Door Sensor',
     signalStrength: 80,
     type: DeviceType.OPEN_DOOR_SENSOR,
+  };
+}
+
+function preparePilotDetails(): Pilot {
+  return {
+    battery: 98,
+    homeDeviceId: 'asdasd',
+    id: 0,
+    isOnline: null,
+    name: 'Pilot device',
+    type: DeviceType.PILOT,
   };
 }

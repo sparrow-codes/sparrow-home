@@ -7,6 +7,7 @@ import {
   bootstrapThermometerHalf,
 } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { matSettingsRemote } from '@ng-icons/material-icons/baseline';
 import { DeviceType } from '@sparrow-home/core';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
@@ -16,7 +17,15 @@ import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
   imports: [CommonModule, NgIcon],
   templateUrl: './device-type.component.html',
   styleUrl: './device-type.component.css',
-  providers: [provideIcons({ bootstrapPlugin, bootstrapThermometerHalf, bootstrapDoorOpenFill, bootstrapBellFill })],
+  providers: [
+    provideIcons({
+      bootstrapPlugin,
+      bootstrapThermometerHalf,
+      bootstrapDoorOpenFill,
+      bootstrapBellFill,
+      matSettingsRemote,
+    }),
+  ],
 })
 export class DeviceTypeComponent {
   public readonly deviceType: InputSignal<DeviceType> = input.required();
@@ -34,6 +43,8 @@ export class DeviceTypeComponent {
         return 'bootstrapDoorOpenFill';
       case DeviceType.SIREN:
         return 'bootstrapBellFill';
+      case DeviceType.PILOT:
+        return 'matSettingsRemote';
       default:
         return '';
     }

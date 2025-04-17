@@ -2,13 +2,16 @@ import {
   HomeDeviceDetailsDtoApiModel,
   HomeDeviceDtoApiModel,
   OpenDoorSensorDetailsDtoApiModel,
+  PilotDetailsDtoApiModel,
   PluginSwitchDetailsDtoApiModel,
+  SirenDetailsDtoApiModel,
   TemperatureSensorDetailsDtoApiModel,
 } from '@sparrow-home/api';
 import { DeviceType } from '@sparrow-home/core';
 
-import { HomeDevice } from '../../models';
+import { HomeDevice, Siren } from '../../models';
 import { OpenDoorSensor } from '../../models/open-door-sensor';
+import { Pilot } from '../../models/pilot';
 import { SwitchDevice } from '../../models/switch-device';
 import { TemperatureSensor } from '../../models/temperature-sensor';
 
@@ -51,6 +54,23 @@ export class HomeDeviceMapper {
         isOpen: openDoorSensor.isOpen,
         lastOpened: openDoorSensor.lastOpened ? new Date(openDoorSensor.lastOpened) : undefined,
       } as OpenDoorSensor;
+    }
+
+    if (device.type === DeviceType.SIREN) {
+      const siren: SirenDetailsDtoApiModel = device as SirenDetailsDtoApiModel;
+      return {
+        ...homeDevice,
+        battery: siren.battery,
+      } as Siren;
+    }
+
+    if (device.type === DeviceType.PILOT) {
+      const pilot: PilotDetailsDtoApiModel = device as PilotDetailsDtoApiModel;
+      return {
+        ...homeDevice,
+        battery: pilot.battery,
+        isOnline: null,
+      } as Pilot;
     }
 
     return homeDevice;

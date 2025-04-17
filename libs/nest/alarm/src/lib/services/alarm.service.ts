@@ -78,6 +78,10 @@ export class AlarmService {
         body: `Otwarto: ${sensor.deviceName}`,
       });
     }
+
+    if (sensor.deviceType === DeviceType.PILOT) {
+      Logger.log(response.payload);
+    }
   }
 
   private async _getUser(): Promise<User> {

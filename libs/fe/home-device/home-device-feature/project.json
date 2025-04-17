@@ -25,7 +25,7 @@
         "compodoc": false,
         "styles": [
           "@angular/material/prebuilt-themes/azure-blue.css",
-          "apps/sparrow-home/src/styles.css"
+          "apps/sparrow-home-mobile/src/styles.scss"
         ]
       },
       "configurations": {
