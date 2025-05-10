@@ -44,7 +44,6 @@ export class MobileFrameComponent implements OnInit {
 
   protected navigationItems: NavigationItem[] = [
     { label: 'Panel Główny', icon: 'heroComputerDesktop', routerLink: RoutePath.MAIN },
-    { label: 'Pompa Ciepła', icon: 'matHeatPump', routerLink: RoutePath.HEAT_PUMP },
     { label: 'Akwarium', icon: 'heroLightBulb', routerLink: RoutePath.AQUARIUM },
     { label: 'Alarm', icon: 'bootstrapBellFill', routerLink: RoutePath.ALARM },
   ];

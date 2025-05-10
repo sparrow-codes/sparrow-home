@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CloudPreferences, HomeDevice, User, UserRole } from '@sparrow-server/entities';
 import { ComfortCloudConnector, HeatPump, ZigbeeSensorService } from '@sparrow-server/external-api';
-import { CronJobName } from '@sparrow-server/shared';
+import { ConfigKey, CronJobName } from '@sparrow-server/shared';
 import { combineLatest, debounceTime, filter, firstValueFrom, from, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
@@ -15,27 +16,32 @@ export class PanasonicService {
     private readonly _connector: ComfortCloudConnector,
     private readonly _scheduleRegistry: SchedulerRegistry,
     private readonly _zigbeeSensorService: ZigbeeSensorService,
+    private readonly _configService: ConfigService,
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>
   ) {
-    this.getHeatPumpDetails().pipe(take(1)).subscribe();
+    const isHeatPumpIncluded: boolean | undefined = this._configService.get<boolean>(ConfigKey.INCLUDE_HEAT_PUMP_MODULE);
 
-    this._zigbeeSensorService.sensorDetails$
-      .pipe(
-        debounceTime(10000),
-        switchMap((deviceDetails) => {
-          return combineLatest([of(deviceDetails), from(this._getUser())]);
-        }),
-        filter(([, user]) => Boolean(user)),
-        filter(
-          ([device, user]) =>
-            device.deviceId === user!.cloudPreferences.firstFlorTemperatureSensorZigbeeId ||
-            device.deviceId === user!.cloudPreferences.groundFlorTemperatureSensorZigbeeId
-        ),
-        filter(([, user]) => user!.cloudPreferences.isAutomaticHeat)
-      )
-      .subscribe(([, user]) => this._verifyTemperatureFromSensors(user!));
+    if(isHeatPumpIncluded === true){
+      this.getHeatPumpDetails().pipe(take(1)).subscribe();
+
+      this._zigbeeSensorService.sensorDetails$
+        .pipe(
+          debounceTime(10000),
+          switchMap((deviceDetails) => {
+            return combineLatest([of(deviceDetails), from(this._getUser())]);
+          }),
+          filter(([, user]) => Boolean(user)),
+          filter(
+            ([device, user]) =>
+              device.deviceId === user!.cloudPreferences.firstFlorTemperatureSensorZigbeeId ||
+              device.deviceId === user!.cloudPreferences.groundFlorTemperatureSensorZigbeeId
+          ),
+          filter(([, user]) => user!.cloudPreferences.isAutomaticHeat)
+        )
+        .subscribe(([, user]) => this._verifyTemperatureFromSensors(user!));
+    }
   }
 
   public getHeatPumpDetails(): Observable<HeatPump> {

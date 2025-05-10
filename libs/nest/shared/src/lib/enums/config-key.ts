@@ -1,6 +1,7 @@
 export enum ConfigKey {
   MODE = 'mode',
 
+  INCLUDE_HEAT_PUMP_MODULE = 'includeHeatPumpModule',
   PANASONIC_CLOUD_LOGIN = 'panasonicCloudLogin',
   PANASONIC_CLOUD_PASSWORD = 'panasonicCloudPassword',
   PANASONIC_DEVICE_ID = 'panasonicDeviceId',
