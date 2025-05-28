@@ -16,10 +16,12 @@
 <ion-content class="ion-padding">
   <router-outlet></router-outlet>
 </ion-content>
-<ion-tab-bar slot="bottom">
+<ion-tab-bar slot="bottom" class="bg-nav-background">
   @for (item of navigationItems; track item.routerLink) {
   <ion-tab-button
-    [class.text-primary]="currentUrl() === '/' + item.routerLink"
+    class="transition-colors"
+    [class.text-nav-icon-inactive]="currentUrl() !== '/' + item.routerLink"
+    [class.text-nav-icon-active]="currentUrl() === '/' + item.routerLink"
     [routerLink]="item.routerLink"
     [selected]="currentUrl() === '/' + item.routerLink"
     [routerDirection]="'back'"

@@ -8,4 +8,21 @@
   --app-light-blue: #393e61;
   --sp-primary-color: #4e91b8;
 
+  --color-background: #FFFFFF;
+  --color-text-primary: #000000;
+  --color-text-secondary: #4F4F4F;
+
+  /* Przyciski i elementy UI */
+  --color-button-background: #F5F5F5;
+  --color-icon-default: #6F6F6F;
+  --color-icon-muted: #9E9E9E;
+  --color-icon-active: #000000;
+
+  /* Pasek nawigacyjny */
+  --color-nav-background: #FFFFFF;
+  --color-nav-icon-active: #000000;
+  --color-nav-icon-inactive: #9E9E9E;
+
+  /* Elementy pomocnicze */
+  --color-border-light: #E0E0E0;
 }
