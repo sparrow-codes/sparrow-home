@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, Signal } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
-import { MatDivider } from '@angular/material/divider';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+import { provideIcons } from '@ng-icons/core';
 import { heroAdjustmentsHorizontal, heroNoSymbol, heroTrash, heroWifi } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { DeviceType } from '@sparrow-home/core';
@@ -17,10 +15,12 @@ import {
   TemperatureSensor,
 } from '@sparrow-home/home-device-domain';
 import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { Button } from 'primeng/button';
+import { Divider } from 'primeng/divider';
+import { ToggleButton } from 'primeng/togglebutton';
 import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
-import { LcsSwitchManualControlComponent } from '../../components/manual-control/lcs-switch-manual-control/lcs-switch-manual-control.component';
 import { OpenDoorSensorDetailsComponent } from '../../components/open-door-sensor-details/open-door-sensor-details.component';
 import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
 import { TemperatureSensorDetailsComponent } from '../../components/temperature-sensor-details/temperature-sensor-details.component';
@@ -30,20 +30,15 @@ import { TemperatureSensorDetailsComponent } from '../../components/temperature-
   imports: [
     CommonModule,
     PageTitleComponent,
-    MatCard,
-    MatCardContent,
     DeviceTypeComponent,
-    MatDivider,
-    NgIcon,
-    LcsSwitchManualControlComponent,
-    MatCardHeader,
-    MatCardTitle,
     SignalStrengthComponent,
-    MatCardActions,
-    MatButton,
     TemperatureSensorDetailsComponent,
     OpenDoorSensorDetailsComponent,
     BatteryStatusComponent,
+    ToggleButton,
+    FormsModule,
+    Button,
+    Divider,
   ],
   templateUrl: './device-details.component.html',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],

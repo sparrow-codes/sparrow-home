@@ -1,24 +1,61 @@
-<mat-card>
-  <div class="flex gap-7 flex-col p-2">
-    <sp-user-basic-data [user]="user()"></sp-user-basic-data>
+@if (user(); as user) {
 
+  <div @staggeredFadeIn class="bg-white p-6 rounded-xl shadow-md w-full max-w-[360px] mx-auto">
+
+    <!-- Avatar i dane głównego użytkownika -->
+    <div class="flex flex-col items-center text-center gap-4 py-6 fade-step">
+      <p-avatar
+        size="xlarge"
+        label="{{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}"
+        shape="circle"
+      ></p-avatar>
+
+      <div class="text-xl font-semibold uppercase tracking-wide">
+        <span>{{ user.firstName }}</span>
+        @if (user.lastName) {
+          <span class="ml-1">{{ user.lastName }}</span>
+        }
+      </div>
+
+      <span class="text-gray-500 text-sm">{{ user.email }}</span>
+    </div>
+
+    <!-- Lista użytkowników dodatkowych -->
     @if (additionalUsers()) {
-      <div class="w-full flex gap-2 flex-col">
-        <span>Lista użytkowników:</span>
+      <div class="flex flex-col gap-2 mb-6 fade-step">
+        <span class="font-medium text-sm">Lista użytkowników:</span>
+
         @for (user of additionalUsers(); track user.id) {
-          <div class="w-full flex justify-between items-center border-light-gray border-0 border-b border-solid py-2">
-            <span>{{user.firstName}} {{user.lastName}}</span>
-            <mat-slide-toggle [disabled]="user.isActive" (change)="handleUserActivatedToggle($event.checked, user.id)"></mat-slide-toggle>
+          <div class="flex justify-between items-center border-b border-light-gray py-2 text-sm">
+          <span>
+            {{ user.firstName }}
+            @if (user.lastName) {
+              {{ ' ' + user.lastName }}
+            }
+          </span>
+            <p-inputSwitch
+              [disabled]="!!user.isActive"
+              [ngModel]="user.isActive"
+              (onChange)="handleUserActivatedToggle($event.checked, user.id)"
+            ></p-inputSwitch>
           </div>
         }
       </div>
     }
 
-    <button mat-button class="mb-2" (click)="handleLogout()">
-      <div class="flex items-center gap-2">
-        <span class="text-error">wyloguj</span>
-        <ng-icon name="heroArrowLeftEndOnRectangleSolid" class="text-error" size="1.25rem"></ng-icon>
-      </div>
-    </button>
+    <!-- Divider -->
+    <p-divider class="my-4 fade-step"></p-divider>
+
+    <!-- Przycisk wylogowania -->
+    <p-button
+      label="Wyloguj"
+      icon="pi pi-sign-out"
+      variant="text"
+      fluid="true"
+      severity="danger"
+      class="fade-step"
+      (onClick)="handleLogout()"
+    ></p-button>
   </div>
-</mat-card>
+
+}

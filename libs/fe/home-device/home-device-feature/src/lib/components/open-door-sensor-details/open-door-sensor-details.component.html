@@ -2,20 +2,26 @@
   <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
 }
 
-
-<div class="w-full mt-4">
-  <mat-divider></mat-divider>
-</div>
+<p-divider></p-divider>
 
 <div class="flex w-full py-2 justify-between flex-wrap">
   <div>Stan:</div>
-  <div class="font-semibold">{{openDoorSensor().isOpen ? 'Otwarte' : 'Zamknięte'}}</div>
+  <div class="font-semibold">
+    @if (openDoorSensor().isOpen) {
+      <div class="text-green-600 font-semibold">Otwarte</div>
+    } @else {
+      <div class="text-gray-500 font-semibold">Zamknięte</div>
+    }
+  </div>
 </div>
 
 <div class="flex w-full py-2 justify-between flex-wrap">
   <div>Ostatnio otwarte:</div>
   @if (openDoorSensor().lastOpened) {
-    <div>{{openDoorSensor().lastOpened | date: 'dd.MM.yyyy HH:mm'}}</div>
+    <div class="flex flex-row gap-1">
+      <span>{{openDoorSensor().lastOpened | date: 'dd.MM.yyyy HH:mm'}}</span>
+      <i class="pi pi-clock"></i>
+    </div>
   } @else {
     <div>-</div>
   }

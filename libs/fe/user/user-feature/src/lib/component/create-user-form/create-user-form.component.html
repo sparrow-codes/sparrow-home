@@ -1,39 +1,90 @@
-<form [formGroup]="formGroup" class="w-full flex flex-col gap-2">
-  <mat-form-field>
-    <mat-label>Imię:</mat-label>
-    <input matInput type="text" [formControlName]="formName.FIRST_NAME">
-  </mat-form-field>
+<form [formGroup]="formGroup" class="w-full flex flex-col gap-6">
 
-  <mat-form-field>
-    <mat-label>Nazwisko (opcjonalnie):</mat-label>
-    <input matInput [formControlName]="formName.LAST_NAME">
-  </mat-form-field>
+  <!-- Imię -->
+  <p-floatlabel class="fade-step">
+    <input
+      pInputText
+      id="firstName"
+      fluid="true"
+      pSize="large"
+      type="text"
+      [formControlName]="formName.FIRST_NAME"
+    />
+    <label for="firstName">Imię*</label>
+  </p-floatlabel>
 
-  <mat-form-field >
-    <mat-label>Email:</mat-label>
-    <input matInput [formControlName]="formName.EMAIL">
-  </mat-form-field>
+  <!-- Nazwisko -->
+  <p-floatlabel class="fade-step">
+    <input
+      pInputText
+      id="lastName"
+      fluid="true"
+      pSize="large"
+      type="text"
+      [formControlName]="formName.LAST_NAME"
+    />
+    <label for="lastName">Nazwisko</label>
+  </p-floatlabel>
 
-  <mat-form-field>
-    <mat-label>Hasło:</mat-label>
-    <input matInput type="password" [formControlName]="formName.PASSWORD">
-  </mat-form-field>
+  <!-- Adres e-mail -->
+  <p-floatlabel class="fade-step">
+    <input
+      pInputText
+      id="email"
+      fluid="true"
+      pSize="large"
+      type="email"
+      [formControlName]="formName.EMAIL"
+    />
+    <label for="email">Adres e-mail*</label>
+  </p-floatlabel>
 
-  <mat-form-field>
-    <mat-label>Powtórz hasło:</mat-label>
-    <input matInput type="password" [formControlName]="formName.REPEAT_PASSWORD">
-  </mat-form-field>
+  <!-- Hasło (z feedbackiem siły hasła) -->
+  <p-floatlabel class="fade-step">
+    <p-password
+      id="password"
+      fluid="true"
+      size="large"
+      [feedback]="true"
+      [toggleMask]="true"
+      [formControlName]="formName.PASSWORD"
+      promptLabel="Wprowadź hasło"
+      weakLabel="Słabe"
+      mediumLabel="Średnie"
+      strongLabel="Silne"
+    ></p-password>
+    <label for="password">Hasło*</label>
+  </p-floatlabel>
 
-  <div class="min-h-[30px]">
-    @if(showMismatchPasswordError()) {
-      <span class="text-error text-sm">Podane hasła nie są identyczne</span>
+  <!-- Potwierdź hasło -->
+  <p-floatlabel class="fade-step">
+    <p-password
+      id="repeatPassword"
+      fluid="true"
+      size="large"
+      [feedback]="false"
+      [toggleMask]="true"
+      [formControlName]="formName.REPEAT_PASSWORD"
+    ></p-password>
+    <label for="repeatPassword">Potwierdź hasło*</label>
+  </p-floatlabel>
+
+  <!-- Komunikat błędu -->
+  <div class="min-h-[30px] fade-step flex items-center">
+    @if (showMismatchPasswordError()) {
+      <span class="text-error text-sm">Hasła nie są identyczne</span>
     }
   </div>
 
-  <button mat-button color="primary" class="mt-6" [disabled]="formGroup.invalid" (click)="onSave()">
-    <div class="flex justify-center gap-2 items-center">
-      <span>Utwórz</span>
-      <ng-icon name="heroUser"></ng-icon>
-    </div>
-  </button>
+  <!-- Przycisk utworzenia konta -->
+  <p-button
+    class="fade-step"
+    fluid="true"
+    size="large"
+    [disabled]="formGroup.invalid"
+    (onClick)="onSave()"
+  >
+    Utwórz konto
+  </p-button>
+
 </form>

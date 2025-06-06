@@ -1,19 +1,17 @@
-@import '@angular/material/prebuilt-themes/azure-blue.css';
-@import "app/styles/material/material.css";
-@import "app/styles/colors/colors.css";
+@import "primeicons/primeicons.css";
 
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --ion-background-color: #F5F5F5; // lub bg-super-light-gray z Tailwinda
+}
 
 body, html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-}
-
-body, button, input, textarea {
-  color: var(--app-gray);
 }
 
 * {

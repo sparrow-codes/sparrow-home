@@ -1,6 +1,6 @@
 import { HttpBackend, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
@@ -16,7 +16,9 @@ import {
 } from '@sparrow-home/core';
 import { MaterialConfiguration } from '@sparrow-home/ui';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { providePrimeNG } from 'primeng/config';
 
+import { Noir } from '../theme/noir';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -39,7 +41,15 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideExperimentalZonelessChangeDetection(),
-    provideAnimations(),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Noir,
+        options: {
+          darkModeSelector: false,
+        }
+      },
+    }),
     provideHttpClient(withInterceptors([authInterceptor])),
     ...MaterialConfiguration,
     {

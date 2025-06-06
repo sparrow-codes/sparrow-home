@@ -19,6 +19,7 @@
         "assets": [
           "apps/sparrow-home-mobile/src/config.json",
           "apps/sparrow-home-mobile/src/manifest.json",
+          "apps/sparrow-home-mobile/src/assets",
           {
             "glob": "**/*.svg",
             "input": "node_modules/ionicons/dist/ionicons/svg",

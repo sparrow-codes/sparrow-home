@@ -66,4 +66,8 @@ export class MobileFrameComponent implements OnInit {
       })
     )
   );
+
+  protected prepareRoute(outlet: any): unknown {
+    return outlet?.activatedRouteData?.['animation'];
+  }
 }

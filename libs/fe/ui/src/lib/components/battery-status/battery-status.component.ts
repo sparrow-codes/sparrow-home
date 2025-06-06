@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroBattery0, heroBattery50, heroBattery100 } from '@ng-icons/heroicons/outline';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'sp-battery-status',
-  imports: [CommonModule, NgIcon],
+  imports: [CommonModule, NgIcon, Tag],
   providers: [provideIcons({ heroBattery0, heroBattery50, heroBattery100 })],
   templateUrl: './battery-status.component.html',
 })

@@ -1,5 +1,5 @@
 <div class="flex gap-2 items-center">
   <ng-icon name="heroWifi" size="1.85rem"></ng-icon>
-  <span class="font-semibold w-[40px] text-end whitespace-nowrap" [class.text-success]="signalStrength() > 60"
-        [class.text-warning]="signalStrength() <= 60 && signalStrength() > 10" [class.text-error]="signalStrength() <= 10">{{ signalStrength() }}%</span>
+  <span class="font-semibold w-[40px] text-end whitespace-nowrap" [class.text-green-500]="signalStrength() > 60"
+        [class.text-yellow-500]="signalStrength() <= 60 && signalStrength() > 10" [class.text-red-500]="signalStrength() <= 10">{{ signalStrength() }}%</span>
 </div>
