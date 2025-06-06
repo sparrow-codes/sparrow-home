@@ -3,7 +3,7 @@ import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@a
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HomeDeviceApiService, HomeDeviceDtoApiModel } from '@sparrow-home/api';
+import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel } from '@sparrow-home/api';
 import { LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
@@ -124,11 +124,11 @@ export class HomeDeviceDataService {
       .subscribe();
   }
 
-  private _fetchDevices(): Observable<HomeDeviceDtoApiModel[]> {
+  private _fetchDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
     return this._apiService.getAllDevices().pipe(
       first(),
       tap({
-        next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.map)),
+        next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.mapDetails)),
         error: () => this._snackBar.open('Błąd pobierania listy urządzeń'),
       })
     );

@@ -12,12 +12,11 @@ import {
   ZigbeeSwitchMqttService,
 } from '@sparrow-server/external-api';
 import { CronJobName } from '@sparrow-server/shared';
-import { first, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { first, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { DeviceDetailsMapper } from '../mappers/device-details-mapper';
 import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
-import { HomeDeviceDto } from '../models/home-device-dto';
 
 @Injectable()
 export class HomeDeviceService {
@@ -35,9 +34,42 @@ export class HomeDeviceService {
     this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
   }
 
-  public async getListOfDevices(): Promise<HomeDeviceDto[]> {
-    const devices: HomeDevice[] = await this._homeDeviceRepository.find();
-    return devices.map(this._toDeviceDto);
+  public getListOfDevices(): Observable<HomeDeviceDetailsDto[]> {
+    return from(this._homeDeviceRepository.find()).pipe(
+      first(),
+      switchMap((entities) => {
+        if (!entities.length) {
+          return of([]);
+        }
+
+        return forkJoin(
+          entities.map((entity) => {
+            switch (entity.deviceType) {
+              case DeviceType.POWER_PLUG:
+                return this._zigbeeSwitchMqttService
+                  .getSwitchStatus(entity.zigbeeDeviceId)
+                  .pipe(map((status) => DeviceDetailsMapper.getSwitchDetails(entity, status)));
+
+              case DeviceType.SONOFF_TEMPERATURE_SENSOR:
+                return of(DeviceDetailsMapper.getTemperatureSensorDetails(entity));
+
+              case DeviceType.OPEN_DOOR_SENSOR:
+                return of(DeviceDetailsMapper.getOpenDoorSensorDetails(entity));
+
+              case DeviceType.SIREN:
+                return of(DeviceDetailsMapper.getSirenDetailsDto(entity));
+
+              case DeviceType.PILOT:
+                return of(DeviceDetailsMapper.getPilotDetailDto(entity));
+
+              default:
+                Logger.error(`Unsupported device type for device ${entity.deviceName}`);
+                return of(null); // Można też filtrować null później
+            }
+          })
+        ).pipe(map((details) => details.filter((d): d is HomeDeviceDetailsDto => !!d)));
+      })
+    );
   }
 
   public addDevice(type: DeviceType, name: string): Observable<boolean> {
@@ -131,15 +163,6 @@ export class HomeDeviceService {
         return this._zigbeeSwitchMqttService.setSwitchOn(entity.zigbeeDeviceId, isOn);
       })
     );
-  }
-
-  private _toDeviceDto(device: HomeDevice): HomeDeviceDto {
-    return {
-      id: device.id,
-      name: device.deviceName,
-      type: device.deviceType,
-      homeDeviceId: device.zigbeeDeviceId,
-    };
   }
 
   private async _getUser(): Promise<User> {

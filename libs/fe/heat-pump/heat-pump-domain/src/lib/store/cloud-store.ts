@@ -8,9 +8,8 @@ import {
   GetHeatingPreferencesResponseApiModel,
   GetHeatPumpDetailsResponseApiModel,
   GetScheduledWaterHeatingStatusResponseApiModel,
-  HomeDeviceApiService,
-  HomeDeviceDtoApiModel,
-  PanasonicCloudApiService,
+  HomeDeviceApiService, HomeDeviceDetailsDtoApiModel,
+  PanasonicCloudApiService
 } from '@sparrow-home/api';
 import { DeviceType, LoaderService } from '@sparrow-home/core';
 import { SelectOption } from '@sparrow-home/ui';
@@ -84,7 +83,7 @@ export const CloudStore = signalStore(
           })
         );
 
-      const _getHomeDeviceOptions: () => Observable<HomeDeviceDtoApiModel[]> = () =>
+      const _getHomeDeviceOptions: () => Observable<HomeDeviceDetailsDtoApiModel[]> = () =>
         homeDeviceApiService.getAllDevices().pipe(
           tapResponse({
             next: (deviceList) =>

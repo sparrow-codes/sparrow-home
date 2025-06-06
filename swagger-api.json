@@ -531,7 +531,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HomeDeviceDto"
+                    "$ref": "#/components/schemas/HomeDeviceDetailsDto"
                   }
                 }
               }
@@ -1322,7 +1322,7 @@
           "lng"
         ]
       },
-      "HomeDeviceDto": {
+      "HomeDeviceDetailsDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -1336,13 +1336,21 @@
           },
           "name": {
             "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
           }
         },
         "required": [
           "id",
           "type",
           "homeDeviceId",
-          "name"
+          "name",
+          "isOnline",
+          "signalStrength"
         ]
       },
       "CreateDeviceRequest": {
@@ -1551,37 +1559,6 @@
           "isOnline",
           "signalStrength",
           "battery"
-        ]
-      },
-      "HomeDeviceDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength"
         ]
       },
       "GetDeviceDetailsResponse": {

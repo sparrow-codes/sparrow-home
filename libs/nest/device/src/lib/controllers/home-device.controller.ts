@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiT
 import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
 
-import { HomeDeviceDto } from '../models/home-device-dto';
+import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
 import { OpenDoorSensorDetailsDto } from '../models/open-door-sensor-details-dto';
 import { PilotDetailsDto } from '../models/pilot-details.dto';
 import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
@@ -23,8 +23,8 @@ export class HomeDeviceController {
 
   @ApiOperation({ operationId: 'getAllDevices' })
   @Get('all')
-  @ApiResponse({ type: HomeDeviceDto, isArray: true })
-  public async getAllDevices(): Promise<HomeDeviceDto[]> {
+  @ApiResponse({ type: HomeDeviceDetailsDto, isArray: true })
+  public getAllDevices(): Observable<HomeDeviceDetailsDto[]> {
     return this._homeDeviceService.getListOfDevices();
   }
 
