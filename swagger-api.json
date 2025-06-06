@@ -683,6 +683,33 @@
         ]
       }
     },
+    "/api/home-device/avg-temperature": {
+      "get": {
+        "operationId": "getHomeAvgTemperature",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHomeAvgTemperature"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
     "/api/aqua/preferences": {
       "put": {
         "operationId": "setAquaPreference",
@@ -1586,6 +1613,17 @@
         },
         "required": [
           "isOn"
+        ]
+      },
+      "GetHomeAvgTemperature": {
+        "type": "object",
+        "properties": {
+          "avgTemperature": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "avgTemperature"
         ]
       },
       "SetAquaPreferences": {

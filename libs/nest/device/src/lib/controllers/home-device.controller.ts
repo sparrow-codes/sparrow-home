@@ -12,6 +12,7 @@ import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-detail
 import { HomeDeviceService } from '../services/home-device.service';
 import { CreateDeviceRequest } from './models/create-device-request';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
+import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { SetPluginSwitchStatusRequest } from './models/set-plugin-switch-status.request';
 
 @ApiBearerAuth()
@@ -63,5 +64,14 @@ export class HomeDeviceController {
     @Body() request: SetPluginSwitchStatusRequest
   ): Observable<boolean> {
     return this._homeDeviceService.setPluginSwitchStatus(Number(id), request.isOn);
+  }
+
+  @ApiOperation({ operationId: 'getHomeAvgTemperature' })
+  @ApiResponse({type: GetHomeAvgTemperature})
+  @Get('avg-temperature')
+  public async getHomeAvgTemperature(): Promise<GetHomeAvgTemperature> {
+    return {
+      avgTemperature: await this._homeDeviceService.getAvgTemperature()
+    };
   }
 }

@@ -165,6 +165,28 @@ export class HomeDeviceService {
     );
   }
 
+  public async getAvgTemperature(): Promise<number | null> {
+    const temperatureSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
+      deviceType: DeviceType.SONOFF_TEMPERATURE_SENSOR,
+    });
+
+    if(temperatureSensors.length === 0) {
+      return null;
+    }
+
+    const validTemperatures: number[] = temperatureSensors
+      .map((device) => device.temperature)
+      .filter((temp): temp is number => typeof temp === 'number' && !isNaN(temp));
+
+    if (validTemperatures.length === 0) {
+      return null;
+    }
+
+    const avg: number = validTemperatures.reduce((sum, temp) => sum + temp, 0) / validTemperatures.length;
+
+    return Math.round(avg * 10) / 10;
+  }
+
   private async _getUser(): Promise<User> {
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     if (!user) {
