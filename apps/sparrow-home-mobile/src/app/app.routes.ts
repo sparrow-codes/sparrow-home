@@ -3,7 +3,6 @@ import {
   authGuard,
   configurationNotReadyGuard,
   configurationReadyGuard,
-  pageTitleResolver,
   RoutePath,
   setupResolver,
 } from '@sparrow-home/core';
@@ -12,7 +11,6 @@ import { MobileFrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
 export const appRoutes: Route[] = [
   {
     path: RoutePath.CREATE_USER,
-    title: pageTitleResolver,
     canActivate: [configurationNotReadyGuard],
     loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.CreateUserPageComponent),
   },
@@ -21,7 +19,6 @@ export const appRoutes: Route[] = [
     data: {
       createNewUserLink: RoutePath.CREATE_ADDITIONAL_USER,
     },
-    title: pageTitleResolver,
     loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.LoginComponent),
     canActivate: [configurationReadyGuard],
   },
@@ -30,7 +27,6 @@ export const appRoutes: Route[] = [
     data: {
       loginPath: RoutePath.LOGIN,
     },
-    title: pageTitleResolver,
     loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.CreateAdditionalUserComponent),
   },
   {
@@ -45,33 +41,31 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: RoutePath.MAIN,
-        title: pageTitleResolver,
-        loadChildren: () => import('@sparrow-home/home-device-feature').then((f) => f.homeDeviceRoutes),
+        loadChildren: () => import('@sparrow-home/main-panel-feature').then((f) => f.mainPanelFeatureRoutes),
       },
       {
         path: RoutePath.HEAT_PUMP,
-        title: pageTitleResolver,
         loadChildren: () => import('@sparrow-home/heat-pump-feature').then((feature) => feature.heatPumpRoutes),
       },
       {
         path: RoutePath.AQUARIUM,
-        title: pageTitleResolver,
         loadChildren: () => import('@sparrow-home/aqua-feature').then((feature) => feature.aquaFeatureRoutes),
       },
       {
         path: RoutePath.ALARM,
-        title: pageTitleResolver,
         loadComponent: () => import('@sparrow-home/alarm-feature').then((c) => c.AlarmPageComponent),
       },
       {
         path: RoutePath.NOT_FOUND,
-        title: pageTitleResolver,
         component: PageNotFoundComponent,
       },
       {
         path: RoutePath.USER_PROFILE,
-        title: pageTitleResolver,
         loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.UserDetailsComponent),
+      },
+      {
+        path: RoutePath.DEVICES,
+        loadChildren: () => import('@sparrow-home/home-device-feature').then((feature) => feature.homeDeviceRoutes)
       },
       {
         path: '',

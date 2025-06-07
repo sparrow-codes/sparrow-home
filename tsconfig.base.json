@@ -25,6 +25,8 @@
       "@sparrow-home/heat-pump-feature": ["libs/fe/heat-pump/heat-pump-feature/src/index.ts"],
       "@sparrow-home/home-device-domain": ["libs/fe/home-device/home-device-domain/src/index.ts"],
       "@sparrow-home/home-device-feature": ["libs/fe/home-device/home-device-feature/src/index.ts"],
+      "@sparrow-home/main-panel-domain": ["libs/fe/main-panel/main-panel-domain/src/index.ts"],
+      "@sparrow-home/main-panel-feature": ["libs/fe/main-panel/main-panel-feature/src/index.ts"],
       "@sparrow-home/ui": ["libs/fe/ui/src/index.ts"],
       "@sparrow-home/user-domain": ["libs/fe/user/user-domain/src/index.ts"],
       "@sparrow-home/user-feature": ["libs/fe/user/user-feature/src/index.ts"],

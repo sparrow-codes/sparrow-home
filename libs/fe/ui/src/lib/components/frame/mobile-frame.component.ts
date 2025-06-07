@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatButton } from '@angular/material/button';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { IonContent, IonHeader, IonRouterLink, IonTabBar, IonTabButton, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonRouterLink, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
 import { bootstrapBellFill } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroComputerDesktop, heroLightBulb } from '@ng-icons/heroicons/outline';
@@ -13,7 +11,6 @@ import { RoutePath } from '@sparrow-home/core';
 import { filter, first, map } from 'rxjs';
 
 import { NavigationItem } from '../../models/navigation-item';
-import { AppLogoComponent } from '../logo/app-logo.component';
 
 @Component({
   selector: 'sp-mobile-frame',
@@ -21,18 +18,12 @@ import { AppLogoComponent } from '../logo/app-logo.component';
     CommonModule,
     IonHeader,
     IonContent,
-    IonToolbar,
-    AppLogoComponent,
     RouterOutlet,
     IonTabBar,
     IonTabButton,
     NgIcon,
     RouterLink,
-    MatButton,
     IonRouterLink,
-    MatMenu,
-    MatMenuItem,
-    MatMenuTrigger,
   ],
   templateUrl: './mobile-frame.component.html',
   styleUrl: './mobile-frame.component.css',
@@ -66,8 +57,4 @@ export class MobileFrameComponent implements OnInit {
       })
     )
   );
-
-  protected prepareRoute(outlet: any): unknown {
-    return outlet?.activatedRouteData?.['animation'];
-  }
 }

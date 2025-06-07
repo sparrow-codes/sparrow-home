@@ -2,8 +2,3 @@
   --ion-tab-bar-background: var(--color-nav-background);
   --ion-tab-bar-border-color: var(--color-border-light);
 }
-
-
-ion-toolbar.my-custom-color {
-  --ion-toolbar-background: var(--app-dark-blue);
-}

@@ -170,13 +170,13 @@ export class HomeDeviceService {
       deviceType: DeviceType.SONOFF_TEMPERATURE_SENSOR,
     });
 
-    if(temperatureSensors.length === 0) {
+    if (temperatureSensors.length === 0) {
       return null;
     }
 
     const validTemperatures: number[] = temperatureSensors
       .map((device) => device.temperature)
-      .filter((temp): temp is number => typeof temp === 'number' && !isNaN(temp));
+      .filter((value) => value !== null);
 
     if (validTemperatures.length === 0) {
       return null;

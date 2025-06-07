@@ -14,10 +14,10 @@ import { DeviceType, MobilePushNotificationService } from '@sparrow-home/core';
 import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } from '@sparrow-home/home-device-domain';
 import { deviceItemFadeIn, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
-import { InputSwitch } from 'primeng/inputswitch';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Tag } from 'primeng/tag';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 
 import { CreateDeviceDialogComponent } from '../../components/create-device-dialog/create-device-dialog.component';
@@ -39,10 +39,10 @@ type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
     InputText,
     DeviceListItemComponent,
     Tag,
-    InputSwitch,
     FormsModule,
     PageTitleComponent,
     Paginator,
+    ToggleSwitch,
   ],
   templateUrl: './device-page.component.html',
   providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash, heroArrowRightCircle })],

@@ -50,10 +50,10 @@
 
         <!-- Gniazdko -->
         @if (device.type === deviceType.POWER_PLUG) {
-          <p-inputSwitch
+          <p-toggle-switch
             [ngModel]="device.isOn"
             (onChange)="onSwitchAction(device.id, $event.checked)"
-          ></p-inputSwitch>
+          ></p-toggle-switch>
         }
 
       </sp-device-list-item>
@@ -64,6 +64,7 @@
   <!-- Paginacja -->
   <p-paginator
     [showFirstLastIcon]="false"
+    [alwaysShow]="false"
     [rows]="4"
     [totalRecords]="data()?.length"
     (onPageChange)="pagination.set($event)"

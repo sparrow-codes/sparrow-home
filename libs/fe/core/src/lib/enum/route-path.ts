@@ -8,4 +8,5 @@ export enum RoutePath {
   NOT_FOUND = 'not-found',
   ALARM = 'alarm',
   USER_PROFILE = 'user-profile',
+  DEVICES = 'devices',
 }
