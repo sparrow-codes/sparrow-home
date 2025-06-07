@@ -187,6 +187,18 @@ export class HomeDeviceService {
     return Math.round(avg * 10) / 10;
   }
 
+  public async areAllDoorsAndWindowsClosed(): Promise<boolean | null> {
+    const openSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
+      deviceType: DeviceType.OPEN_DOOR_SENSOR,
+    });
+
+    if (!openSensors.length) {
+      return null;
+    }
+
+    return openSensors.every((sensor) => !sensor.isOpen);
+  }
+
   private async _getUser(): Promise<User> {
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     if (!user) {

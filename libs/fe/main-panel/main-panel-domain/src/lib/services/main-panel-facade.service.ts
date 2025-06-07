@@ -16,6 +16,10 @@ export class MainPanelFacadeService {
     return this._store.isAlarmOn;
   }
 
+  public get isHouseClosed(): Signal<boolean | null> {
+    return this._store.areAllWindowsAndDoorsClosed;
+  }
+
   public fetchInitData(): void {
     this._store.fetchInitData();
   }

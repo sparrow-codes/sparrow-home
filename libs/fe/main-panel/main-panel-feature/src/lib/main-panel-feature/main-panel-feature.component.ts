@@ -17,6 +17,7 @@ export class MainPanelFeatureComponent implements OnInit {
 
   protected readonly avgTemperature: Signal<number | null> = this._facadeService.avgTemperature;
   protected readonly isAlarmOn: Signal<boolean> = this._facadeService.isAlarmOn;
+  protected readonly isHouseClosed: Signal<boolean | null> = this._facadeService.isHouseClosed;
 
   public ngOnInit(): void {
     this._facadeService.fetchInitData();

@@ -74,4 +74,11 @@ export class HomeDeviceController {
       avgTemperature: await this._homeDeviceService.getAvgTemperature()
     };
   }
+
+  @ApiOperation({ operationId: 'areAllDoorsAndWindowsClosed' })
+  @ApiResponse({type: Boolean})
+  @Get('are-all-doors-and-windows-closed')
+  public async areAllDoorsAndWindowsClosed(): Promise<boolean | null> {
+    return this._homeDeviceService.areAllDoorsAndWindowsClosed();
+  }
 }

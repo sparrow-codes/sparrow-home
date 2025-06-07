@@ -710,6 +710,33 @@
         ]
       }
     },
+    "/api/home-device/are-all-doors-and-windows-closed": {
+      "get": {
+        "operationId": "areAllDoorsAndWindowsClosed",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
     "/api/aqua/preferences": {
       "put": {
         "operationId": "setAquaPreference",

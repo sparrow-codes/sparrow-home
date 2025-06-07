@@ -1,14 +1,15 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { combineLatest, finalize, map, Observable, pipe, switchMap, tap } from 'rxjs';
 import { inject } from '@angular/core';
-import { AlarmApiService, HomeDeviceApiService } from '@sparrow-home/api';
 import { tapResponse } from '@ngrx/operators';
-import { LoaderService } from '@sparrow-home/core';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { AlarmApiService, HomeDeviceApiService } from '@sparrow-home/api';
+import { LoaderService } from '@sparrow-home/core';
+import { combineLatest, finalize, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 interface MainPanelStoreState {
   avgTemperature: number | null;
   isAlarmOn: boolean;
+  areAllWindowsAndDoorsClosed: boolean | null;
 }
 
 export const MainPanelStore = signalStore(
@@ -16,6 +17,7 @@ export const MainPanelStore = signalStore(
   withState<MainPanelStoreState>({
     avgTemperature: null,
     isAlarmOn: false,
+    areAllWindowsAndDoorsClosed: null,
   }),
   withMethods(
     (
@@ -43,12 +45,21 @@ export const MainPanelStore = signalStore(
         );
       }
 
+      function getWindowsAndDoorStatus(): Observable<boolean | null> {
+        return homeDeviceApiService.areAllDoorsAndWindowsClosed().pipe(
+          tapResponse({
+            next: (areAllWindowsAndDoorsClosed) => patchState(store, { areAllWindowsAndDoorsClosed }),
+            error: () => console.log('Error getting windows and door status'),
+          })
+        );
+      }
+
       return {
         fetchInitData: rxMethod<void>(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap(() =>
-              combineLatest([getAvgTemperature(), getAlarmStatus()]).pipe(
+              combineLatest([getAvgTemperature(), getAlarmStatus(), getWindowsAndDoorStatus()]).pipe(
                 finalize(() => (loaderService.showLoader = false))
               )
             )
