@@ -7,12 +7,13 @@ import { staggeredFadeIn } from '@sparrow-home/ui';
 import { User, UserDataFacadeService, UserRole } from '@sparrow-home/user-domain';
 import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
 import { Divider } from 'primeng/divider';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-user-details',
-  imports: [CommonModule, FormsModule, Button, Avatar, Divider, ToggleSwitch],
+  imports: [CommonModule, FormsModule, Button, Avatar, Divider, ToggleSwitch, Card],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css',
   providers: [provideIcons({ heroArrowLeftEndOnRectangleSolid })],

@@ -1,61 +1,64 @@
 @if (user(); as user) {
 
-  <div @staggeredFadeIn class="bg-white p-6 rounded-xl shadow-md w-full max-w-[360px] mx-auto">
+  <p-card>
+    <div @staggeredFadeIn class="w-full max-w-[360px]">
 
-    <!-- Avatar i dane głównego użytkownika -->
-    <div class="flex flex-col items-center text-center gap-4 py-6 fade-step">
-      <p-avatar
-        size="xlarge"
-        label="{{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}"
-        shape="circle"
-      ></p-avatar>
+      <!-- Avatar i dane głównego użytkownika -->
+      <div class="flex flex-col items-center text-center gap-4 py-6 fade-step">
+        <p-avatar
+          size="xlarge"
+          label="{{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}"
+          shape="circle"
+        ></p-avatar>
 
-      <div class="text-xl font-semibold uppercase tracking-wide">
-        <span>{{ user.firstName }}</span>
-        @if (user.lastName) {
-          <span class="ml-1">{{ user.lastName }}</span>
-        }
+        <div class="text-xl font-semibold uppercase tracking-wide">
+          <span>{{ user.firstName }}</span>
+          @if (user.lastName) {
+            <span class="ml-1">{{ user.lastName }}</span>
+          }
+        </div>
+
+        <span class="text-gray-500 text-sm">{{ user.email }}</span>
       </div>
 
-      <span class="text-gray-500 text-sm">{{ user.email }}</span>
-    </div>
+      <!-- Lista użytkowników dodatkowych -->
+      @if (additionalUsers()) {
+        <div class="flex flex-col gap-2 mb-6 fade-step">
+          <span class="font-medium text-sm">Lista użytkowników:</span>
 
-    <!-- Lista użytkowników dodatkowych -->
-    @if (additionalUsers()) {
-      <div class="flex flex-col gap-2 mb-6 fade-step">
-        <span class="font-medium text-sm">Lista użytkowników:</span>
-
-        @for (user of additionalUsers(); track user.id) {
-          <div class="flex justify-between items-center border-b border-light-gray py-2 text-sm">
+          @for (user of additionalUsers(); track user.id) {
+            <div class="flex justify-between items-center border-b border-light-gray py-2 text-sm">
           <span>
             {{ user.firstName }}
             @if (user.lastName) {
               {{ ' ' + user.lastName }}
             }
           </span>
-            <p-toggle-switch
-              [disabled]="!!user.isActive"
-              [ngModel]="user.isActive"
-              (onChange)="handleUserActivatedToggle($event.checked, user.id)"
-            ></p-toggle-switch>
-          </div>
-        }
-      </div>
-    }
+              <p-toggle-switch
+                [disabled]="!!user.isActive"
+                [ngModel]="user.isActive"
+                (onChange)="handleUserActivatedToggle($event.checked, user.id)"
+              ></p-toggle-switch>
+            </div>
+          }
+        </div>
+      }
 
-    <!-- Divider -->
-    <p-divider class="my-4 fade-step"></p-divider>
+      <!-- Divider -->
+      <p-divider class="my-4 fade-step"></p-divider>
 
-    <!-- Przycisk wylogowania -->
-    <p-button
-      label="Wyloguj"
-      icon="pi pi-sign-out"
-      variant="text"
-      fluid="true"
-      severity="danger"
-      class="fade-step"
-      (onClick)="handleLogout()"
-    ></p-button>
-  </div>
+      <!-- Przycisk wylogowania -->
+      <p-button
+        label="Wyloguj"
+        icon="pi pi-sign-out"
+        variant="text"
+        fluid="true"
+        severity="danger"
+        class="fade-step"
+        (onClick)="handleLogout()"
+      ></p-button>
+    </div>
+
+  </p-card>
 
 }

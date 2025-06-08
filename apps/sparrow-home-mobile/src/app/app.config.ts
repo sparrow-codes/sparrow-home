@@ -43,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
     providePrimeNG({
+      ripple: true,
       theme: {
         preset: Noir,
         options: {
