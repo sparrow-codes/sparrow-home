@@ -28,3 +28,8 @@ ion-tab-bar {
   border-top-right-radius: 5px;
 }
 
+p-card {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);;
+}
+

@@ -16,6 +16,7 @@ import {
 } from '@sparrow-home/home-device-domain';
 import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
 import { Divider } from 'primeng/divider';
 import { ToggleButton } from 'primeng/togglebutton';
 import { filter, first, map, tap } from 'rxjs';
@@ -39,6 +40,7 @@ import { TemperatureSensorDetailsComponent } from '../../components/temperature-
     FormsModule,
     Button,
     Divider,
+    Card,
   ],
   templateUrl: './device-details.component.html',
   providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],

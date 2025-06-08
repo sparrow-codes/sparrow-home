@@ -2,8 +2,7 @@
   <sp-page-title @sparrowFadeIn [routerLink]="['/devices']">szczegóły urządzenia</sp-page-title>
 
   <div class="w-full flex justify-center px-4 pt-6">
-    <div class="bg-white rounded-xl shadow-sm px-4 py-3 w-full">
-
+    <p-card class="w-full">
       <!-- Nagłówek -->
       <div class="flex justify-between items-center mb-4">
         <span class="text-lg text-text-primary">{{ homeDevice.name }}</span>
@@ -75,7 +74,7 @@
         />
       </div>
 
-    </div>
+    </p-card>
   </div>
 
 }
