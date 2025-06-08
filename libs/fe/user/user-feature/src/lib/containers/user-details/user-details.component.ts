@@ -8,15 +8,15 @@ import { User, UserDataFacadeService, UserRole } from '@sparrow-home/user-domain
 import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
-import { InputSwitch } from 'primeng/inputswitch';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-user-details',
-  imports: [CommonModule, InputSwitch, FormsModule, Button, Avatar, Divider],
+  imports: [CommonModule, FormsModule, Button, Avatar, Divider, ToggleSwitch],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css',
   providers: [provideIcons({ heroArrowLeftEndOnRectangleSolid })],
-  animations: [staggeredFadeIn]
+  animations: [staggeredFadeIn],
 })
 export class UserDetailsComponent implements OnInit {
   private readonly _dataService: UserDataFacadeService = inject(UserDataFacadeService);

@@ -17,3 +17,14 @@ body, html {
 * {
   font-family: 'Inter', sans-serif;
 }
+
+ion-tab-bar {
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-border-color: #2e3136;
+  --ion-tab-bar-color-selected: #6B7280;
+
+  border: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+

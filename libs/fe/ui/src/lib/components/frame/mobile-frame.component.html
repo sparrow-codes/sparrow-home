@@ -6,14 +6,14 @@
   @for (item of navigationItems; track item.routerLink) {
   <ion-tab-button
     class="transition-colors"
-    [class.text-nav-icon-inactive]="currentUrl() !== '/' + item.routerLink"
-    [class.text-nav-icon-active]="currentUrl() === '/' + item.routerLink"
+    [class.text-gray-500]="currentUrl() !== '/' + item.routerLink"
+    [class.text-black]="currentUrl() === '/' + item.routerLink"
     [routerLink]="item.routerLink"
     [selected]="currentUrl() === '/' + item.routerLink"
-    [routerDirection]="'back'"
   >
-    <ng-icon size="1.5rem" [name]="item.icon"></ng-icon>
-    {{ item.label }}
+    <i size="1.5rem" [class]="item.icon" class="text-[32px]"></i>
+    <span class="text-sm">{{ item.label }}</span>
+
   </ion-tab-button>
   }
 </ion-tab-bar>

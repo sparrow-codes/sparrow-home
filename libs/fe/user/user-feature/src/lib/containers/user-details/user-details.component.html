@@ -33,11 +33,11 @@
               {{ ' ' + user.lastName }}
             }
           </span>
-            <p-inputSwitch
+            <p-toggle-switch
               [disabled]="!!user.isActive"
               [ngModel]="user.isActive"
               (onChange)="handleUserActivatedToggle($event.checked, user.id)"
-            ></p-inputSwitch>
+            ></p-toggle-switch>
           </div>
         }
       </div>
