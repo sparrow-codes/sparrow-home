@@ -4,12 +4,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { provideIcons } from '@ng-icons/core';
-import { heroArrowRightCircle, heroMagnifyingGlass, heroPlusCircle, heroTrash } from '@ng-icons/heroicons/outline';
 import { DeviceType, MobilePushNotificationService } from '@sparrow-home/core';
 import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } from '@sparrow-home/home-device-domain';
 import { deviceItemFadeIn, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
@@ -18,10 +16,9 @@ import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Tag } from 'primeng/tag';
 import { ToggleSwitch } from 'primeng/toggleswitch';
-import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
-
-import { CreateDeviceDialogComponent } from '../../components/create-device-dialog/create-device-dialog.component';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
 import { DeviceListItemComponent } from '../../components/device-list-item/device-list-item.component';
+import { RouterLink } from '@angular/router';
 
 type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
 
@@ -43,15 +40,14 @@ type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
     PageTitleComponent,
     Paginator,
     ToggleSwitch,
+    RouterLink,
   ],
   templateUrl: './device-page.component.html',
-  providers: [provideIcons({ heroMagnifyingGlass, heroPlusCircle, heroTrash, heroArrowRightCircle })],
   animations: [sparrowFadeIn, deviceItemFadeIn],
 })
 export class DevicePageComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly _dialog: MatDialog = inject(MatDialog);
   private readonly _pushNotificationService: MobilePushNotificationService = inject(MobilePushNotificationService);
 
   protected readonly data: Signal<Device[] | null> = this._facadeService.homeDevices as Signal<Device[]>;
@@ -69,14 +65,6 @@ export class DevicePageComponent implements OnInit {
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
     this._pushNotificationService.subscribeToNotifications();
-  }
-
-  protected onAddClick(): void {
-    this._dialog
-      .open(CreateDeviceDialogComponent, { disableClose: true, width: '350px' })
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe(() => this._facadeService.fetchDevices());
   }
 
   protected onSwitchAction(id: number, value: boolean): void {

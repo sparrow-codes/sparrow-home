@@ -1,41 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatOption, MatSelect } from '@angular/material/select';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroCheckCircle, heroExclamationCircle, heroLink } from '@ng-icons/heroicons/outline';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
+import { PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
+import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
 import { finalize, first } from 'rxjs';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
 import { CreateDeviceFormName } from './form-service/enum/create-device-form-name';
 import { CreateDeviceForm } from './form-service/model/create-device-form';
+import { Select } from 'primeng/select';
 
 @Component({
   imports: [
     CommonModule,
-    MatButton,
-    MatError,
-    MatInput,
+    PageTitleComponent,
+    Card,
     ReactiveFormsModule,
-    MatSelect,
-    MatOption,
-    MatLabel,
-    MatFormField,
-    MatDialogModule,
-    NgIcon,
-    MatProgressSpinner,
+    InputText,
+    DropdownModule,
+    Button,
+    FloatLabel,
+    Select,
   ],
-  templateUrl: './create-device-dialog.component.html',
-  providers: [CreateDeviceFormService, provideIcons({ heroLink, heroExclamationCircle, heroCheckCircle })],
+  templateUrl: './add-device-page.component.html',
+  providers: [CreateDeviceFormService],
+  animations: [staggeredFadeIn],
 })
-export class CreateDeviceDialogComponent {
+export class AddDevicePageComponent {
   private readonly _formService: CreateDeviceFormService = inject(CreateDeviceFormService);
   private readonly facadeService: DeviceFacadeService = inject(DeviceFacadeService);
 

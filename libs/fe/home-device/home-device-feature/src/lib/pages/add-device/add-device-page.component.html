@@ -1,0 +1,70 @@
+<sp-page-title [navigationDisabled]="joinInProgress()" [routerLink]="['../']">Dodaj nowe urządzenie</sp-page-title>
+
+<p-card>
+  <form @staggeredFadeIn [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-6 pt-2">
+
+    <!-- Nazwa urządzenia -->
+    <p-float-label>
+      <input
+        id="deviceName"
+        type="text"
+        pInputText
+        pSize="large"
+        [formControl]="nameControl"
+        [disabled]="joinInProgress()"
+        fluid="true"
+        class="fade-step"
+      />
+      <label for="deviceName">Podaj nazwę urządzenia</label>
+    </p-float-label>
+
+    <p-floatlabel class="w-full fade-step">
+      <p-select [formControl]="deviceTypeControl" inputId="in_label" [options]="dropdownOptions" optionLabel="label" [size]="'large'"
+                optionValue="value" [fluid]="true"/>
+      <label for="in_label">Wybierz typ urządzenia</label>
+    </p-floatlabel>
+
+    <div class="h-[40px]">
+      @if (deviceJoined() === true && !joinInProgress()) {
+        <div class="flex gap-2 items-center justify-center w-full">
+          <i class="pi pi-check-circle text-green-600"></i>
+          <span class="text-green-600">Nazwiązano połączenie!</span>
+        </div>
+      }
+
+      @if (deviceJoined() === false && !joinInProgress()) {
+        <div class="flex gap-2 items-center justify-center w-full">
+          <i class="pi pi-ban text-red-500"></i>
+          <span class="text-red-500">Parowanie zakończone niepowodzeniem</span>
+        </div>
+      }
+
+      @if (joinInProgress()) {
+        <div class="flex gap-2 items-center justify-center w-full">
+          <span class="text-red-gray-700">Parowanie w toku...</span>
+        </div>
+      }
+    </div>
+    <!-- Komunikat błędu -->
+
+    <!-- Przycisk dodania -->
+    @if (deviceJoined() === true) {
+      <p-button
+        type="button"
+        label="Ok"
+        size="large"
+        fluid="true"
+      ></p-button>
+    } @else {
+      <p-button
+        type="submit"
+        class="fade-step"
+        [disabled]="formGroup.invalid || joinInProgress()"
+        label="Dodaj urządzenie"
+        [loading]="joinInProgress()"
+        size="large"
+        fluid="true"
+      ></p-button>
+    }
+  </form>
+</p-card>

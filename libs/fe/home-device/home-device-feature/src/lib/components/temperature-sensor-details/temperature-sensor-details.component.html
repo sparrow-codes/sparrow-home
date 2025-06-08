@@ -1,13 +1,10 @@
 @if (temperatureSensor().battery; as battery) {
-  @if (battery !== undefined) {
-    <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
-  }
+<sp-battery-status [batteryStatus]="battery"></sp-battery-status>
 }
 
 <div class="w-full mt-4">
-  <mat-divider></mat-divider>
+  <p-divider></p-divider>
 </div>
-
 
 <div class="flex w-full py-2 justify-between flex-wrap">
   <div>Temperatura:</div>
