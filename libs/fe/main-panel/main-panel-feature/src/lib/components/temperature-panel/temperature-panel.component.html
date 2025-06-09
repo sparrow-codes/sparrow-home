@@ -12,6 +12,7 @@
         <a
           class="absolute bottom-4  bg-white/80 backdrop-blur px-4 py-2 rounded-r text-sm font-medium text-gray-700 hover:bg-white/90 transition no-underline"
           [routerLink]="['../', 'devices']"
+          [queryParams]="{deviceType: DeviceType.OPEN_DOOR_SENSOR}"
           aria-label="Przejdź do listy urządzeń z otwartymi drzwiami i oknami"
         >
           Niektóre drzwi i okna są otwarte

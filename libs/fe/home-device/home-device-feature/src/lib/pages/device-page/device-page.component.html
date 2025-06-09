@@ -1,7 +1,7 @@
-<div class="w-full max-w-[360px] mx-auto flex flex-col gap-4 h-full">
+<div class="w-full max-w-[360px] mx-auto flex flex-col gap-1 h-full">
 
   <!-- Nagłówek i przycisk dodawania -->
-  <sp-page-title>Dostępne urządzenia</sp-page-title>
+  <sp-page-title [routerLink]="['../']">Dostępne urządzenia</sp-page-title>
 
   <!-- Pole wyszukiwania -->
   <div class="flex flex-row gap-2 justify-center items-center">
@@ -24,50 +24,60 @@
   </div>
 
   <div class="flex flex-col h-full justify-between">
+    <div class="h-[35px]">
+      @if (deviceFilter() === deviceType.OPEN_DOOR_SENSOR) {
+        <ion-chip>
+          <div class="flex flex-row gap-2">
+            <span>Okna i drzwi</span>
+            <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
+          </div>
+        </ion-chip>
+      }
+    </div>
 
-  <!-- Lista urządzeń -->
-  <div class="h-[420px] flex flex-col gap-4">
-    @for (device of paginatedDevices(); track device.id) {
-      <sp-device-list-item
-        @deviceItemFadeIn
-        [deviceId]="device.id"
-        [deviceName]="device.name"
-        [deviceType]="device.type"
-      >
+    <!-- Lista urządzeń -->
+    <div class="h-[420px] flex flex-col gap-2">
+      @for (device of paginatedDevices(); track device.id) {
+        <sp-device-list-item
+          @deviceItemFadeIn
+          [deviceId]="device.id"
+          [deviceName]="device.name"
+          [deviceType]="device.type"
+        >
 
-        <!-- Czujnik otwarcia -->
-        @if (device.type === deviceType.OPEN_DOOR_SENSOR) {
-          <p-tag
-            [value]="device.isOpen ? 'Otwarte' : 'Zamknięte'"
-            [severity]="device.isOpen ? 'info' : 'success'"
-          ></p-tag>
-        }
+          <!-- Czujnik otwarcia -->
+          @if (device.type === deviceType.OPEN_DOOR_SENSOR) {
+            <p-tag
+              [value]="device.isOpen ? 'Otwarte' : 'Zamknięte'"
+              [severity]="device.isOpen ? 'info' : 'success'"
+            ></p-tag>
+          }
 
-        <!-- Czujnik temperatury -->
-        @if (device.type === deviceType.TEMPERATURE_SENSOR) {
-          <span class="text-sm text-gray-600">{{ device.temperature }}°C</span>
-        }
+          <!-- Czujnik temperatury -->
+          @if (device.type === deviceType.TEMPERATURE_SENSOR) {
+            <span class="text-sm text-gray-600">{{ device.temperature }}°C</span>
+          }
 
-        <!-- Gniazdko -->
-        @if (device.type === deviceType.POWER_PLUG) {
-          <p-toggle-switch
-            [ngModel]="device.isOn"
-            (onChange)="onSwitchAction(device.id, $event.checked)"
-          ></p-toggle-switch>
-        }
+          <!-- Gniazdko -->
+          @if (device.type === deviceType.POWER_PLUG) {
+            <p-toggle-switch
+              [ngModel]="device.isOn"
+              (onChange)="onSwitchAction(device.id, $event.checked)"
+            ></p-toggle-switch>
+          }
 
-      </sp-device-list-item>
-    }
-  </div>
+        </sp-device-list-item>
+      }
+    </div>
 
 
-  <!-- Paginacja -->
-  <p-paginator
-    [showFirstLastIcon]="false"
-    [alwaysShow]="false"
-    [rows]="4"
-    [totalRecords]="data()?.length"
-    (onPageChange)="pagination.set($event)"
-  ></p-paginator>
+    <!-- Paginacja -->
+    <p-paginator
+      [showFirstLastIcon]="false"
+      [alwaysShow]="false"
+      [rows]="4"
+      [totalRecords]="data()?.length"
+      (onPageChange)="pagination.set($event)"
+    ></p-paginator>
   </div>
 </div>

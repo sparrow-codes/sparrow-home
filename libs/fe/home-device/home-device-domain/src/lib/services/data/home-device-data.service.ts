@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel } from '@sparrow-home/api';
-import { LoaderService, RoutePath } from '@sparrow-home/core';
+import { DeviceType, LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
 
@@ -21,6 +21,7 @@ export class HomeDeviceDataService {
   private readonly _matDialog: MatDialog = inject(MatDialog);
   private readonly _router: Router = inject(Router);
 
+  private readonly _deviceTypeFilter: WritableSignal<DeviceType | null> = signal(null);
   private readonly _homeDevices: WritableSignal<HomeDevice[] | null> = signal(null);
   private readonly _searchQuery: WritableSignal<string> = signal('');
   private readonly _homeDeviceDetails: WritableSignal<HomeDevice | null> = signal(null);
@@ -40,8 +41,18 @@ export class HomeDeviceDataService {
     return this._homeDeviceDetails.asReadonly();
   }
 
+  public get deviceTypeFilter(): Signal<DeviceType | null> {
+    return this._deviceTypeFilter.asReadonly();
+  }
+
   public setSearchQuery(query: string): void {
     this._searchQuery.set(query);
+  }
+
+  public setDeviceTypeFilter(deviceType?: string | number): void {
+    if(deviceType !== undefined) {
+      this._deviceTypeFilter.set(!isNaN(Number(deviceType)) && deviceType !== '' ? Number(deviceType) : null);
+    }
   }
 
   public fetchAvailableDevices(): void {
@@ -125,7 +136,7 @@ export class HomeDeviceDataService {
   }
 
   private _fetchDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
-    return this._apiService.getAllDevices().pipe(
+    return this._apiService.getAllDevices({deviceType: this._deviceTypeFilter()}).pipe(
       first(),
       tap({
         next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.mapDetails)),

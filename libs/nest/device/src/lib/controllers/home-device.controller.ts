@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
 
@@ -23,10 +23,13 @@ export class HomeDeviceController {
   public constructor(private readonly _homeDeviceService: HomeDeviceService) {}
 
   @ApiOperation({ operationId: 'getAllDevices' })
-  @Get('all')
   @ApiResponse({ type: HomeDeviceDetailsDto, isArray: true })
-  public getAllDevices(): Observable<HomeDeviceDetailsDto[]> {
-    return this._homeDeviceService.getListOfDevices();
+  @ApiQuery({ name: 'deviceType', required: false, nullable: true, description: 'Typ urządzenia' })
+  @Get('all')
+  public getAllDevices(
+    @Query('deviceType') deviceType: number,
+  ): Observable<HomeDeviceDetailsDto[]> {
+    return this._homeDeviceService.getListOfDevices(!isNaN(deviceType) ? deviceType : undefined).pipe();
   }
 
   @ApiOperation({ operationId: 'createDevice' })

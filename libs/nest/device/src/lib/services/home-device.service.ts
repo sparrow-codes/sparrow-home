@@ -34,8 +34,8 @@ export class HomeDeviceService {
     this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
   }
 
-  public getListOfDevices(): Observable<HomeDeviceDetailsDto[]> {
-    return from(this._homeDeviceRepository.find()).pipe(
+  public getListOfDevices(deviceType?: DeviceType): Observable<HomeDeviceDetailsDto[]> {
+    return from(this._homeDeviceRepository.findBy({ deviceType: deviceType })).pipe(
       first(),
       switchMap((entities) => {
         if (!entities.length) {

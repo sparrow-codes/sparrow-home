@@ -16,9 +16,10 @@ import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Tag } from 'primeng/tag';
 import { ToggleSwitch } from 'primeng/toggleswitch';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
 import { DeviceListItemComponent } from '../../components/device-list-item/device-list-item.component';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { IonChip } from '@ionic/angular/standalone';
 
 type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
 
@@ -41,6 +42,7 @@ type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
     Paginator,
     ToggleSwitch,
     RouterLink,
+    IonChip,
   ],
   templateUrl: './device-page.component.html',
   animations: [sparrowFadeIn, deviceItemFadeIn],
@@ -49,8 +51,10 @@ export class DevicePageComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
   private readonly _pushNotificationService: MobilePushNotificationService = inject(MobilePushNotificationService);
+  private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
   protected readonly data: Signal<Device[] | null> = this._facadeService.homeDevices as Signal<Device[]>;
+  protected readonly deviceFilter: Signal<DeviceType | null> = this._facadeService.deviceFilter;
   protected readonly pagination: WritableSignal<PaginatorState> = signal({ page: 0, rows: 4, first: 0 });
   protected readonly paginatedDevices = computed(() => {
     const allDevices: Device[] = this.data() ?? [];
@@ -62,6 +66,11 @@ export class DevicePageComponent implements OnInit {
   protected readonly deviceType: typeof DeviceType = DeviceType;
 
   public ngOnInit(): void {
+    this._activatedRoute.queryParams.pipe(first()).subscribe((params) => {
+      this._facadeService.setDeviceTypeFilter(params['deviceType']);
+      this._facadeService.fetchDevices();
+    });
+
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
     this._pushNotificationService.subscribeToNotifications();
@@ -69,6 +78,11 @@ export class DevicePageComponent implements OnInit {
 
   protected onSwitchAction(id: number, value: boolean): void {
     this._facadeService.setLscSwitchOperationStatus(id, value);
+  }
+
+  protected onRemoveFilter(): void {
+    this._facadeService.setDeviceTypeFilter('');
+    this._facadeService.fetchDevices();
   }
 
   private _handleSearchEvent(): void {

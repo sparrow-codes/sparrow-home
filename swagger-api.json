@@ -522,7 +522,18 @@
     "/api/home-device/all": {
       "get": {
         "operationId": "getAllDevices",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "deviceType",
+            "required": false,
+            "in": "query",
+            "description": "Typ urządzenia",
+            "schema": {
+              "nullable": true,
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": "",
