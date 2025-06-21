@@ -2,12 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, DestroyRef, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { IonChip } from '@ionic/angular/standalone';
 import { DeviceType, MobilePushNotificationService } from '@sparrow-home/core';
 import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } from '@sparrow-home/home-device-domain';
 import { deviceItemFadeIn, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
@@ -17,22 +13,15 @@ import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Tag } from 'primeng/tag';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
+
 import { DeviceListItemComponent } from '../../components/device-list-item/device-list-item.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { IonChip } from '@ionic/angular/standalone';
 
 type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
 
 @Component({
   imports: [
     CommonModule,
-    MatCardModule,
-    MatTableModule,
-    MatFormFieldModule,
-    MatInputModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatDialogModule,
     Button,
     InputText,
     DeviceListItemComponent,

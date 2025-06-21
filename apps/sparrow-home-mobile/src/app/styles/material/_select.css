@@ -1,9 +1,0 @@
-:root {
-  --mat-select-panel-background-color: var(--app-super-light-grey);
-  --mat-option-selected-state-layer-color: var(--app-light-gray);
-
-  .mat-mdc-option {
-    font-family: 'Inter', sans-serif;
-    min-height: 2.5rem;
-  }
-}

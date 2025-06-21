@@ -1,12 +1,8 @@
-<div mat-dialog-title>{{data.title}}</div>
+<div>{{data.content}}</div>
 
-<mat-dialog-content>
-  {{data.content}}
-</mat-dialog-content>
-
-<mat-dialog-actions [align]="'end'">
+<div class="flex justify-end">
   <div class="flex gap-4">
-    <button mat-button mat-dialog-close>Anuluj</button>
-    <button mat-stroked-button (click)="onConfirm()">Ok</button>
+    <button pButton severity="secondary" (click)="dialogRef.close()">Anuluj</button>
+    <button pButton severity="primary" (click)="onConfirm()">Usuń</button>
   </div>
-</mat-dialog-actions>
+</div>

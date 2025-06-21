@@ -18,6 +18,7 @@ import { MaterialConfiguration } from '@sparrow-home/ui';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
+import { DialogService } from 'primeng/dynamicdialog';
 
 import { Noir } from '../theme/noir';
 import { appRoutes } from './app.routes';
@@ -64,6 +65,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEnvironmentNgxMask({ validation: false }),
     MobilePushNotificationService,
-    MessageService
+    MessageService,
+    DialogService
   ],
 };
