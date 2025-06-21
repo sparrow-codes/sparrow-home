@@ -44,14 +44,6 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@sparrow-home/main-panel-feature').then((f) => f.mainPanelFeatureRoutes),
       },
       {
-        path: RoutePath.HEAT_PUMP,
-        loadChildren: () => import('@sparrow-home/heat-pump-feature').then((feature) => feature.heatPumpRoutes),
-      },
-      {
-        path: RoutePath.ALARM,
-        loadComponent: () => import('@sparrow-home/alarm-feature').then((c) => c.AlarmPageComponent),
-      },
-      {
         path: RoutePath.NOT_FOUND,
         component: PageNotFoundComponent,
       },

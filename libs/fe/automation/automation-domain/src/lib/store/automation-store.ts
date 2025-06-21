@@ -11,6 +11,7 @@ import {
 } from '@sparrow-home/api';
 import { DeviceType, LoaderService } from '@sparrow-home/core';
 import { SelectOption } from '@sparrow-home/ui';
+import { MessageService } from 'primeng/api';
 import { combineLatest, finalize, first, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { AquaPreferences } from '../model';
@@ -37,7 +38,8 @@ export const automationStore = signalStore(
       aquaApiService = inject(AquaPreferencesApiService),
       homeDeviceApiService = inject(HomeDeviceApiService),
       circularPumpApiService = inject(PanasonicCloudApiService),
-      loaderService = inject(LoaderService)
+      loaderService = inject(LoaderService),
+      messageService = inject(MessageService)
     ) => {
       function _fetchSwitchDevices(): Observable<SelectOption<string>[]> {
         return homeDeviceApiService.getAllDevices({ deviceType: DeviceType.POWER_PLUG }).pipe(
@@ -50,7 +52,7 @@ export const automationStore = signalStore(
           ),
           tapResponse({
             next: (devices) => patchState(store, { switchDevicesOptions: devices }),
-            error: () => console.log('error'),
+            error: () => messageService.add({ summary: 'Błąd pobierania listy urząrzeń!', severity: 'error' }),
           })
         );
       }
@@ -67,7 +69,7 @@ export const automationStore = signalStore(
               aquaPreferences.isActive = response.isActive;
               patchState(store, { aquaPreferences });
             },
-            error: () => console.log('error'),
+            error: () => messageService.add({ summary: 'Błąd pobierania preferencji!', severity: 'error' }),
           })
         );
       }
@@ -88,7 +90,7 @@ export const automationStore = signalStore(
               circularPumpPreferences.isActive = response.isActive;
               patchState(store, { circularPumpPreferences });
             },
-            error: () => console.log('error'),
+            error: () => messageService.add({ summary: 'Błąd pobierania preferencji!', severity: 'error' }),
           })
         );
       }
@@ -117,6 +119,10 @@ export const automationStore = signalStore(
                   },
                 })
                 .pipe(
+                  tapResponse({
+                    next: () => messageService.add({ summary: 'Pomyślnie zmieniono ustawienia', severity: 'contrast' }),
+                    error: () => messageService.add({ summary: 'Błąd zmiany ustawień!', severity: 'error' }),
+                  }),
                   first(),
                   switchMap(() => _fetchCircularPumpPreferences())
                 )
@@ -136,17 +142,39 @@ export const automationStore = signalStore(
                 })
                 .pipe(
                   first(),
+                  tapResponse({
+                    next: () => messageService.add({ summary: 'Pomyślnie zmieniono ustawienia', severity: 'contrast' }),
+                    error: () => messageService.add({ summary: 'Błąd zmiany ustawień!', severity: 'error' }),
+                  }),
                   switchMap(() => _fetchAquaPreferences())
                 )
             )
           )
         ),
         setAquaLightScheduler: rxMethod<boolean>(
-          pipe(switchMap((isActive) => aquaApiService.setAquaStatus({ body: { isActive } }).pipe(first())))
+          pipe(
+            switchMap((isActive) =>
+              aquaApiService.setAquaStatus({ body: { isActive } }).pipe(
+                first(),
+                tapResponse({
+                  next: () => messageService.add({ summary: 'Pomyślnie zmieniono ustawienia', severity: 'contrast' }),
+                  error: () => messageService.add({ summary: 'Błąd zmiany ustawień!', severity: 'error' }),
+                })
+              )
+            )
+          )
         ),
         setCircularPumpScheduler: rxMethod<boolean>(
           pipe(
-            switchMap((isActive) => circularPumpApiService.setCircularPumpStatus({ body: { isActive } }).pipe(first()))
+            switchMap((isActive) =>
+              circularPumpApiService.setCircularPumpStatus({ body: { isActive } }).pipe(
+                first(),
+                tapResponse({
+                  next: () => messageService.add({ summary: 'Pomyślnie zmieniono ustawienia', severity: 'contrast' }),
+                  error: () => messageService.add({ summary: 'Błąd zmiany ustawień!', severity: 'error' }),
+                })
+              )
+            )
           )
         ),
       };

@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  effect,
-  inject,
-  Injector,
-  input,
-  InputSignal,
-  OnInit,
-  output,
-  OutputEmitterRef,
-} from '@angular/core';
+import { Component, inject, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,27 +31,13 @@ import { LoginForm } from './form-service/model/login-form';
   styleUrl: './login-form.component.css',
   providers: [LoginFormService],
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent {
   public readonly login: OutputEmitterRef<LoginRequestApiModel> = output();
   public readonly newUserNavigation: OutputEmitterRef<void> = output();
-  public readonly hasError: InputSignal<boolean> = input(false);
 
   protected readonly formService: LoginFormService = inject(LoginFormService);
   protected readonly loginForm: FormGroup<LoginForm> = this.formService.form;
   protected readonly formName: typeof LoginFormName = LoginFormName;
-
-  private readonly _injector: Injector = inject(Injector);
-
-  public ngOnInit(): void {
-    effect(
-      () => {
-        if (this.hasError()) {
-          this.formService.passwordControl.reset('', { emitEvent: false });
-        }
-      },
-      { injector: this._injector }
-    );
-  }
 
   protected onLoginClick(): void {
     this.login.emit(this.formService.toRequest());

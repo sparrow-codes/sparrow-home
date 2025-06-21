@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
-import { AquaPreferences, AutomationFacadeService } from '@sparrow-home/automation-domain';
-import { CircularPumpPreferences } from '@sparrow-home/heat-pump-domain';
+import { AquaPreferences, AutomationFacadeService, CircularPumpPreferences } from '@sparrow-home/automation-domain';
 import { SelectOption, sparrowFadeIn } from '@sparrow-home/ui';
 import { PrimeTemplate } from 'primeng/api';
 import { Carousel, CarouselPageEvent } from 'primeng/carousel';

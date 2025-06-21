@@ -16,6 +16,7 @@ import {
 } from '@sparrow-home/core';
 import { MaterialConfiguration } from '@sparrow-home/ui';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
 import { Noir } from '../theme/noir';
@@ -63,5 +64,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEnvironmentNgxMask({ validation: false }),
     MobilePushNotificationService,
+    MessageService
   ],
 };

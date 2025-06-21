@@ -5,7 +5,6 @@ export enum RoutePath {
   CREATE_ADDITIONAL_USER = 'create-additional-user',
   LOGIN = 'login',
   NOT_FOUND = 'not-found',
-  ALARM = 'alarm',
   USER_PROFILE = 'user-profile',
   DEVICES = 'devices',
   AUTOMATION = 'automation'

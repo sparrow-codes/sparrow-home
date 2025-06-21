@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HomeDeviceApiService } from '@sparrow-home/api';
 import { first, tap } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SwitchOperationsService {
   private readonly _apiService: HomeDeviceApiService = inject(HomeDeviceApiService);
-  private readonly _snackBar: MatSnackBar = inject(MatSnackBar);
+  private readonly _messageService: MessageService = inject(MessageService);
 
   public setSwitchStatus(id: number, isOn: boolean): void {
     this._apiService
@@ -16,7 +16,8 @@ export class SwitchOperationsService {
       .pipe(
         first(),
         tap({
-          error: () => this._snackBar.open('Zmiana statusu urządzenia nie powiodła się!'),
+          error: () =>
+            this._messageService.add({ summary: 'Zmiana statusu urządzenia nie powiodła się!', severity: 'error' }),
         })
       )
       .subscribe();
