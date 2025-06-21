@@ -24,7 +24,7 @@ export const MainPanelStore = signalStore(
       store,
       homeDeviceApiService = inject(HomeDeviceApiService),
       alarmApiService = inject(AlarmApiService),
-      loaderService = inject(LoaderService)
+      loaderService = inject(LoaderService),
     ) => {
       function getAvgTemperature(): Observable<number> {
         return homeDeviceApiService.getHomeAvgTemperature().pipe(
@@ -69,9 +69,6 @@ export const MainPanelStore = signalStore(
           pipe(
             switchMap((isAlarmOn) =>
               alarmApiService.setAlarmMode({ body: { isActive: isAlarmOn } }).pipe(
-                tap({
-                  error: () => console.log('Error setting alarm'),
-                }),
                 switchMap(() => getAlarmStatus())
               )
             )

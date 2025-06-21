@@ -9,28 +9,28 @@ import {
 } from '@angular/forms';
 import { AquaPreferences } from '@sparrow-home/automation-domain';
 
-import { AquariumLightFormName } from './enum/aquarium-light-form-name';
-import { AquariumLightForm } from './model/aquarium-light-form';
+import { ScheduleFormName } from './enum/schedule-form-name';
+import { ScheduleForm } from './model/schedule-form';
 
 @Injectable()
-export class AquariumLightFormService {
-  private _form: FormGroup<AquariumLightForm> | null = null;
+export class ScheduleFormService {
+  private _form: FormGroup<ScheduleForm> | null = null;
 
   private readonly _fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
 
-  public get form(): FormGroup<AquariumLightForm> | null {
+  public get form(): FormGroup<ScheduleForm> | null {
     return this._form;
   }
 
   public get toControl(): FormControl<Date | null> {
-    return this._form?.get([AquariumLightFormName.TO]) as FormControl<Date | null>;
+    return this._form?.get([ScheduleFormName.TO]) as FormControl<Date | null>;
   }
 
   public initForm(aquaPreferences: AquaPreferences): void {
     this._form = this._fb.group({
-      [AquariumLightFormName.HOME_DEVICE]: this._fb.control(aquaPreferences.homeDeviceId ?? null),
-      [AquariumLightFormName.FROM]: this._fb.control(aquaPreferences.lightStartTime ?? null),
-      [AquariumLightFormName.TO]: this._fb.control(aquaPreferences.lightEndTime ?? null, {
+      [ScheduleFormName.HOME_DEVICE]: this._fb.control(aquaPreferences.homeDeviceId ?? null),
+      [ScheduleFormName.FROM]: this._fb.control(aquaPreferences.startTime ?? null),
+      [ScheduleFormName.TO]: this._fb.control(aquaPreferences.endTime ?? null, {
         validators: [this._timeValidator()],
       }),
     });
@@ -38,7 +38,7 @@ export class AquariumLightFormService {
 
   private _timeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const from: Date | null | undefined = this._form?.get([AquariumLightFormName.FROM])?.value;
+      const from: Date | null | undefined = this._form?.get([ScheduleFormName.FROM])?.value;
       const to: Date | null = control.value;
 
       if (!from || !to) {

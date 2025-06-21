@@ -11,9 +11,7 @@ import {
   Signal,
 } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideIcons } from '@ng-icons/core';
-import { heroClock } from '@ng-icons/heroicons/outline';
-import { AquaPreferences } from '@sparrow-home/automation-domain';
+import { SchedulePreferences } from '@sparrow-home/automation-domain';
 import { staggeredFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
@@ -23,12 +21,12 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 
-import { AquariumLightFormService } from './form-service/aquarium-light-form.service';
-import { AquariumLightFormName } from './form-service/enum/aquarium-light-form-name';
-import { AquariumLightForm } from './form-service/model/aquarium-light-form';
+import { ScheduleFormName } from './form-service/enum/schedule-form-name';
+import { ScheduleForm } from './form-service/model/schedule-form';
+import { ScheduleFormService } from './form-service/schedule-form.service';
 
 @Component({
-  selector: 'sp-aquarium-light-settings',
+  selector: 'sp-schedule-settings',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -41,26 +39,29 @@ import { AquariumLightForm } from './form-service/model/aquarium-light-form';
     Select,
     FloatLabel,
   ],
-  templateUrl: './aquarium-light-settings.component.html',
-  providers: [AquariumLightFormService, provideIcons({ heroClock })],
-  animations: [staggeredFadeIn]
+  templateUrl: './schedule-settings.component.html',
+  providers: [ScheduleFormService],
+  animations: [staggeredFadeIn],
 })
-export class AquariumLightSettingsComponent implements OnInit {
+export class ScheduleSettingsComponent implements OnInit {
   public readonly homeDeviceOptions: InputSignal<{ value: string; label: string }[]> = input.required();
-  public readonly aquaPreferences: InputSignal<AquaPreferences> = input.required();
-  public readonly preferencesUpdates: OutputEmitterRef<AquaPreferences> = output();
+  public readonly schedulePreferences: InputSignal<SchedulePreferences> = input.required();
+  public readonly header: InputSignal<string> = input.required();
+  public readonly preferencesUpdates: OutputEmitterRef<SchedulePreferences> = output();
   public readonly activated: OutputEmitterRef<boolean> = output();
 
-  protected formGroup: FormGroup<AquariumLightForm> | null = null;
+  protected formGroup: FormGroup<ScheduleForm> | null = null;
   protected toControl?: FormControl<Date | null>;
 
-  protected readonly canScheduleBeActivated: Signal<boolean> = computed(() => this.aquaPreferences().canBeActivated());
-  protected readonly formName: typeof AquariumLightFormName = AquariumLightFormName;
+  protected readonly canScheduleBeActivated: Signal<boolean> = computed(() =>
+    this.schedulePreferences().canBeActivated()
+  );
+  protected readonly formName: typeof ScheduleFormName = ScheduleFormName;
 
-  private readonly _formService: AquariumLightFormService = inject(AquariumLightFormService);
+  private readonly _formService: ScheduleFormService = inject(ScheduleFormService);
 
   public ngOnInit(): void {
-    this._formService.initForm(this.aquaPreferences());
+    this._formService.initForm(this.schedulePreferences());
     this._formService.form?.disable();
     this.formGroup = this._formService.form;
     this.toControl = this._formService.toControl;
@@ -72,9 +73,9 @@ export class AquariumLightSettingsComponent implements OnInit {
 
   protected readonlyMode(): void {
     this._formService.form?.reset({
-      [AquariumLightFormName.FROM]: this.aquaPreferences().lightStartTime,
-      [AquariumLightFormName.TO]: this.aquaPreferences().lightEndTime,
-      [AquariumLightFormName.HOME_DEVICE]: this.aquaPreferences().homeDeviceId,
+      [ScheduleFormName.FROM]: this.schedulePreferences().startTime,
+      [ScheduleFormName.TO]: this.schedulePreferences().endTime,
+      [ScheduleFormName.HOME_DEVICE]: this.schedulePreferences().homeDeviceId,
     });
     this._formService.form?.disable();
   }
@@ -82,9 +83,9 @@ export class AquariumLightSettingsComponent implements OnInit {
   protected onSubmitPreferences(): void {
     this.formGroup?.markAsTouched();
     if (this.formGroup?.valid) {
-      const newPreferences: AquaPreferences = new AquaPreferences();
-      newPreferences.lightStartTime = this.formGroup?.value.from ?? undefined;
-      newPreferences.lightEndTime = this.formGroup?.value.to ?? undefined;
+      const newPreferences: SchedulePreferences = new SchedulePreferences();
+      newPreferences.startTime = this.formGroup?.value.from ?? undefined;
+      newPreferences.endTime = this.formGroup?.value.to ?? undefined;
       newPreferences.homeDeviceId = this.formGroup?.value.homeDevice ?? undefined;
       this.preferencesUpdates.emit(newPreferences);
 

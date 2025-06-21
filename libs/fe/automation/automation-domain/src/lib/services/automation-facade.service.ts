@@ -2,10 +2,11 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { SelectOption } from '@sparrow-home/ui';
 
 import { AquaPreferences } from '../model';
-import { AutomationStore,automationStore } from '../store/automation-store';
+import { CircularPumpPreferences } from '../model/circular-pump-preferences';
+import { AutomationStore, automationStore } from '../store/automation-store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AutomationFacadeService {
   private readonly _store: AutomationStore = inject(automationStore);
@@ -18,12 +19,24 @@ export class AutomationFacadeService {
     return this._store.aquaPreferences;
   }
 
-  public setPreferences(preferences: AquaPreferences): void {
-    this._store.setPreferences(preferences);
+  public get circularPumpPreferences(): Signal<CircularPumpPreferences | null> {
+    return this._store.circularPumpPreferences;
+  }
+
+  public setAquaPreferences(preferences: AquaPreferences): void {
+    this._store.setAquaPreferences(preferences);
+  }
+
+  public setCircularPumpPreferences(preferences: CircularPumpPreferences): void {
+    this._store.setCircularPumpPreferences(preferences);
   }
 
   public setAquaLightScheduler(isActive: boolean): void {
     this._store.setAquaLightScheduler(isActive);
+  }
+
+  public setCircularPumpScheduler(isActive: boolean): void {
+    this._store.setCircularPumpScheduler(isActive);
   }
 
   public fetchInitialData(): void {

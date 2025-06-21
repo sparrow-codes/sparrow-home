@@ -1,9 +1,9 @@
 @if (formGroup) {
   <p-card @staggeredFadeIn>
     <div class="flex w-full justify-between items-center fade-step">
-      <span class="text-base font-semibold">Harmonogram oświetlenia</span>
+      <span class="text-base font-semibold">{{ header() }}</span>
       <p-toggle-switch
-        [ngModel]="aquaPreferences().isActive"
+        [ngModel]="schedulePreferences().isActive"
         (ngModelChange)="activated.emit($event)"
         [disabled]="!canScheduleBeActivated() || formGroup.enabled"
       ></p-toggle-switch>
@@ -16,9 +16,7 @@
             inputId="from-time"
             [timeOnly]="true"
             hourFormat="24"
-            [stepMinute]="15"
             [formControlName]="formName.FROM"
-            placeholder="Start oświetlenia"
             showIcon="true"
             iconDisplay="input"
           ></p-datePicker>
@@ -31,9 +29,7 @@
             inputId="to-time"
             [timeOnly]="true"
             hourFormat="24"
-            [stepMinute]="15"
             [formControlName]="formName.TO"
-            placeholder="Stop oświetlenia"
             showIcon="true"
             iconDisplay="input"
           ></p-datePicker>
@@ -48,7 +44,6 @@
           class="w-full"
           [options]="homeDeviceOptions()"
           [formControlName]="formName.HOME_DEVICE"
-          placeholder="Wybierz urządzenie"
           optionLabel="label"
           optionValue="value"
           emptyMessage="Brak dostępnych urządzeń"

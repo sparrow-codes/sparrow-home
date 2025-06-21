@@ -1,10 +1,4 @@
-export class AquaPreferences {
-  public isActive?: boolean;
-  public homeDeviceId?: string;
-  public lightStartTime?: Date;
-  public lightEndTime?: Date;
+import { SchedulePreferences } from './schedule-preferences';
 
-  public canBeActivated(): boolean {
-    return !!this.homeDeviceId && !!this.lightStartTime && !!this.lightEndTime;
-  }
-}
+export class AquaPreferences extends SchedulePreferences {}
+

@@ -87,6 +87,7 @@ export class CircularPumpService {
 
   private _setCircularPumpJob(cloudPreferences: CloudPreferences): void {
     if (cloudPreferences.isCircularPumpActive) {
+      this._stopCircularPumpJobs();
       const startTime: Date | null = cloudPreferences.circularPumpStartTime;
       const endTime: Date | null = cloudPreferences.circularPumpEndTime;
       const zigbeeDeviceId: string | undefined = cloudPreferences.homeDevice?.zigbeeDeviceId;
