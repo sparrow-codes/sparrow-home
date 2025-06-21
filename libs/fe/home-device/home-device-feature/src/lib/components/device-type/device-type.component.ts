@@ -4,10 +4,9 @@ import {
   bootstrapBellFill,
   bootstrapDoorOpenFill,
   bootstrapPlugin,
-  bootstrapThermometerHalf,
+  bootstrapThermometerHalf, bootstrapWifi
 } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { matSettingsRemote } from '@ng-icons/material-icons/baseline';
 import { DeviceType } from '@sparrow-home/core';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
@@ -23,7 +22,7 @@ import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
       bootstrapThermometerHalf,
       bootstrapDoorOpenFill,
       bootstrapBellFill,
-      matSettingsRemote,
+      bootstrapWifi
     }),
   ],
 })
@@ -44,7 +43,7 @@ export class DeviceTypeComponent {
       case DeviceType.SIREN:
         return 'bootstrapBellFill';
       case DeviceType.PILOT:
-        return 'matSettingsRemote';
+        return 'bootstrapWifi';
       default:
         return '';
     }

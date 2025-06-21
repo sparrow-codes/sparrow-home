@@ -2,9 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { provideIcons } from '@ng-icons/core';
-import { heroAdjustmentsHorizontal, heroNoSymbol, heroTrash, heroWifi } from '@ng-icons/heroicons/outline';
-import { heroCheckCircleSolid } from '@ng-icons/heroicons/solid';
 import { DeviceType } from '@sparrow-home/core';
 import {
   DeviceFacadeService,
@@ -43,7 +40,6 @@ import { TemperatureSensorDetailsComponent } from '../../components/temperature-
     Card,
   ],
   templateUrl: './device-details.component.html',
-  providers: [provideIcons({ heroNoSymbol, heroCheckCircleSolid, heroAdjustmentsHorizontal, heroWifi, heroTrash })],
   animations: [sparrowFadeIn],
 })
 export class DeviceDetailsComponent implements OnInit {

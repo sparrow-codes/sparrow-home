@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { provideIcons } from '@ng-icons/core';
-import { heroArrowLeftCircle } from '@ng-icons/heroicons/outline';
 import { staggeredFadeIn } from '@sparrow-home/ui';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { Button } from 'primeng/button';
@@ -14,7 +12,6 @@ import { CreateUserFormComponent } from '../../component/create-user-form/create
   imports: [CommonModule, CreateUserFormComponent, Button],
   templateUrl: './create-additional-user.component.html',
   animations: [staggeredFadeIn],
-  providers: [provideIcons({ heroArrowLeftCircle })],
 })
 export class CreateAdditionalUserComponent implements OnInit {
   private readonly _router: Router = inject(Router);

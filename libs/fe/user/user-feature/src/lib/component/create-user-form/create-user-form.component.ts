@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { provideIcons } from '@ng-icons/core';
-import { heroUser } from '@ng-icons/heroicons/outline';
 import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -19,7 +17,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
   imports: [CommonModule, ReactiveFormsModule, Button, Password, FloatLabel, InputText],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
-  providers: [CreateUserFormService, provideIcons({ heroUser })],
+  providers: [CreateUserFormService],
 })
 export class CreateUserFormComponent implements OnInit {
   public readonly formSave: OutputEmitterRef<CreateNewUserRequestApiModel> = output();
