@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideIcons } from '@ng-icons/core';
 import { heroUser } from '@ng-icons/heroicons/outline';
 import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
@@ -17,7 +16,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 
 @Component({
   selector: 'sp-create-user-form',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, Button, Password, FloatLabel, InputText],
+  imports: [CommonModule, ReactiveFormsModule, Button, Password, FloatLabel, InputText],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
   providers: [CreateUserFormService, provideIcons({ heroUser })],

@@ -1,13 +1,11 @@
 <div class="w-full h-full flex items-center justify-center bg-super-light-gray">
   <div class="w-[300px] md:w-[450px]">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>{{ appTitle }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <span class="text-md mb-2 mt-2 block">Utwórz nowego użytkownika, aby rozpocząć:</span>
+    <p-card [header]="appTitle">
+
+
+        <div class="text-md mb-2 mt-2 block">Utwórz nowego użytkownika, aby rozpocząć:</div>
         <sp-create-user-form (formSave)="dataService.createFirstUser($event)"></sp-create-user-form>
-      </mat-card-content>
-    </mat-card>
+
+    </p-card>
   </div>
 </div>

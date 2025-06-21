@@ -14,7 +14,6 @@ import {
   MobilePushNotificationService,
   SHORT_APP_TITLE,
 } from '@sparrow-home/core';
-import { MaterialConfiguration } from '@sparrow-home/ui';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
@@ -50,12 +49,11 @@ export const appConfig: ApplicationConfig = {
         preset: Noir,
         options: {
           darkModeSelector: false,
-          floatLabel: 'in'
-        }
+          floatLabel: 'in',
+        },
       },
     }),
     provideHttpClient(withInterceptors([authInterceptor])),
-    ...MaterialConfiguration,
     {
       provide: AuthService,
       useClass: MobileAuthenticationService,
@@ -66,6 +64,6 @@ export const appConfig: ApplicationConfig = {
     provideEnvironmentNgxMask({ validation: false }),
     MobilePushNotificationService,
     MessageService,
-    DialogService
+    DialogService,
   ],
 };
