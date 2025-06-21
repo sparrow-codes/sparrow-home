@@ -48,10 +48,6 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@sparrow-home/heat-pump-feature').then((feature) => feature.heatPumpRoutes),
       },
       {
-        path: RoutePath.AQUARIUM,
-        loadChildren: () => import('@sparrow-home/aqua-feature').then((feature) => feature.aquaFeatureRoutes),
-      },
-      {
         path: RoutePath.ALARM,
         loadComponent: () => import('@sparrow-home/alarm-feature').then((c) => c.AlarmPageComponent),
       },
@@ -66,6 +62,10 @@ export const appRoutes: Route[] = [
       {
         path: RoutePath.DEVICES,
         loadChildren: () => import('@sparrow-home/home-device-feature').then((feature) => feature.homeDeviceRoutes)
+      },
+      {
+        path: RoutePath.AUTOMATION,
+        loadChildren: () => import('@sparrow-home/automation-feature').then(feature => feature.automationFeatureRoutes)
       },
       {
         path: '',

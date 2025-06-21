@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'sp-spinner',
-  imports: [CommonModule, MatProgressSpinner],
+  imports: [CommonModule, ProgressSpinner],
   templateUrl: './spinner.component.html',
 })
 export class SpinnerComponent {}

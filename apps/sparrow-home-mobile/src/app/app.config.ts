@@ -48,6 +48,7 @@ export const appConfig: ApplicationConfig = {
         preset: Noir,
         options: {
           darkModeSelector: false,
+          floatLabel: 'in'
         }
       },
     }),

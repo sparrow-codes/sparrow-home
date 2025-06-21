@@ -18,7 +18,7 @@ import { NavigationItem } from '../../models/navigation-item';
 export class MobileFrameComponent {
   protected navigationItems: NavigationItem[] = [
     { label: 'Panel Główny', icon: PrimeIcons.HOME, routerLink: RoutePath.MAIN },
-    { label: 'Automatyka', icon: PrimeIcons.PINTEREST, routerLink: RoutePath.AQUARIUM },
+    { label: 'Automatyka', icon: PrimeIcons.PINTEREST, routerLink: RoutePath.AUTOMATION },
     { label: 'Ustawienia', icon: PrimeIcons.COG, routerLink: RoutePath.USER_PROFILE },
   ];
 

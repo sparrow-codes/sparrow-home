@@ -4,7 +4,7 @@
   <form @staggeredFadeIn [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-6 pt-2">
 
     <!-- Nazwa urządzenia -->
-    <p-float-label>
+    <p-float-label variant="on">
       <input
         id="deviceName"
         type="text"
@@ -18,7 +18,7 @@
       <label for="deviceName">Podaj nazwę urządzenia</label>
     </p-float-label>
 
-    <p-floatlabel class="w-full fade-step">
+    <p-floatlabel class="w-full fade-step" variant="on">
       <p-select [formControl]="deviceTypeControl" inputId="in_label" [options]="dropdownOptions" optionLabel="label" [size]="'large'"
                 optionValue="value" [fluid]="true"/>
       <label for="in_label">Wybierz typ urządzenia</label>

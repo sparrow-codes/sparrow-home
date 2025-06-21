@@ -1,12 +1,12 @@
 <form [formGroup]="loginForm" (ngSubmit)="onLoginClick()" class="flex flex-col gap-6">
   <!-- E-mail -->
-  <p-floatlabel class="fade-step">
+  <p-floatlabel class="fade-step" variant="on">
     <input id="email" type="email" pInputText pSize="large" formControlName="email" fluid="true" />
     <label for="email">E-mail</label>
   </p-floatlabel>
 
   <!-- Hasło -->
-  <p-floatlabel class="fade-step">
+  <p-floatlabel class="fade-step" variant="on">
     <p-password
       id="password"
       size="large"
