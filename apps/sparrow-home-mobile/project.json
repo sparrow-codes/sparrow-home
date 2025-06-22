@@ -17,6 +17,8 @@
         "assets": [
           "apps/sparrow-home-mobile/src/config.json",
           "apps/sparrow-home-mobile/src/manifest.json",
+          "apps/sparrow-home-mobile/src/apple-touch-icon.png",
+          "apps/sparrow-home-mobile/src/apple-touch-icon-precomposed.png",
           "apps/sparrow-home-mobile/src/assets",
           {
             "glob": "**/*.svg",
