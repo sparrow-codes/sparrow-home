@@ -4,6 +4,13 @@
   "sourceRoot": "libs/nest/alarm/src",
   "projectType": "library",
   "tags": ["scope: be-alarm"],
-  "// targets": "to see all targets run: nx show project alarm --web",
-  "targets": {}
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nest/alarm/jest.config.ts"
+      }
+    }
+  }
 }

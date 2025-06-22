@@ -16,6 +16,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AlarmService {
   private _isSirensWorking: boolean = false;
+  private _ignoredDevices: Set<string> = new Set();
 
   public constructor(
     private readonly _zigbeeSirenService: ZigbeeSirenService,
@@ -45,6 +46,12 @@ export class AlarmService {
     alarmPreferences.isActive = isActive;
     await this._alarmPreferencesRepository.save(alarmPreferences);
     Logger.log(isActive ? 'Alarm is on!' : 'Alarm is off!');
+
+    if (isActive) {
+      await this._updateIgnoredDevices();
+    } else {
+      this._ignoredDevices.clear();
+    }
   }
 
   public async getAlarmMode(): Promise<boolean> {
@@ -59,30 +66,61 @@ export class AlarmService {
   }
 
   private async _handleSensorEvent(response: DeviceResponse<SensorDetails>): Promise<void> {
-    const sensor: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: response.deviceId });
-    const user: User = await this._getUser();
-    const alarmPreferences: AlarmPreferences = user.alarmPreferences;
+    const sensor: HomeDevice | null = await this._findSensor(response.deviceId);
+    if (!sensor) return;
 
-    if (!sensor) {
-      return;
-    }
+    if (this._shouldIgnoreSensor(sensor)) return;
 
-    if (
-      sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR &&
-      !(response.payload as OpenDoorSensorDetails).contact &&
-      alarmPreferences.isActive
-    ) {
-      Logger.log('House has been opened! Notify users!');
-      await this._setSirensMode(true);
-      await this._pushNotificationService.notify({
-        title: 'Alarm!',
-        body: `Otwarto: ${sensor.deviceName}`,
-      });
-    }
+    const isAlarmActive: boolean = await this.getAlarmMode();
 
-    if (sensor.deviceType === DeviceType.PILOT) {
+    if (this._isOpenDoorTriggered(sensor, response, isAlarmActive)) {
+      await this._triggerAlarm(sensor);
+    } else if (sensor.deviceType === DeviceType.PILOT) {
       await this._handlePilotActions(response.payload as PilotDetails);
     }
+  }
+
+  private async _findSensor(deviceId: string): Promise<HomeDevice | null> {
+    return this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: deviceId });
+  }
+
+  private _shouldIgnoreSensor(sensor: HomeDevice): boolean {
+    if (this._ignoredDevices.has(sensor.zigbeeDeviceId)) {
+      Logger.log(`Ignoring sensor event from ${sensor.deviceName} (marked as open when arming).`);
+      return true;
+    }
+    return false;
+  }
+
+  private _isOpenDoorTriggered(
+    sensor: HomeDevice,
+    response: DeviceResponse<SensorDetails>,
+    isAlarmActive: boolean
+  ): boolean {
+    return (
+      sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR &&
+      !(response.payload as OpenDoorSensorDetails).contact &&
+      isAlarmActive
+    );
+  }
+
+  private async _triggerAlarm(sensor: HomeDevice): Promise<void> {
+    Logger.log('House has been opened! Notify users!');
+    await this._setSirensMode(true);
+    await this._pushNotificationService.notify({
+      title: 'Alarm!',
+      body: `Otwarto: ${sensor.deviceName}`,
+    });
+  }
+
+  private async _updateIgnoredDevices(): Promise<void> {
+    const openSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
+      deviceType: DeviceType.OPEN_DOOR_SENSOR,
+      isOpen: true,
+    });
+
+    this._ignoredDevices = new Set(openSensors.map((sensor) => sensor.zigbeeDeviceId));
+    Logger.log(`Ignored devices on alarm activation: ${Array.from(this._ignoredDevices).join(', ')}`);
   }
 
   private async _getUser(): Promise<User> {
