@@ -53,11 +53,12 @@ export const appRoutes: Route[] = [
       },
       {
         path: RoutePath.DEVICES,
-        loadChildren: () => import('@sparrow-home/home-device-feature').then((feature) => feature.homeDeviceRoutes)
+        loadChildren: () => import('@sparrow-home/home-device-feature').then((feature) => feature.homeDeviceRoutes),
       },
       {
         path: RoutePath.AUTOMATION,
-        loadChildren: () => import('@sparrow-home/automation-feature').then(feature => feature.automationFeatureRoutes)
+        loadChildren: () =>
+          import('@sparrow-home/automation-feature').then((feature) => feature.automationFeatureRoutes),
       },
       {
         path: '',

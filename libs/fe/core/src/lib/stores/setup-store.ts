@@ -30,7 +30,7 @@ export const SetupStore = signalStore(
         }),
         tapResponse({
           next: (value) => patchState(store, { isConfigurationReady: value }),
-          error: () => messageService.add({summary: 'Błąd pobierania konfiguracji!', severity: 'error'}),
+          error: () => messageService.add({ summary: 'Błąd pobierania konfiguracji!', severity: 'error' }),
         })
       );
     },
@@ -45,7 +45,7 @@ export const SetupStore = signalStore(
                 lng: response.lng,
               },
             }),
-          error: () => messageService.add({summary: 'Błąd pobierania konfiguracji!', severity: 'error'}),
+          error: () => messageService.add({ summary: 'Błąd pobierania konfiguracji!', severity: 'error' }),
         }),
         map(() => void 0)
       );
@@ -64,8 +64,8 @@ export const SetupStore = signalStore(
             .pipe(
               first(),
               tapResponse({
-                next: () => messageService.add({summary: 'Zapisano!', severity: 'contrast'}),
-                error: () => messageService.add({summary: 'Błąd zmiany konfiguracji!', severity: 'error'}),
+                next: () => messageService.add({ summary: 'Zapisano!', severity: 'contrast' }),
+                error: () => messageService.add({ summary: 'Błąd zmiany konfiguracji!', severity: 'error' }),
               })
             )
         )

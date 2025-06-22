@@ -8,13 +8,13 @@ import { Card } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
 import { finalize, first } from 'rxjs';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
 import { CreateDeviceFormName } from './form-service/enum/create-device-form-name';
 import { CreateDeviceForm } from './form-service/model/create-device-form';
-import { Select } from 'primeng/select';
 
 @Component({
   imports: [

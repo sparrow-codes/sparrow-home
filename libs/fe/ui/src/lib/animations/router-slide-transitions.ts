@@ -1,11 +1,4 @@
-import {
-  animate,
-  group,
-  query,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { animate, group, query, style, transition, trigger } from '@angular/animations';
 
 export const routeSlideTransition = trigger('routeAnimations', [
   transition('DeviceListPage => DeviceDetailsPage', [
@@ -20,12 +13,8 @@ export const routeSlideTransition = trigger('routeAnimations', [
     ]),
     query(':enter', [style({ transform: 'translateX(100%)', opacity: 0 })]),
     group([
-      query(':leave', [
-        animate('300ms ease-out', style({ transform: 'translateX(-30%)', opacity: 0 })),
-      ]),
-      query(':enter', [
-        animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
-      ]),
+      query(':leave', [animate('300ms ease-out', style({ transform: 'translateX(-30%)', opacity: 0 }))]),
+      query(':enter', [animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))]),
     ]),
   ]),
 
@@ -41,12 +30,8 @@ export const routeSlideTransition = trigger('routeAnimations', [
     ]),
     query(':enter', [style({ transform: 'translateX(-30%)', opacity: 0 })]),
     group([
-      query(':leave', [
-        animate('300ms ease-out', style({ transform: 'translateX(100%)', opacity: 0 })),
-      ]),
-      query(':enter', [
-        animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
-      ]),
+      query(':leave', [animate('300ms ease-out', style({ transform: 'translateX(100%)', opacity: 0 }))]),
+      query(':enter', [animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))]),
     ]),
   ]),
 ]);

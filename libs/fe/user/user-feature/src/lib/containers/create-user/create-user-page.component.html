@@ -1,11 +1,8 @@
 <div class="w-full h-full flex items-center justify-center bg-super-light-gray">
   <div class="w-[300px] md:w-[450px]">
     <p-card [header]="appTitle">
-
-
-        <div class="text-md mb-2 mt-2 block">Utwórz nowego użytkownika, aby rozpocząć:</div>
-        <sp-create-user-form (formSave)="dataService.createFirstUser($event)"></sp-create-user-form>
-
+      <div class="text-md mb-2 mt-2 block">Utwórz nowego użytkownika, aby rozpocząć:</div>
+      <sp-create-user-form (formSave)="dataService.createFirstUser($event)"></sp-create-user-form>
     </p-card>
   </div>
 </div>

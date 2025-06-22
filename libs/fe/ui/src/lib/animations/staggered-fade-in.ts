@@ -1,11 +1,4 @@
-import {
-  animate,
-  AnimationTriggerMetadata,
-  query,
-  stagger,
-  style,
-  transition,
-  trigger} from '@angular/animations';
+import { animate, AnimationTriggerMetadata, query, stagger, style, transition, trigger } from '@angular/animations';
 
 /**
  * Staggered fade-in animation.
@@ -17,11 +10,9 @@ export const staggeredFadeIn: AnimationTriggerMetadata = trigger('staggeredFadeI
       '.fade-step',
       [
         style({ opacity: 0, transform: 'translateY(20px)' }),
-        stagger(150, [
-          animate('400ms ease-out', style({ opacity: 1, transform: 'none' }))
-        ])
+        stagger(150, [animate('400ms ease-out', style({ opacity: 1, transform: 'none' }))]),
       ],
       { optional: true }
-    )
-  ])
+    ),
+  ]),
 ]);

@@ -7,7 +7,7 @@ import { Divider } from 'primeng/divider';
 @Component({
   selector: 'sp-open-door-sensor-details',
   imports: [CommonModule, BatteryStatusComponent, Divider],
-  templateUrl: './open-door-sensor-details.component.html'
+  templateUrl: './open-door-sensor-details.component.html',
 })
 export class OpenDoorSensorDetailsComponent {
   public readonly openDoorSensor: InputSignal<OpenDoorSensor> = input.required();

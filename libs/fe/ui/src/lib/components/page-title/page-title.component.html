@@ -1,12 +1,10 @@
 <div class="h-[50px] text-md uppercase whitespace-nowrap text-gray-800 flex gap-2 items-center">
   <div class="w-[1rem]">
-    @if (routerLink(); as link) {
-      @if (!navigationDisabled()) {
-        <a [routerLink]="link" class="no-underline text-[1rem] text-gray-500">
-          <i class="pi pi-chevron-left"></i>
-        </a>
-      }
-    }
+    @if (routerLink(); as link) { @if (!navigationDisabled()) {
+    <a [routerLink]="link" class="no-underline text-[1rem] text-gray-500">
+      <i class="pi pi-chevron-left"></i>
+    </a>
+    } }
   </div>
 
   <ng-content></ng-content>

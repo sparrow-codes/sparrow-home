@@ -26,9 +26,7 @@ export class HomeDeviceController {
   @ApiResponse({ type: HomeDeviceDetailsDto, isArray: true })
   @ApiQuery({ name: 'deviceType', required: false, nullable: true, description: 'Typ urządzenia' })
   @Get('all')
-  public getAllDevices(
-    @Query('deviceType') deviceType: number,
-  ): Observable<HomeDeviceDetailsDto[]> {
+  public getAllDevices(@Query('deviceType') deviceType: number): Observable<HomeDeviceDetailsDto[]> {
     return this._homeDeviceService.getListOfDevices(!isNaN(deviceType) ? deviceType : undefined).pipe();
   }
 
@@ -70,16 +68,16 @@ export class HomeDeviceController {
   }
 
   @ApiOperation({ operationId: 'getHomeAvgTemperature' })
-  @ApiResponse({type: GetHomeAvgTemperature})
+  @ApiResponse({ type: GetHomeAvgTemperature })
   @Get('avg-temperature')
   public async getHomeAvgTemperature(): Promise<GetHomeAvgTemperature> {
     return {
-      avgTemperature: await this._homeDeviceService.getAvgTemperature()
+      avgTemperature: await this._homeDeviceService.getAvgTemperature(),
     };
   }
 
   @ApiOperation({ operationId: 'areAllDoorsAndWindowsClosed' })
-  @ApiResponse({type: Boolean})
+  @ApiResponse({ type: Boolean })
   @Get('are-all-doors-and-windows-closed')
   public async areAllDoorsAndWindowsClosed(): Promise<boolean | null> {
     return this._homeDeviceService.areAllDoorsAndWindowsClosed();

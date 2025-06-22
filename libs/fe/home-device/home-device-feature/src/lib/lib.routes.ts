@@ -15,6 +15,6 @@ export const homeDeviceRoutes: Route[] = [
   },
   {
     path: 'add',
-    component: AddDevicePageComponent
-  }
+    component: AddDevicePageComponent,
+  },
 ];

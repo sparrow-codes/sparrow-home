@@ -80,7 +80,7 @@ export class CircularPumpService {
     const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
     const cloudPreferences: CloudPreferences | undefined = user?.cloudPreferences;
 
-    if(cloudPreferences) {
+    if (cloudPreferences) {
       this._setCircularPumpJob(cloudPreferences);
     }
   }
@@ -96,12 +96,17 @@ export class CircularPumpService {
         throw new HttpException('Invalid Circular Pump parameters configuration', HttpStatus.CONFLICT);
       }
 
-      const startCircularPumpJob: CronJob = new CronJob(`0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`, () => this._everyDayCircularPumpOn(zigbeeDeviceId));
+      const startCircularPumpJob: CronJob = new CronJob(
+        `0 ${startTime.getMinutes()} ${startTime.getHours()} * * *`,
+        () => this._everyDayCircularPumpOn(zigbeeDeviceId)
+      );
       this._scheduleRegistry.addCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP, startCircularPumpJob);
       startCircularPumpJob.start();
       Logger.log(`Setting Circular pump start job - next run will be at: ${startCircularPumpJob.nextDate()}`);
 
-      const endCircularPumpJob: CronJob = new CronJob(`0 ${endTime.getMinutes()} ${endTime.getHours()} * * *`, () => this._everyDayCircularPumpOff(zigbeeDeviceId));
+      const endCircularPumpJob: CronJob = new CronJob(`0 ${endTime.getMinutes()} ${endTime.getHours()} * * *`, () =>
+        this._everyDayCircularPumpOff(zigbeeDeviceId)
+      );
       this._scheduleRegistry.addCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF, endCircularPumpJob);
       endCircularPumpJob.start();
       Logger.log(`Setting Circular pump stop job - next run will be at: ${endCircularPumpJob.nextDate()}`);
@@ -133,11 +138,11 @@ export class CircularPumpService {
   }
 
   private _stopCircularPumpJobs(): void {
-    if(this._scheduleRegistry.doesExist('cron', CronJobName.EVERY_DAY_CIRCULAR_PUMP)) {
+    if (this._scheduleRegistry.doesExist('cron', CronJobName.EVERY_DAY_CIRCULAR_PUMP)) {
       this._scheduleRegistry.deleteCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP);
     }
 
-    if(this._scheduleRegistry.doesExist('cron', CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF)) {
+    if (this._scheduleRegistry.doesExist('cron', CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF)) {
       this._scheduleRegistry.deleteCronJob(CronJobName.EVERY_DAY_CIRCULAR_PUMP_OFF);
     }
 

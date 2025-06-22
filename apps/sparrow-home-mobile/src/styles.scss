@@ -1,13 +1,14 @@
-@import "primeicons/primeicons.css";
+@import 'primeicons/primeicons.css';
 
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --ion-background-color: #F5F5F5; // lub bg-super-light-gray z Tailwinda
+  --ion-background-color: #f5f5f5; // lub bg-super-light-gray z Tailwinda
 }
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -21,7 +22,7 @@ body, html {
 ion-tab-bar {
   --ion-tab-bar-background: #ffffff;
   --ion-tab-bar-border-color: #2e3136;
-  --ion-tab-bar-color-selected: #6B7280;
+  --ion-tab-bar-color-selected: #6b7280;
 
   border: 0;
   border-top-left-radius: 5px;
@@ -30,6 +31,5 @@ ion-tab-bar {
 
 p-card {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);;
+  --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-

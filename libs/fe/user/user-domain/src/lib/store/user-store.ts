@@ -112,7 +112,7 @@ export const UserStore = signalStore(
                     router.navigate([RoutePath.MAIN]).then(() => (loaderService.showLoader = false));
                   },
                   error: () => {
-                    messageService.add({summary: 'Niepoprawny login lub hasło!', severity: 'error'})
+                    messageService.add({ summary: 'Niepoprawny login lub hasło!', severity: 'error' });
                     loaderService.showLoader = false;
                   },
                 })

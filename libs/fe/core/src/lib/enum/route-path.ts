@@ -7,5 +7,5 @@ export enum RoutePath {
   NOT_FOUND = 'not-found',
   USER_PROFILE = 'user-profile',
   DEVICES = 'devices',
-  AUTOMATION = 'automation'
+  AUTOMATION = 'automation',
 }

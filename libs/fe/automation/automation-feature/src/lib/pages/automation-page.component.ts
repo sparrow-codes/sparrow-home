@@ -5,9 +5,7 @@ import { SelectOption, sparrowFadeIn } from '@sparrow-home/ui';
 import { PrimeTemplate } from 'primeng/api';
 import { Carousel, CarouselPageEvent } from 'primeng/carousel';
 
-import {
-  ScheduleSettingsComponent
-} from '../components/schedule-settings/schedule-settings.component';
+import { ScheduleSettingsComponent } from '../components/schedule-settings/schedule-settings.component';
 
 @Component({
   imports: [CommonModule, Carousel, PrimeTemplate, ScheduleSettingsComponent],
@@ -19,12 +17,13 @@ export class AutomationPageComponent implements OnInit {
 
   protected readonly pageIndex: WritableSignal<number> = signal(0);
   protected readonly aquaPreferences: Signal<AquaPreferences | null> = this._facadeService.aquaPreferences;
-  protected readonly circularPumpPreferences: Signal<CircularPumpPreferences | null> = this._facadeService.circularPumpPreferences;
+  protected readonly circularPumpPreferences: Signal<CircularPumpPreferences | null> =
+    this._facadeService.circularPumpPreferences;
   protected readonly homeDeviceOptions: Signal<SelectOption<string>[] | null> = this._facadeService.homeDeviceOptions;
   protected readonly carouselItems = [
     { image: 'assets/aquarium.png', label: 'Akwarium' },
     // { image: 'assets/images/garden.png', label: 'Ogród' },
-    { image: 'assets/pump.png', label: 'Pompa cyrkulacyjna' }
+    { image: 'assets/pump.png', label: 'Pompa cyrkulacyjna' },
   ];
 
   public ngOnInit(): void {

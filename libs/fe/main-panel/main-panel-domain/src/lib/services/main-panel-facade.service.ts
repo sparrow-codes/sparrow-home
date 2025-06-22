@@ -3,7 +3,7 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { MainPanelStore } from '../store/main-panel-store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MainPanelFacadeService {
   private readonly _store = inject(MainPanelStore);

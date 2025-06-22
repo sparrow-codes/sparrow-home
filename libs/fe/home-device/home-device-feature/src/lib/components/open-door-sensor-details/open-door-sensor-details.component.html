@@ -1,5 +1,5 @@
 @if (openDoorSensor().battery; as battery) {
-  <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
+<sp-battery-status [batteryStatus]="battery"></sp-battery-status>
 }
 
 <p-divider></p-divider>
@@ -8,9 +8,9 @@
   <div>Stan:</div>
   <div class="font-semibold">
     @if (openDoorSensor().isOpen) {
-      <div class="text-green-600 font-semibold">Otwarte</div>
+    <div class="text-green-600 font-semibold">Otwarte</div>
     } @else {
-      <div class="text-gray-500 font-semibold">Zamknięte</div>
+    <div class="text-gray-500 font-semibold">Zamknięte</div>
     }
   </div>
 </div>
@@ -18,12 +18,11 @@
 <div class="flex w-full py-2 justify-between flex-wrap">
   <div>Ostatnio otwarte:</div>
   @if (openDoorSensor().lastOpened) {
-    <div class="flex flex-row gap-1">
-      <span>{{openDoorSensor().lastOpened | date: 'dd.MM.yyyy HH:mm'}}</span>
-      <i class="pi pi-clock"></i>
-    </div>
+  <div class="flex flex-row gap-1">
+    <span>{{ openDoorSensor().lastOpened | date : 'dd.MM.yyyy HH:mm' }}</span>
+    <i class="pi pi-clock"></i>
+  </div>
   } @else {
-    <div>-</div>
+  <div>-</div>
   }
-
 </div>

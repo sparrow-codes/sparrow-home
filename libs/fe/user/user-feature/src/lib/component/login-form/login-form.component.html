@@ -20,9 +20,16 @@
   </p-floatlabel>
 
   <!-- Przyciski -->
-  <p-button type="submit" fluid="true" size="large" class="fade-step" [disabled]="loginForm.invalid">Zaloguj się</p-button>
+  <p-button type="submit" fluid="true" size="large" class="fade-step" [disabled]="loginForm.invalid"
+    >Zaloguj się</p-button
+  >
 
-  <p-button (onClick)="newUserNavigation.emit()" type="button" [link]="true" class="p-button-link w-full text-center fade-step">
+  <p-button
+    (onClick)="newUserNavigation.emit()"
+    type="button"
+    [link]="true"
+    class="p-button-link w-full text-center fade-step"
+  >
     Utwórz nowe konto
   </p-button>
 </form>

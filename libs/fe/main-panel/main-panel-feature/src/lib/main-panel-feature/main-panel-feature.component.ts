@@ -10,7 +10,7 @@ import { TemperaturePanelComponent } from '../components/temperature-panel/tempe
 @Component({
   imports: [CommonModule, TemperaturePanelComponent, AlarmPanelComponent, DeviceListPanelComponent],
   templateUrl: './main-panel-feature.component.html',
-  animations: [staggeredFadeIn]
+  animations: [staggeredFadeIn],
 })
 export class MainPanelFeatureComponent implements OnInit {
   private readonly _facadeService: MainPanelFacadeService = inject(MainPanelFacadeService);

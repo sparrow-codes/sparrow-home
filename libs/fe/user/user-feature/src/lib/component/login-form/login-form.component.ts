@@ -12,14 +12,7 @@ import { LoginForm } from './form-service/model/login-form';
 
 @Component({
   selector: 'sp-login-form',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    InputText,
-    Password,
-    FloatLabel,
-    Button,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, InputText, Password, FloatLabel, Button],
   templateUrl: './login-form.component.html',
   providers: [LoginFormService],
 })

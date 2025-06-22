@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HomeDeviceApiService } from '@sparrow-home/api';
-import { first, tap } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { first, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

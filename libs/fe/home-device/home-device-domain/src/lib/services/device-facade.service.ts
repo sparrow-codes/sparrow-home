@@ -1,10 +1,10 @@
 import { inject, Injectable, Signal } from '@angular/core';
+import { DeviceType } from '@sparrow-home/core';
 import { Observable } from 'rxjs';
 
 import { HomeDevice } from '../models';
 import { HomeDeviceDataService } from './data/home-device-data.service';
 import { SwitchOperationsService } from './operations/switch-operations.service';
-import { DeviceType } from '@sparrow-home/core';
 
 @Injectable({
   providedIn: 'root',

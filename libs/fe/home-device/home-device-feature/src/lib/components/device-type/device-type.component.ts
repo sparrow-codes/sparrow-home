@@ -4,7 +4,8 @@ import {
   bootstrapBellFill,
   bootstrapDoorOpenFill,
   bootstrapPlugin,
-  bootstrapThermometerHalf, bootstrapWifi
+  bootstrapThermometerHalf,
+  bootstrapWifi,
 } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DeviceType } from '@sparrow-home/core';
@@ -22,7 +23,7 @@ import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
       bootstrapThermometerHalf,
       bootstrapDoorOpenFill,
       bootstrapBellFill,
-      bootstrapWifi
+      bootstrapWifi,
     }),
   ],
 })

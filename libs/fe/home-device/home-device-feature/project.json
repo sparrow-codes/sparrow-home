@@ -23,9 +23,7 @@
         "configDir": "libs/fe/home-device/home-device-feature/.storybook",
         "browserTarget": "home-device-feature:build-storybook",
         "compodoc": false,
-        "styles": [
-          "apps/sparrow-home-mobile/src/styles.scss"
-        ]
+        "styles": ["apps/sparrow-home-mobile/src/styles.scss"]
       },
       "configurations": {
         "ci": {
