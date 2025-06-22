@@ -52,6 +52,7 @@
         <!-- Gniazdko -->
         @if (device.type === deviceType.POWER_PLUG) {
         <p-toggle-switch
+          [disabled]="device.isOnline === false"
           [ngModel]="device.isOn"
           (onChange)="onSwitchAction(device.id, $event.checked)"
         ></p-toggle-switch>
