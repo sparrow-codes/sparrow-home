@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonChip } from '@ionic/angular/standalone';
-import { DeviceType, MobilePushNotificationService } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/core';
 import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } from '@sparrow-home/home-device-domain';
 import { deviceItemFadeIn, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
@@ -39,7 +39,6 @@ type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
 export class DevicePageComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly _pushNotificationService: MobilePushNotificationService = inject(MobilePushNotificationService);
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
   protected readonly data: Signal<Device[] | null> = this._facadeService.homeDevices as Signal<Device[]>;
@@ -62,7 +61,6 @@ export class DevicePageComponent implements OnInit {
 
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
-    this._pushNotificationService.subscribeToNotifications();
   }
 
   protected onSwitchAction(id: number, value: boolean): void {
