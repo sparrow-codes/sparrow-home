@@ -20,9 +20,7 @@ export class AuthService {
   }
 
   public constructor() {
-    SecureStoragePlugin.get({ key: AuthService.TOKEN_KEY }).then(
-      (token) => (this._token = token.value)
-    );
+    SecureStoragePlugin.get({ key: AuthService.TOKEN_KEY }).then((token) => (this._token = token.value));
   }
 
   public logout(): void {
@@ -44,9 +42,7 @@ export class AuthService {
           this._token = response.token;
           this._pushNotificationService.subscribeToNotifications();
         }),
-        switchMap((response) =>
-          SecureStoragePlugin.set({ key: AuthService.TOKEN_KEY, value: response.token })
-        ),
+        switchMap((response) => SecureStoragePlugin.set({ key: AuthService.TOKEN_KEY, value: response.token })),
         map(() => void 0)
       );
   }
