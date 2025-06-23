@@ -1,0 +1,40 @@
+<div class="flex flex-col gap-4 pt-6">
+  <p-carousel
+    @sparrowFadeIn
+    (onPage)="handleScroll($event)"
+    [value]="carouselItems"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="false"
+    [showIndicators]="false"
+    [showNavigators]="true"
+    contentClass="rounded-lg overflow-hidden"
+  >
+    <ng-template pTemplate="item" let-item>
+      <div class="w-full relative">
+        <img [src]="item.image" [alt]="item.label" class="w-full h-[180px] object-cover rounded-lg shadow" />
+        <div class="absolute top-4 bg-white/90 backdrop-blur px-4 py-2 rounded-r text-sm font-semibold text-gray-700">
+          {{ item.label | uppercase }}
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+
+  @switch (pageIndex()) { @case (0) { @if (aquaPreferences(); as aquaPreferences) { @if (homeDeviceOptions()?.length) {
+  <sp-schedule-settings
+    header="Harmonogram oświetlenia"
+    [schedulePreferences]="aquaPreferences"
+    [homeDeviceOptions]="homeDeviceOptions() ?? []"
+    (activated)="onAquaScheduleActive($event)"
+    (preferencesUpdates)="onAquaPreferencesUpdate($event)"
+  ></sp-schedule-settings>
+  } } } @case (1) { @if (circularPumpPreferences(); as preferences) { @if (homeDeviceOptions()?.length) {
+  <sp-schedule-settings
+    header="Harmonogram pompy"
+    [schedulePreferences]="preferences"
+    [homeDeviceOptions]="homeDeviceOptions() ?? []"
+    (activated)="onCircularPumpScheduleActive($event)"
+    (preferencesUpdates)="onCircularPumpPreferencesUpdate($event)"
+  ></sp-schedule-settings>
+  } } } }
+</div>

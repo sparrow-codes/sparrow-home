@@ -1,27 +1,29 @@
 @if (fullLabel()) {
-  <div
-    class="px-4 py-1 rounded max-w-fit font-bold truncate flex gap-2 items-center"
-    [ngClass]="{
+<div
+  class="px-4 py-1 rounded max-w-fit font-bold truncate flex gap-2 items-center"
+  [ngClass]="{
     'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG,
     'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
     'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
-    'siren': deviceType() === deviceTypes.SIREN,
-    'pilot': deviceType() === deviceTypes.PILOT
+    siren: deviceType() === deviceTypes.SIREN,
+    pilot: deviceType() === deviceTypes.PILOT
   }"
-  >
-    <ng-icon [name]="iconName()" size="1.2rem"></ng-icon>
+>
+  <ng-icon [name]="iconName()" size="1.2rem"></ng-icon>
 
-    {{ label() }}
-
-  </div>
+  {{ label() }}
+</div>
 } @else {
-  <ng-icon [ngClass]="{
-    'plugin-color': deviceType() === deviceTypes.POWER_PLUG,
-    'temperature-sensor-color': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
-    'door-sensor-color': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
-    'siren-sensor-color': deviceType() === deviceTypes.SIREN,
-    'pilot-color': deviceType() === deviceTypes.PILOT
-  }" [name]="iconName()" size="1.2rem"></ng-icon>
+<div
+  class="p-2 flex justify-center items-center rounded-md"
+  [ngClass]="{
+    'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG,
+    'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
+    'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
+    siren: deviceType() === deviceTypes.SIREN,
+    pilot: deviceType() === deviceTypes.PILOT
+  }"
+>
+  <ng-icon class="text-white" [name]="iconName()" size="1.5rem"></ng-icon>
+</div>
 }
-
-

@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
 
-import { HomeDeviceDto } from '../models/home-device-dto';
+import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
 import { OpenDoorSensorDetailsDto } from '../models/open-door-sensor-details-dto';
 import { PilotDetailsDto } from '../models/pilot-details.dto';
 import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
@@ -12,6 +12,7 @@ import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-detail
 import { HomeDeviceService } from '../services/home-device.service';
 import { CreateDeviceRequest } from './models/create-device-request';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
+import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { SetPluginSwitchStatusRequest } from './models/set-plugin-switch-status.request';
 
 @ApiBearerAuth()
@@ -22,10 +23,11 @@ export class HomeDeviceController {
   public constructor(private readonly _homeDeviceService: HomeDeviceService) {}
 
   @ApiOperation({ operationId: 'getAllDevices' })
+  @ApiResponse({ type: HomeDeviceDetailsDto, isArray: true })
+  @ApiQuery({ name: 'deviceType', required: false, nullable: true, description: 'Typ urządzenia' })
   @Get('all')
-  @ApiResponse({ type: HomeDeviceDto, isArray: true })
-  public async getAllDevices(): Promise<HomeDeviceDto[]> {
-    return this._homeDeviceService.getListOfDevices();
+  public getAllDevices(@Query('deviceType') deviceType: number): Observable<HomeDeviceDetailsDto[]> {
+    return this._homeDeviceService.getListOfDevices(!isNaN(deviceType) ? deviceType : undefined).pipe();
   }
 
   @ApiOperation({ operationId: 'createDevice' })
@@ -63,5 +65,21 @@ export class HomeDeviceController {
     @Body() request: SetPluginSwitchStatusRequest
   ): Observable<boolean> {
     return this._homeDeviceService.setPluginSwitchStatus(Number(id), request.isOn);
+  }
+
+  @ApiOperation({ operationId: 'getHomeAvgTemperature' })
+  @ApiResponse({ type: GetHomeAvgTemperature })
+  @Get('avg-temperature')
+  public async getHomeAvgTemperature(): Promise<GetHomeAvgTemperature> {
+    return {
+      avgTemperature: await this._homeDeviceService.getAvgTemperature(),
+    };
+  }
+
+  @ApiOperation({ operationId: 'areAllDoorsAndWindowsClosed' })
+  @ApiResponse({ type: Boolean })
+  @Get('are-all-doors-and-windows-closed')
+  public async areAllDoorsAndWindowsClosed(): Promise<boolean | null> {
+    return this._homeDeviceService.areAllDoorsAndWindowsClosed();
   }
 }

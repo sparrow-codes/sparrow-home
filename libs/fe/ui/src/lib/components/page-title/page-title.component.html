@@ -1,13 +1,11 @@
-<div class="h-[50px] text-md uppercase whitespace-nowrap py-3 mb-6 text-dark-gray flex gap-1 items-center">
-  <div class="h-[1rem] border-dark-blue"></div>
+<div class="h-[50px] text-md uppercase whitespace-nowrap text-gray-800 flex gap-2 items-center">
+  <div class="w-[1rem]">
+    @if (routerLink(); as link) { @if (!navigationDisabled()) {
+    <a [routerLink]="link" class="no-underline text-[1rem] text-gray-500">
+      <i class="pi pi-chevron-left"></i>
+    </a>
+    } }
+  </div>
 
-  @if (routerLink(); as link) {
-    <button mat-button [routerLink]="link">
-      <div class="flex items-center">
-        <ng-icon size="1rem" name="heroChevronDoubleLeft"></ng-icon>
-      </div>
-    </button>
-  }
   <ng-content></ng-content>
-
 </div>

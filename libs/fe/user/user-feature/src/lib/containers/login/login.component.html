@@ -1,13 +1,11 @@
-<div @sparrowFadeIn class="w-full h-full flex items-center justify-center bg-super-light-gray">
-  <div class="w-[300px] md:w-[450px]">
-    <sp-app-logo [type]="'horizontal'"></sp-app-logo>
-    <mat-card class="mt-[-25px]">
+<div @staggeredFadeIn class="min-h-screen flex flex-col bg-gray-100 px-4">
+  <div class="w-full max-w-sm p-8">
+    <!-- Logo -->
+    <div class="flex flex-col items-center">
+      <img src="assets/logo.png" alt="Logo Sparrow Home" class="h-[250px]" />
+    </div>
 
-      <sp-login-form
-        [createAdditionalUserLink]="createNewUserLink"
-        [hasError]="dataService.isLoginError()"
-        (login)="dataService.login($event)"
-      ></sp-login-form>
-    </mat-card>
+    <!-- Formularz logowania -->
+    <sp-login-form (newUserNavigation)="navigateToNewUser()" (login)="dataService.login($event)"></sp-login-form>
   </div>
 </div>

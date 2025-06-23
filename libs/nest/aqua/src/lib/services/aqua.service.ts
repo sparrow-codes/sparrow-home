@@ -102,6 +102,7 @@ export class AquaService {
 
   private _setAquaLightJob(aquaPreferences: AquaPreferences): void {
     if (aquaPreferences.isActive) {
+      this._stopAquaLightJobs();
       const lightStartTime: Date | null = aquaPreferences.lightStartTime;
       const lightEndTime: Date | null = aquaPreferences.lightEndTime;
       const zigbeeDeviceId: string | undefined = aquaPreferences.homeDevice?.zigbeeDeviceId;

@@ -33,7 +33,7 @@ export class LoaderService {
         });
         this._overlayRef.attach(this._loader);
       } else {
-        this._overlayRef?.detach();
+        this._overlayRef?.dispose();
       }
     });
   }

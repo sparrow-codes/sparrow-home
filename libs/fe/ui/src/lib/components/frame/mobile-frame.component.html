@@ -1,18 +1,4 @@
-<ion-header>
-  <ion-toolbar class="my-custom-color ion-no-padding">
-    <div class="max-h-[60px] flex justify-between items-center">
-      <sp-app-logo></sp-app-logo>
-      <button mat-button [matMenuTriggerFor]="menu">
-        <span class="text-white"><ng-icon name="matSettings" size="1.5rem"></ng-icon></span>
-      </button>
-
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="profilePath">PROFIL</button>
-        <button mat-menu-item [routerLink]="loginPath">WYLOGUJ</button>
-      </mat-menu>
-    </div>
-  </ion-toolbar>
-</ion-header>
+<ion-header> </ion-header>
 <ion-content class="ion-padding">
   <router-outlet></router-outlet>
 </ion-content>
@@ -20,14 +6,13 @@
   @for (item of navigationItems; track item.routerLink) {
   <ion-tab-button
     class="transition-colors"
-    [class.text-nav-icon-inactive]="currentUrl() !== '/' + item.routerLink"
-    [class.text-nav-icon-active]="currentUrl() === '/' + item.routerLink"
+    [class.text-gray-500]="currentUrl() !== '/' + item.routerLink"
+    [class.text-black]="currentUrl() === '/' + item.routerLink"
     [routerLink]="item.routerLink"
     [selected]="currentUrl() === '/' + item.routerLink"
-    [routerDirection]="'back'"
   >
-    <ng-icon size="1.5rem" [name]="item.icon"></ng-icon>
-    {{ item.label }}
+    <i size="1.5rem" [class]="item.icon" class="text-[32px]"></i>
+    <span class="text-sm">{{ item.label }}</span>
   </ion-tab-button>
   }
 </ion-tab-bar>

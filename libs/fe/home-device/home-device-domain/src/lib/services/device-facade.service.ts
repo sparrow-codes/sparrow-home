@@ -1,4 +1,5 @@
 import { inject, Injectable, Signal } from '@angular/core';
+import { DeviceType } from '@sparrow-home/core';
 import { Observable } from 'rxjs';
 
 import { HomeDevice } from '../models';
@@ -18,6 +19,10 @@ export class DeviceFacadeService {
 
   public get homeDeviceDetails(): Signal<HomeDevice | null> {
     return this._dataService.homeDeviceDetails;
+  }
+
+  public get deviceFilter(): Signal<DeviceType | null> {
+    return this._dataService.deviceTypeFilter;
   }
 
   public fetchDevices(): void {
@@ -42,5 +47,9 @@ export class DeviceFacadeService {
 
   public setLscSwitchOperationStatus(id: number, isOn: boolean): void {
     this._switchOperationService.setSwitchStatus(id, isOn);
+  }
+
+  public setDeviceTypeFilter(deviceType?: string | number): void {
+    this._dataService.setDeviceTypeFilter(deviceType);
   }
 }

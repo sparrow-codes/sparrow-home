@@ -8,9 +8,7 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/sparrow-home-mobile",
         "index": "apps/sparrow-home-mobile/src/index.html",
@@ -19,6 +17,9 @@
         "assets": [
           "apps/sparrow-home-mobile/src/config.json",
           "apps/sparrow-home-mobile/src/manifest.json",
+          "apps/sparrow-home-mobile/src/apple-touch-icon.png",
+          "apps/sparrow-home-mobile/src/apple-touch-icon-precomposed.png",
+          "apps/sparrow-home-mobile/src/assets",
           {
             "glob": "**/*.svg",
             "input": "node_modules/ionicons/dist/ionicons/svg",
@@ -36,9 +37,7 @@
           "node_modules/@ionic/angular/css/text-alignment.css",
           "node_modules/@ionic/angular/css/text-transformation.css",
           "node_modules/@ionic/angular/css/flex-utils.css",
-          "@angular/material/prebuilt-themes/azure-blue.css",
-          "apps/sparrow-home-mobile/src/styles.scss",
-          "apps/sparrow-home-mobile/src/theme/variables.scss"
+          "apps/sparrow-home-mobile/src/styles.scss"
         ],
         "scripts": []
       },
@@ -90,9 +89,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/sparrow-home-mobile/jest.config.ts"
       }

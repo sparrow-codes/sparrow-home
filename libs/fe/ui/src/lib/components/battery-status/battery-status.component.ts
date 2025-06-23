@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
+import { bootstrapBattery, bootstrapBatteryFull, bootstrapBatteryHalf } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { heroBattery0, heroBattery50, heroBattery100 } from '@ng-icons/heroicons/outline';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'sp-battery-status',
-  imports: [CommonModule, NgIcon],
-  providers: [provideIcons({ heroBattery0, heroBattery50, heroBattery100 })],
+  imports: [CommonModule, NgIcon, Tag],
+  providers: [provideIcons({ bootstrapBatteryFull, bootstrapBatteryHalf, bootstrapBattery })],
   templateUrl: './battery-status.component.html',
 })
 export class BatteryStatusComponent {
@@ -20,13 +21,13 @@ export class BatteryStatusComponent {
     }
 
     if (batteryStatus > 50) {
-      return 'heroBattery100';
+      return 'bootstrapBatteryFull';
     }
 
     if (batteryStatus <= 50 && batteryStatus > 20) {
-      return 'heroBattery50';
+      return 'bootstrapBatteryHalf';
     }
 
-    return 'heroBattery0';
+    return 'bootstrapBattery';
   });
 }

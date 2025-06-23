@@ -21,10 +21,7 @@
       "compodoc": true,
       "port": 6006,
       "options": {
-        "styles": [
-          "@angular/material/prebuilt-themes/azure-blue.css",
-          "apps/sparrow-home/src/styles.css"
-        ]
+        "styles": ["apps/sparrow-home/src/styles.css"]
       }
     }
   }

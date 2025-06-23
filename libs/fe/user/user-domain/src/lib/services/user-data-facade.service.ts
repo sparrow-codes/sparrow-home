@@ -10,10 +10,6 @@ import { UserStore } from '../store/user-store';
 export class UserDataFacadeService {
   private readonly _userStore = inject(UserStore);
 
-  public get isLoginError(): Signal<boolean> {
-    return this._userStore.isLoginError;
-  }
-
   public get user(): Signal<User | null> {
     return this._userStore.user;
   }

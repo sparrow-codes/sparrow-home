@@ -1,11 +1,11 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HomeDeviceApiService, HomeDeviceDtoApiModel } from '@sparrow-home/api';
-import { LoaderService, RoutePath } from '@sparrow-home/core';
+import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel } from '@sparrow-home/api';
+import { DeviceType, LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
+import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
 
 import { HomeDevice } from '../../models';
@@ -16,11 +16,12 @@ import { HomeDeviceMapper } from '../mapper/home-device-mapper';
 })
 export class HomeDeviceDataService {
   private readonly _apiService: HomeDeviceApiService = inject(HomeDeviceApiService);
-  private readonly _snackBar: MatSnackBar = inject(MatSnackBar);
   private readonly _loadingService: LoaderService = inject(LoaderService);
-  private readonly _matDialog: MatDialog = inject(MatDialog);
+  private readonly _dialogService: DialogService = inject(DialogService);
   private readonly _router: Router = inject(Router);
+  private readonly _messageService: MessageService = inject(MessageService);
 
+  private readonly _deviceTypeFilter: WritableSignal<DeviceType | null> = signal(null);
   private readonly _homeDevices: WritableSignal<HomeDevice[] | null> = signal(null);
   private readonly _searchQuery: WritableSignal<string> = signal('');
   private readonly _homeDeviceDetails: WritableSignal<HomeDevice | null> = signal(null);
@@ -40,8 +41,18 @@ export class HomeDeviceDataService {
     return this._homeDeviceDetails.asReadonly();
   }
 
+  public get deviceTypeFilter(): Signal<DeviceType | null> {
+    return this._deviceTypeFilter.asReadonly();
+  }
+
   public setSearchQuery(query: string): void {
     this._searchQuery.set(query);
+  }
+
+  public setDeviceTypeFilter(deviceType?: string | number): void {
+    if (deviceType !== undefined) {
+      this._deviceTypeFilter.set(!isNaN(Number(deviceType)) && deviceType !== '' ? Number(deviceType) : null);
+    }
   }
 
   public fetchAvailableDevices(): void {
@@ -64,23 +75,27 @@ export class HomeDeviceDataService {
         map(() => true),
         tap({
           next: (isCreated) =>
-            this._snackBar.open(isCreated ? 'Połączono urządzenie!' : 'Nie udało się nawiązać połączenia'),
-          error: () => this._snackBar.open('Błąd podczas towrzenia urządzenia'),
+            this._messageService.add({
+              summary: isCreated ? 'Połączono urządzenie!' : 'Nie udało się nawiązać połączenia',
+              severity: isCreated ? 'success' : 'contrast',
+            }),
+          error: () => this._messageService.add({ summary: 'Błąd podczas towrzenia urządzenia', severity: 'error' }),
         }),
         catchError(() => of(false))
       );
   }
 
   public removeDevice(id: number, deviceName: string): void {
-    this._matDialog
+    this._dialogService
       .open(ConfirmationDialogComponent, {
+        header: 'Usuń urządzenie',
+
+        width: '90vw',
         data: {
-          title: 'Usuń urządzenie',
           content: `Czy na pewno chcesz usunąć urządzenie o nazwie: ${deviceName}?`,
         } as ConfirmationDialogData,
       })
-      .afterClosed()
-      .pipe(
+      .onClose.pipe(
         take(1),
         filter((result) => !!result),
         tap(() => (this._loadingService.showLoader = true)),
@@ -88,8 +103,9 @@ export class HomeDeviceDataService {
           this._apiService.deleteDevice({ id: id.toString() }).pipe(
             first(),
             tap({
-              next: () => this._snackBar.open('Usunięto urządzenie!'),
-              error: () => this._snackBar.open('Błąd podczas usuwania urządzenia!'),
+              next: () => this._messageService.add({ summary: 'Usunięto urządzenie!', severity: 'contrast' }),
+              error: () =>
+                this._messageService.add({ summary: 'Błąd podczas usuwania urządzenia!', severity: 'error' }),
             }),
             finalize(() => (this._loadingService.showLoader = false))
           )
@@ -115,7 +131,10 @@ export class HomeDeviceDataService {
             if (error.status === HttpStatusCode.NotFound) {
               this._router.navigate([RoutePath.NOT_FOUND]);
             } else {
-              this._snackBar.open('Błąd podczas pobierania szczegółów urządzenia!');
+              this._messageService.add({
+                summary: 'Błąd podczas pobierania szczegółów urządzenia!',
+                severity: 'error',
+              });
             }
           },
         }),
@@ -124,12 +143,12 @@ export class HomeDeviceDataService {
       .subscribe();
   }
 
-  private _fetchDevices(): Observable<HomeDeviceDtoApiModel[]> {
-    return this._apiService.getAllDevices().pipe(
+  private _fetchDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
+    return this._apiService.getAllDevices({ deviceType: this._deviceTypeFilter() }).pipe(
       first(),
       tap({
-        next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.map)),
-        error: () => this._snackBar.open('Błąd pobierania listy urządzeń'),
+        next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.mapDetails)),
+        error: () => this._messageService.add({ summary: 'Błąd pobierania listy urządzeń', severity: 'error' }),
       })
     );
   }

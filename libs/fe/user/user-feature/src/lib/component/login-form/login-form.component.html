@@ -1,32 +1,35 @@
-<form [formGroup]="formGroup">
-  <mat-card-content>
-    <div  class="w-full flex flex-col gap-2">
-      <span class="text-md mb-2 block">Logowanie</span>
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput [formControlName]="formName.EMAIL">
-      </mat-form-field>
+<form [formGroup]="loginForm" (ngSubmit)="onLoginClick()" class="flex flex-col gap-6">
+  <!-- E-mail -->
+  <p-floatlabel class="fade-step" variant="on">
+    <input id="email" type="email" pInputText pSize="large" formControlName="email" fluid="true" />
+    <label for="email">E-mail</label>
+  </p-floatlabel>
 
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input matInput type="password" [formControlName]="formName.PASSWORD">
-        @if(passwordControl.pristine && (showInvalidFormError() || hasError())) {
-          <mat-error>Niepoprawny login lub hasło!</mat-error>
-        }
-      </mat-form-field>
-    </div>
-    <div class="w-full text-end">
-      <a class="text-primary" [routerLink]="['/', createAdditionalUserLink()]">Nowy użytkownik</a>
-    </div>
-  </mat-card-content>
+  <!-- Hasło -->
+  <p-floatlabel class="fade-step" variant="on">
+    <p-password
+      id="password"
+      size="large"
+      inputId="password"
+      formControlName="password"
+      fluid="true"
+      [feedback]="false"
+      [toggleMask]="true"
+    ></p-password>
+    <label for="password">Hasło</label>
+  </p-floatlabel>
 
-  <mat-card-actions align="end">
-    <button mat-stroked-button (click)="onLoginClick()">
-      <div class="flex justify-center gap-2 items-center">
-        <span>Login</span>
-        <ng-icon name="heroLockOpen"></ng-icon>
-      </div>
-    </button>
-  </mat-card-actions>
+  <!-- Przyciski -->
+  <p-button type="submit" fluid="true" size="large" class="fade-step" [disabled]="loginForm.invalid"
+    >Zaloguj się</p-button
+  >
+
+  <p-button
+    (onClick)="newUserNavigation.emit()"
+    type="button"
+    [link]="true"
+    class="p-button-link w-full text-center fade-step"
+  >
+    Utwórz nowe konto
+  </p-button>
 </form>
-

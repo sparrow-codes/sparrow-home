@@ -1,5 +1,4 @@
 import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
@@ -11,6 +10,7 @@ import {
   UserApiService,
 } from '@sparrow-home/api';
 import { AuthService, LoaderService, RoutePath } from '@sparrow-home/core';
+import { MessageService } from 'primeng/api';
 import { finalize, first, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { UserRole } from '../enum/user-role';
@@ -19,20 +19,19 @@ import { User } from '../model/user';
 type UserState = {
   user: User | null;
   additionalUsers: User[] | null;
-  isLoginError: boolean;
 };
 
 export const UserStore = signalStore(
   { providedIn: 'root' },
-  withState<UserState>({ user: null, isLoginError: false, additionalUsers: null }),
+  withState<UserState>({ user: null, additionalUsers: null }),
   withMethods(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
       authService: AuthService = inject(AuthService),
-      snackBar: MatSnackBar = inject(MatSnackBar),
       router: Router = inject(Router),
-      loaderService = inject(LoaderService)
+      loaderService = inject(LoaderService),
+      messageService = inject(MessageService)
     ) => {
       function _getAdditionalUsers(): Observable<GetListOfAdditionalUsersResponseApiModel> {
         loaderService.showLoader = true;
@@ -49,7 +48,7 @@ export const UserStore = signalStore(
                   role: UserRole.ADDITIONAL,
                 })),
               }),
-            error: () => snackBar.open('Błąd pobierania listy użytkowników'),
+            error: () => messageService.add({ summary: 'Błąd pobierania listy użytkowników', severity: 'error' }),
           }),
           finalize(() => (loaderService.showLoader = false))
         );
@@ -64,10 +63,14 @@ export const UserStore = signalStore(
                 first(),
                 tapResponse({
                   next: () => {
-                    snackBar.open('Konfiguracja zakończona powodzeniem', 'Zamknij');
+                    messageService.add({ summary: 'Konfiguracja zakończona powodzeniem', severity: 'contrast' });
                     router.navigate([RoutePath.LOGIN]);
                   },
-                  error: () => snackBar.open('Konfiguracja zakończona niepowodzeniem', 'Zamknij'),
+                  error: () =>
+                    messageService.add({
+                      summary: 'Konfiguracja zakończona niepowodzeniem',
+                      severity: 'error',
+                    }),
                   finalize: () => (loaderService.showLoader = false),
                 })
               )
@@ -82,10 +85,14 @@ export const UserStore = signalStore(
                 first(),
                 tapResponse({
                   next: () => {
-                    snackBar.open('Użytkownik został utworzony!');
+                    messageService.add({ summary: 'Użytkownik został utworzony!', severity: 'contrast' });
                     router.navigate([RoutePath.LOGIN]);
                   },
-                  error: () => snackBar.open('Błąd podczas tworzenia użytkownika!'),
+                  error: () =>
+                    messageService.add({
+                      summary: 'Błąd podczas tworzenia użytkownika!',
+                      severity: 'error',
+                    }),
                   finalize: () => (loaderService.showLoader = false),
                 })
               )
@@ -96,7 +103,6 @@ export const UserStore = signalStore(
           pipe(
             tap(() => {
               loaderService.showLoader = true;
-              patchState(store, { isLoginError: false });
             }),
             switchMap((request) =>
               authService.login(request.email, request.password).pipe(
@@ -106,7 +112,7 @@ export const UserStore = signalStore(
                     router.navigate([RoutePath.MAIN]).then(() => (loaderService.showLoader = false));
                   },
                   error: () => {
-                    patchState(store, { isLoginError: true });
+                    messageService.add({ summary: 'Niepoprawny login lub hasło!', severity: 'error' });
                     loaderService.showLoader = false;
                   },
                 })
@@ -134,7 +140,11 @@ export const UserStore = signalStore(
                         role: response.role,
                       },
                     }),
-                  error: () => snackBar.open('Błąd pobierania szczegółów użytkownika'),
+                  error: () =>
+                    messageService.add({
+                      summary: 'Błąd pobierania szczegółów użytkownika',
+                      severity: 'error',
+                    }),
                 }),
                 finalize(() => (loaderService.showLoader = false))
               )
@@ -148,8 +158,12 @@ export const UserStore = signalStore(
             switchMap((userId) =>
               userApiService.activateUser({ body: { userId } }).pipe(
                 tapResponse({
-                  next: () => snackBar.open('Aktywowano użytkownika!'),
-                  error: () => snackBar.open('Błąd podczas aktywacji użytkownika!'),
+                  next: () => messageService.add({ summary: 'Aktywowano użytkownika', severity: 'contrast' }),
+                  error: () =>
+                    messageService.add({
+                      summary: 'Błąd podczas aktywacji użytkownika!',
+                      severity: 'error',
+                    }),
                 }),
                 switchMap(() => _getAdditionalUsers())
               )

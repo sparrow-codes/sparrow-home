@@ -1,6 +1,5 @@
 import {
   HomeDeviceDetailsDtoApiModel,
-  HomeDeviceDtoApiModel,
   OpenDoorSensorDetailsDtoApiModel,
   PilotDetailsDtoApiModel,
   PluginSwitchDetailsDtoApiModel,
@@ -16,17 +15,8 @@ import { SwitchDevice } from '../../models/switch-device';
 import { TemperatureSensor } from '../../models/temperature-sensor';
 
 export class HomeDeviceMapper {
-  public static map(device: HomeDeviceDtoApiModel): HomeDevice {
-    return {
-      id: device.id,
-      homeDeviceId: device.homeDeviceId,
-      name: device.name,
-      type: device.type,
-    };
-  }
-
   public static mapDetails(device: HomeDeviceDetailsDtoApiModel): HomeDevice {
-    const homeDevice: HomeDevice = this._mapDevice(device);
+    const homeDevice: HomeDevice = HomeDeviceMapper._mapDevice(device);
 
     if (device.type === DeviceType.POWER_PLUG) {
       const switchDevice: PluginSwitchDetailsDtoApiModel = device as PluginSwitchDetailsDtoApiModel;
