@@ -1,5 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nx/angular/tailwind');
 const { join } = require('path');
+const PrimeUI = require('tailwindcss-primeui');
 
 /** @type {import('tailwindcss').Config} */
 /** @type {import('tailwindcss').Config} */
