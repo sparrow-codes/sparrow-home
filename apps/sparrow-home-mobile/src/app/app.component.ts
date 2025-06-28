@@ -1,6 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { VisibilityService } from '@sparrow-home/core';
 import { Toast } from 'primeng/toast';
 
 @Component({
@@ -9,10 +8,4 @@ import { Toast } from 'primeng/toast';
   standalone: true,
   imports: [IonApp, IonRouterOutlet, Toast],
 })
-export class AppComponent implements OnInit {
-  private readonly _visibilityService: VisibilityService = inject(VisibilityService);
-
-  public ngOnInit(): void {
-    this._visibilityService.listenToVisibilityChange();
-  }
-}
+export class AppComponent {}

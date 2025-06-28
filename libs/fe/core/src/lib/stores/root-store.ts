@@ -1,8 +1,10 @@
 import { inject } from '@angular/core';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { ApiConfiguration } from '@sparrow-home/api';
 
 import { AppConfig } from '../models';
+import { NewVersionService } from '../services/new-version.service';
+import { VisibilityService } from '../services/visibility.service';
 
 type RootState = {
   lowestTemperatureAtNight: number | undefined;
@@ -19,6 +21,12 @@ export const RootStore = signalStore(
     saveAppConfig: (appConfig: AppConfig): void => {
       patchState(store, { appConfig });
       apiConfiguration.rootUrl = `${appConfig.backendUrl}`;
+    },
+  })),
+  withHooks((_store, visibilityService = inject(VisibilityService), newVersionService = inject(NewVersionService)) => ({
+    onInit: (): void => {
+      visibilityService.listenToVisibilityChange();
+      newVersionService.listenToNewVersionChange();
     },
   }))
 );
