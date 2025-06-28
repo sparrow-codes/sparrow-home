@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 import { RoutePath } from '../enum';
 
@@ -10,11 +11,15 @@ import { RoutePath } from '../enum';
 export class VisibilityService {
   private readonly _document: Document = inject(DOCUMENT);
   private readonly _router: Router = inject(Router);
+  private readonly _isVisible: Subject<boolean> = new Subject<boolean>();
+
+  public readonly isVisible: Observable<boolean> = this._isVisible.asObservable();
 
   public listenToVisibilityChange(): void {
     this._document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         this._router.navigate([RoutePath.MAIN]);
+        this._isVisible.next(true);
       }
     });
   }
