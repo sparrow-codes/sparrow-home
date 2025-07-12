@@ -2,7 +2,6 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppInitService } from '@sparrow-server/init';
 import { ConfigKey } from '@sparrow-server/shared';
 
 import { AppModule } from './app/app.module';
@@ -14,7 +13,6 @@ async function bootstrap(): Promise<void> {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors();
 
-  const initService: AppInitService = app.get(AppInitService);
   const configService: ConfigService = app.get(ConfigService);
   const port: number = +process.env.PORT || 3000;
 
@@ -24,8 +22,9 @@ async function bootstrap(): Promise<void> {
     );
   }
 
-  await app.listen(port).then(() => initService.onInit());
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  await app.listen(port).then(() => {
+    Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  });
 }
 
 bootstrap();

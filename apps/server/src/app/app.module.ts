@@ -9,7 +9,6 @@ import { AuthModule } from '@sparrow-server/auth';
 import { CloudModule } from '@sparrow-server/cloud';
 import { HomeDeviceModule } from '@sparrow-server/device';
 import { ApiModule } from '@sparrow-server/external-api';
-import { InitModule } from '@sparrow-server/init';
 import { PushModule } from '@sparrow-server/push';
 import { SetupModule } from '@sparrow-server/setup';
 import { ConfigKey } from '@sparrow-server/shared';
@@ -67,7 +66,6 @@ import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092
     AuthModule,
     SetupModule,
     ApiModule,
-    InitModule,
     HomeDeviceModule,
     AquaModule,
     AlarmModule,
