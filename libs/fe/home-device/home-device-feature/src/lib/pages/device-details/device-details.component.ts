@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, Signal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceType } from '@sparrow-home/core';
@@ -14,7 +14,9 @@ import {
 import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
+import { InputText } from 'primeng/inputtext';
 import { ToggleButton } from 'primeng/togglebutton';
 import { filter, first, map, tap } from 'rxjs';
 
@@ -38,6 +40,8 @@ import { TemperatureSensorDetailsComponent } from '../../components/temperature-
     Button,
     Divider,
     Card,
+    Dialog,
+    InputText,
   ],
   templateUrl: './device-details.component.html',
   animations: [sparrowFadeIn],
@@ -48,6 +52,7 @@ export class DeviceDetailsComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
+  protected readonly showEditDialog: WritableSignal<boolean> = signal(false);
   protected readonly deviceDetails: Signal<HomeDevice | null> = this._facadeService.homeDeviceDetails;
   protected readonly switchDevice: Signal<SwitchDevice | null> = computed(() => {
     if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.POWER_PLUG) {
@@ -104,5 +109,10 @@ export class DeviceDetailsComponent implements OnInit {
 
   protected onDeviceDelete(id: number, name: string): void {
     this._facadeService.deleteDevice(id, name);
+  }
+
+  protected onDeviceNameChange(id: number, value: string): void {
+    this._facadeService.changeDeviceName(id, value);
+    this.showEditDialog.set(false);
   }
 }
