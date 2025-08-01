@@ -52,4 +52,8 @@ export class DeviceFacadeService {
   public setDeviceTypeFilter(deviceType?: string | number): void {
     this._dataService.setDeviceTypeFilter(deviceType);
   }
+
+  public changeDeviceName(id: number, deviceName: string): void {
+    this._dataService.changeDeviceName(id, deviceName);
+  }
 }

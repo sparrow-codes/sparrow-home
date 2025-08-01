@@ -23,7 +23,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/change-operation-status": {
@@ -51,7 +53,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/scheduled-water-heating": {
@@ -79,7 +83,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/scheduled-water-heating-status": {
@@ -104,7 +110,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/circular-pump/preferences": {
@@ -132,7 +140,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       },
       "get": {
         "operationId": "getCircularPumpPreferences",
@@ -155,7 +165,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/circular-pump/status": {
@@ -183,7 +195,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/heating-preferences": {
@@ -208,7 +222,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       },
       "put": {
         "operationId": "setHeatingPreferences",
@@ -234,7 +250,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/panasonic-cloud/heating-preferences/auto": {
@@ -262,7 +280,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Panasonic Cloud"]
+        "tags": [
+          "Panasonic Cloud"
+        ]
       }
     },
     "/api/auth/login": {
@@ -292,7 +312,9 @@
           }
         },
         "summary": "",
-        "tags": ["Authentication"]
+        "tags": [
+          "Authentication"
+        ]
       }
     },
     "/api/auth/refresh": {
@@ -321,7 +343,9 @@
           }
         },
         "summary": "",
-        "tags": ["Authentication"]
+        "tags": [
+          "Authentication"
+        ]
       }
     },
     "/api/user/create-first": {
@@ -344,7 +368,9 @@
           }
         },
         "summary": "",
-        "tags": ["User"]
+        "tags": [
+          "User"
+        ]
       }
     },
     "/api/user/create-additional": {
@@ -367,7 +393,9 @@
           }
         },
         "summary": "",
-        "tags": ["User"]
+        "tags": [
+          "User"
+        ]
       }
     },
     "/api/user/activate-user": {
@@ -390,7 +418,9 @@
           }
         },
         "summary": "",
-        "tags": ["User"]
+        "tags": [
+          "User"
+        ]
       }
     },
     "/api/user/additional-users": {
@@ -410,7 +440,9 @@
           }
         },
         "summary": "",
-        "tags": ["User"]
+        "tags": [
+          "User"
+        ]
       }
     },
     "/api/user/details": {
@@ -430,7 +462,9 @@
           }
         },
         "summary": "",
-        "tags": ["User"]
+        "tags": [
+          "User"
+        ]
       }
     },
     "/api/setup/ready": {
@@ -443,7 +477,9 @@
           }
         },
         "summary": "",
-        "tags": ["Setup"]
+        "tags": [
+          "Setup"
+        ]
       }
     },
     "/api/setup/current": {
@@ -463,7 +499,9 @@
           }
         },
         "summary": "",
-        "tags": ["Setup"]
+        "tags": [
+          "Setup"
+        ]
       }
     },
     "/api/setup/config-change": {
@@ -476,7 +514,9 @@
           }
         },
         "summary": "",
-        "tags": ["Setup"]
+        "tags": [
+          "Setup"
+        ]
       }
     },
     "/api/home-device/all": {
@@ -515,7 +555,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/home-device/create": {
@@ -543,7 +585,39 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
+    "/api/home-device/updateDeviceName": {
+      "put": {
+        "operationId": "updateDeviceName",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeDeviceNameRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/home-device/delete/{id}": {
@@ -570,7 +644,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/home-device/details/{id}": {
@@ -604,7 +680,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/home-device/switch/status/{id}": {
@@ -641,7 +719,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/home-device/avg-temperature": {
@@ -666,7 +746,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/home-device/are-all-doors-and-windows-closed": {
@@ -691,7 +773,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Home Device"]
+        "tags": [
+          "Home Device"
+        ]
       }
     },
     "/api/aqua/preferences": {
@@ -719,7 +803,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Aqua Preferences"]
+        "tags": [
+          "Aqua Preferences"
+        ]
       },
       "get": {
         "operationId": "getAquaPreference",
@@ -742,7 +828,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Aqua Preferences"]
+        "tags": [
+          "Aqua Preferences"
+        ]
       }
     },
     "/api/aqua/status": {
@@ -770,7 +858,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Aqua Preferences"]
+        "tags": [
+          "Aqua Preferences"
+        ]
       }
     },
     "/api/alarm/set": {
@@ -798,7 +888,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Alarm"]
+        "tags": [
+          "Alarm"
+        ]
       }
     },
     "/api/alarm/set-mode": {
@@ -826,7 +918,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Alarm"]
+        "tags": [
+          "Alarm"
+        ]
       }
     },
     "/api/alarm/mode": {
@@ -851,7 +945,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Alarm"]
+        "tags": [
+          "Alarm"
+        ]
       }
     },
     "/api/alarm/siren-status": {
@@ -876,7 +972,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Alarm"]
+        "tags": [
+          "Alarm"
+        ]
       }
     },
     "/api/push-notification/add-subscription": {
@@ -904,7 +1002,9 @@
           }
         ],
         "summary": "",
-        "tags": ["Push Notification"]
+        "tags": [
+          "Push Notification"
+        ]
       }
     }
   },
@@ -939,7 +1039,11 @@
             "type": "number"
           }
         },
-        "required": ["operationStatus", "temparatureNow", "heatSet"]
+        "required": [
+          "operationStatus",
+          "temparatureNow",
+          "heatSet"
+        ]
       },
       "TankStatusDto": {
         "type": "object",
@@ -960,7 +1064,13 @@
             "type": "number"
           }
         },
-        "required": ["operationStatus", "temparatureNow", "heatMax", "heatMin", "heatSet"]
+        "required": [
+          "operationStatus",
+          "temparatureNow",
+          "heatMax",
+          "heatMin",
+          "heatSet"
+        ]
       },
       "GetHeatPumpDetailsResponse": {
         "type": "object",
@@ -981,7 +1091,13 @@
             "$ref": "#/components/schemas/TankStatusDto"
           }
         },
-        "required": ["deviceGuid", "outdoorNow", "waterPressure", "zoneStatus", "tankStatus"]
+        "required": [
+          "deviceGuid",
+          "outdoorNow",
+          "waterPressure",
+          "zoneStatus",
+          "tankStatus"
+        ]
       },
       "SetHeatPumpStatusRequest": {
         "type": "object",
@@ -996,7 +1112,11 @@
             "type": "string"
           }
         },
-        "required": ["isWaterOn", "isHeatOn", "deviceGuid"]
+        "required": [
+          "isWaterOn",
+          "isHeatOn",
+          "deviceGuid"
+        ]
       },
       "ScheduledWaterHeatingRequest": {
         "type": "object",
@@ -1005,7 +1125,9 @@
             "type": "boolean"
           }
         },
-        "required": ["active"]
+        "required": [
+          "active"
+        ]
       },
       "GetScheduledWaterHeatingStatusResponse": {
         "type": "object",
@@ -1014,7 +1136,9 @@
             "type": "boolean"
           }
         },
-        "required": ["isScheduled"]
+        "required": [
+          "isScheduled"
+        ]
       },
       "SetCircularPumpPreferencesRequest": {
         "type": "object",
@@ -1040,7 +1164,9 @@
             "nullable": false
           }
         },
-        "required": ["isActive"]
+        "required": [
+          "isActive"
+        ]
       },
       "GetCircularPumpPreferences": {
         "type": "object",
@@ -1060,7 +1186,12 @@
             "type": "string"
           }
         },
-        "required": ["isActive", "homeDeviceId", "circularPumpStartTime", "circularPumpEndTime"]
+        "required": [
+          "isActive",
+          "homeDeviceId",
+          "circularPumpStartTime",
+          "circularPumpEndTime"
+        ]
       },
       "GetHeatingPreferencesResponse": {
         "type": "object",
@@ -1113,7 +1244,12 @@
             "nullable": true
           }
         },
-        "required": ["firstFlorSensorId", "groundFlorSensorId", "minTargetTemperature", "maxTargetTemperature"]
+        "required": [
+          "firstFlorSensorId",
+          "groundFlorSensorId",
+          "minTargetTemperature",
+          "maxTargetTemperature"
+        ]
       },
       "SetAutomaticHeatingRequest": {
         "type": "object",
@@ -1123,7 +1259,9 @@
             "nullable": false
           }
         },
-        "required": ["isAutomaticHeating"]
+        "required": [
+          "isAutomaticHeating"
+        ]
       },
       "LoginRequest": {
         "type": "object",
@@ -1135,7 +1273,10 @@
             "type": "string"
           }
         },
-        "required": ["email", "password"]
+        "required": [
+          "email",
+          "password"
+        ]
       },
       "LoginResponse": {
         "type": "object",
@@ -1145,7 +1286,9 @@
             "nullable": false
           }
         },
-        "required": ["token"]
+        "required": [
+          "token"
+        ]
       },
       "RefreshTokenResponse": {
         "type": "object",
@@ -1155,7 +1298,9 @@
             "nullable": false
           }
         },
-        "required": ["token"]
+        "required": [
+          "token"
+        ]
       },
       "CreateNewUserRequest": {
         "type": "object",
@@ -1174,7 +1319,12 @@
             "nullable": true
           }
         },
-        "required": ["firstName", "password", "email", "lastName"]
+        "required": [
+          "firstName",
+          "password",
+          "email",
+          "lastName"
+        ]
       },
       "ActivateUserRequest": {
         "type": "object",
@@ -1183,7 +1333,9 @@
             "type": "number"
           }
         },
-        "required": ["userId"]
+        "required": [
+          "userId"
+        ]
       },
       "AdditionalUserDto": {
         "type": "object",
@@ -1201,7 +1353,12 @@
             "type": "string"
           }
         },
-        "required": ["id", "firstName", "isActive", "lastName"]
+        "required": [
+          "id",
+          "firstName",
+          "isActive",
+          "lastName"
+        ]
       },
       "GetListOfAdditionalUsersResponse": {
         "type": "object",
@@ -1213,7 +1370,9 @@
             }
           }
         },
-        "required": ["users"]
+        "required": [
+          "users"
+        ]
       },
       "GetUserDetailsResponse": {
         "type": "object",
@@ -1235,7 +1394,13 @@
             "type": "number"
           }
         },
-        "required": ["id", "firstName", "email", "lastName", "role"]
+        "required": [
+          "id",
+          "firstName",
+          "email",
+          "lastName",
+          "role"
+        ]
       },
       "GetSetupResponse": {
         "type": "object",
@@ -1247,7 +1412,10 @@
             "type": "number"
           }
         },
-        "required": ["lat", "lng"]
+        "required": [
+          "lat",
+          "lng"
+        ]
       },
       "HomeDeviceDetailsDto": {
         "type": "object",
@@ -1271,7 +1439,14 @@
             "type": "number"
           }
         },
-        "required": ["id", "type", "homeDeviceId", "name", "isOnline", "signalStrength"]
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength"
+        ]
       },
       "CreateDeviceRequest": {
         "type": "object",
@@ -1283,7 +1458,27 @@
             "type": "string"
           }
         },
-        "required": ["type", "name"]
+        "required": [
+          "type",
+          "name"
+        ]
+      },
+      "ChangeDeviceNameRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "nullable": false
+          },
+          "deviceName": {
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "id",
+          "deviceName"
+        ]
       },
       "OpenDoorSensorDetailsDto": {
         "type": "object",
@@ -1355,7 +1550,15 @@
             "type": "boolean"
           }
         },
-        "required": ["id", "type", "homeDeviceId", "name", "isOnline", "signalStrength", "isOn"]
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "isOn"
+        ]
       },
       "SirenDetailsDto": {
         "type": "object",
@@ -1382,7 +1585,15 @@
             "type": "number"
           }
         },
-        "required": ["id", "type", "homeDeviceId", "name", "isOnline", "signalStrength", "battery"]
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "battery"
+        ]
       },
       "TemperatureSensorDetailsDto": {
         "type": "object",
@@ -1452,7 +1663,15 @@
             "type": "number"
           }
         },
-        "required": ["id", "type", "homeDeviceId", "name", "isOnline", "signalStrength", "battery"]
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "battery"
+        ]
       },
       "GetDeviceDetailsResponse": {
         "type": "object",
@@ -1466,7 +1685,9 @@
             ]
           }
         },
-        "required": ["deviceDetails"]
+        "required": [
+          "deviceDetails"
+        ]
       },
       "SetPluginSwitchStatusRequest": {
         "type": "object",
@@ -1475,7 +1696,9 @@
             "type": "boolean"
           }
         },
-        "required": ["isOn"]
+        "required": [
+          "isOn"
+        ]
       },
       "GetHomeAvgTemperature": {
         "type": "object",
@@ -1484,7 +1707,9 @@
             "type": "number"
           }
         },
-        "required": ["avgTemperature"]
+        "required": [
+          "avgTemperature"
+        ]
       },
       "SetAquaPreferences": {
         "type": "object",
@@ -1509,7 +1734,9 @@
             "type": "boolean"
           }
         },
-        "required": ["isActive"]
+        "required": [
+          "isActive"
+        ]
       },
       "GetAquaPreferences": {
         "type": "object",
@@ -1529,7 +1756,12 @@
             "type": "string"
           }
         },
-        "required": ["isActive", "homeDeviceId", "lightStartTime", "lightEndTime"]
+        "required": [
+          "isActive",
+          "homeDeviceId",
+          "lightStartTime",
+          "lightEndTime"
+        ]
       },
       "SetAlarm": {
         "type": "object",
@@ -1538,7 +1770,9 @@
             "type": "boolean"
           }
         },
-        "required": ["isOn"]
+        "required": [
+          "isOn"
+        ]
       },
       "SetAlarmModeRequest": {
         "type": "object",
@@ -1547,7 +1781,9 @@
             "type": "boolean"
           }
         },
-        "required": ["isActive"]
+        "required": [
+          "isActive"
+        ]
       },
       "PushSubscriptionRequest": {
         "type": "object",
@@ -1559,7 +1795,10 @@
             "type": "object"
           }
         },
-        "required": ["endpoint", "keys"]
+        "required": [
+          "endpoint",
+          "keys"
+        ]
       }
     }
   }

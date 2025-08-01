@@ -28,7 +28,7 @@ export class HomeDeviceService {
     private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
     private readonly _zigbeeSensorService: ZigbeeSensorService,
-    private readonly scheduledRegistry: SchedulerRegistry
+    private readonly _scheduledRegistry: SchedulerRegistry
   ) {
     this._subscribeToSensors();
     this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
@@ -93,6 +93,17 @@ export class HomeDeviceService {
     );
   }
 
+  public async changeDeviceName(id: number, deviceName: string): Promise<void> {
+    const device: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
+
+    if (!device) {
+      throw new NotFoundException(`Device ${id} not found`);
+    }
+
+    device.deviceName = deviceName;
+    await this._homeDeviceRepository.save(device);
+  }
+
   public async removeDevice(id: number): Promise<void> {
     const homDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
 
@@ -108,14 +119,14 @@ export class HomeDeviceService {
       aquaPreferences.homeDevice = null;
       aquaPreferences.isActive = false;
       await this._aquaPreferencesRepository.save(aquaPreferences);
-      this.scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
+      this._scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
     }
 
     if (cloudPreferences.homeDevice?.id === homDevice.id) {
       cloudPreferences.homeDevice = null;
       cloudPreferences.isCircularPumpActive = false;
       await this._cloudPreferencesRepository.save(cloudPreferences);
-      this.scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
+      this._scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
     }
 
     await this._zigbeeManageDeviceService.removeDevice(homDevice.zigbeeDeviceId);

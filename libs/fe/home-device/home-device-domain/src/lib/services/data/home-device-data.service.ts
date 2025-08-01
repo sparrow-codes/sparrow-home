@@ -1,7 +1,11 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
-import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel } from '@sparrow-home/api';
+import {
+  GetDeviceDetailsResponseApiModel,
+  HomeDeviceApiService,
+  HomeDeviceDetailsDtoApiModel,
+} from '@sparrow-home/api';
 import { DeviceType, LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
 import { MessageService } from 'primeng/api';
@@ -117,30 +121,49 @@ export class HomeDeviceDataService {
   public fetchDeviceDetailsById(id: number): void {
     this._loadingService.showLoader = true;
     this._homeDeviceDetails.set(null);
+    this._fetchDeviceDetails(id)
+      .pipe(finalize(() => (this._loadingService.showLoader = false)))
+      .subscribe();
+  }
+
+  public changeDeviceName(id: number, deviceName: string): void {
+    this._loadingService.showLoader = true;
     this._apiService
-      .getDeviceDetails({ id: id.toString() })
+      .updateDeviceName({ body: { deviceName: deviceName, id } })
       .pipe(
         first(),
-        tap({
-          next: (details) => {
-            if (details.deviceDetails) {
-              this._homeDeviceDetails.set(HomeDeviceMapper.mapDetails(details.deviceDetails));
-            }
-          },
-          error: (error: HttpErrorResponse) => {
-            if (error.status === HttpStatusCode.NotFound) {
-              this._router.navigate([RoutePath.NOT_FOUND]);
-            } else {
-              this._messageService.add({
-                summary: 'Błąd podczas pobierania szczegółów urządzenia!',
-                severity: 'error',
-              });
-            }
-          },
-        }),
-        finalize(() => (this._loadingService.showLoader = false))
+        switchMap(() => this._fetchDeviceDetails(id))
       )
-      .subscribe();
+      .subscribe({
+        next: () => {
+          this._loadingService.showLoader = false;
+          this._messageService.add({ text: 'Poprawnie zmieniono nazwę!', severity: 'success' });
+        },
+        error: () => this._messageService.add({ text: 'Błąd zmiany nazwy urządzenia!', severity: 'error' }),
+      });
+  }
+
+  private _fetchDeviceDetails(id: number): Observable<GetDeviceDetailsResponseApiModel> {
+    return this._apiService.getDeviceDetails({ id: id.toString() }).pipe(
+      first(),
+      tap({
+        next: (details) => {
+          if (details.deviceDetails) {
+            this._homeDeviceDetails.set(HomeDeviceMapper.mapDetails(details.deviceDetails));
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.NotFound) {
+            this._router.navigate([RoutePath.NOT_FOUND]);
+          } else {
+            this._messageService.add({
+              summary: 'Błąd podczas pobierania szczegółów urządzenia!',
+              severity: 'error',
+            });
+          }
+        },
+      })
+    );
   }
 
   private _fetchDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {

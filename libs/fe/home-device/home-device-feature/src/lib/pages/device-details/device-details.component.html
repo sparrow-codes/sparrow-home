@@ -1,73 +1,88 @@
 @if (deviceDetails(); as homeDevice) {
-<sp-page-title @sparrowFadeIn [routerLink]="['/devices']">szczegóły urządzenia</sp-page-title>
+  <sp-page-title @sparrowFadeIn [routerLink]="['/devices']">szczegóły urządzenia</sp-page-title>
 
-<div class="w-full flex justify-center mt-2">
-  <p-card class="w-full" [header]="homeDevice.name">
-    <!-- Nagłówek -->
-    <div class="flex justify-between items-center mb-4">
-      @if (switchDevice(); as lcsSwitch) {
-      <p-toggleButton
-        [ngModel]="lcsSwitch.isOn"
-        (onChange)="onLscSwitchChange($event.checked ?? false)"
-        [disabled]="!homeDevice.isOnline"
-        onLabel="ON"
-        offLabel="OFF"
-        onIcon="pi pi-power-off"
-        offIcon="pi pi-power-off"
-      />
+  <div class="w-full flex justify-center mt-2">
+    <p-card class="w-full" [header]="homeDevice.name">
+      <!-- Nagłówek -->
+      <div class="flex justify-end items-center mb-4">
+        @if (switchDevice(); as lcsSwitch) {
+          <p-toggleButton
+            [ngModel]="lcsSwitch.isOn"
+            (onChange)="onLscSwitchChange($event.checked ?? false)"
+            [disabled]="!homeDevice.isOnline"
+            onLabel="ON"
+            offLabel="OFF"
+            onIcon="pi pi-power-off"
+            offIcon="pi pi-power-off"
+          />
+        }
+      </div>
+
+      <!-- Typ urządzenia + sygnał -->
+
+      <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
+      @if (homeDevice.signalStrength !== undefined) {
+        <div class="w-full flex justify-end mt-2">
+          <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
+        </div>
       }
-    </div>
 
-    <!-- Typ urządzenia + sygnał -->
+      <!-- Szczegóły czujników -->
+      @if (temperatureSensor(); as temperatureSensor) {
+        <sp-temperature-sensor-details [temperatureSensor]="temperatureSensor"></sp-temperature-sensor-details>
+      }
+      @if (openDoorSensor(); as openDoorSensor) {
+        <sp-open-door-sensor-details [openDoorSensor]="openDoorSensor"></sp-open-door-sensor-details>
+      }
+      @if (siren()?.battery; as battery) {
+        <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
+      }
 
-    <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
-    @if (homeDevice.signalStrength !== undefined) {
-    <div class="w-full flex justify-end mt-2">
-      <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
-    </div>
-    }
+      <!-- Status online/offline -->
+      @if (homeDevice.isOnline !== null) {
+        <p-divider></p-divider>
+        <div class="flex justify-between items-center mt-4">
+          <span>Status:</span>
+          <div class="text-green-600 flex flex-row gap-1" [class.text-gray-500]="!homeDevice.isOnline">
+            {{ homeDevice.isOnline ? 'Online' : 'Offline' }}
+            <i class="pi pi-check-circle" [class.pi-ban]="!homeDevice.isOnline"></i>
+          </div>
+        </div>
+      }
 
-    <!-- Szczegóły czujników -->
-    @if (temperatureSensor(); as temperatureSensor) {
-    <sp-temperature-sensor-details [temperatureSensor]="temperatureSensor"></sp-temperature-sensor-details>
-    } @if (openDoorSensor(); as openDoorSensor) {
-    <sp-open-door-sensor-details [openDoorSensor]="openDoorSensor"></sp-open-door-sensor-details>
-    } @if (siren()?.battery; as battery) {
-    <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
-    }
+      <!-- Id urządzenia + kopiuj -->
+      <p-divider></p-divider>
+      <div class="flex justify-between items-center mt-4">
+        <span>Id:</span>
+        <div class="flex gap-2 items-center">
+          <span>{{ homeDevice.homeDeviceId }}</span>
+        </div>
+      </div>
 
-    <!-- Status online/offline -->
-    @if (homeDevice.isOnline !== null) {
-    <p-divider></p-divider>
-    <div class="flex justify-between items-center mt-4">
-      <span>Status:</span>
-      <div class="text-green-600 flex flex-row gap-1" [class.text-gray-500]="!homeDevice.isOnline">
-        {{ homeDevice.isOnline ? 'Online' : 'Offline' }}
-        <i class="pi pi-check-circle" [class.pi-ban]="!homeDevice.isOnline"></i>
+      <!-- Usuń -->
+      <div class="flex justify-end gap-2 mt-6">
+        <p-button
+          icon="pi pi-trash"
+          [outlined]="true"
+          label="Usuń"
+          (onClick)="onDeviceDelete(homeDevice.id, homeDevice.name)"
+        />
+
+        <p-button icon="pi pi-pencil" label="Edytuj" (onClick)="showEditDialog.set(true)" />
+      </div>
+    </p-card>
+  </div>
+
+  <p-dialog header="Edytuj urządzenie" [visible]="showEditDialog()">
+    <div class="flex flex-col gap-4">
+      <input #nameInput pInputText [fluid]="true" placeholder="Nazwa..." [value]="deviceDetails()?.name" />
+
+      <div class="flex justify-end gap-2">
+        <p-button label="Anuluj" [outlined]="true" severity="secondary" (onClick)="showEditDialog.set(false)" />
+
+        <p-button icon="pi pi-check" label="Zapisz" (onClick)="onDeviceNameChange(homeDevice.id, nameInput.value)" />
       </div>
     </div>
-    }
-
-    <!-- Id urządzenia + kopiuj -->
-    <p-divider></p-divider>
-    <div class="flex justify-between items-center mt-4">
-      <span>Id:</span>
-      <div class="flex gap-2 items-center">
-        <span>{{ homeDevice.homeDeviceId }}</span>
-      </div>
-    </div>
-
-    <!-- Usuń -->
-    <div class="flex justify-end mt-6">
-      <p-button
-        icon="pi pi-trash"
-        [outlined]="true"
-        severity="danger"
-        label="Usuń"
-        (onClick)="onDeviceDelete(homeDevice.id, homeDevice.name)"
-      />
-    </div>
-  </p-card>
-</div>
+  </p-dialog>
 
 }

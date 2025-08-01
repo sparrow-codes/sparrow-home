@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { PluginSwitchDetailsDto } from '../models/plugin-switch-details.dto';
 import { SirenDetailsDto } from '../models/siren-details-dto';
 import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-details-dto';
 import { HomeDeviceService } from '../services/home-device.service';
+import { ChangeDeviceNameRequest } from './models/change-device-name.request';
 import { CreateDeviceRequest } from './models/create-device-request';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
@@ -35,6 +36,13 @@ export class HomeDeviceController {
   @Post('create')
   public createDevice(@Body() request: CreateDeviceRequest): Observable<boolean> {
     return this._homeDeviceService.addDevice(request.type, request.name);
+  }
+
+  @ApiOperation({ operationId: 'updateDeviceName' })
+  @ApiBody({ type: ChangeDeviceNameRequest })
+  @Put('updateDeviceName')
+  public async updateDeviceName(@Body() request: ChangeDeviceNameRequest): Promise<void> {
+    await this._homeDeviceService.changeDeviceName(request.id, request.deviceName);
   }
 
   @ApiOperation({ operationId: 'deleteDevice' })
