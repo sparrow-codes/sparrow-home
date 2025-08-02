@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /var/www/sparrow-home || exit 1
+cd /var/www/sparrow-home/scripts || exit 1
 
 # Pobierz najnowszy stan z GitHuba
 git fetch origin main
