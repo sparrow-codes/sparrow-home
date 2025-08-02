@@ -1,5 +1,5 @@
 echo "Clearing node modules"
-rm -r node_modules/
+rm -r ../node_modules/
 sleep 1
 
 echo "Installing application"
