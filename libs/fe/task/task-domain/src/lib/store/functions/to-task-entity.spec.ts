@@ -26,8 +26,8 @@ describe('toTaskEntity', () => {
     expect(result.id).toBe(42);
     expect(result.startTime).toBeInstanceOf(Date);
     expect(result.endTime).toBeInstanceOf(Date);
-    expect(result.startTime.toISOString()).toBe('2025-08-09T10:15:00.000Z');
-    expect(result.endTime.toISOString()).toBe('2025-08-09T11:00:00.000Z');
+    expect(result.startTime?.toISOString()).toBe('2025-08-09T10:15:00.000Z');
+    expect(result.endTime?.toISOString()).toBe('2025-08-09T11:00:00.000Z');
     expect(result.isActive).toBe(true);
     expect(result.name).toBe('Morning watering');
     expect(result.homeDevices).toEqual([{ id: 1, name: 'Garden Valve' }]);
@@ -96,8 +96,8 @@ describe('toTaskEntity', () => {
 
     const result = toTaskEntity(input as never);
 
-    expect(result.startTime.getTime()).toBe(start);
-    expect(result.endTime.getTime()).toBe(end);
+    expect(result.startTime?.getTime()).toBe(start);
+    expect(result.endTime?.getTime()).toBe(end);
   });
 
   it('should produce Invalid Date for invalid date strings', () => {
@@ -111,8 +111,8 @@ describe('toTaskEntity', () => {
 
     const result = toTaskEntity(input as never);
 
-    expect(Number.isNaN(result.startTime.getTime())).toBe(true);
-    expect(Number.isNaN(result.endTime.getTime())).toBe(true);
+    expect(Number.isNaN(result.startTime?.getTime())).toBe(true);
+    expect(Number.isNaN(result.endTime?.getTime())).toBe(true);
   });
 
   it('should produce epoch (1970-01-01) when endTime is null (Date(null) => 0)', () => {
@@ -126,7 +126,7 @@ describe('toTaskEntity', () => {
 
     const result = toTaskEntity(input as never);
 
-    expect(result.endTime.getTime()).toBe(0);
+    expect(result.endTime?.getTime()).toBe(0);
   });
 
   it('should produce Invalid Date when startTime is undefined (Date(undefined) => Invalid Date)', () => {
@@ -140,7 +140,7 @@ describe('toTaskEntity', () => {
 
     const result = toTaskEntity(input as never);
 
-    expect(Number.isNaN(result.startTime.getTime())).toBe(true);
+    expect(Number.isNaN(result.startTime?.getTime())).toBe(true);
   });
 
   it('should carry boolean and string fields as-is even if missing', () => {
