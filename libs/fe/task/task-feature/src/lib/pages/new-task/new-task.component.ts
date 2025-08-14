@@ -3,9 +3,9 @@ import { Component, inject, OnInit, Signal } from '@angular/core';
 import { AppStore, appStore } from '@sparrow-home/core';
 import { AutomaticTask, AvailableDevice } from '@sparrow-home/task-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
+import { Card } from 'primeng/card';
 
 import { ScheduleSettingsComponent } from '../../components/schedule-settings/schedule-settings.component';
-import { Card } from 'primeng/card';
 
 @Component({
   selector: 'sp-new-task',
