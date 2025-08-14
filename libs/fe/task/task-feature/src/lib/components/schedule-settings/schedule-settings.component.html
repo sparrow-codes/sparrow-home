@@ -1,0 +1,67 @@
+@if (formGroup) {
+
+  <form [formGroup]="formGroup" class="flex flex-col gap-6 py-4">
+    <div class="flex flex-col sm:flex-row gap-6">
+
+      <p-float-label variant="on" class="fade-step">
+        <input pInputText id="name" type="text" pSize="large" formControlName="name" fluid="true" />
+        <label for="name">Nazwa</label>
+      </p-float-label>
+
+      <p-float-label variant="on" class="fade-step">
+        <p-datePicker
+          inputId="from-time"
+          [timeOnly]="true"
+          hourFormat="24"
+          size="large"
+          [showClear]="true"
+          formControlName="from"
+          showIcon="true"
+          iconDisplay="input"
+        ></p-datePicker>
+        <label for="from-time">Od</label>
+      </p-float-label>
+
+      <p-float-label variant="on" class="fade-step">
+        <p-datePicker
+          inputId="to-time"
+          [timeOnly]="true"
+          hourFormat="24"
+          [showClear]="true"
+          formControlName="to"
+          size="large"
+          showIcon="true"
+          iconDisplay="input"
+        ></p-datePicker>
+        <label for="to-time">Do</label>
+      </p-float-label>
+    </div>
+
+    <p-float-label variant="on" class="fade-step">
+      <p-multi-select
+        inputId="home-device"
+        class="w-full"
+        [options]="options()"
+        [loading]="isLoading()"
+        formControlName="devices"
+        optionLabel="name"
+        size="large"
+        optionValue="id"
+        showHeader="false"
+        [showClear]="true"
+        emptyMessage="Brak dostępnych urządzeń"
+      ></p-multi-select>
+      <label for="home-device">Gniazdko</label>
+    </p-float-label>
+  </form>
+
+  <div class="flex flex-row sm:flex-row justify-end gap-4 fade-step">
+    <p-button
+      [disabled]="formGroup.pristine || formGroup.invalid"
+      label="Zapisz"
+      (onClick)="onSubmitPreferences()"
+      severity="primary"
+      size="large"
+    ></p-button>
+  </div>
+}

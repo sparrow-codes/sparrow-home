@@ -1,0 +1,23 @@
+<sp-page-title [routerLink]="['../']">Edytuj zadanie</sp-page-title>
+
+<p-card>
+  <sp-schedule-settings
+    [task]="task()"
+    [options]="options()"
+    [isLoading]="isLoading()"
+    (taskChange)="onUpdateTask($event)"
+  ></sp-schedule-settings>
+</p-card>
+
+<p-divider></p-divider>
+
+<p-button
+  label="Usuń"
+  class="mt-4"
+  [outlined]="true"
+  [fluid]="true"
+  icon="pi pi-trash"
+  (onClick)="deleteTask()"
+  severity="danger"
+  size="large"
+></p-button>

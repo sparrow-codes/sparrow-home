@@ -7,6 +7,8 @@ export enum ConfigKey {
   PANASONIC_DEVICE_ID = 'panasonicDeviceId',
 
   WEATHER_API_URL = 'weatherApiUrl',
+  LAT = 'lat',
+  LNG = 'lng',
 
   DB_HOST = 'dbHost',
   DB_PORT = 'dbPort',

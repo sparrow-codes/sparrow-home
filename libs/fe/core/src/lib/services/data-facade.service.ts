@@ -2,14 +2,14 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppConfig } from '../models';
-import { RootStore } from '../stores/root-store';
+import { appStore } from '../stores/app-store';
 import { SetupStore } from '../stores/setup-store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataFacadeService {
-  private readonly _rootStore = inject(RootStore);
+  private readonly _rootStore = inject(appStore);
   private readonly _setupStore = inject(SetupStore);
 
   public get configurationReady(): Signal<boolean | null> {

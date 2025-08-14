@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 
 @Component({
   selector: 'sp-temperature-panel',

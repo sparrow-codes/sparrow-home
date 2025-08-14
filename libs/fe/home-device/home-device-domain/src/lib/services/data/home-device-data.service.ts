@@ -6,8 +6,9 @@ import {
   HomeDeviceApiService,
   HomeDeviceDetailsDtoApiModel,
 } from '@sparrow-home/api';
-import { DeviceType, LoaderService, RoutePath } from '@sparrow-home/core';
+import { LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
+import { DeviceType } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
@@ -167,13 +168,17 @@ export class HomeDeviceDataService {
   }
 
   private _fetchDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
-    return this._apiService.getAllDevices({ deviceType: this._deviceTypeFilter() }).pipe(
-      first(),
-      tap({
-        next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.mapDetails)),
-        error: () => this._messageService.add({ summary: 'Błąd pobierania listy urządzeń', severity: 'error' }),
+    return this._apiService
+      .getAllDevices({
+        body: { deviceType: this.deviceTypeFilter(), isOpen: this.deviceTypeFilter() ? true : undefined },
       })
-    );
+      .pipe(
+        first(),
+        tap({
+          next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.mapDetails)),
+          error: () => this._messageService.add({ summary: 'Błąd pobierania listy urządzeń', severity: 'error' }),
+        })
+      );
   }
 
   private _homeDeviceSort(device1: HomeDevice, device2: HomeDevice): number {

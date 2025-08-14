@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { DeviceType } from '@sparrow-home/core';
 import {
   DeviceFacadeService,
   HomeDevice,
@@ -12,6 +11,7 @@ import {
   TemperatureSensor,
 } from '@sparrow-home/home-device-domain';
 import { BatteryStatusComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { DeviceType } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Dialog } from 'primeng/dialog';

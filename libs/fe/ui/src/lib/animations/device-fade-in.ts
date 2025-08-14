@@ -1,6 +1,6 @@
 import { animate, AnimationTriggerMetadata, query, stagger, style, transition, trigger } from '@angular/animations';
 
-export const deviceItemFadeIn: AnimationTriggerMetadata = trigger('deviceItemFadeIn', [
+export const spFadeInAnimation: AnimationTriggerMetadata = trigger('spFadeIn', [
   transition(':enter', [
     query(
       ':self, *',

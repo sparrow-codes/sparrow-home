@@ -1,5 +1,5 @@
 import { inject, Injectable, Signal } from '@angular/core';
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 import { Observable } from 'rxjs';
 
 import { HomeDevice } from '../models';
