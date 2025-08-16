@@ -4,8 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlarmModule } from '@sparrow-server/alarm';
-import { AquaModule } from '@sparrow-server/aqua';
 import { AuthModule } from '@sparrow-server/auth';
+import { AutomationModule } from '@sparrow-server/automation';
 import { CloudModule } from '@sparrow-server/cloud';
 import { HomeDeviceModule } from '@sparrow-server/device';
 import { ApiModule } from '@sparrow-server/external-api';
@@ -26,6 +26,8 @@ import { AlterHomeDevice1742753620205 } from '../db/migrations/1742753620205-Alt
 import { CreateAlarmPreferences1743010222859 } from '../db/migrations/1743010222859-CreateAlarmPreferences';
 import { AlterUserTable1744444867595 } from '../db/migrations/1744444867595-AlterUserTable';
 import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092803-CreatePushSubscription';
+import { CreateTaskTable1690000000000 } from '../db/migrations/1754335949380-CreateTaskTable';
+import { AddTaskRelationToHomeDevice1690000000001 } from '../db/migrations/1754368602595-AddTaskRelationHomeDevice';
 
 @Module({
   imports: [
@@ -59,6 +61,8 @@ import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092
           CreateAlarmPreferences1743010222859,
           AlterUserTable1744444867595,
           CreatePushSubscription1744656092803,
+          CreateTaskTable1690000000000,
+          AddTaskRelationToHomeDevice1690000000001,
         ],
       }),
     }),
@@ -67,9 +71,9 @@ import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092
     SetupModule,
     ApiModule,
     HomeDeviceModule,
-    AquaModule,
     AlarmModule,
     PushModule,
+    AutomationModule,
   ],
 })
 export class AppModule {}

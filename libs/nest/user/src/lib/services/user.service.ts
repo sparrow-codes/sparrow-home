@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AlarmPreferences, AquaPreferences, CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
+import { AlarmPreferences, CloudPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
@@ -16,7 +16,6 @@ export class UserService {
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
     @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>,
     @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
-    @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>,
     @InjectRepository(AlarmPreferences) private readonly _alarmPreferencesRepository: Repository<AlarmPreferences>
   ) {}
 
@@ -34,7 +33,6 @@ export class UserService {
     user.isActive = true;
     user.setup = await this._setupRepository.save(new Setup());
     user.cloudPreferences = await this._cloudPreferencesRepository.save(new CloudPreferences());
-    user.aquaPreferences = await this._aquaPreferencesRepository.save(new AquaPreferences());
 
     const alarms: AlarmPreferences[] = await this._alarmPreferencesRepository.find();
     user.alarmPreferences = alarms[0];
@@ -71,7 +69,6 @@ export class UserService {
 
     user.setup = owner.setup;
     user.cloudPreferences = owner.cloudPreferences;
-    user.aquaPreferences = owner.aquaPreferences;
 
     await this._userRepository.save(user);
   }

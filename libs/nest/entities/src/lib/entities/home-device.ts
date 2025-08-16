@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { DeviceType } from '../enum/device-type';
+import { Task } from './task';
 
 @Entity()
 export class HomeDevice {
@@ -36,4 +37,7 @@ export class HomeDevice {
 
   @Column({ nullable: true })
   public lastOpened: Date | null = null;
+
+  @ManyToOne(() => Task, (task) => task.homeDevices)
+  public task?: Task;
 }

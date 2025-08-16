@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
 
@@ -12,6 +12,7 @@ import { TemperatureSensorDetailsDto } from '../models/temperature-sensor-detail
 import { HomeDeviceService } from '../services/home-device.service';
 import { ChangeDeviceNameRequest } from './models/change-device-name.request';
 import { CreateDeviceRequest } from './models/create-device-request';
+import { GetAllDeviceFilters } from './models/get-all-device-filters';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { SetPluginSwitchStatusRequest } from './models/set-plugin-switch-status.request';
@@ -25,10 +26,9 @@ export class HomeDeviceController {
 
   @ApiOperation({ operationId: 'getAllDevices' })
   @ApiResponse({ type: HomeDeviceDetailsDto, isArray: true })
-  @ApiQuery({ name: 'deviceType', required: false, nullable: true, description: 'Typ urządzenia' })
-  @Get('all')
-  public getAllDevices(@Query('deviceType') deviceType: number): Observable<HomeDeviceDetailsDto[]> {
-    return this._homeDeviceService.getListOfDevices(!isNaN(deviceType) ? deviceType : undefined).pipe();
+  @Post('all')
+  public getAllDevices(@Body() filters?: GetAllDeviceFilters): Observable<HomeDeviceDetailsDto[]> {
+    return this._homeDeviceService.getListOfDevices(filters);
   }
 
   @ApiOperation({ operationId: 'createDevice' })

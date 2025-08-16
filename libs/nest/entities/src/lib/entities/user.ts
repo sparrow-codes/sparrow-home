@@ -2,7 +2,6 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 
 import { UserRole } from '../enum/user-role';
 import { AlarmPreferences } from './alarm-preferences';
-import { AquaPreferences } from './aqua-preferences';
 import { CloudPreferences } from './cloud-preferences';
 import { PushSubscriptionClient } from './push-subscription-client';
 import { Setup } from './setup';
@@ -37,10 +36,6 @@ export class User {
   @OneToOne(() => CloudPreferences, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   public cloudPreferences!: CloudPreferences;
-
-  @OneToOne(() => AquaPreferences, { onDelete: 'CASCADE', eager: true })
-  @JoinColumn()
-  public aquaPreferences!: AquaPreferences;
 
   @OneToOne(() => AlarmPreferences, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()

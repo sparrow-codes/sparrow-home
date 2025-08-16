@@ -115,91 +115,6 @@
         ]
       }
     },
-    "/api/panasonic-cloud/circular-pump/preferences": {
-      "put": {
-        "operationId": "setCircularPumpPreferences",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetCircularPumpPreferencesRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      },
-      "get": {
-        "operationId": "getCircularPumpPreferences",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetCircularPumpPreferences"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/panasonic-cloud/circular-pump/status": {
-      "put": {
-        "operationId": "setCircularPumpStatus",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetCircularPumpJobStatusRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
     "/api/panasonic-cloud/heating-preferences": {
       "get": {
         "operationId": "getHeatingPreferences",
@@ -520,20 +435,19 @@
       }
     },
     "/api/home-device/all": {
-      "get": {
+      "post": {
         "operationId": "getAllDevices",
-        "parameters": [
-          {
-            "name": "deviceType",
-            "required": false,
-            "in": "query",
-            "description": "Typ urządzenia",
-            "schema": {
-              "nullable": true,
-              "type": "number"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAllDeviceFilters"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "default": {
             "description": "",
@@ -778,91 +692,6 @@
         ]
       }
     },
-    "/api/aqua/preferences": {
-      "put": {
-        "operationId": "setAquaPreference",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetAquaPreferences"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Aqua Preferences"
-        ]
-      },
-      "get": {
-        "operationId": "getAquaPreference",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAquaPreferences"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Aqua Preferences"
-        ]
-      }
-    },
-    "/api/aqua/status": {
-      "put": {
-        "operationId": "setAquaStatus",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetLightJobStatus"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Aqua Preferences"
-        ]
-      }
-    },
     "/api/alarm/set": {
       "put": {
         "operationId": "setAlarm",
@@ -1006,6 +835,171 @@
           "Push Notification"
         ]
       }
+    },
+    "/api/task/create": {
+      "post": {
+        "operationId": "createTask",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/task/update/{id}": {
+      "put": {
+        "operationId": "updateTask",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/task/delete/{id}": {
+      "delete": {
+        "operationId": "deleteTask",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/task/update-status/{id}": {
+      "get": {
+        "operationId": "setTaskStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "active",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Tasks"
+        ]
+      }
+    },
+    "/api/task/task-list": {
+      "get": {
+        "operationId": "getTaskList",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Tasks"
+        ]
+      }
     }
   },
   "info": {
@@ -1138,59 +1132,6 @@
         },
         "required": [
           "isScheduled"
-        ]
-      },
-      "SetCircularPumpPreferencesRequest": {
-        "type": "object",
-        "properties": {
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "from": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "to": {
-            "format": "date-time",
-            "type": "string"
-          }
-        }
-      },
-      "SetCircularPumpJobStatusRequest": {
-        "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean",
-            "nullable": false
-          }
-        },
-        "required": [
-          "isActive"
-        ]
-      },
-      "GetCircularPumpPreferences": {
-        "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "circularPumpStartTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "circularPumpEndTime": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "isActive",
-          "homeDeviceId",
-          "circularPumpStartTime",
-          "circularPumpEndTime"
         ]
       },
       "GetHeatingPreferencesResponse": {
@@ -1416,6 +1357,23 @@
           "lat",
           "lng"
         ]
+      },
+      "GetAllDeviceFilters": {
+        "type": "object",
+        "properties": {
+          "deviceType": {
+            "type": "number",
+            "nullable": true
+          },
+          "withTaskAssigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isOpen": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
       },
       "HomeDeviceDetailsDto": {
         "type": "object",
@@ -1711,58 +1669,6 @@
           "avgTemperature"
         ]
       },
-      "SetAquaPreferences": {
-        "type": "object",
-        "properties": {
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "from": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "to": {
-            "format": "date-time",
-            "type": "string"
-          }
-        }
-      },
-      "SetLightJobStatus": {
-        "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "isActive"
-        ]
-      },
-      "GetAquaPreferences": {
-        "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "lightStartTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "lightEndTime": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "isActive",
-          "homeDeviceId",
-          "lightStartTime",
-          "lightEndTime"
-        ]
-      },
       "SetAlarm": {
         "type": "object",
         "properties": {
@@ -1798,6 +1704,101 @@
         "required": [
           "endpoint",
           "keys"
+        ]
+      },
+      "CreateTaskRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "from": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "atSunset": {
+            "type": "boolean"
+          },
+          "to": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "assignedDevices": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "assignedDevices"
+        ]
+      },
+      "UpdateTaskRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "from": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "to": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "assignedDevices": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "assignedDevices"
+        ]
+      },
+      "TaskDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "startTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "atSunset": {
+            "type": "boolean"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "assignedDevices": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "startTime",
+          "atSunset",
+          "endTime",
+          "assignedDevices",
+          "isActive"
         ]
       }
     }

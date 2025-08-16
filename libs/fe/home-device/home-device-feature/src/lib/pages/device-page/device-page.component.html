@@ -31,7 +31,7 @@
     <div class="h-[420px] flex flex-col gap-2">
       @for (device of paginatedDevices(); track device.id) {
       <sp-device-list-item
-        @deviceItemFadeIn
+        @spFadeIn
         [deviceId]="device.id"
         [deviceName]="device.name"
         [deviceType]="device.type"

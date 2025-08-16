@@ -1,4 +1,4 @@
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 
 export const deviceTypeDictionary: Map<DeviceType, string> = new Map([
   [DeviceType.POWER_PLUG, 'Gniazdko'],

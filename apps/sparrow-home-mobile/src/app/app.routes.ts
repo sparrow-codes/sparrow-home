@@ -57,8 +57,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: RoutePath.AUTOMATION,
-        loadChildren: () =>
-          import('@sparrow-home/automation-feature').then((feature) => feature.automationFeatureRoutes),
+        loadChildren: () => import('@sparrow-home/task-feature').then((feature) => feature.TASK_ROUTES),
       },
       {
         path: '',

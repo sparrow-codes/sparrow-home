@@ -1,4 +1,4 @@
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 
 export interface HomeDevice {
   id: number;

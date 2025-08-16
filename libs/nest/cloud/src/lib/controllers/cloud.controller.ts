@@ -4,12 +4,8 @@ import { AuthGuard } from '@sparrow-server/auth';
 import { map, Observable } from 'rxjs';
 
 import { PanasonicService } from '../services';
-import { CircularPumpService } from '../services/circular-pump/circular-pump.service';
 import { HeatingPreferencesService } from '../services/heating-preferences/heating-preferences.service';
 import { HeatPumpDetailsResponseMapper } from './mapper/heat-pump-details-response.mapper';
-import { GetCircularPumpPreferences } from './models/circular-pump/get-circular-pump-preferences';
-import { SetCircularPumpJobStatusRequest } from './models/circular-pump/set-circular-pump-job-status-request';
-import { SetCircularPumpPreferencesRequest } from './models/circular-pump/set-circular-pump-preferences-request';
 import { GetHeatingPreferencesResponse } from './models/heating-preferences/get-heating-preferences.response';
 import { SetAutomaticHeatingRequest } from './models/heating-preferences/set-automatic-heatin-request';
 import { SetHeatingPreferencesRequest } from './models/heating-preferences/set-heating-preferences.request';
@@ -25,7 +21,6 @@ import { SetHeatPumpStatusRequest } from './models/panasonic/set-heat-pump-statu
 export class CloudController {
   public constructor(
     private readonly _cloudService: PanasonicService,
-    private readonly _circularPumpService: CircularPumpService,
     private readonly _heatingPreferences: HeatingPreferencesService
   ) {}
 
@@ -53,25 +48,6 @@ export class CloudController {
   @Get('/scheduled-water-heating-status')
   public getScheduledWaterHeatingStatus(): GetScheduledWaterHeatingStatusResponse {
     return { isScheduled: this._cloudService.isScheduledWaterHeating() };
-  }
-
-  @ApiOperation({ operationId: 'setCircularPumpPreferences' })
-  @Put('/circular-pump/preferences')
-  public setCircularPumpPreferences(@Body() request: SetCircularPumpPreferencesRequest): Promise<void> {
-    return this._circularPumpService.setCircularPumpPreferences(request);
-  }
-
-  @ApiOperation({ operationId: 'setCircularPumpStatus' })
-  @Put('/circular-pump/status')
-  public setCircularPumpStatus(@Body() request: SetCircularPumpJobStatusRequest): Promise<void> {
-    return this._circularPumpService.setCircularPumpScheduleTask(request.isActive);
-  }
-
-  @ApiOperation({ operationId: 'getCircularPumpPreferences' })
-  @ApiResponse({ type: GetCircularPumpPreferences })
-  @Get('/circular-pump/preferences')
-  public getCircularPumpPreferences(): Promise<GetCircularPumpPreferences> {
-    return this._circularPumpService.getCircularPumpPreferences();
   }
 
   @ApiOperation({ operationId: 'getHeatingPreferences' })

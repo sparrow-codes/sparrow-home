@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 

@@ -8,7 +8,7 @@ import {
   bootstrapWifi,
 } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 

@@ -1,0 +1,6 @@
+<sp-page-title [routerLink]="['../']">Nowe zadanie</sp-page-title>
+
+<p-card>
+  <sp-schedule-settings [options]="options()" (taskChange)="onCreateTask($event)"></sp-schedule-settings>
+</p-card>
+
