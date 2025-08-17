@@ -4,9 +4,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonChip } from '@ionic/angular/standalone';
-import { DeviceType } from '@sparrow-home/core';
 import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } from '@sparrow-home/home-device-domain';
-import { deviceItemFadeIn, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { PageTitleComponent, sparrowFadeIn, spFadeInAnimation } from '@sparrow-home/ui';
+import { DeviceType } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
@@ -34,7 +34,7 @@ type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
     IonChip,
   ],
   templateUrl: './device-page.component.html',
-  animations: [sparrowFadeIn, deviceItemFadeIn],
+  animations: [sparrowFadeIn, spFadeInAnimation],
 })
 export class DevicePageComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);

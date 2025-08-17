@@ -1,7 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AquaPreferences, CloudPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
+import { DeviceType, HomeDevice, User } from '@sparrow-server/entities';
 import {
   DeviceResponse,
   OpenDoorSensorDetails,
@@ -11,10 +10,10 @@ import {
   ZigbeeSensorService,
   ZigbeeSwitchMqttService,
 } from '@sparrow-server/external-api';
-import { CronJobName } from '@sparrow-server/shared';
 import { first, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 
+import { GetAllDeviceFilters } from '../controllers/models/get-all-device-filters';
 import { DeviceDetailsMapper } from '../mappers/device-details-mapper';
 import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
 
@@ -23,19 +22,27 @@ export class HomeDeviceService {
   public constructor(
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    @InjectRepository(AquaPreferences) private readonly _aquaPreferencesRepository: Repository<AquaPreferences>,
-    @InjectRepository(CloudPreferences) private readonly _cloudPreferencesRepository: Repository<CloudPreferences>,
     private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
-    private readonly _zigbeeSensorService: ZigbeeSensorService,
-    private readonly _scheduledRegistry: SchedulerRegistry
+    private readonly _zigbeeSensorService: ZigbeeSensorService
   ) {
     this._subscribeToSensors();
     this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
   }
 
-  public getListOfDevices(deviceType?: DeviceType): Observable<HomeDeviceDetailsDto[]> {
-    return from(this._homeDeviceRepository.findBy({ deviceType: deviceType })).pipe(
+  public getListOfDevices(filters?: GetAllDeviceFilters): Observable<HomeDeviceDetailsDto[]> {
+    return from(
+      this._homeDeviceRepository.findBy({
+        deviceType: filters?.deviceType,
+        isOpen: filters?.isOpen,
+        task:
+          filters?.withTaskAssigned === true
+            ? Not(IsNull())
+            : filters?.withTaskAssigned === false
+            ? IsNull()
+            : undefined,
+      })
+    ).pipe(
       first(),
       switchMap((entities) => {
         if (!entities.length) {
@@ -109,24 +116,6 @@ export class HomeDeviceService {
 
     if (!homDevice) {
       return;
-    }
-
-    const user: User = await this._getUser();
-    const aquaPreferences: AquaPreferences = user.aquaPreferences;
-    const cloudPreferences: CloudPreferences = user.cloudPreferences;
-
-    if (aquaPreferences.homeDevice?.id === homDevice.id) {
-      aquaPreferences.homeDevice = null;
-      aquaPreferences.isActive = false;
-      await this._aquaPreferencesRepository.save(aquaPreferences);
-      this._scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
-    }
-
-    if (cloudPreferences.homeDevice?.id === homDevice.id) {
-      cloudPreferences.homeDevice = null;
-      cloudPreferences.isCircularPumpActive = false;
-      await this._cloudPreferencesRepository.save(cloudPreferences);
-      this._scheduledRegistry.getCronJob(CronJobName.EVERY_DAY_AQUA_LIGHT).stop();
     }
 
     await this._zigbeeManageDeviceService.removeDevice(homDevice.zigbeeDeviceId);
@@ -208,15 +197,6 @@ export class HomeDeviceService {
     }
 
     return openSensors.every((sensor) => !sensor.isOpen);
-  }
-
-  private async _getUser(): Promise<User> {
-    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
-    if (!user) {
-      throw new NotFoundException(`User not found!`);
-    }
-
-    return user;
   }
 
   private async _subscribeToSensors(): Promise<void> {

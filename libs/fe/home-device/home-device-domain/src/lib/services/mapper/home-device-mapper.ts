@@ -6,7 +6,7 @@ import {
   SirenDetailsDtoApiModel,
   TemperatureSensorDetailsDtoApiModel,
 } from '@sparrow-home/api';
-import { DeviceType } from '@sparrow-home/core';
+import { DeviceType } from '@sparrow-home/utils';
 
 import { HomeDevice, Siren } from '../../models';
 import { OpenDoorSensor } from '../../models/open-door-sensor';

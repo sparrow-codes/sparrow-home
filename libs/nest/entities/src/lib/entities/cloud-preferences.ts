@@ -36,23 +36,8 @@ export class CloudPreferences {
   @JoinColumn()
   public homeDevice!: HomeDevice | null;
 
-  @Column({ default: false, name: 'isCircularPumpActive' })
-  private _isCircularPumpActive!: boolean;
-
   @Column({ default: false, name: 'isAutomaticHeat' })
   public _isAutomaticHeat: boolean = false;
-
-  public set isCircularPumpActive(value: boolean) {
-    if (this.circularPumpStartTime && this.circularPumpEndTime && this.homeDevice) {
-      this._isCircularPumpActive = value;
-    } else {
-      Logger.warn('Invalid configuration. Activation is not possible');
-    }
-  }
-
-  public get isCircularPumpActive(): boolean {
-    return this._isCircularPumpActive;
-  }
 
   public set isAutomaticHeat(value: boolean) {
     if (
