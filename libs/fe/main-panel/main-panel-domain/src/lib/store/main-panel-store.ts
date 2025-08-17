@@ -69,13 +69,21 @@ export const MainPanelStore = signalStore(
         ),
         setAlarm: rxMethod<boolean>(
           pipe(
+            tap(() => (loaderService.showLoader = true)),
             switchMap((isAlarmOn) =>
               alarmApiService.setAlarmMode({ body: { isActive: isAlarmOn } }).pipe(
                 first(),
-                tap({
+                tapResponse({
+                  next: () => {
+                    if (isAlarmOn) {
+                      messageService.add({ summary: 'Alarm aktywny!', severity: 'success' });
+                    } else {
+                      messageService.add({ summary: 'Alarm wyłączony!', severity: 'success' });
+                    }
+                  },
                   error: () => messageService.add({ summary: 'Błąd podczas ustawiania alarmu!', severity: 'error' }),
                 }),
-                switchMap(() => getAlarmStatus())
+                switchMap(() => getAlarmStatus().pipe(finalize(() => (loaderService.showLoader = false))))
               )
             )
           )
