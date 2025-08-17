@@ -29,20 +29,24 @@ export class TaskCronFactory {
 
     if (task.startTime) {
       const startJob = new CronJob(getEverydayCronTime(task.startTime), () => {
+        Logger.log(`Starting task ${task.id}`);
         task.homeDevices?.forEach((device) => this._activateDevice(device));
       });
 
       this._schedulerRegistry.addCronJob(startJobName, startJob);
       Logger.log(`Next execution of task ${task.id} will be at ${startJob.nextDate()}`);
+      startJob.start();
     }
 
     if (task.endTime) {
       const endJob = new CronJob(getEverydayCronTime(task.endTime), () => {
+        Logger.log(`Finishing task ${task.id}`);
         task.homeDevices?.forEach((device) => this._deactivateDevice(device));
       });
 
       this._schedulerRegistry.addCronJob(endJobName, endJob);
       Logger.log(`Task ${task.id} will finish at ${endJob.nextDate()}`);
+      endJob.start();
     }
 
     Logger.log(`Scheduled cron for task ${task.id}`, '[TaskCronFactory]');
