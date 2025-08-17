@@ -17,6 +17,7 @@ export class ZigbeeManageDeviceService {
 
   public constructor(private readonly mqttService: MqttConnectorService) {
     this.client = this.mqttService.client;
+    this.client.setMaxListeners(25);
   }
 
   public joinDeviceAndSetId(): Observable<string | null> {
