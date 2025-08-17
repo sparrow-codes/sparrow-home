@@ -1,11 +1,15 @@
+import { DOCUMENT } from '@angular/common';
 import { effect, inject } from '@angular/core';
+import { SwUpdate } from '@angular/service-worker';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { withTasks } from '@sparrow-home/task-domain';
+import { DialogService } from 'primeng/dynamicdialog';
+import { filter, first, switchMap, tap } from 'rxjs';
 
+import { NewVersionDialogComponent } from '../components/new-version-dialog/new-version-dialog.component';
 import { AppConfig } from '../models';
 import { LoaderService } from '../services';
 import { VisibilityService } from '../services/';
-import { NewVersionService } from '../services/new-version.service';
 import { RootState } from './model';
 
 export type CoreState = RootState & {
@@ -29,13 +33,29 @@ export const appStore = signalStore(
   withHooks(
     (
       _store,
+      swUpdate: SwUpdate = inject(SwUpdate),
+      dialog: DialogService = inject(DialogService),
       visibilityService = inject(VisibilityService),
-      newVersionService = inject(NewVersionService),
-      loaderService = inject(LoaderService)
+      loaderService = inject(LoaderService),
+      document: Document = inject(DOCUMENT)
     ) => ({
       onInit: (): void => {
         visibilityService.listenToVisibilityChange();
-        newVersionService.listenToNewVersionChange();
+
+        swUpdate.versionUpdates
+          .pipe(
+            filter((eventType) => eventType.type === 'VERSION_READY'),
+            first(),
+            tap(() => patchState(_store, { isLoading: true })),
+            switchMap(
+              () =>
+                dialog.open(NewVersionDialogComponent, {
+                  closable: false,
+                  header: 'Nowa wersja aplikacji',
+                }).onClose
+            )
+          )
+          .subscribe(() => document.location.reload());
 
         effect(() => {
           loaderService.showLoader = !!_store.isLoading();
