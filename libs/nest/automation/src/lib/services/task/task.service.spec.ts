@@ -97,13 +97,17 @@ describe('TaskService', () => {
 
   it('should return list of tasks from repository', async () => {
     const tasks: Task[] = [
-      { id: 1, name: 'Task A', isActive: false } as Task,
       { id: 2, name: 'Task B', isActive: true } as Task,
+      { id: 1, name: 'Task A', isActive: false } as Task,
+      { id: 3, name: 'Task A', isActive: false } as Task,
     ];
     repository.find.mockResolvedValue(tasks);
 
     const result = await service.getTaskList();
     expect(result).toEqual(tasks);
+    expect(result[0].id).toBe(1);
+    expect(result[1].id).toBe(2);
+    expect(result[2].id).toBe(3);
     expect(repository.find).toHaveBeenCalled();
   });
 });

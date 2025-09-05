@@ -17,7 +17,7 @@ export class TaskService {
   }
 
   public async getTaskList(): Promise<Task[]> {
-    return this._taskRepository.find();
+    return (await this._taskRepository.find()).sort((prev, curr) => (prev.id > curr.id ? 1 : -1));
   }
 
   public async createTask(request: CreateTaskRequest): Promise<void> {
