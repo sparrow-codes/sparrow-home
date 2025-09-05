@@ -34,11 +34,6 @@ export class AlarmService {
       .subscribe((response) => this._handleSensorEvent(response));
   }
 
-  public async setAlarm(isOn: boolean): Promise<void> {
-    Logger.log(isOn ? 'Turning SOS mode ON!' : 'Turning SOS mode OFF!');
-    await this._setSirensMode(isOn);
-  }
-
   public async setAlarmMode(isActive: boolean): Promise<void> {
     const user: User = await this._getUser();
     const alarmPreferences: AlarmPreferences = user.alarmPreferences;
@@ -50,6 +45,7 @@ export class AlarmService {
     if (isActive) {
       await this._updateIgnoredDevices();
     } else {
+      await this._setSirensMode(false);
       this._ignoredDevices.clear();
     }
   }
@@ -141,7 +137,6 @@ export class AlarmService {
         break;
       case 'disarm':
         await this.setAlarmMode(false);
-        await this._setSirensMode(false);
         break;
       case 'panic':
         await this._setSirensMode(true);
