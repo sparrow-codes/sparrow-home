@@ -13,6 +13,8 @@ import { PushNotificationService } from '@sparrow-server/push';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Repository } from 'typeorm';
 
+import { GetAlarmModeResponse } from '../controller/model/get-alarm-mode.response';
+
 @Injectable()
 export class AlarmService {
   private _isSirensWorking: boolean = false;
@@ -50,11 +52,12 @@ export class AlarmService {
     }
   }
 
-  public async getAlarmMode(): Promise<boolean> {
+  public async getAlarmMode(): Promise<GetAlarmModeResponse> {
     const user: User = await this._getUser();
+    const siren: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ deviceType: DeviceType.SIREN });
     const alarmPreferences: AlarmPreferences = user.alarmPreferences;
 
-    return alarmPreferences.isActive;
+    return { isActive: alarmPreferences.isActive, isAvailable: siren !== null };
   }
 
   public getSirensStatus(): boolean {
@@ -67,7 +70,7 @@ export class AlarmService {
 
     if (this._shouldIgnoreSensor(sensor)) return;
 
-    const isAlarmActive: boolean = await this.getAlarmMode();
+    const isAlarmActive: boolean = (await this.getAlarmMode()).isActive;
 
     if (this._isOpenDoorTriggered(sensor, response, isAlarmActive)) {
       await this._triggerAlarm(sensor);

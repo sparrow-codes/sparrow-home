@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { AlarmApiService, HomeDeviceApiService } from '@sparrow-home/api';
+import { AlarmApiService, GetAlarmModeResponseApiModel, HomeDeviceApiService } from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
 import { MessageService } from 'primeng/api';
 import { combineLatest, finalize, first, map, Observable, pipe, switchMap, tap } from 'rxjs';
@@ -10,6 +10,7 @@ import { combineLatest, finalize, first, map, Observable, pipe, switchMap, tap }
 interface MainPanelStoreState {
   avgTemperature: number | null;
   isAlarmOn: boolean;
+  isAlarmAvailable: boolean;
   areAllWindowsAndDoorsClosed: boolean | null;
 }
 
@@ -18,6 +19,7 @@ export const MainPanelStore = signalStore(
   withState<MainPanelStoreState>({
     avgTemperature: null,
     isAlarmOn: false,
+    isAlarmAvailable: false,
     areAllWindowsAndDoorsClosed: null,
   }),
   withMethods(
@@ -38,10 +40,11 @@ export const MainPanelStore = signalStore(
         );
       }
 
-      function getAlarmStatus(): Observable<boolean> {
+      function getAlarmStatus(): Observable<GetAlarmModeResponseApiModel> {
         return alarmApiService.getAlarmMode().pipe(
           tapResponse({
-            next: (isAlarmOn) => patchState(store, { isAlarmOn }),
+            next: (response) =>
+              patchState(store, { isAlarmOn: response.isActive, isAlarmAvailable: response.isAvailable }),
             error: () => messageService.add({ summary: 'Błąd pobierania statusu alarmu', severity: 'error' }),
           })
         );
