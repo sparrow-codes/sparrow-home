@@ -20,6 +20,10 @@ export class MainPanelFacadeService {
     return this._store.areAllWindowsAndDoorsClosed;
   }
 
+  public get isAlarmAvailable(): Signal<boolean> {
+    return this._store.isAlarmAvailable;
+  }
+
   public fetchInitData(): void {
     this._store.fetchInitData();
   }

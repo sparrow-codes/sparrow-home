@@ -533,7 +533,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/GetAlarmModeResponse"
                 }
               }
             }
@@ -1268,6 +1268,21 @@
         },
         "required": [
           "isActive"
+        ]
+      },
+      "GetAlarmModeResponse": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          },
+          "isAvailable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isActive",
+          "isAvailable"
         ]
       },
       "PushSubscriptionRequest": {

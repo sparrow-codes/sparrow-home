@@ -3,7 +3,7 @@
   <sp-temperature-panel class="fade-step" [temperature]="avgTemperature()" [isHouseClosed]="isHouseClosed()" />
 
   <!-- Alarm -->
-  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" (isAlarmOnChange)="setAlarm($event)" />
+  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" [isAlarmAvailable]="isAlarmAvailable()" (isAlarmOnChange)="setAlarm($event)" />
 
   <!-- Lista urządzeń -->
   <sp-device-list-panel class="fade-step" />

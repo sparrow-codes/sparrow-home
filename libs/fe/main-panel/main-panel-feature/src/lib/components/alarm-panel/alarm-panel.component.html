@@ -1,19 +1,23 @@
 <p-card>
   <div class="flex items-center justify-between w-full">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 bg-green-400 rounded-md flex items-center justify-center text-white">
+      <div class="w-10 h-10 bg-green-400 rounded-md flex items-center justify-center text-white" [class.bg-yellow-400]="!isAlarmAvailable()">
         <i class="pi pi-bell"></i>
       </div>
       <div>
         <div class="font-semibold text-base mb-2">Alarm domowy</div>
-        @if (isAlarmOn()) {
-        <p-tag severity="success">Aktywny</p-tag>
+        @if (isAlarmAvailable()) {
+          @if (isAlarmOn()) {
+            <p-tag severity="success">Aktywny</p-tag>
+          } @else {
+            <p-tag severity="secondary">Nieaktywny</p-tag>
+          }
         } @else {
-        <p-tag severity="secondary">Nieaktywny</p-tag>
+          <p-tag severity="warn">Brak dostępnych syren</p-tag>
         }
       </div>
     </div>
 
-    <p-toggle-switch [ngModel]="isAlarmOn()" (onChange)="isAlarmOn.set($event.checked)" />
+    <p-toggle-switch [disabled]="!isAlarmAvailable()" [ngModel]="isAlarmOn()" (onChange)="isAlarmOn.set($event.checked)" />
   </div>
 </p-card>
