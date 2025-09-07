@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlarmModule } from '@sparrow-server/alarm';
 import { AuthModule } from '@sparrow-server/auth';
 import { AutomationModule } from '@sparrow-server/automation';
-import { CloudModule } from '@sparrow-server/cloud';
 import { HomeDeviceModule } from '@sparrow-server/device';
 import { ApiModule } from '@sparrow-server/external-api';
 import { PushModule } from '@sparrow-server/push';
@@ -31,7 +30,6 @@ import { AddTaskRelationToHomeDevice1690000000001 } from '../db/migrations/17543
 
 @Module({
   imports: [
-    CloudModule,
     HttpModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
