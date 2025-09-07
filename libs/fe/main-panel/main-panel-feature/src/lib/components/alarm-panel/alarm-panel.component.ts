@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, model, ModelSignal } from '@angular/core';
+import { Component, input, InputSignal, model, ModelSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
@@ -12,4 +12,5 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 })
 export class AlarmPanelComponent {
   public readonly isAlarmOn: ModelSignal<boolean> = model.required();
+  public readonly isAlarmAvailable: InputSignal<boolean> = input.required();
 }
