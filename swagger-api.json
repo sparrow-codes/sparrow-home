@@ -1242,10 +1242,14 @@
         "properties": {
           "userId": {
             "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
           }
         },
         "required": [
-          "userId"
+          "userId",
+          "isActive"
         ]
       },
       "AdditionalUserDto": {
