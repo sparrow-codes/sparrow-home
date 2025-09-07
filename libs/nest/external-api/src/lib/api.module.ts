@@ -4,9 +4,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigKey } from '@sparrow-server/shared';
 
-import { ComfortCloudConnector } from './panasonic';
-import { OAuthClient } from './panasonic/oauth-connector/OAuthConnector';
-import { WeatherApiService } from './weather/weather-api.service';
 import { ZigbeeManageDeviceService, ZigbeeSensorService, ZigbeeSirenService, ZigbeeSwitchMqttService } from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
 
@@ -30,22 +27,12 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
     ]),
   ],
   providers: [
-    WeatherApiService,
-    ComfortCloudConnector,
-    OAuthClient,
     ZigbeeSwitchMqttService,
     MqttConnectorService,
     ZigbeeManageDeviceService,
     ZigbeeSensorService,
     ZigbeeSirenService,
   ],
-  exports: [
-    WeatherApiService,
-    ComfortCloudConnector,
-    ZigbeeSwitchMqttService,
-    ZigbeeManageDeviceService,
-    ZigbeeSensorService,
-    ZigbeeSirenService,
-  ],
+  exports: [ZigbeeSwitchMqttService, ZigbeeManageDeviceService, ZigbeeSensorService, ZigbeeSirenService],
 })
 export class ApiModule {}
