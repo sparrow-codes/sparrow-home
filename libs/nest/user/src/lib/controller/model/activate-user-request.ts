@@ -5,4 +5,8 @@ export class ActivateUserRequest {
   @ApiProperty()
   @IsNotEmpty()
   public userId!: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  public isActive!: boolean;
 }

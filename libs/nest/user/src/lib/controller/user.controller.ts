@@ -29,7 +29,7 @@ export class UserController {
   @ApiOperation({ operationId: 'activateUser' })
   @Post('activate-user')
   public async activateUser(@Body() request: ActivateUserRequest): Promise<void> {
-    await this.userService.activateUser(request.userId);
+    await this.userService.setUserStatus(request.userId, request.isActive);
   }
 
   @ApiOperation({ operationId: 'getListOfAdditionalUsers' })

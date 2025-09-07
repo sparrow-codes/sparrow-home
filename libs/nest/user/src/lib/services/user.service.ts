@@ -84,13 +84,13 @@ export class UserService {
     }));
   }
 
-  public async activateUser(userId: number): Promise<void> {
+  public async setUserStatus(userId: number, isActive: boolean): Promise<void> {
     const user: User | null = await this._userRepository.findOneBy({ id: userId });
     if (!user) {
       throw new NotFoundException();
     }
 
-    user.isActive = true;
+    user.isActive = isActive;
     await this._userRepository.save(user);
   }
 

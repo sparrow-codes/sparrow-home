@@ -29,7 +29,10 @@ export class PushNotificationService {
 
   public async notify(message: PushMessage): Promise<void> {
     const options: RequestOptions = this._prepareOptions();
-    const subscriptions: PushSubscriptionClient[] = await this._pushSubscriptionsClientRepository.find();
+    const users: User[] = await this._userRepository.findBy({ isActive: true });
+    const subscriptions: PushSubscriptionClient[] = users
+      .filter((user) => user.pushSubscriptionClient !== null)
+      .map((user) => user.pushSubscriptionClient as PushSubscriptionClient);
 
     if (subscriptions.length === 0) {
       Logger.log('No subscription clients.');

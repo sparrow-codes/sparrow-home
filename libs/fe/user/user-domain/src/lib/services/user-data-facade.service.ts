@@ -30,8 +30,8 @@ export class UserDataFacadeService {
     this._userStore.fetchAdditionalUsers();
   }
 
-  public activateUser(userId: number): void {
-    this._userStore.activateUser(userId);
+  public activateUser(userId: number, isActive: boolean): void {
+    this._userStore.activateUser({ id: userId, isActive });
   }
 
   public login(request: LoginRequestApiModel): void {
