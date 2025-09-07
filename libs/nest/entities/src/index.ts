@@ -1,5 +1,4 @@
 export * from './lib/entities/alarm-preferences';
-export * from './lib/entities/cloud-preferences';
 export * from './lib/entities/home-device';
 export * from './lib/entities/push-subscription-client';
 export * from './lib/entities/setup';

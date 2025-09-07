@@ -1,268 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/panasonic-cloud/pump-heat-details": {
-      "get": {
-        "operationId": "getHeatPumpDetails",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetHeatPumpDetailsResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/panasonic-cloud/change-operation-status": {
-      "put": {
-        "operationId": "changeOperationStatus",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetHeatPumpStatusRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/panasonic-cloud/scheduled-water-heating": {
-      "put": {
-        "operationId": "scheduledWaterHeating",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ScheduledWaterHeatingRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/panasonic-cloud/scheduled-water-heating-status": {
-      "get": {
-        "operationId": "getScheduledWaterHeatingStatus",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetScheduledWaterHeatingStatusResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/panasonic-cloud/heating-preferences": {
-      "get": {
-        "operationId": "getHeatingPreferences",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetHeatingPreferencesResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      },
-      "put": {
-        "operationId": "setHeatingPreferences",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetHeatingPreferencesRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/panasonic-cloud/heating-preferences/auto": {
-      "put": {
-        "operationId": "setAutomaticHeating",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetAutomaticHeatingRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Panasonic Cloud"
-        ]
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "operationId": "login",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Authentication"
-        ]
-      }
-    },
-    "/api/auth/refresh": {
-      "get": {
-        "operationId": "refreshToken",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "required": true,
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Authentication"
-        ]
-      }
-    },
     "/api/user/create-first": {
       "post": {
         "operationId": "createNewUser",
@@ -379,6 +117,69 @@
         "summary": "",
         "tags": [
           "User"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/api/auth/refresh": {
+      "get": {
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Authentication"
         ]
       }
     },
@@ -989,230 +790,6 @@
       }
     },
     "schemas": {
-      "ZoneStatusDto": {
-        "type": "object",
-        "properties": {
-          "operationStatus": {
-            "type": "number"
-          },
-          "temparatureNow": {
-            "type": "number",
-            "nullable": true
-          },
-          "heatSet": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "operationStatus",
-          "temparatureNow",
-          "heatSet"
-        ]
-      },
-      "TankStatusDto": {
-        "type": "object",
-        "properties": {
-          "operationStatus": {
-            "type": "number"
-          },
-          "temparatureNow": {
-            "type": "number"
-          },
-          "heatMax": {
-            "type": "number"
-          },
-          "heatMin": {
-            "type": "number"
-          },
-          "heatSet": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "operationStatus",
-          "temparatureNow",
-          "heatMax",
-          "heatMin",
-          "heatSet"
-        ]
-      },
-      "GetHeatPumpDetailsResponse": {
-        "type": "object",
-        "properties": {
-          "deviceGuid": {
-            "type": "string"
-          },
-          "outdoorNow": {
-            "type": "number"
-          },
-          "waterPressure": {
-            "type": "string"
-          },
-          "zoneStatus": {
-            "$ref": "#/components/schemas/ZoneStatusDto"
-          },
-          "tankStatus": {
-            "$ref": "#/components/schemas/TankStatusDto"
-          }
-        },
-        "required": [
-          "deviceGuid",
-          "outdoorNow",
-          "waterPressure",
-          "zoneStatus",
-          "tankStatus"
-        ]
-      },
-      "SetHeatPumpStatusRequest": {
-        "type": "object",
-        "properties": {
-          "isWaterOn": {
-            "type": "boolean"
-          },
-          "isHeatOn": {
-            "type": "boolean"
-          },
-          "deviceGuid": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "isWaterOn",
-          "isHeatOn",
-          "deviceGuid"
-        ]
-      },
-      "ScheduledWaterHeatingRequest": {
-        "type": "object",
-        "properties": {
-          "active": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "active"
-        ]
-      },
-      "GetScheduledWaterHeatingStatusResponse": {
-        "type": "object",
-        "properties": {
-          "isScheduled": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "isScheduled"
-        ]
-      },
-      "GetHeatingPreferencesResponse": {
-        "type": "object",
-        "properties": {
-          "isAutomaticHeat": {
-            "type": "boolean"
-          },
-          "groundFlorTemperatureSensorId": {
-            "type": "number",
-            "nullable": true
-          },
-          "firstFlorTemperatureSensorId": {
-            "type": "number",
-            "nullable": true
-          },
-          "minTargetTemperature": {
-            "type": "number",
-            "nullable": true
-          },
-          "maxTargetTemperature": {
-            "type": "number",
-            "nullable": true
-          }
-        },
-        "required": [
-          "isAutomaticHeat",
-          "groundFlorTemperatureSensorId",
-          "firstFlorTemperatureSensorId",
-          "minTargetTemperature",
-          "maxTargetTemperature"
-        ]
-      },
-      "SetHeatingPreferencesRequest": {
-        "type": "object",
-        "properties": {
-          "firstFlorSensorId": {
-            "type": "number",
-            "nullable": true
-          },
-          "groundFlorSensorId": {
-            "type": "number",
-            "nullable": true
-          },
-          "minTargetTemperature": {
-            "type": "number",
-            "nullable": true
-          },
-          "maxTargetTemperature": {
-            "type": "number",
-            "nullable": true
-          }
-        },
-        "required": [
-          "firstFlorSensorId",
-          "groundFlorSensorId",
-          "minTargetTemperature",
-          "maxTargetTemperature"
-        ]
-      },
-      "SetAutomaticHeatingRequest": {
-        "type": "object",
-        "properties": {
-          "isAutomaticHeating": {
-            "type": "boolean",
-            "nullable": false
-          }
-        },
-        "required": [
-          "isAutomaticHeating"
-        ]
-      },
-      "LoginRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ]
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": false
-          }
-        },
-        "required": [
-          "token"
-        ]
-      },
-      "RefreshTokenResponse": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": false
-          }
-        },
-        "required": [
-          "token"
-        ]
-      },
       "CreateNewUserRequest": {
         "type": "object",
         "properties": {
@@ -1315,6 +892,45 @@
           "email",
           "lastName",
           "role"
+        ]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "RefreshTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "token"
         ]
       },
       "GetSetupResponse": {
