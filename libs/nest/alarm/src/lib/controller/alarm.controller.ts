@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { AuthGuard } from '@sparrow-server/auth';
 
 import { AlarmService } from '../services/alarm.service';
+import { GetAlarmModeResponse } from './model/get-alarm-mode.response';
 import { SetAlarmModeRequest } from './model/set-alarm-mode.request';
 
 @ApiTags('Alarm')
@@ -19,9 +20,9 @@ export class AlarmController {
   }
 
   @ApiOperation({ operationId: 'getAlarmMode' })
-  @ApiResponse({ type: Boolean })
+  @ApiResponse({ type: GetAlarmModeResponse })
   @Get('mode')
-  public async getAlarmMode(): Promise<boolean> {
+  public async getAlarmMode(): Promise<GetAlarmModeResponse> {
     return this._alarmService.getAlarmMode();
   }
 
