@@ -34,7 +34,6 @@
           }
         </span>
         <p-toggle-switch
-          [disabled]="!!user.isActive"
           [ngModel]="user.isActive"
           (onChange)="handleUserActivatedToggle($event.checked, user.id)"
         ></p-toggle-switch>
