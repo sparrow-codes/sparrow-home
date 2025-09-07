@@ -41,8 +41,8 @@ export class UserDetailsComponent implements OnInit {
   }
 
   protected handleUserActivatedToggle(active: boolean, userId?: number): void {
-    if (active && userId) {
-      this._dataService.activateUser(userId);
+    if (userId !== undefined) {
+      this._dataService.activateUser(userId, active);
     }
   }
 }

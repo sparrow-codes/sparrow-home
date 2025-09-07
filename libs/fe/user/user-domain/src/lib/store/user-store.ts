@@ -152,16 +152,16 @@ export const UserStore = signalStore(
           )
         ),
         fetchAdditionalUsers: rxMethod<void>(pipe(switchMap(() => _getAdditionalUsers()))),
-        activateUser: rxMethod<number>(
+        activateUser: rxMethod<{ id: number; isActive: boolean }>(
           pipe(
             tap(() => (loaderService.showLoader = true)),
-            switchMap((userId) =>
-              userApiService.activateUser({ body: { userId } }).pipe(
+            switchMap((value) =>
+              userApiService.activateUser({ body: { userId: value.id, isActive: value.isActive } }).pipe(
                 tapResponse({
-                  next: () => messageService.add({ summary: 'Aktywowano użytkownika', severity: 'contrast' }),
+                  next: () => messageService.add({ summary: 'Zmieniono status użytkownika', severity: 'success' }),
                   error: () =>
                     messageService.add({
-                      summary: 'Błąd podczas aktywacji użytkownika!',
+                      summary: 'Błąd podczas zmiany statusu użytkownika!',
                       severity: 'error',
                     }),
                 }),
