@@ -24,20 +24,38 @@ export class HomeDevice {
   public signalStrength: number | null = null;
 
   /**
-   * Custom filed only for temperature sensor
+   * Custom field only for temperature sensor
    */
   @Column({ nullable: true, type: 'decimal' })
   public temperature: number | null = null;
 
   /**
-   * Custom fields only for open door sensor
+   * Custom field only for the open door sensor
    */
   @Column({ nullable: true })
   public isOpen: boolean | null = null;
 
+  /**
+   * Custom field only for the open door sensor
+   */
   @Column({ nullable: true })
   public lastOpened: Date | null = null;
 
+  /**
+   * Custom fields only for the pet feeder
+   */
+  @Column({ nullable: true })
+  public feederPortionSize: number | null = null;
+
+  /**
+   * Custom fields only for the pet feeder
+   */
+  @Column({ nullable: true })
+  public feederNumberOfPortions: number | null = null;
+
+  /**
+   * Tasks
+   */
   @ManyToOne(() => Task, (task) => task.homeDevices)
   public task?: Task;
 }

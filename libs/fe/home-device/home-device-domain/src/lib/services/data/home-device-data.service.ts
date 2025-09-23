@@ -13,7 +13,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
 
-import { HomeDevice } from '../../models';
+import { HomeDevice, PetFeeder } from '../../models';
 import { HomeDeviceMapper } from '../mapper/home-device-mapper';
 
 @Injectable({
@@ -142,6 +142,40 @@ export class HomeDeviceDataService {
         },
         error: () => this._messageService.add({ text: 'Błąd zmiany nazwy urządzenia!', severity: 'error' }),
       });
+  }
+
+  public feedPet(id: number): void {
+    this._loadingService.showLoader = true;
+    this._apiService
+      .feedPet({ id: id.toString() })
+      .pipe(
+        first(),
+        tap(() => this._messageService.add({ summary: 'Podano porcję!', severity: 'success' })),
+        finalize(() => (this._loadingService.showLoader = false))
+      )
+      .subscribe();
+  }
+
+  public changePetFeederConfig(value: PetFeeder): void {
+    this._loadingService.showLoader = true;
+
+    this._apiService
+      .setPetFeederConfig({
+        body: { numberOfPortions: value.numberOfPortions, portionSize: value.portionSize },
+        id: value.id.toString(),
+      })
+      .pipe(
+        first(),
+        switchMap(() =>
+          this._fetchDeviceDetails(value.id).pipe(
+            finalize(() => {
+              this._loadingService.showLoader = false;
+              this._messageService.add({ summary: 'Zmieniono ustawienia!', severity: 'success' });
+            })
+          )
+        )
+      )
+      .subscribe();
   }
 
   private _fetchDeviceDetails(id: number): Observable<GetDeviceDetailsResponseApiModel> {

@@ -1,30 +1,31 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeviceType, HomeDevice, User } from '@sparrow-server/entities';
+import { DeviceType, HomeDevice } from '@sparrow-server/entities';
 import {
   DeviceResponse,
   OpenDoorSensorDetails,
   SensorDetails,
   SonoffTemperatureSensorDetails,
   ZigbeeManageDeviceService,
+  ZigbeePetFeederService,
   ZigbeeSensorService,
   ZigbeeSwitchMqttService,
 } from '@sparrow-server/external-api';
 import { first, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { IsNull, Not, Repository } from 'typeorm';
 
-import { GetAllDeviceFilters } from '../controllers/models/get-all-device-filters';
-import { DeviceDetailsMapper } from '../mappers/device-details-mapper';
-import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
+import { GetAllDeviceFilters } from '../../controllers/models/get-all-device-filters';
+import { DeviceDetailsMapper } from '../../mappers/device-details-mapper';
+import { HomeDeviceDetailsDto } from '../../models/home-device-details-dto';
 
 @Injectable()
 export class HomeDeviceService {
   public constructor(
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
-    @InjectRepository(User) private readonly _userRepository: Repository<User>,
     private readonly _zigbeeSwitchMqttService: ZigbeeSwitchMqttService,
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
-    private readonly _zigbeeSensorService: ZigbeeSensorService
+    private readonly _zigbeeSensorService: ZigbeeSensorService,
+    private readonly _zigbeePetFeederService: ZigbeePetFeederService
   ) {
     this._subscribeToSensors();
     this._zigbeeSensorService.sensorDetails$.subscribe((response) => this.handleSensorEvent(response));
@@ -69,9 +70,12 @@ export class HomeDeviceService {
               case DeviceType.PILOT:
                 return of(DeviceDetailsMapper.getPilotDetailDto(entity));
 
+              case DeviceType.PET_FEEDER:
+                return of(DeviceDetailsMapper.toPetFeederDetailsDto(entity));
+
               default:
                 Logger.error(`Unsupported device type for device ${entity.deviceName}`);
-                return of(null); // Można też filtrować null później
+                return of(null);
             }
           })
         ).pipe(map((details) => details.filter((d): d is HomeDeviceDetailsDto => !!d)));
@@ -91,6 +95,11 @@ export class HomeDeviceService {
         device.deviceType = type;
         device.zigbeeDeviceId = zigbeeDeviceId;
         device.deviceName = name;
+
+        if (device.deviceType === DeviceType.PET_FEEDER) {
+          device.feederNumberOfPortions = 1;
+          device.feederPortionSize = 10;
+        }
 
         return from(this._homeDeviceRepository.save(device)).pipe(
           tap(() => this._subscribeToSensors()),
@@ -144,6 +153,8 @@ export class HomeDeviceService {
             return of(DeviceDetailsMapper.getSirenDetailsDto(entity));
           case DeviceType.PILOT:
             return of(DeviceDetailsMapper.getPilotDetailDto(entity));
+          case DeviceType.PET_FEEDER:
+            return of(DeviceDetailsMapper.toPetFeederDetailsDto(entity));
           default:
             Logger.error(`Unsupported device type for device ${entity.deviceName}`);
             return of(null);

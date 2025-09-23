@@ -2,7 +2,7 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { DeviceType } from '@sparrow-home/utils';
 import { Observable } from 'rxjs';
 
-import { HomeDevice } from '../models';
+import { HomeDevice, PetFeeder } from '../models';
 import { HomeDeviceDataService } from './data/home-device-data.service';
 import { SwitchOperationsService } from './operations/switch-operations.service';
 
@@ -55,5 +55,13 @@ export class DeviceFacadeService {
 
   public changeDeviceName(id: number, deviceName: string): void {
     this._dataService.changeDeviceName(id, deviceName);
+  }
+
+  public feedPet(id: number): void {
+    this._dataService.feedPet(id);
+  }
+
+  public changePetFeederConfig(value: PetFeeder): void {
+    this._dataService.changePetFeederConfig(value);
   }
 }

@@ -7,7 +7,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { HomeDeviceApiService, TasksApiService } from '@sparrow-home/api';
 import { DeviceType } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
-import { finalize, pipe, switchMap, tap } from 'rxjs';
+import { finalize, map, pipe, switchMap, tap } from 'rxjs';
 
 import { AutomaticTask, AvailableDevice } from '../model';
 import { toTaskEntity } from './functions/to-task-entity';
@@ -150,7 +150,12 @@ export function withTasks() {
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap(() =>
-            store._homeDeviceApiService.getAllDevices({ body: { deviceType: DeviceType.POWER_PLUG } }).pipe(
+            store._homeDeviceApiService.getAllDevices({ body: {} }).pipe(
+              map((devices) =>
+                devices.filter(
+                  (device) => device.type === DeviceType.POWER_PLUG || device.type === DeviceType.PET_FEEDER
+                )
+              ),
               tapResponse({
                 next: (response) =>
                   patchState(store, {

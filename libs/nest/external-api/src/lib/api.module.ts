@@ -1,10 +1,16 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { Inject, Logger, Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientMqtt, ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigKey } from '@sparrow-server/shared';
 
-import { ZigbeeManageDeviceService, ZigbeeSensorService, ZigbeeSirenService, ZigbeeSwitchMqttService } from './zigbee';
+import {
+  ZigbeeManageDeviceService,
+  ZigbeePetFeederService,
+  ZigbeeSensorService,
+  ZigbeeSirenService,
+  ZigbeeSwitchMqttService,
+} from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
 
 @Module({
@@ -32,7 +38,20 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
     ZigbeeManageDeviceService,
     ZigbeeSensorService,
     ZigbeeSirenService,
+    ZigbeePetFeederService,
   ],
-  exports: [ZigbeeSwitchMqttService, ZigbeeManageDeviceService, ZigbeeSensorService, ZigbeeSirenService],
+  exports: [
+    ZigbeeSwitchMqttService,
+    ZigbeeManageDeviceService,
+    ZigbeeSensorService,
+    ZigbeeSirenService,
+    ZigbeePetFeederService,
+  ],
 })
-export class ApiModule {}
+export class ApiModule implements OnModuleInit {
+  public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {}
+
+  public async onModuleInit(): Promise<void> {
+    await this._zigbeeClient.connect().then(() => Logger.log('Connected to MQTT'));
+  }
+}
