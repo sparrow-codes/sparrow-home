@@ -11,6 +11,7 @@ import { PetFeederOperationsService } from './pet-feeder-operations.service';
 type RepoMock<T extends ObjectLiteral> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createRepositoryMock = <T extends ObjectLiteral>(): RepoMock<T> => ({
   findOneBy: jest.fn(),
+  save: jest.fn(),
 });
 
 describe('PetFeederOperationsService', () => {
@@ -168,6 +169,7 @@ describe('PetFeederOperationsService', () => {
       await service.setPetFeederOptions(7, req);
 
       expect(repo.findOneBy).toHaveBeenNthCalledWith(1, { id: 7 });
+      expect(repo.save).toHaveBeenCalledTimes(1);
       expect(zigbeePetFeederServiceMock.setPetFeederConfiguration).toHaveBeenNthCalledWith(1, 'zig-feeder-7', 3, 20);
     });
   });
