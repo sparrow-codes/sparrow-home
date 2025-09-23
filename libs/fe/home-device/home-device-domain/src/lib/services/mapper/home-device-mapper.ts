@@ -1,6 +1,7 @@
 import {
   HomeDeviceDetailsDtoApiModel,
   OpenDoorSensorDetailsDtoApiModel,
+  PetFeederDetailsDtoApiModel,
   PilotDetailsDtoApiModel,
   PluginSwitchDetailsDtoApiModel,
   SirenDetailsDtoApiModel,
@@ -10,6 +11,7 @@ import { DeviceType } from '@sparrow-home/utils';
 
 import { HomeDevice, Siren } from '../../models';
 import { OpenDoorSensor } from '../../models/open-door-sensor';
+import { PetFeeder } from '../../models/pet-feeder';
 import { Pilot } from '../../models/pilot';
 import { SwitchDevice } from '../../models/switch-device';
 import { TemperatureSensor } from '../../models/temperature-sensor';
@@ -61,6 +63,15 @@ export class HomeDeviceMapper {
         battery: pilot.battery,
         isOnline: null,
       } as Pilot;
+    }
+
+    if (device.type === DeviceType.PET_FEEDER) {
+      const petFeeder: PetFeederDetailsDtoApiModel = device as PetFeederDetailsDtoApiModel;
+      return {
+        ...homeDevice,
+        numberOfPortions: petFeeder.numberOfPortions,
+        portionSize: petFeeder.portionSize,
+      } as PetFeeder;
     }
 
     return homeDevice;

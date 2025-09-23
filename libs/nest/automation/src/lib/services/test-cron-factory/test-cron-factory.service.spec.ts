@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TaskCronFactory } from './test-cron-factory.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
+import { ZigbeePetFeederService, ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { DeviceType } from '@sparrow-server/entities';
 import { CronJob } from 'cron';
 
@@ -15,6 +15,7 @@ describe('TaskCronFactory', () => {
   let factory: TaskCronFactory;
   let schedulerRegistry: jest.Mocked<SchedulerRegistry>;
   let zigbeeService: jest.Mocked<ZigbeeSwitchMqttService>;
+  let zigbeePetFeederService: jest.Mocked<ZigbeePetFeederService>;
 
   beforeEach(async () => {
     (CronJob as unknown as jest.Mock).mockClear();
@@ -29,11 +30,14 @@ describe('TaskCronFactory', () => {
       setSwitchOn: jest.fn(),
     } as any;
 
+    zigbeePetFeederService = { feedPet: jest.fn() } as any;
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TaskCronFactory,
         { provide: SchedulerRegistry, useValue: schedulerRegistry },
         { provide: ZigbeeSwitchMqttService, useValue: zigbeeService },
+        { provide: ZigbeePetFeederService, useValue: zigbeePetFeederService },
       ],
     }).compile();
 
@@ -75,6 +79,20 @@ describe('TaskCronFactory', () => {
     const job = (CronJob as unknown as jest.Mock).mock.calls[0][1];
     job();
     expect(zigbeeService.setSwitchOn).toHaveBeenCalledWith('abc', true);
+  });
+
+  it('should activate pet feeder', () => {
+    const task = {
+      id: 1,
+      startTime: new Date(),
+      endTime: new Date(),
+      homeDevices: [{ deviceType: DeviceType.PET_FEEDER, zigbeeDeviceId: 'abc' }],
+    } as any;
+
+    factory.scheduleTask(task);
+    const job = (CronJob as unknown as jest.Mock).mock.calls[0][1];
+    job();
+    expect(zigbeePetFeederService.feedPet).toHaveBeenNthCalledWith(1, 'abc');
   });
 
   it('should log unsupported device types', () => {

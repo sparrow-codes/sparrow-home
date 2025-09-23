@@ -3,7 +3,7 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { getEverydayCronTime } from '@sparrow-server/shared';
 import { HomeDevice, Task } from '@sparrow-server/entities';
-import { ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
+import { ZigbeePetFeederService, ZigbeeSwitchMqttService } from '@sparrow-server/external-api';
 import { DeviceType } from '@sparrow-server/entities';
 
 @Injectable()
@@ -13,7 +13,8 @@ export class TaskCronFactory {
 
   public constructor(
     private readonly _schedulerRegistry: SchedulerRegistry,
-    private readonly _zigbeeService: ZigbeeSwitchMqttService
+    private readonly _zigbeeService: ZigbeeSwitchMqttService,
+    private readonly _zigbeePetFeederService: ZigbeePetFeederService
   ) {}
 
   public scheduleTask(task: Task): void {
@@ -72,6 +73,9 @@ export class TaskCronFactory {
       case DeviceType.POWER_PLUG:
         this._zigbeeService.setSwitchOn(device.zigbeeDeviceId, true);
         break;
+      case DeviceType.PET_FEEDER:
+        this._zigbeePetFeederService.feedPet(device.zigbeeDeviceId);
+        break;
       default:
         Logger.warn(`Unsupported device type: ${device.deviceType} (ID: ${device.id})`);
     }
@@ -81,6 +85,9 @@ export class TaskCronFactory {
     switch (device.deviceType) {
       case DeviceType.POWER_PLUG:
         this._zigbeeService.setSwitchOn(device.zigbeeDeviceId, false);
+        break;
+      case DeviceType.PET_FEEDER:
+        this._zigbeePetFeederService.feedPet(device.zigbeeDeviceId);
         break;
       default:
         Logger.warn(`Unsupported device type: ${device.deviceType} (ID: ${device.id})`);

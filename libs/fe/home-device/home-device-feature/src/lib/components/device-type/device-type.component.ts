@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
 import {
   bootstrapBellFill,
+  bootstrapBuildingFillGear,
   bootstrapDoorOpenFill,
   bootstrapPlugin,
   bootstrapThermometerHalf,
@@ -24,6 +25,7 @@ import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
       bootstrapDoorOpenFill,
       bootstrapBellFill,
       bootstrapWifi,
+      bootstrapBuildingFillGear,
     }),
   ],
 })
@@ -45,6 +47,8 @@ export class DeviceTypeComponent {
         return 'bootstrapBellFill';
       case DeviceType.PILOT:
         return 'bootstrapWifi';
+      case DeviceType.PET_FEEDER:
+        return 'bootstrapBuildingFillGear';
       default:
         return '';
     }
