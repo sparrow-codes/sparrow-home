@@ -6,4 +6,5 @@ export const deviceTypeDictionary: Map<DeviceType, string> = new Map([
   [DeviceType.OPEN_DOOR_SENSOR, 'Czujnik otwarcia'],
   [DeviceType.SIREN, 'Syrena alarmowa'],
   [DeviceType.PILOT, 'Pilot'],
+  [DeviceType.PET_FEEDER, 'Karmink dla zwierząt'],
 ]);

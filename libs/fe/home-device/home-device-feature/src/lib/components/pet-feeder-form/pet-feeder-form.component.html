@@ -1,0 +1,16 @@
+<form [formGroup]="formGroup" class="flex flex-col gap-4">
+  <div class="flex flex-col gap-2">
+    <div>Liczba porcji {{formGroup.controls.numberOfPortions.value}}</div>
+    <p-slider [min]="1" [max]="10" [formControl]="formGroup.controls.numberOfPortions"></p-slider>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <div>Wielkość porcji: {{formGroup.controls.portionSize.value}} g</div>
+    <p-slider [min]="1" [max]="20" [formControl]="formGroup.controls.portionSize"></p-slider>
+  </div>
+
+  <div class="flex gap-2 justify-end">
+    <p-button label="Anuluj" [outlined]="true" severity="secondary" (onClick)="onCancel()" />
+    <p-button icon="pi pi-check" label="Zapisz" (onClick)="onSubmit()" />
+  </div>
+</form>

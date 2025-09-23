@@ -16,7 +16,6 @@ export class ZigbeeSwitchMqttService {
   private readonly _client: MqttClient;
 
   public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {
-    this._zigbeeClient.connect();
     this._client = this._zigbeeClient.createClient();
   }
 

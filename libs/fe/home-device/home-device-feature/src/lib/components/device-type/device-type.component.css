@@ -49,6 +49,11 @@
   .pilot-color {
     color: var(--pilot);
   }
+
+  .pet-feeder {
+    background-color: var(--temperature-sensor);
+    color: white;
+  }
 }
 
 

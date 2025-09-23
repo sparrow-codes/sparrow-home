@@ -16,6 +16,10 @@
             offIcon="pi pi-power-off"
           />
         }
+
+        @if (petFeeder(); as petFeeder) {
+          <p-button [outlined]="true" icon="pi pi-check" label="Podaj karmę" (onClick)="onFeedPetAction(petFeeder.id)" />
+        }
       </div>
 
       <!-- Typ urządzenia + sygnał -->
@@ -36,6 +40,9 @@
       }
       @if (siren()?.battery; as battery) {
         <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
+      }
+      @if (petFeeder(); as petFeeder) {
+        <sp-pet-feeder-details (updatePetFeederConfig)="changePetFeederConfig($event)" [petFeeder]="petFeeder"></sp-pet-feeder-details>
       }
 
       <!-- Status online/offline -->
@@ -79,10 +86,8 @@
 
       <div class="flex justify-end gap-2">
         <p-button label="Anuluj" [outlined]="true" severity="secondary" (onClick)="showEditDialog.set(false)" />
-
         <p-button icon="pi pi-check" label="Zapisz" (onClick)="onDeviceNameChange(homeDevice.id, nameInput.value)" />
       </div>
     </div>
   </p-dialog>
-
 }

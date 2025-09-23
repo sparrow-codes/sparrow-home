@@ -6,6 +6,7 @@ import {
   DeviceFacadeService,
   HomeDevice,
   OpenDoorSensor,
+  PetFeeder,
   Siren,
   SwitchDevice,
   TemperatureSensor,
@@ -22,6 +23,7 @@ import { filter, first, map, tap } from 'rxjs';
 
 import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
 import { OpenDoorSensorDetailsComponent } from '../../components/open-door-sensor-details/open-door-sensor-details.component';
+import { PetFeederDetailsComponent } from '../../components/pet-feeder-details/pet-feeder-details.component';
 import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
 import { TemperatureSensorDetailsComponent } from '../../components/temperature-sensor-details/temperature-sensor-details.component';
 
@@ -42,6 +44,7 @@ import { TemperatureSensorDetailsComponent } from '../../components/temperature-
     Card,
     Dialog,
     InputText,
+    PetFeederDetailsComponent,
   ],
   templateUrl: './device-details.component.html',
   animations: [sparrowFadeIn],
@@ -76,6 +79,14 @@ export class DeviceDetailsComponent implements OnInit {
     }
   });
 
+  protected readonly petFeeder: Signal<PetFeeder | null> = computed(() => {
+    if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.PET_FEEDER) {
+      return this.deviceDetails() as PetFeeder;
+    } else {
+      return null;
+    }
+  });
+
   protected readonly siren: Signal<Siren | null> = computed(() => {
     if (this.deviceDetails() && this.deviceDetails()?.type === DeviceType.SIREN) {
       return this.deviceDetails() as Siren;
@@ -105,6 +116,14 @@ export class DeviceDetailsComponent implements OnInit {
     if (this.id) {
       this._facadeService.setLscSwitchOperationStatus(this.id, value);
     }
+  }
+
+  protected onFeedPetAction(id: number): void {
+    this._facadeService.feedPet(id);
+  }
+
+  protected changePetFeederConfig(value: PetFeeder): void {
+    this._facadeService.changePetFeederConfig(value);
   }
 
   protected onDeviceDelete(id: number, name: string): void {

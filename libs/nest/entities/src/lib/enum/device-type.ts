@@ -4,4 +4,6 @@ export enum DeviceType {
   OPEN_DOOR_SENSOR = 2,
   SIREN = 3,
   PILOT = 4,
+  PET_FEEDER = 5,
+  PLUGIN_SWITCH = 6,
 }

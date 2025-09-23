@@ -27,6 +27,7 @@ import { AlterUserTable1744444867595 } from '../db/migrations/1744444867595-Alte
 import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092803-CreatePushSubscription';
 import { CreateTaskTable1690000000000 } from '../db/migrations/1754335949380-CreateTaskTable';
 import { AddTaskRelationToHomeDevice1690000000001 } from '../db/migrations/1754368602595-AddTaskRelationHomeDevice';
+import { AlterHomeDevicePetFeeder1758390085575 } from '../db/migrations/1758390085575-AlterHomeDevicePetFeeder';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { AddTaskRelationToHomeDevice1690000000001 } from '../db/migrations/17543
           CreatePushSubscription1744656092803,
           CreateTaskTable1690000000000,
           AddTaskRelationToHomeDevice1690000000001,
+          AlterHomeDevicePetFeeder1758390085575,
         ],
       }),
     }),
