@@ -3,7 +3,7 @@ rm -r ../node_modules/
 sleep 1
 
 echo "Installing application"
-npm install
+npm ci
 sleep 1
 
 echo "Stopping current running application"
