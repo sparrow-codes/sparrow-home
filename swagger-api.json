@@ -493,6 +493,72 @@
         ]
       }
     },
+    "/api/home-device/pet-feeder/feed/{id}": {
+      "get": {
+        "operationId": "feedPet",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      },
+      "put": {
+        "operationId": "setPetFeederConfig",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetPetFeederConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "Home Device"
+        ]
+      }
+    },
     "/api/alarm/set-mode": {
       "put": {
         "operationId": "setAlarmMode",
@@ -1221,6 +1287,45 @@
           "battery"
         ]
       },
+      "PetFeederDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "type": {
+            "type": "number"
+          },
+          "homeDeviceId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isOnline": {
+            "type": "boolean"
+          },
+          "signalStrength": {
+            "type": "number"
+          },
+          "numberOfPortions": {
+            "type": "number"
+          },
+          "portionSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "homeDeviceId",
+          "name",
+          "isOnline",
+          "signalStrength",
+          "numberOfPortions",
+          "portionSize"
+        ]
+      },
       "GetDeviceDetailsResponse": {
         "type": "object",
         "properties": {
@@ -1257,6 +1362,27 @@
         },
         "required": [
           "avgTemperature"
+        ]
+      },
+      "SetPetFeederConfig": {
+        "type": "object",
+        "properties": {
+          "numberOfPortions": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10,
+            "nullable": false
+          },
+          "portionSize": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 20,
+            "nullable": false
+          }
+        },
+        "required": [
+          "numberOfPortions",
+          "portionSize"
         ]
       },
       "SetAlarmModeRequest": {

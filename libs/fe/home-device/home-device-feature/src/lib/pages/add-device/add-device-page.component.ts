@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
@@ -13,7 +13,6 @@ import { finalize, first } from 'rxjs';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
-import { CreateDeviceFormName } from './form-service/enum/create-device-form-name';
 import { CreateDeviceForm } from './form-service/model/create-device-form';
 
 @Component({
@@ -37,9 +36,6 @@ export class AddDevicePageComponent {
   private readonly facadeService: DeviceFacadeService = inject(DeviceFacadeService);
 
   protected readonly formGroup: FormGroup<CreateDeviceForm> = this._formService.form;
-  protected readonly deviceTypeControl: FormControl<number | null> = this._formService.deviceTypeControl;
-  protected readonly nameControl: FormControl<string> = this._formService.nameControl;
-  protected readonly formName: typeof CreateDeviceFormName = CreateDeviceFormName;
   protected readonly dropdownOptions: { value: number; label: string }[] = this.prepareDropdownOptions();
   protected readonly joinInProgress: WritableSignal<boolean> = signal(false);
   protected readonly deviceJoined: WritableSignal<boolean | null> = signal(null);

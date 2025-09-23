@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { signalStore, withState } from '@ngrx/signals';
 import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel, TasksApiService } from '@sparrow-home/api';
-import { DeviceType } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
 
@@ -182,7 +181,7 @@ describe('withTasks signal store', () => {
     store.getAvailableDevices();
 
     expect(mockHomeDeviceApiService.getAllDevices).toHaveBeenNthCalledWith(1, {
-      body: { deviceType: DeviceType.POWER_PLUG },
+      body: {},
     });
     expect(store.availableDevices().length).toBe(1);
     expect(store.availableDevices()[0].name).toBe('Device 1');
@@ -196,7 +195,7 @@ describe('withTasks signal store', () => {
     store.getAvailableDevices();
 
     expect(mockHomeDeviceApiService.getAllDevices).toHaveBeenNthCalledWith(1, {
-      body: { deviceType: DeviceType.POWER_PLUG },
+      body: {},
     });
     expect(store.isLoading()).toBe(false);
   });

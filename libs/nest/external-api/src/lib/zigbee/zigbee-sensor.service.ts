@@ -17,7 +17,6 @@ export class ZigbeeSensorService {
   }
 
   public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {
-    this._zigbeeClient.connect();
     this._client = this._zigbeeClient.createClient();
   }
 

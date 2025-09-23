@@ -9,7 +9,7 @@
         type="text"
         pInputText
         pSize="large"
-        [formControl]="nameControl"
+        [formControl]="formGroup.controls.name"
         [disabled]="joinInProgress()"
         fluid="true"
         class="fade-step"
@@ -19,7 +19,7 @@
 
     <p-floatlabel class="w-full fade-step" variant="on">
       <p-select
-        [formControl]="deviceTypeControl"
+        [formControl]="formGroup.controls.deviceType"
         inputId="in_label"
         [options]="dropdownOptions"
         optionLabel="label"
