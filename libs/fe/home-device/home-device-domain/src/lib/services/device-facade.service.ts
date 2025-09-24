@@ -25,6 +25,10 @@ export class DeviceFacadeService {
     return this._dataService.deviceTypeFilter;
   }
 
+  public get searchQuery(): Signal<string> {
+    return this._dataService.searchQuery;
+  }
+
   public fetchDevices(): void {
     this._dataService.fetchAvailableDevices();
   }
