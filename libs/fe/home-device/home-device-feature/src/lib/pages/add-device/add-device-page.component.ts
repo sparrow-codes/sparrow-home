@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
@@ -26,6 +27,7 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
     Button,
     FloatLabel,
     Select,
+    RouterLink,
   ],
   templateUrl: './add-device-page.component.html',
   providers: [CreateDeviceFormService],
