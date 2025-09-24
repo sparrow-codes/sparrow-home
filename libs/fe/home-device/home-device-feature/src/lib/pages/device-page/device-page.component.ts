@@ -50,7 +50,9 @@ export class DevicePageComponent implements OnInit {
 
     return allDevices.slice(first, first + rows);
   });
-  protected readonly searchControl: FormControl<string | null> = new FormControl('');
+  protected readonly searchControl: FormControl<string | null> = new FormControl(
+    this._facadeService.searchQuery() ?? ''
+  );
   protected readonly deviceType: typeof DeviceType = DeviceType;
 
   public ngOnInit(): void {
