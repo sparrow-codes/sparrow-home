@@ -51,7 +51,7 @@
 
     <!-- Przycisk dodania -->
     @if (deviceJoined() === true) {
-    <p-button type="button" label="Ok" size="large" fluid="true"></p-button>
+    <p-button type="button" label="Ok" size="large" fluid="true" [routerLink]="['../']"></p-button>
     } @else {
     <p-button
       type="submit"

@@ -50,6 +50,10 @@ export class HomeDeviceDataService {
     return this._deviceTypeFilter.asReadonly();
   }
 
+  public get searchQuery(): Signal<string> {
+    return this._searchQuery.asReadonly();
+  }
+
   public setSearchQuery(query: string): void {
     this._searchQuery.set(query);
   }
