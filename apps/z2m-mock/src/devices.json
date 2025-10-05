@@ -1,0 +1,4 @@
+[
+  { "friendly_name": "lamp_livingroom", "type": "light", "state": { "state": "OFF", "brightness": 0 } },
+  { "friendly_name": "sensor_hall", "type": "sensor", "state": { "temperature": 21.4, "humidity": 46 } }
+]

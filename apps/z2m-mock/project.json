@@ -1,0 +1,58 @@
+{
+  "name": "z2m-mock",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/z2m-mock/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/z2m-mock",
+        "format": ["cjs"],
+        "bundle": true,
+        "main": "apps/z2m-mock/src/main.ts",
+        "tsConfig": "apps/z2m-mock/tsconfig.app.json",
+        "assets": [{ "input": "apps/z2m-mock/src", "glob": "devices.json", "output": "." }],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "z2m-mock:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "z2m-mock:build:development"
+        },
+        "production": {
+          "buildTarget": "z2m-mock:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
