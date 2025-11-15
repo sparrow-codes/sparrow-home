@@ -36,7 +36,6 @@ import { CreateActionJobTable1762532633640 } from '../db/migrations/176253263364
         username: configService?.get<string>(ConfigKey.DB_USER_NAME),
         database: configService.get<string>(ConfigKey.DB_NAME),
         password: configService?.get<string>(ConfigKey.DB_PASSWORD),
-        schema: configService?.get<string>(ConfigKey.DB_SCHEMA),
         migrationsRun: true,
         entities: [User, HomeDevice, Setup, PushSubscriptionClient, Task, ActionJob],
         migrations: [
