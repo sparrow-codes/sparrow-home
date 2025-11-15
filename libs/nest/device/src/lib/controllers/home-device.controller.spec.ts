@@ -5,15 +5,13 @@ import { firstValueFrom, of } from 'rxjs';
 
 import { HomeDeviceDetailsDto } from '../models/home-device-details-dto';
 import { HomeDeviceService } from '../services/home-device/home-device.service';
-import { PetFeederOperationsService } from '../services/pet-feeder-operations/pet-feeder-operations.service';
 import { HomeDeviceController } from './home-device.controller'; // ← adjust path
 import { ChangeDeviceNameRequest } from './models/change-device-name.request';
 import { CreateDeviceRequest } from './models/create-device-request';
 import { GetAllDeviceFilters } from './models/get-all-device-filters';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
-import { SetPetFeederConfig } from './models/set-pet-feeder-config';
-import { SetPluginSwitchStatusRequest } from './models/set-plugin-switch-status.request';
+import { PublishEventRequest } from './models/publish-event-request';
 
 describe('HomeDeviceController', () => {
   let controller: HomeDeviceController;
@@ -27,22 +25,15 @@ describe('HomeDeviceController', () => {
     setPluginSwitchStatus: jest.fn(),
     getAvgTemperature: jest.fn(),
     areAllDoorsAndWindowsClosed: jest.fn(),
+    publishEvent: jest.fn(),
   } as unknown as jest.Mocked<HomeDeviceService>;
-
-  const petFeederServiceMock: jest.Mocked<PetFeederOperationsService> = {
-    feedPet: jest.fn(),
-    setPetFeederOptions: jest.fn(),
-  } as unknown as jest.Mocked<PetFeederOperationsService>;
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [HomeDeviceController],
-      providers: [
-        { provide: HomeDeviceService, useValue: homeDeviceServiceMock },
-        { provide: PetFeederOperationsService, useValue: petFeederServiceMock },
-      ],
+      providers: [{ provide: HomeDeviceService, useValue: homeDeviceServiceMock }],
     })
       .overrideGuard(AuthGuard)
       .useValue({})
@@ -73,6 +64,12 @@ describe('HomeDeviceController', () => {
           name: '',
           isOnline: false,
           signalStrength: 0,
+          vendor: '',
+          model: '',
+          description: '',
+          battery: null,
+          params: {},
+          actions: [],
         },
       ];
 
@@ -121,6 +118,12 @@ describe('HomeDeviceController', () => {
   describe('getDeviceDetails', () => {
     it('parses id to number and maps service result to { deviceDetails }', async () => {
       const details: HomeDeviceDetailsDto = {
+        actions: [],
+        battery: null,
+        description: '',
+        model: '',
+        params: {},
+        vendor: '',
         homeDeviceId: '',
         isOnline: false,
         name: '',
@@ -135,18 +138,6 @@ describe('HomeDeviceController', () => {
       const expected: GetDeviceDetailsResponse = { deviceDetails: details };
       expect(homeDeviceServiceMock.getDeviceDetails).toHaveBeenCalledWith(9);
       expect(result).toEqual(expected);
-    });
-  });
-
-  describe('setPluginSwitchStatus', () => {
-    it('parses id to number, passes isOn to service and returns observable result', async () => {
-      const req: SetPluginSwitchStatusRequest = { isOn: true };
-      homeDeviceServiceMock.setPluginSwitchStatus.mockReturnValue(of(true));
-
-      const result: boolean = await firstValueFrom(controller.setPluginSwitchStatus('5', req));
-
-      expect(homeDeviceServiceMock.setPluginSwitchStatus).toHaveBeenCalledWith(5, true);
-      expect(result).toBe(true);
     });
   });
 
@@ -165,7 +156,7 @@ describe('HomeDeviceController', () => {
     it('returns boolean value from service', async () => {
       homeDeviceServiceMock.areAllDoorsAndWindowsClosed.mockResolvedValue(true);
 
-      const result: boolean | null = await controller.areAllDoorsAndWindowsClosed();
+      const result: boolean | null = (await controller.areAllDoorsAndWindowsClosed()).areAllDoorsAndWindowsClosed;
 
       expect(homeDeviceServiceMock.areAllDoorsAndWindowsClosed).toHaveBeenCalled();
       expect(result).toBe(true);
@@ -174,25 +165,21 @@ describe('HomeDeviceController', () => {
     it('returns null from service when applicable', async () => {
       homeDeviceServiceMock.areAllDoorsAndWindowsClosed.mockResolvedValue(null);
 
-      const result: boolean | null = await controller.areAllDoorsAndWindowsClosed();
+      const result: boolean | null = (await controller.areAllDoorsAndWindowsClosed()).areAllDoorsAndWindowsClosed;
 
       expect(result).toBeNull();
     });
   });
 
-  describe('feedPet', () => {
-    it('should call feed pet', async () => {
-      await controller.feedPet('2');
+  describe('publishZigbeeEvent', () => {
+    it('should publish zigbee event', () => {
+      const request: PublishEventRequest = {
+        payload: {},
+        deviceId: '',
+      };
 
-      expect(petFeederServiceMock.feedPet).toHaveBeenNthCalledWith(1, 2);
-    });
-
-    it('should set pet feeder options', async () => {
-      const request: SetPetFeederConfig = { portionSize: 1, numberOfPortions: 1 };
-
-      await controller.setPetFeederConfig('1', request);
-
-      expect(petFeederServiceMock.setPetFeederOptions).toHaveBeenNthCalledWith(1, 1, request);
+      controller.publishZigbeeEvent(request);
+      expect(homeDeviceServiceMock.publishEvent).toHaveBeenCalledWith(request.deviceId, request.payload);
     });
   });
 });

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { DeviceActionDto } from '@sparrow-server/shared';
 
 export abstract class HomeDeviceDetailsDto {
   @ApiProperty()
@@ -9,8 +10,20 @@ export abstract class HomeDeviceDetailsDto {
   public homeDeviceId!: string;
   @ApiProperty()
   public name!: string;
+  @ApiProperty()
+  public vendor!: string;
+  @ApiProperty()
+  public model!: string;
+  @ApiProperty()
+  public description!: string;
   @ApiProperty({ type: 'boolean' })
   public isOnline!: boolean;
   @ApiProperty()
   public signalStrength!: number;
+  @ApiProperty({ nullable: true })
+  public battery: number | null = null;
+  @ApiProperty()
+  public params: Record<string, string> = {};
+  @ApiProperty({ type: DeviceActionDto, isArray: true })
+  public actions: DeviceActionDto[] = [];
 }

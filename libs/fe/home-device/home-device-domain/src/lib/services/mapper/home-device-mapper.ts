@@ -1,90 +1,25 @@
-import {
-  HomeDeviceDetailsDtoApiModel,
-  OpenDoorSensorDetailsDtoApiModel,
-  PetFeederDetailsDtoApiModel,
-  PilotDetailsDtoApiModel,
-  PluginSwitchDetailsDtoApiModel,
-  SirenDetailsDtoApiModel,
-  TemperatureSensorDetailsDtoApiModel,
-} from '@sparrow-home/api';
-import { DeviceType } from '@sparrow-home/utils';
+import { HomeDeviceDetailsDtoApiModel } from '@sparrow-home/api';
+import { toDeviceAction } from '@sparrow-home/utils';
 
-import { HomeDevice, Siren } from '../../models';
-import { OpenDoorSensor } from '../../models/open-door-sensor';
-import { PetFeeder } from '../../models/pet-feeder';
-import { Pilot } from '../../models/pilot';
-import { SwitchDevice } from '../../models/switch-device';
-import { TemperatureSensor } from '../../models/temperature-sensor';
+import { HomeDevice } from '../../models';
 
 export class HomeDeviceMapper {
   public static mapDetails(device: HomeDeviceDetailsDtoApiModel): HomeDevice {
-    const homeDevice: HomeDevice = HomeDeviceMapper._mapDevice(device);
-
-    if (device.type === DeviceType.POWER_PLUG) {
-      const switchDevice: PluginSwitchDetailsDtoApiModel = device as PluginSwitchDetailsDtoApiModel;
+    {
       return {
-        ...homeDevice,
-        isOn: switchDevice.isOn,
-      } as SwitchDevice;
+        id: device.id,
+        homeDeviceId: device.homeDeviceId,
+        name: device.name,
+        type: device.type,
+        signalStrength: device.signalStrength,
+        isOnline: device.isOnline,
+        battery: device.battery,
+        model: device.model,
+        vendor: device.vendor,
+        description: device.description,
+        params: device.params,
+        actions: device.actions.map(toDeviceAction),
+      };
     }
-
-    if (device.type === DeviceType.TEMPERATURE_SENSOR) {
-      const temperatureSensor: TemperatureSensorDetailsDtoApiModel = device as TemperatureSensorDetailsDtoApiModel;
-      return {
-        ...homeDevice,
-        battery: temperatureSensor.battery,
-        temperature: temperatureSensor.temperature,
-        humidity: temperatureSensor.humidity,
-      } as TemperatureSensor;
-    }
-
-    if (device.type === DeviceType.OPEN_DOOR_SENSOR) {
-      const openDoorSensor: OpenDoorSensorDetailsDtoApiModel = device as OpenDoorSensorDetailsDtoApiModel;
-      return {
-        ...homeDevice,
-        battery: openDoorSensor.battery,
-        isOpen: openDoorSensor.isOpen,
-        lastOpened: openDoorSensor.lastOpened ? new Date(openDoorSensor.lastOpened) : undefined,
-      } as OpenDoorSensor;
-    }
-
-    if (device.type === DeviceType.SIREN) {
-      const siren: SirenDetailsDtoApiModel = device as SirenDetailsDtoApiModel;
-      return {
-        ...homeDevice,
-        battery: siren.battery,
-      } as Siren;
-    }
-
-    if (device.type === DeviceType.PILOT) {
-      const pilot: PilotDetailsDtoApiModel = device as PilotDetailsDtoApiModel;
-      return {
-        ...homeDevice,
-        battery: pilot.battery,
-        isOnline: null,
-      } as Pilot;
-    }
-
-    if (device.type === DeviceType.PET_FEEDER) {
-      const petFeeder: PetFeederDetailsDtoApiModel = device as PetFeederDetailsDtoApiModel;
-      return {
-        ...homeDevice,
-        numberOfPortions: petFeeder.numberOfPortions,
-        portionSize: petFeeder.portionSize,
-      } as PetFeeder;
-    }
-
-    return homeDevice;
-  }
-
-  private static _mapDevice(device: HomeDeviceDetailsDtoApiModel): HomeDevice {
-    return {
-      id: device.id,
-      homeDeviceId: device.homeDeviceId,
-      name: device.name,
-      type: device.type,
-      signalStrength: device.signalStrength,
-      isOnline: device.isOnline,
-    };
   }
 }

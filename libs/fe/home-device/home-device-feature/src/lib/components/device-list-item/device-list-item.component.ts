@@ -3,14 +3,13 @@ import { Component, computed, input, InputSignal, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DeviceType } from '@sparrow-home/utils';
 import { Card } from 'primeng/card';
-import { Tag } from 'primeng/tag';
 
 import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 import { DeviceTypeComponent } from '../device-type/device-type.component';
 
 @Component({
   selector: 'sp-device-list-item',
-  imports: [CommonModule, DeviceTypeComponent, Tag, RouterLink, Card],
+  imports: [CommonModule, DeviceTypeComponent, RouterLink, Card],
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {

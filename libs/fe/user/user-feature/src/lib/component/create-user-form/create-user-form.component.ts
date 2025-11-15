@@ -16,7 +16,6 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
   selector: 'sp-create-user-form',
   imports: [CommonModule, ReactiveFormsModule, Button, Password, FloatLabel, InputText],
   templateUrl: './create-user-form.component.html',
-  styleUrl: './create-user-form.component.css',
   providers: [CreateUserFormService],
 })
 export class CreateUserFormComponent implements OnInit {

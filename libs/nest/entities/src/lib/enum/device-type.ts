@@ -5,5 +5,4 @@ export enum DeviceType {
   SIREN = 3,
   PILOT = 4,
   PET_FEEDER = 5,
-  PLUGIN_SWITCH = 6,
 }

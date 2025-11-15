@@ -1,67 +1,60 @@
 @if (formGroup) {
 
-  <form [formGroup]="formGroup" class="flex flex-col gap-6 py-4">
-    <div class="flex flex-col sm:flex-row gap-6">
+<form [formGroup]="formGroup">
+  <div class="flex flex-col sm:flex-row gap-4">
+    <p-float-label variant="on" class="fade-step">
+      <input pInputText id="name" type="text" pSize="large" formControlName="name" fluid="true" />
+      <label for="name">Nazwa</label>
+    </p-float-label>
 
-      <p-float-label variant="on" class="fade-step">
-        <input pInputText id="name" type="text" pSize="large" formControlName="name" fluid="true" />
-        <label for="name">Nazwa</label>
-      </p-float-label>
-
-      <p-float-label variant="on" class="fade-step">
-        <p-datePicker
-          inputId="from-time"
-          [timeOnly]="true"
-          hourFormat="24"
-          size="large"
-          [showClear]="true"
-          formControlName="from"
-          showIcon="true"
-          iconDisplay="input"
-        ></p-datePicker>
-        <label for="from-time">Od</label>
-      </p-float-label>
-
-      <p-float-label variant="on" class="fade-step">
-        <p-datePicker
-          inputId="to-time"
-          [timeOnly]="true"
-          hourFormat="24"
-          [showClear]="true"
-          formControlName="to"
-          size="large"
-          showIcon="true"
-          iconDisplay="input"
-        ></p-datePicker>
-        <label for="to-time">Do</label>
-      </p-float-label>
+    <div class="flex justify-end w-full">
+      <p-button [outlined]="true" icon="pi pi-plus" severity="primary" size="large" (onClick)="onAddAction()"></p-button>
     </div>
 
-    <p-float-label variant="on" class="fade-step">
-      <p-multi-select
-        inputId="home-device"
-        class="w-full"
-        [options]="options()"
-        [loading]="isLoading()"
-        formControlName="devices"
-        optionLabel="name"
-        size="large"
-        optionValue="id"
-        showHeader="false"
-        [showClear]="true"
-        emptyMessage="Brak dostępnych urządzeń"
-      ></p-multi-select>
-      <label for="home-device">Urządzenie</label>
-    </p-float-label>
-  </form>
+    <p-data-view class="min-h-[90%]" [value]="sortedActions()" [paginator]="true" [rows]="2" [emptyMessage]="'Brak akcji'">
+      <ng-template #list let-items>
+        @for (item of items; track item.zigbeeDeviceId; let index = $index) {
 
-  <div class="flex flex-row sm:flex-row justify-end gap-4 fade-step">
-    <p-button
-      [disabled]="formGroup.pristine || formGroup.invalid"
-      label="Zapisz"
-      (onClick)="onSubmitPreferences()"
-      severity="primary"
-      size="large"
-    ></p-button>
+          <div @sparrowFadeIn class="mb-2">
+            <p-panel>
+              <ng-template pTemplate="header">
+                <div class="flex justify-between items-center w-full">
+                  <span class="font-semibold">{{ item.deviceName }}</span>
+                  <p-tag [severity]="'info'">
+                    <div class="flex gap-2">
+                      <i class="pi pi-clock"></i>
+                      {{ item.executionTime | date : 'HH:mm' }}
+                    </div>
+                  </p-tag>
+                </div>
+              </ng-template>
+              <div class="flex flex-col gap-3">
+                <!--            <span class="text-sm">{{ item.deviceDescription }}</span>-->
+                <sp-device-action [action]="item.action" (callAction)="onActionChange(index, $event)"></sp-device-action>
+                <div class="flex justify-between items-center">
+                  <div class="flex gap-2">
+                    <p-button icon="pi pi-trash" severity="danger" (onClick)="onDeleteAction(index)"></p-button>
+                    <p-button icon="pi pi-pencil" outlined="true" (onClick)="onEditAction(item)"></p-button>
+                  </div>
+                </div>
+              </div>
+            </p-panel>
+          </div>
+
+        }
+      </ng-template>
+    </p-data-view>
   </div>
+</form>
+
+<div class="flex flex-row sm:flex-row justify-end gap-4 fade-step">
+  <p-button
+    [disabled]="formGroup.invalid"
+    label="Zapisz"
+    icon="pi pi-check"
+    (onClick)="onSubmitPreferences()"
+    severity="primary"
+    size="large"
+  ></p-button>
+</div>
 }

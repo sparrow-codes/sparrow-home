@@ -12,7 +12,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope: fe-ui",
-                "onlyDependOnLibsWithTags": ["scope: fe-core"]
+                "onlyDependOnLibsWithTags": ["scope: fe-core", "scope:fe-utils"]
               }
             ]
           }

@@ -24,10 +24,6 @@ export class DataFacadeService {
     return this._setupStore.verifyConfigurationReady();
   }
 
-  public fetchCurrentConfiguration(): Observable<void> {
-    return this._setupStore.getCurrentSetup();
-  }
-
   public saveAppConfig(appConfig: AppConfig): void {
     this._rootStore.saveAppConfig(appConfig);
   }

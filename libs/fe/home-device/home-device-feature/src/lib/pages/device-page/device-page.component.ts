@@ -8,10 +8,9 @@ import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } 
 import { PageTitleComponent, sparrowFadeIn, spFadeInAnimation } from '@sparrow-home/ui';
 import { DeviceType } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
+import { Divider } from 'primeng/divider';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
-import { Tag } from 'primeng/tag';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
 
 import { DeviceListItemComponent } from '../../components/device-list-item/device-list-item.component';
@@ -25,13 +24,12 @@ type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
     Button,
     InputText,
     DeviceListItemComponent,
-    Tag,
     FormsModule,
     PageTitleComponent,
     Paginator,
-    ToggleSwitch,
     RouterLink,
     IonChip,
+    Divider,
   ],
   templateUrl: './device-page.component.html',
   animations: [sparrowFadeIn, spFadeInAnimation],
@@ -63,10 +61,6 @@ export class DevicePageComponent implements OnInit {
 
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
-  }
-
-  protected onSwitchAction(id: number, value: boolean): void {
-    this._facadeService.setLscSwitchOperationStatus(id, value);
   }
 
   protected onRemoveFilter(): void {

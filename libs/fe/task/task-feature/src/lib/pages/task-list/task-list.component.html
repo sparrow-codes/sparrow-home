@@ -1,4 +1,4 @@
-<div class="w-full max-w-[360px] mx-auto flex flex-col h-full">
+<div class="w-full flex flex-col h-full">
   <sp-page-title>Automatyka</sp-page-title>
 
   <div class="flex w-full justify-end">
@@ -12,6 +12,11 @@
       @for (task of tasks(); track task.id) {
         <sp-task-card @spFadeIn [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
       }
+    }
+
+    @if (tasks().length === 0) {
+      <p-divider></p-divider>
+      <span class="w-full text-center">Brak zadań</span>
     }
   </div>
 </div>

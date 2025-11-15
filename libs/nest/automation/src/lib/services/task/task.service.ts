@@ -1,33 +1,35 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { In, Repository } from 'typeorm';
-import { HomeDevice, Task } from '@sparrow-server/entities';
+import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { ActionJob, Task } from '@sparrow-server/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaskRequest } from '../../controller/task/model/create-task-request';
 import { UpdateTaskRequest } from '../../controller/task/model/update-task-request';
-import { TaskCronFactory } from '../test-cron-factory/test-cron-factory.service';
+import { TaskCronFactory } from '../test-cron-factory/task-cron-factory.service';
+import { TaskDto } from '../../controller/task/model/task-dto';
+import { TaskDtoMapperService } from '../task-dto-mapper.service';
 
 @Injectable()
-export class TaskService {
+export class TaskService implements OnModuleInit {
   public constructor(
     @InjectRepository(Task) private readonly _taskRepository: Repository<Task>,
-    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
-    private readonly _taskCronFactory: TaskCronFactory
-  ) {
-    this._onInit();
+    private readonly _taskCronFactory: TaskCronFactory,
+    private readonly _taskDtoMapperService: TaskDtoMapperService
+  ) {}
+
+  public async onModuleInit(): Promise<void> {
+    await this._onInit();
   }
 
-  public async getTaskList(): Promise<Task[]> {
-    return (await this._taskRepository.find()).sort((prev, curr) => (prev.id > curr.id ? 1 : -1));
+  public async getTaskList(): Promise<TaskDto[]> {
+    const tasks: Task[] = (await this._taskRepository.find()).sort((prev, curr) => (prev.id > curr.id ? 1 : -1));
+
+    return Promise.all(tasks.map(async (task) => await this._taskDtoMapperService.map(task)));
   }
 
   public async createTask(request: CreateTaskRequest): Promise<void> {
     const task: Task = new Task();
     task.isActive = false;
-    task.name = request.name;
-    task.startTime = request.from;
-    task.endTime = request.to;
-
-    task.homeDevices = await this._homeDeviceRepository.findBy({ id: In(request.assignedDevices) });
+    this.setTaskParams(task, request);
 
     await this._taskRepository.save(task);
   }
@@ -39,16 +41,32 @@ export class TaskService {
       throw new NotFoundException('Task not found');
     }
 
-    task.name = request.name;
-    task.startTime = request.from;
-    task.endTime = request.to;
-    task.homeDevices = await this._homeDeviceRepository.findBy({ id: In(request.assignedDevices) });
+    if (task.isActive) {
+      for (const action of task.actionJobs) {
+        this._taskCronFactory.clearScheduledTask(action.id);
+      }
+    }
 
+    this.setTaskParams(task, request);
     await this._taskRepository.save(task);
 
     if (task.isActive) {
       this._taskCronFactory.scheduleTask(task);
     }
+  }
+
+  private setTaskParams(task: Task, request: UpdateTaskRequest): void {
+    task.name = request.name;
+    task.actionJobs =
+      request.actions?.map((actionDto) => {
+        const entity: ActionJob = new ActionJob();
+        entity.assignedDeviceId = actionDto.assignedDeviceId;
+        entity.executionTime = new Date(actionDto.executionTime);
+        entity.payload = actionDto.payload;
+        entity.task = task;
+
+        return entity;
+      }) ?? [];
   }
 
   public async deleteTask(id: number): Promise<void> {

@@ -12,7 +12,7 @@ type Device = {
 const URL = process.env.MQTT_URL ?? 'mqtt://localhost:1883';
 const PREFIX = process.env.Z2M_PREFIX ?? 'zigbee2mqtt';
 const DEVICES_PATH = process.env.Z2M_DEVICES ?? `${__dirname}/devices.json`;
-const TICK_MS = Number(process.env.Z2M_TICK_MS ?? 5000);
+const TICK_MS = Number(process.env.Z2M_TICK_MS ?? 20000);
 
 const devices: Device[] = JSON.parse(fs.readFileSync(DEVICES_PATH, 'utf8'));
 
@@ -71,6 +71,7 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, payloadBuf) => {
+  console.log(`[z2m-mock] message: ${topic} ${payloadBuf.toString()}`);
   const str = payloadBuf.toString();
   const m = topic.match(new RegExp(`^${PREFIX}/([^/]+)/(set|get)$`));
   if (!m) return;

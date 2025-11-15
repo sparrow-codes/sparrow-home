@@ -1,11 +1,5 @@
 import { Route } from '@angular/router';
-import {
-  authGuard,
-  configurationNotReadyGuard,
-  configurationReadyGuard,
-  RoutePath,
-  setupResolver,
-} from '@sparrow-home/core';
+import { authGuard, configurationNotReadyGuard, configurationReadyGuard, RoutePath } from '@sparrow-home/core';
 import { MobileFrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
 
 export const appRoutes: Route[] = [
@@ -36,7 +30,6 @@ export const appRoutes: Route[] = [
       loginPath: RoutePath.LOGIN,
       profilePath: RoutePath.USER_PROFILE,
     },
-    resolve: { data: setupResolver },
     canActivate: [configurationReadyGuard, authGuard],
     children: [
       {

@@ -198,43 +198,6 @@
         ]
       }
     },
-    "/api/setup/current": {
-      "get": {
-        "operationId": "getCurrentSetup",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSetupResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Setup"
-        ]
-      }
-    },
-    "/api/setup/config-change": {
-      "put": {
-        "operationId": "changeConfiguration",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Setup"
-        ]
-      }
-    },
     "/api/home-device/all": {
       "post": {
         "operationId": "getAllDevices",
@@ -400,45 +363,6 @@
         ]
       }
     },
-    "/api/home-device/switch/status/{id}": {
-      "post": {
-        "operationId": "setPluginSwitchStatus",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetPluginSwitchStatusRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Home Device"
-        ]
-      }
-    },
     "/api/home-device/avg-temperature": {
       "get": {
         "operationId": "getHomeAvgTemperature",
@@ -476,7 +400,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/GetAllDoorAndWindowsStatus"
                 }
               }
             }
@@ -493,58 +417,22 @@
         ]
       }
     },
-    "/api/home-device/pet-feeder/feed/{id}": {
-      "get": {
-        "operationId": "feedPet",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Home Device"
-        ]
-      },
-      "put": {
-        "operationId": "setPetFeederConfig",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+    "/api/home-device/publish-zigbee-event": {
+      "post": {
+        "operationId": "publishZigbeeEvent",
+        "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SetPetFeederConfig"
+                "$ref": "#/components/schemas/PublishEventRequest"
               }
             }
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           }
         },
@@ -600,33 +488,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetAlarmModeResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "Alarm"
-        ]
-      }
-    },
-    "/api/alarm/siren-status": {
-      "get": {
-        "operationId": "getSirensStatus",
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
                 }
               }
             }
@@ -999,21 +860,6 @@
           "token"
         ]
       },
-      "GetSetupResponse": {
-        "type": "object",
-        "properties": {
-          "lat": {
-            "type": "number"
-          },
-          "lng": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "lat",
-          "lng"
-        ]
-      },
       "GetAllDeviceFilters": {
         "type": "object",
         "properties": {
@@ -1021,15 +867,55 @@
             "type": "number",
             "nullable": true
           },
-          "withTaskAssigned": {
-            "type": "boolean",
-            "nullable": true
-          },
           "isOpen": {
             "type": "boolean",
             "nullable": true
           }
         }
+      },
+      "DeviceActionDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "boolean",
+              "number",
+              "enum",
+              "unknown"
+            ]
+          },
+          "enumValues": {
+            "nullable": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unit": {
+            "type": "string",
+            "nullable": true
+          },
+          "range": {
+            "type": "object",
+            "nullable": true
+          },
+          "currentValue": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "key",
+          "type",
+          "enumValues",
+          "unit",
+          "range",
+          "currentValue"
+        ]
       },
       "HomeDeviceDetailsDto": {
         "type": "object",
@@ -1046,11 +932,33 @@
           "name": {
             "type": "string"
           },
+          "vendor": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "isOnline": {
             "type": "boolean"
           },
           "signalStrength": {
             "type": "number"
+          },
+          "battery": {
+            "type": "number",
+            "nullable": true
+          },
+          "params": {
+            "type": "object"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceActionDto"
+            }
           }
         },
         "required": [
@@ -1058,8 +966,14 @@
           "type",
           "homeDeviceId",
           "name",
+          "vendor",
+          "model",
+          "description",
           "isOnline",
-          "signalStrength"
+          "signalStrength",
+          "battery",
+          "params",
+          "actions"
         ]
       },
       "CreateDeviceRequest": {
@@ -1094,238 +1008,6 @@
           "deviceName"
         ]
       },
-      "OpenDoorSensorDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "battery": {
-            "type": "number"
-          },
-          "isOpen": {
-            "type": "boolean"
-          },
-          "lastOpened": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength",
-          "battery",
-          "isOpen",
-          "lastOpened"
-        ]
-      },
-      "PluginSwitchDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "isOn": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength",
-          "isOn"
-        ]
-      },
-      "SirenDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "battery": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength",
-          "battery"
-        ]
-      },
-      "TemperatureSensorDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "battery": {
-            "type": "number"
-          },
-          "temperature": {
-            "type": "number"
-          },
-          "humidity": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength",
-          "battery",
-          "temperature",
-          "humidity"
-        ]
-      },
-      "PilotDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "battery": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength",
-          "battery"
-        ]
-      },
-      "PetFeederDetailsDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "numberOfPortions": {
-            "type": "number"
-          },
-          "portionSize": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "type",
-          "homeDeviceId",
-          "name",
-          "isOnline",
-          "signalStrength",
-          "numberOfPortions",
-          "portionSize"
-        ]
-      },
       "GetDeviceDetailsResponse": {
         "type": "object",
         "properties": {
@@ -1342,17 +1024,6 @@
           "deviceDetails"
         ]
       },
-      "SetPluginSwitchStatusRequest": {
-        "type": "object",
-        "properties": {
-          "isOn": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "isOn"
-        ]
-      },
       "GetHomeAvgTemperature": {
         "type": "object",
         "properties": {
@@ -1364,25 +1035,31 @@
           "avgTemperature"
         ]
       },
-      "SetPetFeederConfig": {
+      "GetAllDoorAndWindowsStatus": {
         "type": "object",
         "properties": {
-          "numberOfPortions": {
-            "type": "number",
-            "minimum": 1,
-            "maximum": 10,
-            "nullable": false
-          },
-          "portionSize": {
-            "type": "number",
-            "minimum": 1,
-            "maximum": 20,
-            "nullable": false
+          "areAllDoorsAndWindowsClosed": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "required": [
-          "numberOfPortions",
-          "portionSize"
+          "areAllDoorsAndWindowsClosed"
+        ]
+      },
+      "PublishEventRequest": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "deviceId",
+          "payload"
         ]
       },
       "SetAlarmModeRequest": {
@@ -1426,33 +1103,46 @@
           "keys"
         ]
       },
+      "ActionJobDto": {
+        "type": "object",
+        "properties": {
+          "assignedDeviceId": {
+            "type": "string",
+            "nullable": false
+          },
+          "payload": {
+            "type": "string",
+            "nullable": false
+          },
+          "executionTime": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "assignedDeviceId",
+          "payload",
+          "executionTime"
+        ]
+      },
       "CreateTaskRequest": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
           },
-          "from": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "atSunset": {
-            "type": "boolean"
-          },
-          "to": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "assignedDevices": {
+          "actions": {
+            "nullable": true,
             "type": "array",
             "items": {
-              "type": "number"
+              "$ref": "#/components/schemas/ActionJobDto"
             }
           }
         },
         "required": [
           "name",
-          "assignedDevices"
+          "actions"
         ]
       },
       "UpdateTaskRequest": {
@@ -1461,24 +1151,50 @@
           "name": {
             "type": "string"
           },
-          "from": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "to": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "assignedDevices": {
+          "actions": {
+            "nullable": true,
             "type": "array",
             "items": {
-              "type": "number"
+              "$ref": "#/components/schemas/ActionJobDto"
             }
           }
         },
         "required": [
           "name",
-          "assignedDevices"
+          "actions"
+        ]
+      },
+      "TaskActionDto": {
+        "type": "object",
+        "properties": {
+          "zigbeeDeviceId": {
+            "type": "string"
+          },
+          "deviceName": {
+            "type": "string"
+          },
+          "deviceDescription": {
+            "type": "string"
+          },
+          "executionTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "action": {
+            "nullable": false,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeviceActionDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "zigbeeDeviceId",
+          "deviceName",
+          "deviceDescription",
+          "executionTime",
+          "action"
         ]
       },
       "TaskDto": {
@@ -1490,35 +1206,21 @@
           "name": {
             "type": "string"
           },
-          "startTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "atSunset": {
-            "type": "boolean"
-          },
-          "endTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "assignedDevices": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          },
           "isActive": {
             "type": "boolean"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskActionDto"
+            }
           }
         },
         "required": [
           "id",
           "name",
-          "startTime",
-          "atSunset",
-          "endTime",
-          "assignedDevices",
-          "isActive"
+          "isActive",
+          "actions"
         ]
       }
     }

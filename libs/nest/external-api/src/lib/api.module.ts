@@ -4,13 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientMqtt, ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigKey } from '@sparrow-server/shared';
 
-import {
-  ZigbeeManageDeviceService,
-  ZigbeePetFeederService,
-  ZigbeeSensorService,
-  ZigbeeSirenService,
-  ZigbeeSwitchMqttService,
-} from './zigbee';
+import { ZigbeeDeviceService, ZigbeeManageDeviceService } from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
 
 @Module({
@@ -32,21 +26,8 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
       },
     ]),
   ],
-  providers: [
-    ZigbeeSwitchMqttService,
-    MqttConnectorService,
-    ZigbeeManageDeviceService,
-    ZigbeeSensorService,
-    ZigbeeSirenService,
-    ZigbeePetFeederService,
-  ],
-  exports: [
-    ZigbeeSwitchMqttService,
-    ZigbeeManageDeviceService,
-    ZigbeeSensorService,
-    ZigbeeSirenService,
-    ZigbeePetFeederService,
-  ],
+  providers: [MqttConnectorService, ZigbeeManageDeviceService, ZigbeeDeviceService],
+  exports: [ZigbeeManageDeviceService, ZigbeeDeviceService],
 })
 export class ApiModule implements OnModuleInit {
   public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {}

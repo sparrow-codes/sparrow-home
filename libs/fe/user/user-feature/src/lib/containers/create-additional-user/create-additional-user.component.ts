@@ -4,12 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { staggeredFadeIn } from '@sparrow-home/ui';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
 
 import { CreateUserFormComponent } from '../../component/create-user-form/create-user-form.component';
 
 @Component({
   selector: 'sp-create-additional-user',
-  imports: [CommonModule, CreateUserFormComponent, Button],
+  imports: [CommonModule, CreateUserFormComponent, Button, Card],
   templateUrl: './create-additional-user.component.html',
   animations: [staggeredFadeIn],
 })

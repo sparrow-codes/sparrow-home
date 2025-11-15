@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TaskActionDto } from './task-action-dto';
 
 export class TaskDto {
   @ApiProperty()
@@ -8,17 +9,8 @@ export class TaskDto {
   public name!: string;
 
   @ApiProperty()
-  public startTime?: Date;
-
-  @ApiProperty()
-  public atSunset?: boolean;
-
-  @ApiProperty()
-  public endTime?: Date;
-
-  @ApiProperty({ type: Number, isArray: true })
-  public assignedDevices!: number[];
-
-  @ApiProperty()
   public isActive!: boolean;
+
+  @ApiProperty({ type: TaskActionDto, isArray: true })
+  public actions!: TaskActionDto[];
 }

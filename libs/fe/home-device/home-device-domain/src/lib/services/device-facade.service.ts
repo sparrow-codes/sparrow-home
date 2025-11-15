@@ -2,16 +2,14 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { DeviceType } from '@sparrow-home/utils';
 import { Observable } from 'rxjs';
 
-import { HomeDevice, PetFeeder } from '../models';
+import { HomeDevice } from '../models';
 import { HomeDeviceDataService } from './data/home-device-data.service';
-import { SwitchOperationsService } from './operations/switch-operations.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeviceFacadeService {
   private readonly _dataService: HomeDeviceDataService = inject(HomeDeviceDataService);
-  private readonly _switchOperationService: SwitchOperationsService = inject(SwitchOperationsService);
 
   public get homeDevices(): Signal<HomeDevice[] | null> {
     return this._dataService.homeDevices;
@@ -49,10 +47,6 @@ export class DeviceFacadeService {
     this._dataService.fetchDeviceDetailsById(id);
   }
 
-  public setLscSwitchOperationStatus(id: number, isOn: boolean): void {
-    this._switchOperationService.setSwitchStatus(id, isOn);
-  }
-
   public setDeviceTypeFilter(deviceType?: string | number): void {
     this._dataService.setDeviceTypeFilter(deviceType);
   }
@@ -61,11 +55,7 @@ export class DeviceFacadeService {
     this._dataService.changeDeviceName(id, deviceName);
   }
 
-  public feedPet(id: number): void {
-    this._dataService.feedPet(id);
-  }
-
-  public changePetFeederConfig(value: PetFeeder): void {
-    this._dataService.changePetFeederConfig(value);
+  public publishZigbeeEvent(deviceId: string, payload: Record<string, unknown>): void {
+    this._dataService.publishZigbeeEvent(deviceId, payload);
   }
 }

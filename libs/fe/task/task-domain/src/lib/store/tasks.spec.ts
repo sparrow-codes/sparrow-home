@@ -41,9 +41,7 @@ describe('withTasks signal store', () => {
   });
 
   it('should fetch tasks list successfully', () => {
-    const tasks: AutomaticTask[] = [
-      { id: 1, name: 'Test', startTime: new Date(), endTime: new Date(), homeDevices: [], isActive: false },
-    ];
+    const tasks: AutomaticTask[] = [{ id: 1, name: 'Test', isActive: false, actions: [] }];
     mockTaskApiService.getTaskList.mockReturnValue(of(tasks));
     const store = TestBed.inject(rootStore);
 
@@ -112,7 +110,7 @@ describe('withTasks signal store', () => {
     mockTaskApiService.createTask.mockReturnValue(of({}));
     mockTaskApiService.getTaskList.mockReturnValue(of([]));
     const store = TestBed.inject(rootStore);
-    store.createTask({ name: 'New task', startTime: new Date(), endTime: new Date(), homeDevices: [] });
+    store.createTask({ name: 'New task', actions: [] });
 
     expect(mockTaskApiService.createTask).toHaveBeenCalled();
     expect(mockMessageService.add).toHaveBeenCalledWith({ summary: 'Utworzono zadanie', severity: 'success' });
@@ -127,10 +125,8 @@ describe('withTasks signal store', () => {
     store.updateTask({
       id: 7,
       name: 'Edit',
-      startTime: new Date(),
-      endTime: new Date(),
-      homeDevices: [],
       isActive: false,
+      actions: [],
     });
 
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));
@@ -149,9 +145,7 @@ describe('withTasks signal store', () => {
     store.updateTask({
       id: 7,
       name: 'Edit',
-      startTime: new Date(),
-      endTime: new Date(),
-      homeDevices: [],
+      actions: [],
       isActive: false,
     });
 
@@ -173,6 +167,21 @@ describe('withTasks signal store', () => {
         isOnline: false,
         signalStrength: 0,
         type: 0,
+        actions: [
+          {
+            currentValue: null,
+            enumValues: null,
+            key: '',
+            range: null,
+            type: 'number',
+            unit: null,
+          },
+        ],
+        battery: null,
+        description: '',
+        model: '',
+        params: {},
+        vendor: '',
       },
     ];
     mockHomeDeviceApiService.getAllDevices.mockReturnValue(of(devices));
