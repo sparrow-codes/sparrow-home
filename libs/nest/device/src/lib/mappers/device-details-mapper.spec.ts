@@ -47,8 +47,8 @@ describe('DeviceDetailsMapper.toDeviceDetails', () => {
   it('defaults model, vendor, description and battery when missing', () => {
     const entity = makeHomeDevice();
     const profile = makeProfile({
-      deviceDefinition: {} as any,
-      state: { linkquality: 1 } as any,
+      deviceDefinition: {} as never,
+      state: { linkquality: 1 } as never,
     });
     const dto = DeviceDetailsMapper.toDeviceDetails(entity, profile);
     expect(dto.model).toBe('');
@@ -59,12 +59,12 @@ describe('DeviceDetailsMapper.toDeviceDetails', () => {
 
   it('sets isOnline=false and signalStrength=0 when linkquality is 0 or missing', () => {
     const entity = makeHomeDevice();
-    const p0 = makeProfile({ state: { linkquality: 0 } as any });
+    const p0 = makeProfile({ state: { linkquality: 0 } as never });
     const dto0 = DeviceDetailsMapper.toDeviceDetails(entity, p0);
     expect(dto0.isOnline).toBe(false);
     expect(dto0.signalStrength).toBe(0);
 
-    const pu = makeProfile({ state: {} as any });
+    const pu = makeProfile({ state: {} as never });
     const dtou = DeviceDetailsMapper.toDeviceDetails(entity, pu);
     expect(dtou.isOnline).toBe(false);
     expect(dtou.signalStrength).toBe(0);
@@ -82,7 +82,7 @@ describe('DeviceDetailsMapper.toDeviceDetails', () => {
         humidity: 55,
         mode: 'auto',
         level: undefined,
-      } as any,
+      },
       readonlyFields: [
         {
           key: 'temperature',
@@ -117,7 +117,7 @@ describe('DeviceDetailsMapper.toDeviceDetails', () => {
           path: [],
         },
       ],
-      actions: [{ key: 'mode' }] as any,
+      actions: [{ key: 'mode' }] as never,
     });
     const dto = DeviceDetailsMapper.toDeviceDetails(entity, profile);
     expect(dto.params).toEqual({
@@ -135,7 +135,7 @@ describe('DeviceDetailsMapper.toDeviceDetails', () => {
   it('maps actions with currentValue from state', () => {
     const entity = makeHomeDevice();
     const profile = makeProfile({
-      state: { linkquality: 80, fan_speed: 3, mode: 'cool' } as any,
+      state: { linkquality: 80, fan_speed: 3, mode: 'cool' } as never,
       actions: [
         {
           key: 'fan_speed',
@@ -179,16 +179,16 @@ describe('DeviceDetailsMapper._toActions', () => {
   describe('DeviceDetailsMapper._toParams', () => {
     it('omits common keys and action keys', () => {
       const profile = makeProfile({
-        state: { linkquality: 1, battery: 10, update: 'x', battery_low: false, actionLike: 'y' } as any,
-        actions: [{ key: 'actionLike' }] as any,
+        state: { linkquality: 1, battery: 10, update: 'x', battery_low: false, actionLike: 'y' } as never,
+        actions: [{ key: 'actionLike' }] as never,
       });
-      const res = (DeviceDetailsMapper as any)._toParams(profile);
+      const res = DeviceDetailsMapper['_toParams'](profile);
       expect(Object.keys(res)).toHaveLength(0);
     });
 
     it('formats values with units and handles undefined as empty string', () => {
       const profile = makeProfile({
-        state: { linkquality: 1, t: 12.3, p: undefined } as any,
+        state: { linkquality: 1, t: 12.3, p: undefined } as never,
         readonlyFields: [
           {
             key: 't',
@@ -208,7 +208,7 @@ describe('DeviceDetailsMapper._toActions', () => {
           },
         ],
       });
-      const res = (DeviceDetailsMapper as any)._toParams(profile);
+      const res: Record<string, unknown> = DeviceDetailsMapper['_toParams'](profile);
       expect(res).toEqual({ t: '12.3°C', p: '' });
     });
   });

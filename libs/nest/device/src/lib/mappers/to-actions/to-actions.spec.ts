@@ -19,7 +19,7 @@ describe('toActions', () => {
   }
 
   it('returns empty array when no actions are defined', () => {
-    const profile: DeviceProfile = prepareDeviceProfile({ actions: [], state: { linkquality: 10 } as any });
+    const profile: DeviceProfile = prepareDeviceProfile({ actions: [], state: { linkquality: 10 } as never });
     const deviceActionsDtos: DeviceActionDto[] = toActions(profile);
     expect(deviceActionsDtos).toEqual([]);
   });

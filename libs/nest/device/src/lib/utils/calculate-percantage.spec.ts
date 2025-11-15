@@ -6,7 +6,7 @@ describe('calculatePercentage', () => {
   let loggerSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    loggerSpy = jest.spyOn(Logger, 'log').mockImplementation(() => {});
+    loggerSpy = jest.spyOn(Logger, 'log').mockImplementation(() => jest.fn());
   });
 
   afterEach(() => {

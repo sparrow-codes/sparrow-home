@@ -21,5 +21,5 @@ export type Expose = {
   unit?: string; // dla numeric
   features?: Expose[]; // composite/switch zagnieżdżone pola
   endpoint?: string; // gdy expose dotyczy konkretnego endpointu
-  [k: string]: any;
+  [k: string]: unknown;
 };

@@ -33,7 +33,7 @@ export function mapExposesToActions(exposes: Expose[]): DeviceAction[] {
     switch (ex.type) {
       case 'binary':
       case 'switch': {
-        const enumValues = [ex['value_on'] ?? 'ON', ex['value_off'] ?? 'OFF'];
+        const enumValues = [ex['value_on'] ?? 'ON', ex['value_off'] ?? 'OFF'] as string[];
         out.push({
           ...exposed,
           type: 'boolean',
