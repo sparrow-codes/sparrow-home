@@ -17,8 +17,8 @@
     </p-float-label>
 
     <p-float-label variant="on">
-      <p-select inputId="action" [formControl]="form.controls.action" [fluid]="true" [options]="actions()"
-                optionLabel="key" optionValue="key"
+      <p-select inputId="action" [formControl]="form.controls.action" [fluid]="true" [options]="actionOptions()"
+                optionLabel="key" optionValue="value"
                 size="large"></p-select>
       <label for="action">Akcja</label>
     </p-float-label>

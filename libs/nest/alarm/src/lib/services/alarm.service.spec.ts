@@ -11,7 +11,7 @@ import { AlarmService } from './alarm.service';
 describe('AlarmService', () => {
   let service: AlarmService;
   let mockedZigbeeService: { publishEvent: Subject<void>; devices: Map<string, DeviceProfile> };
-  let mockedPushNotificationService: { notify: jest.Mock };
+  const mockedPushNotificationService: { notify: jest.Mock } = { notify: jest.fn() };
 
   beforeEach(async () => {
     const modeuleRef: TestingModule = await Test.createTestingModule({

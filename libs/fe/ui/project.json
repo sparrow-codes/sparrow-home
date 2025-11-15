@@ -19,16 +19,6 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
-    },
-    "storybook": {
-      "executor": "@storybook/angular:start-storybook",
-      "compodoc": true,
-      "port": 6006,
-      "options": {
-        "styles": [
-          "apps/sparrow-home-mobile/src/styles.css"
-        ]
-      }
     }
   }
 }
