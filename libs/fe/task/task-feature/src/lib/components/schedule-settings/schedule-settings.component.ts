@@ -16,9 +16,9 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
 import { DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
+import { PrimeTemplate } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
-import { DropdownModule } from 'primeng/dropdown';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
@@ -36,7 +36,6 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    DropdownModule,
     Button,
     FloatLabel,
     InputText,
@@ -44,6 +43,7 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     Tag,
     DeviceActionComponent,
     Panel,
+    PrimeTemplate,
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],
@@ -95,7 +95,7 @@ export class ScheduleSettingsComponent implements OnInit {
         height: '95vh',
         modal: true,
       })
-      .onClose.pipe(first())
+      ?.onClose.pipe(first())
       .subscribe((results) => {
         if (results) {
           this.actions.update((actions) => {
@@ -111,7 +111,7 @@ export class ScheduleSettingsComponent implements OnInit {
   protected onAddAction(): void {
     this._dialog
       .open(ActionFormComponent, { closable: true, width: '95vw', height: '95vh', modal: true })
-      .onClose.pipe(first())
+      ?.onClose.pipe(first())
       .subscribe((results: TaskAction) => {
         if (results) {
           const device: AvailableDevice | undefined = this.devices().find(

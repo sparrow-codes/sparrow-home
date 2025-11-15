@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AppStore, appStore } from '@sparrow-home/core';
 import { AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
 import { DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
-import { DeviceAction } from '@sparrow-home/utils';
+import { DeviceAction, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { Divider } from 'primeng/divider';
@@ -33,6 +33,9 @@ export class ActionFormComponent implements OnInit {
   protected readonly form: FormGroup<ActionForm> = this._formService.form;
   protected readonly devices: Signal<AvailableDevice[]> = this._store.availableDevices;
   protected readonly actions: WritableSignal<DeviceAction[]> = signal([]);
+  protected readonly actionOptions: Signal<{ key: string; value: unknown }[]> = computed(() => {
+    return this.actions().map((action) => ({ key: humanize(action.key), value: action.key }));
+  });
   protected readonly selectedAction: WritableSignal<DeviceAction | null> = signal(null);
 
   public ngOnInit(): void {

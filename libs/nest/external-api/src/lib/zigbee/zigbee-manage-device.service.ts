@@ -21,7 +21,7 @@ export class ZigbeeManageDeviceService {
   }
 
   public joinDeviceAndSetId(): Observable<string | null> {
-    const subscription: (_topic: string, message: BufferSource) => void = this._handleEventMessage();
+    const subscription: (_topic: string, message: Buffer) => void = this._handleEventMessage();
 
     this.client.subscribe(ZigbeeManageDeviceService._BRIDGE_EVENT_URL);
     this.client.on('message', subscription);
@@ -60,7 +60,7 @@ export class ZigbeeManageDeviceService {
   }
 
   private _handleEventMessage() {
-    return (_topic: string, message: BufferSource): void => {
+    return (_topic: string, message: Buffer): void => {
       const bridgeEventMessage: BridgeEventMessage = JSON.parse(message.toString());
       if (bridgeEventMessage.type === 'device_interview' && bridgeEventMessage.data.status === 'successful') {
         this._bridgeEventMessage$.next(bridgeEventMessage);

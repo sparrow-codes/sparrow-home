@@ -6,7 +6,6 @@ import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
-import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
@@ -23,7 +22,6 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
     Card,
     ReactiveFormsModule,
     InputText,
-    DropdownModule,
     Button,
     FloatLabel,
     Select,

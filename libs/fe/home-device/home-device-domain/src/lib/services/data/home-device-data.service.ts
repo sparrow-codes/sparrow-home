@@ -104,7 +104,7 @@ export class HomeDeviceDataService {
           content: `Czy na pewno chcesz usunąć urządzenie o nazwie: ${deviceName}?`,
         } as ConfirmationDialogData,
       })
-      .onClose.pipe(
+      ?.onClose.pipe(
         take(1),
         filter((result) => !!result),
         tap(() => (this._loadingService.showLoader = true)),
