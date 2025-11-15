@@ -22,9 +22,9 @@ export class EditTaskComponent implements OnInit {
   private readonly _store: AppStore = inject(appStore);
   private readonly _dialogService: DialogService = inject(DialogService);
 
-  protected readonly options: Signal<AvailableDevice[]> = this._store.availableDevices;
   protected readonly task: Signal<AutomaticTask | undefined> = computed(() => this._store.entityMap()[this.taskId()]);
   protected readonly isLoading: Signal<boolean> = this._store.isLoading;
+  protected readonly devices: Signal<AvailableDevice[]> = this._store.availableDevices;
 
   public ngOnInit(): void {
     this._store.getAvailableDevices();
@@ -38,7 +38,7 @@ export class EditTaskComponent implements OnInit {
     this._dialogService
       .open(ConfirmationDialogComponent, {
         header: 'Usuń zadanie',
-
+        modal: true,
         width: '90vw',
         data: {
           content: `Czy na pewno chcesz usunąć zadanie o nazwie: ${this.task()?.name}?`,

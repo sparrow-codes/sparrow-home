@@ -13,5 +13,10 @@
         <sp-task-card @spFadeIn [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
       }
     }
+
+    @if (tasks().length === 0) {
+      <p-divider></p-divider>
+      <span class="w-full text-center">Brak zadań</span>
+    }
   </div>
 </div>

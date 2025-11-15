@@ -1,6 +1,5 @@
 <p-card>
   <div class="flex justify-between items-center w-full">
-    <!-- Lewa strona: klik do szczegółów -->
     <a
       class="flex flex-row items-center gap-4 cursor-pointer hover:bg-gray-50 rounded no-underline text-inherit focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       [routerLink]="['edit', task().id]"
@@ -14,7 +13,6 @@
       <div class="font-semibold text-gray-700 uppercase">{{ task().name }}</div>
     </a>
 
-    <!-- Prawa strona: akcje lub fallback -->
     <p-toggle-switch [ngModel]="task().isActive" (onChange)="isActive.emit($event.checked)"></p-toggle-switch>
   </div>
 </p-card>

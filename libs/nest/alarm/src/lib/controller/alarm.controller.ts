@@ -25,11 +25,4 @@ export class AlarmController {
   public async getAlarmMode(): Promise<GetAlarmModeResponse> {
     return this._alarmService.getAlarmMode();
   }
-
-  @ApiOperation({ operationId: 'getSirensStatus' })
-  @ApiResponse({ type: Boolean })
-  @Get('siren-status')
-  public async getSirensStatus(): Promise<boolean> {
-    return this._alarmService.getSirensStatus();
-  }
 }

@@ -2,62 +2,51 @@
   <sp-page-title @sparrowFadeIn [routerLink]="['/devices']">szczegóły urządzenia</sp-page-title>
 
   <div class="w-full flex justify-center mt-2">
-    <p-card class="w-full" [header]="homeDevice.name">
-      <!-- Nagłówek -->
-      <div class="flex justify-end items-center mb-4">
-        @if (switchDevice(); as lcsSwitch) {
-          <p-toggleButton
-            [ngModel]="lcsSwitch.isOn"
-            (onChange)="onLscSwitchChange($event.checked ?? false)"
-            [disabled]="!homeDevice.isOnline"
-            onLabel="ON"
-            offLabel="OFF"
-            onIcon="pi pi-power-off"
-            offIcon="pi pi-power-off"
-          />
-        }
+    <p-card class="w-full">
+      <ng-template #header>
+        <div class="p-[20px] pb-0 flex justify-between items-center">
+          {{ homeDevice.name }}
 
-        @if (petFeeder(); as petFeeder) {
-          <p-button [outlined]="true" icon="pi pi-check" label="Podaj karmę" (onClick)="onFeedPetAction(petFeeder.id)" />
+          @if (homeDevice.battery !== null) {
+            <div class="flex justify-end">
+              <sp-battery-status [batteryStatus]="homeDevice.battery"></sp-battery-status>
+            </div>
+          }
+        </div>
+      </ng-template>
+      <div class="flex flex-col gap-1 mb-2">
+        <span class="text-sm opacity-80">{{ homeDevice.description }}</span>
+        <span class="text-xs opacity-80">{{ homeDevice.vendor }}</span>
+      </div>
+
+      <div class="flex justify-between">
+        <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
+        @if (homeDevice.signalStrength !== undefined) {
+          <div class="w-full flex justify-end">
+            <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
+          </div>
         }
       </div>
 
-      <!-- Typ urządzenia + sygnał -->
-
-      <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
-      @if (homeDevice.signalStrength !== undefined) {
-        <div class="w-full flex justify-end mt-2">
-          <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
-        </div>
-      }
-
-      <!-- Szczegóły czujników -->
-      @if (temperatureSensor(); as temperatureSensor) {
-        <sp-temperature-sensor-details [temperatureSensor]="temperatureSensor"></sp-temperature-sensor-details>
-      }
-      @if (openDoorSensor(); as openDoorSensor) {
-        <sp-open-door-sensor-details [openDoorSensor]="openDoorSensor"></sp-open-door-sensor-details>
-      }
-      @if (siren()?.battery; as battery) {
-        <sp-battery-status [batteryStatus]="battery"></sp-battery-status>
-      }
-      @if (petFeeder(); as petFeeder) {
-        <sp-pet-feeder-details (updatePetFeederConfig)="changePetFeederConfig($event)" [petFeeder]="petFeeder"></sp-pet-feeder-details>
-      }
-
-      <!-- Status online/offline -->
-      @if (homeDevice.isOnline !== null) {
+      @if (deviceDetails()?.actions?.length) {
         <p-divider></p-divider>
-        <div class="flex justify-between items-center mt-4">
-          <span>Status:</span>
-          <div class="text-green-600 flex flex-row gap-1" [class.text-gray-500]="!homeDevice.isOnline">
-            {{ homeDevice.isOnline ? 'Online' : 'Offline' }}
-            <i class="pi pi-check-circle" [class.pi-ban]="!homeDevice.isOnline"></i>
-          </div>
+
+        <div class="flex flex-col gap-4">
+          @for (action of homeDevice.actions; track action.key) {
+            @if (action.type !== 'unknown') {
+              <sp-device-action [action]="action" (callAction)="publishZigbeeEvent(homeDevice.homeDeviceId, $event)"></sp-device-action>
+            }
+          }
         </div>
       }
+      @if (params().length) {
+        <p-divider></p-divider>
 
-      <!-- Id urządzenia + kopiuj -->
+        @for (param of params(); track param[0]) {
+          <sp-device-param [deviceParam]="param"></sp-device-param>
+        }
+      }
+
       <p-divider></p-divider>
       <div class="flex justify-between items-center mt-4">
         <span>Id:</span>

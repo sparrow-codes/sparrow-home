@@ -1,66 +1,70 @@
-import { DeviceType, HomeDevice } from '@sparrow-server/entities';
-import { DeviceResponse, OpenDoorSensorDetails } from '@sparrow-server/external-api';
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { HomeDevice } from '@sparrow-server/entities';
+import { DeviceProfile, ZigbeeDeviceService } from '@sparrow-server/external-api';
+import { PushNotificationService } from '@sparrow-server/push';
+import { Subject } from 'rxjs';
 
+import { GetAlarmModeResponse } from '../controller/model/get-alarm-mode.response';
 import { AlarmService } from './alarm.service';
 
-const createMockSensor: (overrides?: Partial<HomeDevice>) => HomeDevice = (overrides: Partial<HomeDevice> = {}) =>
-  ({
-    id: 1,
-    deviceName: 'Drzwi balkonowe',
-    zigbeeDeviceId: 'abc-123',
-    deviceType: DeviceType.OPEN_DOOR_SENSOR,
-    isOpen: false,
-    ...overrides,
-  } as HomeDevice);
-
-describe('AlarmService (unit methods)', () => {
+describe('AlarmService', () => {
   let service: AlarmService;
+  let mockedZigbeeService: { publishEvent: Subject<void>; devices: Map<string, DeviceProfile> };
+  let mockedPushNotificationService: { notify: jest.Mock };
 
-  beforeEach(() => {
-    service = Object.create(AlarmService.prototype);
-    service['_ignoredDevices'] = new Set<string>(['abc-123']);
+  beforeEach(async () => {
+    const modeuleRef: TestingModule = await Test.createTestingModule({
+      providers: [
+        AlarmService,
+        { provide: ZigbeeDeviceService, useValue: { publishEvent: new Subject(), devices: new Map() } },
+        { provide: PushNotificationService, useValue: mockedPushNotificationService },
+        { provide: getRepositoryToken(HomeDevice), useValue: { findOneBy: jest.fn() } },
+      ],
+    }).compile();
+
+    mockedZigbeeService = modeuleRef.get(ZigbeeDeviceService);
+    service = modeuleRef.get(AlarmService);
   });
 
-  it('_shouldIgnoreSensor returns true if sensor is in ignoredDevices', () => {
-    const sensor: HomeDevice = createMockSensor();
-    const result: boolean = service['_shouldIgnoreSensor'](sensor);
-    expect(result).toBe(true);
+  describe('arm alarm', () => {
+    it('should arm alarm', async () => {
+      const isActive: boolean = true;
+
+      await service.setAlarmMode(isActive);
+      const response: GetAlarmModeResponse = await service.getAlarmMode();
+
+      expect(response.isActive).toEqual(isActive);
+    });
+
+    it('should ignore open door sensors that are opened', async () => {
+      const openedWindow: DeviceProfile = prepareDeviceProfile({
+        state: { contact: false },
+        deviceIdentity: { friendlyName: 'first', ieee: '' },
+      });
+      const closedWindow: DeviceProfile = prepareDeviceProfile({
+        state: { contact: true },
+        deviceIdentity: { friendlyName: 'second', ieee: '' },
+      });
+
+      mockedZigbeeService.devices = new Map([
+        [openedWindow.deviceIdentity.friendlyName, openedWindow],
+        [closedWindow.deviceIdentity.friendlyName, closedWindow],
+      ]);
+
+      await service.setAlarmMode(true);
+      expect(service['_ignoredDevices'].has(openedWindow.deviceIdentity.friendlyName)).toBeTruthy();
+    });
   });
 
-  it('_shouldIgnoreSensor returns false if sensor is not ignored', () => {
-    service['_ignoredDevices'] = new Set<string>();
-    const sensor: HomeDevice = createMockSensor();
-    const result: boolean = service['_shouldIgnoreSensor'](sensor);
-    expect(result).toBe(false);
-  });
-
-  it('_isOpenDoorTriggered returns true if door is open and alarm is active', () => {
-    const sensor: HomeDevice = createMockSensor();
-    const response: DeviceResponse<OpenDoorSensorDetails> = {
-      deviceId: 'abc-123',
-      payload: { contact: false } as never,
+  function prepareDeviceProfile(profile: Partial<DeviceProfile>): DeviceProfile {
+    return {
+      actions: [],
+      deviceDefinition: {},
+      deviceIdentity: { friendlyName: '', ieee: '' },
+      readonlyFields: [],
+      state: {},
+      ...profile,
     };
-    const result: boolean = service['_isOpenDoorTriggered'](sensor, response, true);
-    expect(result).toBe(true);
-  });
-
-  it('_isOpenDoorTriggered returns false if door is closed', () => {
-    const sensor: HomeDevice = createMockSensor();
-    const response: DeviceResponse<OpenDoorSensorDetails> = {
-      deviceId: 'abc-123',
-      payload: { contact: true } as never,
-    };
-    const result: boolean = service['_isOpenDoorTriggered'](sensor, response, true);
-    expect(result).toBe(false);
-  });
-
-  it('_isOpenDoorTriggered returns false if alarm is off', () => {
-    const sensor: HomeDevice = createMockSensor();
-    const response: DeviceResponse<OpenDoorSensorDetails> = {
-      deviceId: 'abc-123',
-      payload: { contact: false } as never,
-    };
-    const result: boolean = service['_isOpenDoorTriggered'](sensor, response, false);
-    expect(result).toBe(false);
-  });
+  }
 });

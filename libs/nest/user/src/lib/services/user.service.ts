@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AlarmPreferences, Setup, User, UserRole } from '@sparrow-server/entities';
+import { Setup, User, UserRole } from '@sparrow-server/entities';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
@@ -14,8 +14,7 @@ export class UserService {
 
   public constructor(
     @InjectRepository(User) private readonly _userRepository: Repository<User>,
-    @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>,
-    @InjectRepository(AlarmPreferences) private readonly _alarmPreferencesRepository: Repository<AlarmPreferences>
+    @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>
   ) {}
 
   public async createFirstUser(request: CreateNewUserRequest): Promise<void> {
@@ -31,9 +30,6 @@ export class UserService {
     user.userRole = UserRole.OWNER;
     user.isActive = true;
     user.setup = await this._setupRepository.save(new Setup());
-
-    const alarms: AlarmPreferences[] = await this._alarmPreferencesRepository.find();
-    user.alarmPreferences = alarms[0];
 
     await this._userRepository.save(user);
   }

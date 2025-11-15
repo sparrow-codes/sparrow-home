@@ -8,11 +8,7 @@ export class CreateSetupTable1735995550693 implements MigrationInterface {
   private readonly _setup: Table = new Table({
     name: 'setup',
     schema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
-    columns: [
-      { name: 'id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' },
-      { name: 'lat', type: 'decimal', isNullable: true },
-      { name: 'lng', type: 'decimal', isNullable: true },
-    ],
+    columns: [{ name: 'id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' }],
   });
 
   public async up(queryRunner: QueryRunner): Promise<void> {

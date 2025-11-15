@@ -1,139 +1,112 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AlarmPreferences, DeviceType, HomeDevice, User, UserRole } from '@sparrow-server/entities';
-import {
-  DeviceResponse,
-  OpenDoorSensorDetails,
-  PilotDetails,
-  SensorDetails,
-  ZigbeeSensorService,
-  ZigbeeSirenService,
-} from '@sparrow-server/external-api';
+import { DeviceType, HomeDevice } from '@sparrow-server/entities';
+import { DeviceProfile, ZigbeeDeviceService } from '@sparrow-server/external-api';
 import { PushNotificationService } from '@sparrow-server/push';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, filter, Subject, takeUntil } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { GetAlarmModeResponse } from '../controller/model/get-alarm-mode.response';
 
 @Injectable()
-export class AlarmService {
-  private _isSirensWorking: boolean = false;
+export class AlarmService implements OnModuleInit, OnModuleDestroy {
+  private _isAlarmActive: boolean = false;
   private _ignoredDevices: Set<string> = new Set();
+  private _sirenIsActive: boolean = false;
+
+  private readonly _logger = new Logger(AlarmService.name);
+  private readonly _destroy$: Subject<void> = new Subject();
+
+  private static readonly _SIREN_DURATION: number = 360;
 
   public constructor(
-    private readonly _zigbeeSirenService: ZigbeeSirenService,
-    private readonly _zigbeeSensorService: ZigbeeSensorService,
+    private readonly _zigbeeDeviceService: ZigbeeDeviceService,
     private readonly _pushNotificationService: PushNotificationService,
-    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
-    @InjectRepository(AlarmPreferences) private readonly _alarmPreferencesRepository: Repository<AlarmPreferences>,
-    @InjectRepository(User) private readonly _userRepository: Repository<User>
-  ) {
-    this._zigbeeSensorService.sensorDetails$
+    @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>
+  ) {}
+
+  public onModuleInit(): void {
+    this._zigbeeDeviceService.deviceEvent$
       .pipe(
-        debounceTime(1000),
-        distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current))
+        takeUntil(this._destroy$),
+        filter(() => this._isAlarmActive),
+        distinctUntilChanged((prev, next) => JSON.stringify(prev.state) === JSON.stringify(next.state))
       )
-      .subscribe((response) => this._handleSensorEvent(response));
+      .subscribe((deviceProfile) => this._handleSensorEvent(deviceProfile));
+  }
+
+  public onModuleDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   public async setAlarmMode(isActive: boolean): Promise<void> {
-    const user: User = await this._getUser();
-    const alarmPreferences: AlarmPreferences = user.alarmPreferences;
-
-    alarmPreferences.isActive = isActive;
-    await this._alarmPreferencesRepository.save(alarmPreferences);
-    Logger.log(isActive ? 'Alarm is on!' : 'Alarm is off!');
-
     if (isActive) {
       await this._updateIgnoredDevices();
     } else {
       await this._setSirensMode(false);
       this._ignoredDevices.clear();
     }
+
+    this._logger.log(isActive ? 'Alarm is on!' : 'Alarm is off!');
+    this._isAlarmActive = isActive;
   }
 
   public async getAlarmMode(): Promise<GetAlarmModeResponse> {
-    const user: User = await this._getUser();
     const siren: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ deviceType: DeviceType.SIREN });
-    const alarmPreferences: AlarmPreferences = user.alarmPreferences;
 
-    return { isActive: alarmPreferences.isActive, isAvailable: siren !== null };
+    return { isActive: this._isAlarmActive, isAvailable: siren !== null };
   }
 
-  public getSirensStatus(): boolean {
-    return this._isSirensWorking;
-  }
+  private async _handleSensorEvent(deviceProfile: DeviceProfile): Promise<void> {
+    const zigbeeDeviceId: string = deviceProfile.deviceIdentity.friendlyName;
+    const homeDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({
+      zigbeeDeviceId,
+    });
 
-  private async _handleSensorEvent(response: DeviceResponse<SensorDetails>): Promise<void> {
-    const sensor: HomeDevice | null = await this._findSensor(response.deviceId);
-    if (!sensor) return;
+    if (this._shouldIgnoreSensor(zigbeeDeviceId) || !homeDevice) return;
 
-    if (this._shouldIgnoreSensor(sensor)) return;
-
-    const isAlarmActive: boolean = (await this.getAlarmMode()).isActive;
-
-    if (this._isOpenDoorTriggered(sensor, response, isAlarmActive)) {
-      await this._triggerAlarm(sensor);
-    } else if (sensor.deviceType === DeviceType.PILOT) {
-      await this._handlePilotActions(response.payload as PilotDetails);
+    if (this._isOpenDoorTriggered(homeDevice, deviceProfile, this._isAlarmActive)) {
+      await this._triggerAlarm(homeDevice);
+    } else if (homeDevice.deviceType === DeviceType.PILOT) {
+      await this._handlePilotActions(deviceProfile);
     }
   }
 
-  private async _findSensor(deviceId: string): Promise<HomeDevice | null> {
-    return this._homeDeviceRepository.findOneBy({ zigbeeDeviceId: deviceId });
-  }
-
-  private _shouldIgnoreSensor(sensor: HomeDevice): boolean {
-    if (this._ignoredDevices.has(sensor.zigbeeDeviceId)) {
-      Logger.log(`Ignoring sensor event from ${sensor.deviceName} (marked as open when arming).`);
+  private _shouldIgnoreSensor(zigbeeDeviceId: string): boolean {
+    if (this._ignoredDevices.has(zigbeeDeviceId)) {
+      this._logger.log(`Ignoring sensor event from ${zigbeeDeviceId} (marked as open when arming).`);
       return true;
     }
     return false;
   }
 
-  private _isOpenDoorTriggered(
-    sensor: HomeDevice,
-    response: DeviceResponse<SensorDetails>,
-    isAlarmActive: boolean
-  ): boolean {
-    return (
-      sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR &&
-      !(response.payload as OpenDoorSensorDetails).contact &&
-      isAlarmActive
-    );
+  private _isOpenDoorTriggered(sensor: HomeDevice, response: DeviceProfile, isAlarmActive: boolean): boolean {
+    return sensor.deviceType === DeviceType.OPEN_DOOR_SENSOR && !response.state['contact'] && isAlarmActive;
   }
 
   private async _triggerAlarm(sensor: HomeDevice): Promise<void> {
-    Logger.log('House has been opened! Notify users!');
-    await this._setSirensMode(true);
-    await this._pushNotificationService.notify({
-      title: 'Alarm!',
-      body: `Otwarto: ${sensor.deviceName}`,
-    });
+    if (!this._sirenIsActive) {
+      this._logger.log('House has been opened! Notify users!');
+      await this._setSirensMode(true);
+      await this._pushNotificationService.notify({
+        title: 'Alarm!',
+        body: `Otwarto: ${sensor.deviceName}`,
+      });
+    }
   }
 
   private async _updateIgnoredDevices(): Promise<void> {
-    const openSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
-      deviceType: DeviceType.OPEN_DOOR_SENSOR,
-      isOpen: true,
-    });
+    const openSensors: DeviceProfile[] = Array.from(this._zigbeeDeviceService.devices)
+      .filter(([, deviceProfile]) => deviceProfile.state['contact'] === false)
+      .map(([, deviceProfile]) => deviceProfile);
 
-    this._ignoredDevices = new Set(openSensors.map((sensor) => sensor.zigbeeDeviceId));
-    Logger.log(`Ignored devices on alarm activation: ${Array.from(this._ignoredDevices).join(', ')}`);
+    this._ignoredDevices = new Set(openSensors.map((sensor) => sensor.deviceIdentity.friendlyName));
+    this._logger.log(`Ignored devices on alarm activation: ${Array.from(this._ignoredDevices).join(', ')}`);
   }
 
-  private async _getUser(): Promise<User> {
-    const user: User | null = await this._userRepository.findOneBy({ userRole: UserRole.OWNER });
-
-    if (!user) {
-      throw new NotFoundException('User does not exist');
-    }
-
-    return user;
-  }
-
-  private async _handlePilotActions(pilotDetails: PilotDetails): Promise<void> {
-    switch (pilotDetails.action) {
+  private async _handlePilotActions(deviceProfile: DeviceProfile): Promise<void> {
+    switch (deviceProfile.state['action']) {
       case 'arm_all_zones':
       case 'arm_day_zones':
         await this.setAlarmMode(true);
@@ -145,21 +118,26 @@ export class AlarmService {
         await this._setSirensMode(true);
         break;
       default:
-        Logger.log('Unsupported action: ', pilotDetails.action);
+        this._logger.log('Unsupported action: ', deviceProfile.state['action']);
     }
   }
 
   private async _setSirensMode(isOn: boolean): Promise<void> {
     const sirens: HomeDevice[] = await this._homeDeviceRepository.findBy({ deviceType: DeviceType.SIREN });
 
-    if (sirens.length < 1) {
-      Logger.log('No sirens found connected to your home!');
-      return;
-    }
-
     sirens.forEach((siren) => {
-      this._zigbeeSirenService.setAlarm(siren.zigbeeDeviceId, isOn);
+      this._zigbeeDeviceService.publishEvent(
+        siren.zigbeeDeviceId,
+        JSON.stringify({
+          warning: {
+            duration: isOn ? AlarmService._SIREN_DURATION : 0,
+            mode: isOn ? 'burglar' : 'stop',
+            level: 'very_high',
+          },
+        })
+      );
     });
-    this._isSirensWorking = isOn;
+
+    this._sirenIsActive = isOn;
   }
 }

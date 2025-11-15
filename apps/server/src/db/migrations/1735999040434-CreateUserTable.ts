@@ -15,8 +15,7 @@ export class CreateUserTable1735999040434 implements MigrationInterface {
       { name: 'email', type: 'varchar' },
       { name: 'userRole', type: 'int' },
       { name: 'setupId', type: 'int' },
-      { name: 'cloudPreferencesId', type: 'int' },
-      { name: 'aquaPreferencesId', type: 'int' },
+      { name: 'isActive', type: 'boolean', default: false },
     ],
   });
 
@@ -28,33 +27,13 @@ export class CreateUserTable1735999040434 implements MigrationInterface {
     referencedSchema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
   });
 
-  private readonly _cloudPreferencesForeignKey: TableForeignKey = new TableForeignKey({
-    columnNames: ['cloudPreferencesId'],
-    referencedColumnNames: ['id'],
-    referencedTableName: 'cloud_preferences',
-    onDelete: 'CASCADE',
-    referencedSchema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
-  });
-
-  private readonly _aquaPreferencesForeignKey: TableForeignKey = new TableForeignKey({
-    columnNames: ['aquaPreferencesId'],
-    referencedColumnNames: ['id'],
-    referencedTableName: 'aqua_preferences',
-    onDelete: 'CASCADE',
-    referencedSchema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
-  });
-
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(this._userTable);
     await queryRunner.createForeignKey(this._userTable, this._setupForeignKey);
-    await queryRunner.createForeignKey(this._userTable, this._cloudPreferencesForeignKey);
-    await queryRunner.createForeignKey(this._userTable, this._aquaPreferencesForeignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(this._userTable, this._setupForeignKey);
-    await queryRunner.dropForeignKey(this._userTable, this._cloudPreferencesForeignKey);
-    await queryRunner.dropForeignKey(this._userTable, this._aquaPreferencesForeignKey);
     await queryRunner.dropTable(this._userTable);
   }
 }
