@@ -15,7 +15,7 @@
       <ng-template #list let-items>
         @for (item of items; track item.zigbeeDeviceId; let index = $index) {
 
-          <div class="mb-2">
+          <div @sparrowFadeIn class="mb-2">
             <p-panel>
               <ng-template pTemplate="header">
                 <div class="flex justify-between items-center w-full">
@@ -34,7 +34,7 @@
                 <div class="flex justify-between items-center">
                   <div class="flex gap-2">
                     <p-button icon="pi pi-trash" severity="danger" (onClick)="onDeleteAction(index)"></p-button>
-                    <p-button icon="pi pi-pencil" outlined="true" (onClick)="onEditAction(index)"></p-button>
+                    <p-button icon="pi pi-pencil" outlined="true" (onClick)="onEditAction(item)"></p-button>
                   </div>
                 </div>
               </div>

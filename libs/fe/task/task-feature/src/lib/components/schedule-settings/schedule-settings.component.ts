@@ -10,11 +10,11 @@ import {
   OutputEmitterRef,
   Signal,
   signal,
-  WritableSignal
+  WritableSignal,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
-import { DeviceActionComponent, staggeredFadeIn } from '@sparrow-home/ui';
+import { DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
@@ -47,7 +47,7 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],
-  animations: [staggeredFadeIn],
+  animations: [sparrowFadeIn],
 })
 export class ScheduleSettingsComponent implements OnInit {
   public readonly task: InputSignal<AutomaticTask | undefined> = input();
@@ -86,10 +86,10 @@ export class ScheduleSettingsComponent implements OnInit {
     }
   }
 
-  public onEditAction(index: number): void {
+  public onEditAction(action: TaskAction): void {
     this._dialog
       .open(ActionFormComponent, {
-        data: this.actions()[index],
+        data: action,
         closable: true,
         width: '95vw',
         height: '95vh',
@@ -99,7 +99,9 @@ export class ScheduleSettingsComponent implements OnInit {
       .subscribe((results) => {
         if (results) {
           this.actions.update((actions) => {
-            actions[index] = { ...actions[index], ...results };
+            const index: number = actions.indexOf(action);
+            action = { ...action, ...results };
+            actions[index] = action;
             return [...actions];
           });
         }

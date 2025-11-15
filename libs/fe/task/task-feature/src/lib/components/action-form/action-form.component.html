@@ -26,7 +26,7 @@
 
     <div class="min-h-[50px]">
       @if (selectedAction(); as action) {
-        <sp-device-action [action]="action" [formControl]="form.controls.payload"></sp-device-action>
+        <sp-device-action @spFadeIn [action]="action" [formControl]="form.controls.payload"></sp-device-action>
       }
     </div>
 

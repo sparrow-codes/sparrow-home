@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AppStore, appStore } from '@sparrow-home/core';
 import { AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
-import { DeviceActionComponent } from '@sparrow-home/ui';
+import { DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
@@ -20,6 +20,7 @@ import { ActionForm } from './form-service/model/action-form';
   selector: 'sp-action-form',
   imports: [CommonModule, Select, ReactiveFormsModule, DeviceActionComponent, DatePicker, FloatLabel, Button, Divider],
   templateUrl: './action-form.component.html',
+  animations: [spFadeInAnimation],
   providers: [ActionFormService],
 })
 export class ActionFormComponent implements OnInit {
@@ -36,6 +37,7 @@ export class ActionFormComponent implements OnInit {
 
   public ngOnInit(): void {
     const dialogData: TaskAction | undefined = this._dialogConfig.data;
+    console.log(dialogData);
 
     if (dialogData) {
       this.form.patchValue({
@@ -48,7 +50,8 @@ export class ActionFormComponent implements OnInit {
       });
 
       this._setActions(dialogData.zigbeeDeviceId);
-      this._setSelectedActions(dialogData.action.key);
+      this.selectedAction.set(dialogData.action);
+      this.form.controls.payload.patchValue({ [dialogData.action.key]: dialogData.action.currentValue });
     }
 
     this._handleFormEvents();
@@ -86,7 +89,7 @@ export class ActionFormComponent implements OnInit {
     });
   }
 
-  private _setSelectedActions(key: string | null) {
+  private _setSelectedActions(key: string | null): void {
     this.selectedAction.set(this.actions().find((action) => action.key === key) ?? null);
 
     const action: DeviceAction | null = this.selectedAction();
