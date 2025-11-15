@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { capitalizeFirstLetter, DeviceAction, humanize, HumanizePipe } from '@sparrow-home/utils';
+import { DeviceAction, humanize, HumanizePipe } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
