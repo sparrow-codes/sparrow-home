@@ -13,7 +13,6 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
   selector: 'sp-user-details',
   imports: [CommonModule, FormsModule, Button, Avatar, Divider, ToggleSwitch, Card],
   templateUrl: './user-details.component.html',
-  styleUrl: './user-details.component.css',
   animations: [staggeredFadeIn],
 })
 export class UserDetailsComponent implements OnInit {

@@ -9,9 +9,12 @@ export function humanize(value: unknown): string {
     return '';
   }
 
-  let result: string = str.replace(/[-_]+/g, ' ');
-  result = result.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
-  result = result.replace(/\s+/g, ' ').trim();
+  let result: string = str
+    .replace(/[-_]+/g, ' ') // a-b_c → a b c
+    .replace(/([0-9])([a-zA-Z])/g, '$1 $2') // 1value → 1 value
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → camel Case
+    .replace(/\s+/g, ' ')
+    .trim();
 
   if (result.length === 0) {
     return '';
