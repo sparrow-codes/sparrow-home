@@ -1,23 +1,19 @@
 <form [formGroup]="formGroup" class="w-full flex flex-col gap-6">
-  <!-- Imię -->
   <p-floatlabel class="fade-step" variant="on">
     <input pInputText id="firstName" fluid="true" pSize="large" type="text" [formControlName]="formName.FIRST_NAME" />
     <label for="firstName">Imię*</label>
   </p-floatlabel>
 
-  <!-- Nazwisko -->
   <p-floatlabel class="fade-step" variant="on">
     <input pInputText id="lastName" fluid="true" pSize="large" type="text" [formControlName]="formName.LAST_NAME" />
     <label for="lastName">Nazwisko</label>
   </p-floatlabel>
 
-  <!-- Adres e-mail -->
   <p-floatlabel class="fade-step" variant="on">
     <input pInputText id="email" fluid="true" pSize="large" type="email" [formControlName]="formName.EMAIL" />
     <label for="email">Adres e-mail*</label>
   </p-floatlabel>
 
-  <!-- Hasło (z feedbackiem siły hasła) -->
   <p-floatlabel class="fade-step" variant="on">
     <p-password
       id="password"
@@ -34,7 +30,6 @@
     <label for="password">Hasło*</label>
   </p-floatlabel>
 
-  <!-- Potwierdź hasło -->
   <p-floatlabel class="fade-step" variant="on">
     <p-password
       id="repeatPassword"
@@ -47,14 +42,12 @@
     <label for="repeatPassword">Potwierdź hasło*</label>
   </p-floatlabel>
 
-  <!-- Komunikat błędu -->
   <div class="min-h-[30px] fade-step flex items-center">
     @if (showMismatchPasswordError()) {
     <span class="text-error text-sm">Hasła nie są identyczne</span>
     }
   </div>
 
-  <!-- Przycisk utworzenia konta -->
   <p-button class="fade-step" fluid="true" size="large" [disabled]="formGroup.invalid" (onClick)="onSave()">
     Utwórz konto
   </p-button>

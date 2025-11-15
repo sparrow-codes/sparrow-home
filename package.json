@@ -9,7 +9,8 @@
     "run:borker": "docker run --name mqtt -p 1883:1883 -d eclipse-mosquitto:2",
     "test:all": "npx nx run-many -t test",
     "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json",
-    "run-dev-http-mobile": "http-server dist/apps/sparrow-home-mobile/browser -S -C cert.pem -o"
+    "run-dev-http-mobile": "http-server dist/apps/sparrow-home-mobile/browser -S -C cert.pem -o",
+    "lint:all": "npx nx run-many -t eslint:lint"
   },
   "private": true,
   "dependencies": {

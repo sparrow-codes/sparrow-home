@@ -6,9 +6,5 @@ export class GetAllDeviceFilters {
 
   @ApiProperty()
   @ApiProperty({ required: false, nullable: true })
-  public withTaskAssigned?: boolean;
-
-  @ApiProperty()
-  @ApiProperty({ required: false, nullable: true })
   public isOpen?: boolean;
 }

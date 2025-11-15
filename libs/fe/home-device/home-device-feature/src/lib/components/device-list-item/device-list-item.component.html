@@ -1,6 +1,4 @@
 <p-card>
-  <div class="flex justify-between items-center w-full">
-    <!-- Lewa strona: klik do szczegółów -->
     <a
       class="flex flex-row items-center gap-4 cursor-pointer hover:bg-gray-50 rounded no-underline text-inherit focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       [routerLink]="['details', deviceId()]"
@@ -12,10 +10,4 @@
         <div class="text-gray-500">{{ label() }}</div>
       </div>
     </a>
-
-    <!-- Prawa strona: akcje lub fallback -->
-    <ng-content>
-      <p-tag value="Brak akcji" severity="secondary" />
-    </ng-content>
-  </div>
 </p-card>

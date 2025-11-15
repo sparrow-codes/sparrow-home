@@ -16,9 +16,6 @@ export class ScheduleFormService {
 
   public initForm(task?: Partial<AutomaticTask>): void {
     this._form = this._fb.group({
-      devices: this._fb.control(new Array<number>()),
-      from: this._fb.control(task?.startTime ?? null),
-      to: this._fb.control(task?.endTime ?? null),
       name: this._fb.control(task?.name ?? '', { validators: [Validators.required] }),
     });
   }

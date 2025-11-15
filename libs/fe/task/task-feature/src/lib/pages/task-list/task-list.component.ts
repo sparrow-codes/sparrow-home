@@ -5,12 +5,13 @@ import { AppStore, appStore } from '@sparrow-home/core';
 import { AutomaticTask } from '@sparrow-home/task-domain';
 import { PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
+import { Divider } from 'primeng/divider';
 
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
 
 @Component({
   selector: 'sp-task-list',
-  imports: [CommonModule, PageTitleComponent, TaskCardComponent, Button, RouterLink],
+  imports: [CommonModule, PageTitleComponent, TaskCardComponent, Button, RouterLink, Divider],
   templateUrl: './task-list.component.html',
   animations: [spFadeInAnimation],
 })

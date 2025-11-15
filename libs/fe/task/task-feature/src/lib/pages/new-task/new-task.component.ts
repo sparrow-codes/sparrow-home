@@ -15,7 +15,8 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
 export class NewTaskComponent implements OnInit {
   private readonly _store: AppStore = inject(appStore);
 
-  protected readonly options: Signal<AvailableDevice[]> = this._store.availableDevices;
+  protected readonly isLoading: Signal<boolean> = this._store.isLoading;
+  protected readonly devices: Signal<AvailableDevice[]> = this._store.availableDevices;
 
   public ngOnInit(): void {
     this._store.getAvailableDevices();

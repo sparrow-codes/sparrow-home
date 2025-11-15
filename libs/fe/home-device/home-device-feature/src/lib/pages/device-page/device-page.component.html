@@ -18,46 +18,29 @@
 
   <div class="min-h-[45px] text-end">
     @if (deviceFilter() === deviceType.OPEN_DOOR_SENSOR) {
-    <ion-chip>
-      <div class="flex flex-row gap-2">
-        <span>Okna i drzwi</span>
-        <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
-      </div>
-    </ion-chip>
+      <ion-chip>
+        <div class="flex flex-row gap-2">
+          <span>Okna i drzwi</span>
+          <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
+        </div>
+      </ion-chip>
     }
   </div>
   <div class="flex flex-col h-full justify-between">
     <!-- Lista urządzeń -->
     <div class="h-[420px] flex flex-col gap-2">
       @for (device of paginatedDevices(); track device.id) {
-      <sp-device-list-item
-        @spFadeIn
-        [deviceId]="device.id"
-        [deviceName]="device.name"
-        [deviceType]="device.type"
-      >
-        <!-- Czujnik otwarcia -->
-        @if (device.type === deviceType.OPEN_DOOR_SENSOR) {
-        <p-tag
-          [value]="device.isOpen ? 'Otwarte' : 'Zamknięte'"
-          [severity]="device.isOpen ? 'info' : 'success'"
-        ></p-tag>
-        }
+        <sp-device-list-item
+          @spFadeIn
+          [deviceId]="device.id"
+          [deviceName]="device.name"
+          [deviceType]="device.type"
+        ></sp-device-list-item>
+      }
 
-        <!-- Czujnik temperatury -->
-        @if (device.type === deviceType.TEMPERATURE_SENSOR) {
-        <span class="text-sm text-gray-600">{{ device.temperature }}°C</span>
-        }
-
-        <!-- Gniazdko -->
-        @if (device.type === deviceType.POWER_PLUG) {
-        <p-toggle-switch
-          [disabled]="device.isOnline === false"
-          [ngModel]="device.isOn"
-          (onChange)="onSwitchAction(device.id, $event.checked)"
-        ></p-toggle-switch>
-        }
-      </sp-device-list-item>
+      @if (data()?.length === 0) {
+        <p-divider></p-divider>
+        <span class="w-full text-center">Brak urządzeń</span>
       }
     </div>
 

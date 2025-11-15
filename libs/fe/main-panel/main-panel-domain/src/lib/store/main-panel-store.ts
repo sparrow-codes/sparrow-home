@@ -2,7 +2,12 @@ import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { AlarmApiService, GetAlarmModeResponseApiModel, HomeDeviceApiService } from '@sparrow-home/api';
+import {
+  AlarmApiService,
+  GetAlarmModeResponseApiModel,
+  GetAllDoorAndWindowsStatusApiModel,
+  HomeDeviceApiService,
+} from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
 import { MessageService } from 'primeng/api';
 import { combineLatest, finalize, first, map, Observable, pipe, switchMap, tap } from 'rxjs';
@@ -50,10 +55,11 @@ export const MainPanelStore = signalStore(
         );
       }
 
-      function getWindowsAndDoorStatus(): Observable<boolean | null> {
+      function getWindowsAndDoorStatus(): Observable<GetAllDoorAndWindowsStatusApiModel> {
         return homeDeviceApiService.areAllDoorsAndWindowsClosed().pipe(
           tapResponse({
-            next: (areAllWindowsAndDoorsClosed) => patchState(store, { areAllWindowsAndDoorsClosed }),
+            next: (response) =>
+              patchState(store, { areAllWindowsAndDoorsClosed: response.areAllDoorsAndWindowsClosed }),
             error: () => messageService.add({ summary: 'Błąd pobierania statusu okien i drzwi', severity: 'error' }),
           })
         );

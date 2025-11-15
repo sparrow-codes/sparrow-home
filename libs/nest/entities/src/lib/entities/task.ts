@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { HomeDevice } from './home-device';
+import { ActionJob } from './action-job';
 
 @Entity()
 export class Task {
@@ -13,15 +13,9 @@ export class Task {
   @Column({ name: 'isActive' })
   public isActive!: boolean;
 
-  @Column({ nullable: true })
-  public startTime?: Date;
-
-  @Column({ nullable: true })
-  public endTime?: Date;
-
-  @Column({ nullable: true })
-  public atSunset?: boolean;
-
-  @OneToMany(() => HomeDevice, (device) => device.task, { cascade: true, eager: true })
-  public homeDevices?: HomeDevice[];
+  @OneToMany(() => ActionJob, (actionJob) => actionJob.task, {
+    cascade: true,
+    eager: true,
+  })
+  public actionJobs!: ActionJob[];
 }

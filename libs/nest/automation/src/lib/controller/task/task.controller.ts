@@ -5,7 +5,6 @@ import { CreateTaskRequest } from './model/create-task-request';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateTaskRequest } from './model/update-task-request';
 import { TaskDto } from './model/task-dto';
-import { toTaskDto } from './functions/to-task-dto';
 
 @ApiTags('Tasks')
 @UseGuards(AuthGuard)
@@ -42,6 +41,6 @@ export class TaskController {
   @ApiOperation({ operationId: 'getTaskList' })
   @ApiResponse({ type: TaskDto, isArray: true })
   public async getTaskList(): Promise<TaskDto[]> {
-    return (await this._taskService.getTaskList()).map((entity) => toTaskDto(entity));
+    return await this._taskService.getTaskList();
   }
 }

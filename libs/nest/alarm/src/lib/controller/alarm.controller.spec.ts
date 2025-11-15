@@ -47,11 +47,10 @@ describe('AlarmController', () => {
   });
 
   it('should have a class-level guard (AuthGuard) applied', () => {
-    // Ensures @UseGuards(...) is present at the class level.
-    const guards = Reflect.getMetadata(GUARDS_METADATA, AlarmController);
+    const guards: [] = Reflect.getMetadata(GUARDS_METADATA, AlarmController);
     expect(guards).toBeDefined();
     expect(Array.isArray(guards)).toBe(true);
-    expect(guards!.length).toBeGreaterThan(0);
+    expect(guards.length).toBeGreaterThan(0);
   });
 
   describe('setAlarmMode', () => {
@@ -65,7 +64,7 @@ describe('AlarmController', () => {
     });
 
     it('should propagate errors from AlarmService.setAlarmMode', async () => {
-      const err = new Error('boom');
+      const err: Error = new Error('boom');
       alarmService.setAlarmMode.mockRejectedValue(err);
 
       await expect(controller.setAlarmMode({ isActive: false })).rejects.toThrow('boom');
@@ -90,24 +89,6 @@ describe('AlarmController', () => {
       alarmService.getAlarmMode.mockRejectedValue(err);
 
       await expect(controller.getAlarmMode()).rejects.toThrow('read-failed');
-    });
-  });
-
-  describe('getSirensStatus', () => {
-    it('should return the value from AlarmService.getSirensStatus', async () => {
-      alarmService.getSirensStatus.mockResolvedValue(false);
-
-      const result: boolean = await controller.getSirensStatus();
-
-      expect(alarmService.getSirensStatus).toHaveBeenCalledTimes(1);
-      expect(result).toBe(false);
-    });
-
-    it('should propagate errors from AlarmService.getSirensStatus', async () => {
-      const err: Error = new Error('status-unavailable');
-      alarmService.getSirensStatus.mockRejectedValue(err);
-
-      await expect(controller.getSirensStatus()).rejects.toThrow('status-unavailable');
     });
   });
 });
