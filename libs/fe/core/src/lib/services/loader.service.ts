@@ -1,6 +1,6 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, Observable } from 'rxjs';
 
@@ -14,12 +14,13 @@ export class LoaderService {
   private readonly _showLoader: WritableSignal<boolean> = signal(false);
   private readonly _loader: ComponentPortal<SpinnerComponent> = new ComponentPortal(SpinnerComponent);
   private readonly _showLoader$: Observable<boolean> = toObservable(this._showLoader);
+  private readonly _overlay: Overlay = inject(Overlay);
 
   public set showLoader(value: boolean) {
     this._showLoader.set(value);
   }
 
-  public constructor(private readonly _overlay: Overlay) {
+  public constructor() {
     this._overlayRef = this._overlay.create({
       hasBackdrop: true,
       positionStrategy: this._overlay.position().global().centerHorizontally().centerVertically().left('250px'),

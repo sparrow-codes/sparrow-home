@@ -1,5 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideAppInitializer, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   PreloadAllModules,
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
       provide: SHORT_APP_TITLE,
       useValue: 'SH',
     },
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideAnimationsAsync(),
     providePrimeNG({
       ripple: true,

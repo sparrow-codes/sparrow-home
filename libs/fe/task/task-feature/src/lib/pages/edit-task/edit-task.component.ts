@@ -44,7 +44,7 @@ export class EditTaskComponent implements OnInit {
           content: `Czy na pewno chcesz usunąć zadanie o nazwie: ${this.task()?.name}?`,
         } as ConfirmationDialogData,
       })
-      .onClose.pipe(
+      ?.onClose.pipe(
         take(1),
         filter((result) => !!result)
       )
