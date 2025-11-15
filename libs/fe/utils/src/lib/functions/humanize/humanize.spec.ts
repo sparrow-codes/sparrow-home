@@ -11,6 +11,7 @@ describe('Humanize', () => {
     expect(humanize('test_test_test')).toEqual('Test test test');
     expect(humanize('_test_test_test')).toEqual('Test test test');
     expect(humanize('_Test_test_test')).toEqual('Test test test');
+    expect(humanize('1portion')).toEqual('1 portion');
     expect(humanize('')).toEqual('');
     expect(humanize(null)).toEqual('');
     expect(humanize(undefined)).toEqual('');
