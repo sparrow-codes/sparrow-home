@@ -21,7 +21,7 @@
     </div>
 
     <!-- Lista użytkowników dodatkowych -->
-    @if (additionalUsers()) {
+    @if (additionalUsers()?.length) {
     <div class="flex flex-col gap-2 mb-6 fade-step">
       <span class="font-medium text-sm">Lista użytkowników:</span>
 
