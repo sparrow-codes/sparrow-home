@@ -1,11 +1,9 @@
 import { ConfigService } from '@nestjs/config';
-import { ConfigKey } from '@sparrow-server/shared';
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class CreateUserTable1735999040434 implements MigrationInterface {
   private readonly _configService: ConfigService = new ConfigService();
   private readonly _userTable: Table = new Table({
-    schema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
     name: 'user',
     columns: [
       { name: 'id', type: 'int', isPrimary: true, generationStrategy: 'increment', isGenerated: true },
@@ -24,7 +22,6 @@ export class CreateUserTable1735999040434 implements MigrationInterface {
     referencedColumnNames: ['id'],
     referencedTableName: 'setup',
     onDelete: 'CASCADE',
-    referencedSchema: this._configService.get<string>(ConfigKey.DB_SCHEMA),
   });
 
   public async up(queryRunner: QueryRunner): Promise<void> {
