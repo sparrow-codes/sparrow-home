@@ -4,7 +4,6 @@ import { AppStore, appStore } from '@sparrow-home/core';
 import { AutomaticTask, AvailableDevice } from '@sparrow-home/task-domain';
 import { ConfirmationDialogComponent, ConfirmationDialogData, PageTitleComponent } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { Divider } from 'primeng/divider';
 import { DialogService } from 'primeng/dynamicdialog';
 import { filter, take } from 'rxjs';
@@ -13,7 +12,7 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
 
 @Component({
   selector: 'sp-edit-task',
-  imports: [CommonModule, PageTitleComponent, ScheduleSettingsComponent, Card, Divider, Button],
+  imports: [CommonModule, PageTitleComponent, ScheduleSettingsComponent, Divider, Button],
   templateUrl: './edit-task.component.html',
 })
 export class EditTaskComponent implements OnInit {

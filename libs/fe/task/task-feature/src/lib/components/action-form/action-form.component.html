@@ -1,59 +1,55 @@
+<form [formGroup]="form" class="flex flex-col gap-4">
+  <p-float-label variant="on" class="fade-step mt-2">
+    <p-select
+      inputId="device"
+      [formControl]="form.controls.device"
+      [options]="devices()"
+      optionLabel="name"
+      optionValue="id"
+      [fluid]="true"
+      size="large"
+    ></p-select>
+    <label for="device">Urządzenie</label>
+  </p-float-label>
 
-<div class="flex flex-col justify-between">
-  <form [formGroup]="form" class="flex flex-col gap-4">
-    <span class="font-semibold">Dodaj Akcję</span>
-
-    <p-float-label variant="on" class="fade-step">
-      <p-select
-        inputId="device"
-        [formControl]="form.controls.device"
-        [options]="devices()"
-        optionLabel="name"
-        optionValue="id"
-        [fluid]="true"
-        size="large"
-      ></p-select>
-      <label for="device">Urządzenie</label>
-    </p-float-label>
-
-    <p-float-label variant="on">
-      <p-select inputId="action" [formControl]="form.controls.action" [fluid]="true" [options]="actionOptions()"
-                optionLabel="key" optionValue="value"
-                size="large"></p-select>
-      <label for="action">Akcja</label>
-    </p-float-label>
+  <p-float-label variant="on">
+    <p-select inputId="action" [formControl]="form.controls.action" [fluid]="true" [options]="actionOptions()"
+              optionLabel="key" optionValue="value"
+              size="large"></p-select>
+    <label for="action">Akcja</label>
+  </p-float-label>
 
 
-    <div class="min-h-[50px]">
-      @if (selectedAction(); as action) {
-        <sp-device-action @spFadeIn [action]="action" [formControl]="form.controls.payload"></sp-device-action>
-      }
-    </div>
-
-    <p-float-label variant="on" class="fade-step">
-      <p-datePicker
-        inputId="time"
-        [timeOnly]="true"
-        hourFormat="24"
-        [showClear]="true"
-        [formControl]="form.controls.time"
-        size="large"
-        showIcon="true"
-        iconDisplay="input"
-      ></p-datePicker>
-      <label for="time">Czas wykonania</label>
-    </p-float-label>
-  </form>
-
-  <p-divider></p-divider>
-  <div class="w-full flex justify-end mt-4">
-    <p-button
-      severity="primary"
-      [disabled]="form.invalid"
-      (onClick)="save()"
-    >
-      Zapisz
-    </p-button>
+  <div class="min-h-[50px]">
+    @if (selectedAction(); as action) {
+      <sp-device-action @spFadeIn [action]="action" [formControl]="form.controls.payload"></sp-device-action>
+    }
   </div>
+
+  <p-float-label variant="on" class="fade-step">
+    <p-datePicker
+      inputId="time"
+      [timeOnly]="true"
+      hourFormat="24"
+      [showClear]="true"
+      [formControl]="form.controls.time"
+      size="large"
+      showIcon="true"
+      iconDisplay="input"
+    ></p-datePicker>
+    <label for="time">Czas wykonania</label>
+  </p-float-label>
+</form>
+
+<p-divider></p-divider>
+<div class="w-full flex justify-end mt-4">
+  <p-button
+    severity="primary"
+    size="large"
+    [disabled]="form.invalid"
+    (onClick)="save()"
+  >
+    Zapisz
+  </p-button>
 </div>
 
