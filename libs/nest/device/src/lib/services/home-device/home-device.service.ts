@@ -3,7 +3,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { ActionJob, DeviceType, HomeDevice } from '@sparrow-server/entities';
 import { DeviceProfile, ZigbeeDeviceService, ZigbeeManageDeviceService } from '@sparrow-server/external-api';
 import { first, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
-import { DataSource, QueryBuilder, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 import { GetAllDeviceFilters } from '../../controllers/models/get-all-device-filters';
 import { DeviceDetailsMapper } from '../../mappers/device-details-mapper';
