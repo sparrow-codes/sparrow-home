@@ -101,7 +101,7 @@ export class HomeDeviceDataService {
 
         width: '90vw',
         data: {
-          content: `Czy na pewno chcesz usunąć urządzenie o nazwie: ${deviceName}?`,
+          content: `Czy na pewno chcesz usunąć urządzenie o nazwie: ${deviceName}? Powiązane akcje w zadaniach zostaną automatycznie usunięte.`,
         } as ConfirmationDialogData,
       })
       ?.onClose.pipe(
