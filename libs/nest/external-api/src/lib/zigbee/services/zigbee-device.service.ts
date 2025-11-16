@@ -62,6 +62,10 @@ export class ZigbeeDeviceService implements OnModuleInit {
     this._client.publish(`${ZigbeeDeviceService._BASE}/${deviceId}/set`, payload);
   }
 
+  public removeDevice(deviceId: string): void {
+    this._devices.delete(deviceId);
+  }
+
   private _updateDeviceState(deviceProfile: DeviceProfile, payload: Record<string, unknown>): void {
     const device: DeviceProfile = {
       ...deviceProfile,

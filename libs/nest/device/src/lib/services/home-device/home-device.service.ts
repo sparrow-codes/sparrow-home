@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeviceType, HomeDevice } from '@sparrow-server/entities';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { ActionJob, DeviceType, HomeDevice } from '@sparrow-server/entities';
 import { DeviceProfile, ZigbeeDeviceService, ZigbeeManageDeviceService } from '@sparrow-server/external-api';
 import { first, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
-import { Repository } from 'typeorm';
+import { DataSource, QueryBuilder, Repository } from 'typeorm';
 
 import { GetAllDeviceFilters } from '../../controllers/models/get-all-device-filters';
 import { DeviceDetailsMapper } from '../../mappers/device-details-mapper';
@@ -13,6 +13,7 @@ import { HomeDeviceDetailsDto } from '../../models/home-device-details-dto';
 export class HomeDeviceService {
   public constructor(
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
+    @InjectDataSource() private dataSource: DataSource,
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
     private readonly _zigbeeDeviceService: ZigbeeDeviceService
   ) {}
@@ -86,14 +87,23 @@ export class HomeDeviceService {
   }
 
   public async removeDevice(id: number): Promise<void> {
-    const homDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
+    const homeDevice: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
 
-    if (!homDevice) {
+    if (!homeDevice) {
       return;
     }
 
-    await this._zigbeeManageDeviceService.removeDevice(homDevice.zigbeeDeviceId);
-    await this._homeDeviceRepository.delete({ id });
+    await this._zigbeeManageDeviceService.removeDevice(homeDevice.zigbeeDeviceId);
+    await this._homeDeviceRepository
+      .delete({ id })
+      .then(() => this._zigbeeDeviceService.removeDevice(homeDevice.zigbeeDeviceId));
+
+    await this.dataSource
+      .createQueryBuilder()
+      .delete()
+      .from(ActionJob)
+      .where('assignedDeviceId = :assignedDeviceId', { assignedDeviceId: homeDevice.zigbeeDeviceId })
+      .execute();
   }
 
   public getDeviceDetails(id: number): Observable<HomeDeviceDetailsDto | null> {
