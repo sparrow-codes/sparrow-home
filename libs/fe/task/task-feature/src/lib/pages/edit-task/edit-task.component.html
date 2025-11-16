@@ -1,23 +1,25 @@
 <sp-page-title [routerLink]="['../']">Edytuj zadanie</sp-page-title>
 
-<p-card>
+<div class="flex flex-col gap-2">
   <sp-schedule-settings
     [task]="task()"
     [devices]="devices()"
     [isLoading]="isLoading()"
     (taskChange)="onUpdateTask($event)"
   ></sp-schedule-settings>
-</p-card>
 
-<p-divider></p-divider>
 
-<p-button
-  label="Usuń"
-  class="mt-4"
-  [outlined]="true"
-  [fluid]="true"
-  icon="pi pi-trash"
-  (onClick)="deleteTask()"
-  severity="danger"
-  size="large"
-></p-button>
+  <p-divider></p-divider>
+
+  <p-button
+    label="Usuń"
+    [outlined]="true"
+    [fluid]="true"
+    icon="pi pi-trash"
+    (onClick)="deleteTask()"
+    severity="danger"
+    size="large"
+  ></p-button>
+
+</div>
+

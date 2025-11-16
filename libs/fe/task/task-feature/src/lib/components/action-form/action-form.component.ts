@@ -1,5 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  model,
+  ModelSignal,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AppStore, appStore } from '@sparrow-home/core';
@@ -9,7 +20,6 @@ import { DeviceAction, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { Divider } from 'primeng/divider';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 
@@ -24,11 +34,11 @@ import { ActionForm } from './form-service/model/action-form';
   providers: [ActionFormService],
 })
 export class ActionFormComponent implements OnInit {
+  public readonly taskAction: ModelSignal<TaskAction | undefined> = model();
+
   private readonly _store: AppStore = inject(appStore);
   private readonly _formService: ActionFormService = inject(ActionFormService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly _dialog: DynamicDialogRef = inject(DynamicDialogRef);
-  private readonly _dialogConfig: DynamicDialogConfig = inject(DynamicDialogConfig);
 
   protected readonly form: FormGroup<ActionForm> = this._formService.form;
   protected readonly devices: Signal<AvailableDevice[]> = this._store.availableDevices;
@@ -39,22 +49,21 @@ export class ActionFormComponent implements OnInit {
   protected readonly selectedAction: WritableSignal<DeviceAction | null> = signal(null);
 
   public ngOnInit(): void {
-    const dialogData: TaskAction | undefined = this._dialogConfig.data;
-    console.log(dialogData);
+    const action: TaskAction | undefined = this.taskAction();
 
-    if (dialogData) {
+    if (action) {
       this.form.patchValue({
-        time: dialogData.executionTime,
-        device: dialogData.zigbeeDeviceId,
-        action: dialogData.action.key,
+        time: action.executionTime,
+        device: action.zigbeeDeviceId,
+        action: action.action.key,
         payload: {
-          [dialogData.action.key]: dialogData.action.currentValue,
+          [action.action.key]: action.action.currentValue,
         },
       });
 
-      this._setActions(dialogData.zigbeeDeviceId);
-      this.selectedAction.set(dialogData.action);
-      this.form.controls.payload.patchValue({ [dialogData.action.key]: dialogData.action.currentValue });
+      this._setActions(action.zigbeeDeviceId);
+      this.selectedAction.set(action.action);
+      this.form.controls.payload.patchValue({ [action.action.key]: action.action.currentValue });
     }
 
     this._handleFormEvents();
@@ -67,7 +76,7 @@ export class ActionFormComponent implements OnInit {
     const payload: Record<string, unknown> | null = this.form.controls.payload.value;
 
     if (deviceAction && payload) {
-      this._dialog.close({
+      this.taskAction.set({
         zigbeeDeviceId: this.form.controls.device.value,
         executionTime: this.form.controls.time.value,
         action: { ...deviceAction, currentValue: payload[deviceAction?.key] },
