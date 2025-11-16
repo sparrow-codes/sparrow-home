@@ -2,11 +2,11 @@
   class="relative w-full h-[180px] rounded-xl overflow-hidden shadow-sm bg-cover bg-center"
   style="background-image: url('assets/living-room.png')"
 >
-  @if (isHouseClosed()) {
+  @if (isHouseClosed() === true) {
   <div class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-right">
     <span class="text-sm font-medium text-gray-700">Wszystkie drzwi i okna są zamknięte</span>
   </div>
-  } @else {
+  } @else if (isHouseClosed() === false) {
   <a
     class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-sm font-medium text-gray-700 hover:bg-white/90 transition no-underline"
     [routerLink]="['../', 'devices']"
