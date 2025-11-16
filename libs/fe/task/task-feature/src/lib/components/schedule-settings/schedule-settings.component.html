@@ -1,21 +1,25 @@
-@if (formGroup) {
+<div class="h-full flex flex-col justify-between gap-2">
+  <p-card class="flex-grow">
+    @if (formGroup) {
+    <form [formGroup]="formGroup" class="flex-grow">
+      <div class="flex flex-col gap-4">
+        <p-float-label variant="on">
+          <input pInputText id="name" type="text" pSize="large" formControlName="name" fluid="true" />
+          <label for="name">Nazwa</label>
+        </p-float-label>
 
-  <form [formGroup]="formGroup">
-    <div class="flex flex-col gap-4">
-      <p-float-label variant="on">
-        <input pInputText id="name" type="text" pSize="large" formControlName="name" fluid="true" />
-        <label for="name">Nazwa</label>
-      </p-float-label>
+        <div class="flex justify-end">
+          <p-button
+            [buttonProps]="{ styleClass: 'h-[40px]' }"
+            [outlined]="true"
+            icon="pi pi-plus"
+            (onClick)="showAddActionForm()"
+          ></p-button>
+        </div>
 
-      <div class="flex justify-end">
-        <p-button [buttonProps]="{styleClass: 'h-[40px]'}" [outlined]="true" icon="pi pi-plus"
-                  (onClick)="onAddAction()"></p-button>
-      </div>
-
-      <p-data-view class="min-h-[90%]" [value]="sortedActions()" [paginator]="true" [rows]="2"
-                   [emptyMessage]="'Brak akcji'">
-        <ng-template #list let-items>
-          @for (item of items; track item.zigbeeDeviceId; let index = $index) {
+        <p-data-view [value]="sortedActions()" [emptyMessage]="'Brak akcji'">
+          <ng-template #list let-items>
+            @for (item of items; track item.zigbeeDeviceId; let index = $index) {
 
             <div @sparrowFadeIn class="mb-2">
               <p-panel>
@@ -30,27 +34,40 @@
                     </p-tag>
                   </div>
                 </ng-template>
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-2">
                   <!--            <span class="text-sm">{{ item.deviceDescription }}</span>-->
-                  <sp-device-action [action]="item.action"
-                                    (callAction)="onActionChange(index, $event)"></sp-device-action>
+                  <sp-device-action
+                    [action]="item.action"
+                    (callAction)="onActionChange(index, $event)"
+                  ></sp-device-action>
                   <div class="flex gap-2">
-                    <p-button [buttonProps]="{styleClass: 'h-[40px]'}" icon="pi pi-trash" severity="danger" (onClick)="onDeleteAction(index)"></p-button>
-                    <p-button [buttonProps]="{styleClass: 'h-[40px]'}" icon="pi pi-pencil" outlined="true" (onClick)="onEditAction(item)"></p-button>
+                    <p-button
+                      [buttonProps]="{ styleClass: 'h-[40px]' }"
+                      icon="pi pi-trash"
+                      severity="danger"
+                      (onClick)="onDeleteAction(index)"
+                    ></p-button>
+                    <p-button
+                      [buttonProps]="{ styleClass: 'h-[40px]' }"
+                      icon="pi pi-pencil"
+                      outlined="true"
+                      (onClick)="showEditActionForm(item)"
+                    ></p-button>
                   </div>
                 </div>
               </p-panel>
             </div>
 
-          }
-        </ng-template>
-      </p-data-view>
-    </div>
-  </form>
-
-  <div class="flex flex-row sm:flex-row justify-end gap-4 fade-step">
+            }
+          </ng-template>
+        </p-data-view>
+      </div>
+    </form>
+    }
+  </p-card>
+  <div class="flex flex-row sm:flex-row justify-end gap-4 fade-step mb-2">
     <p-button
-      [disabled]="formGroup.invalid"
+      [disabled]="formGroup?.invalid"
       label="Zapisz"
       icon="pi pi-check"
       (onClick)="onSubmitPreferences()"
@@ -58,4 +75,16 @@
       size="large"
     ></p-button>
   </div>
-}
+</div>
+
+<p-drawer [fullScreen]="true" header="Dodaj" [(visible)]="showAddAction" styleClass="w-full">
+  @if (showAddAction) {
+  <sp-action-form (taskActionChange)="onAddActionData($event)"></sp-action-form>
+  }
+</p-drawer>
+
+<p-drawer [fullScreen]="true" header="Edytuj" [(visible)]="showEditAction" styleClass="w-full">
+  @if (showEditAction) {
+  <sp-action-form [taskAction]="actionToEdit" (taskActionChange)="onEditActionData($event)"></sp-action-form>
+  }
+</p-drawer>

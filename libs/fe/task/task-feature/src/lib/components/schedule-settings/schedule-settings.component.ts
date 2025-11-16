@@ -18,13 +18,13 @@ import { DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
 import { PrimeTemplate } from 'primeng/api';
 import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
 import { DataView } from 'primeng/dataview';
-import { DialogService } from 'primeng/dynamicdialog';
+import { Drawer } from 'primeng/drawer';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { Panel } from 'primeng/panel';
 import { Tag } from 'primeng/tag';
-import { first } from 'rxjs';
 
 import { ActionFormComponent } from '../action-form/action-form.component';
 import { ScheduleForm } from './form-service/model/schedule-form';
@@ -44,6 +44,9 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     DeviceActionComponent,
     Panel,
     PrimeTemplate,
+    Card,
+    Drawer,
+    ActionFormComponent,
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],
@@ -54,6 +57,10 @@ export class ScheduleSettingsComponent implements OnInit {
   public readonly taskChange: OutputEmitterRef<Partial<AutomaticTask>> = output();
   public readonly isLoading: InputSignal<boolean> = input(false);
   public readonly devices: InputSignal<AvailableDevice[]> = input.required();
+
+  protected showAddAction: boolean = false;
+  protected showEditAction: boolean = false;
+  protected actionToEdit?: TaskAction;
 
   protected formGroup: FormGroup<ScheduleForm> | null = null;
   protected readonly actions: WritableSignal<TaskAction[]> = signal(this.task()?.actions ?? []);
@@ -66,7 +73,6 @@ export class ScheduleSettingsComponent implements OnInit {
   );
 
   private readonly _formService: ScheduleFormService = inject(ScheduleFormService);
-  private readonly _dialog: DialogService = inject(DialogService);
 
   public ngOnInit(): void {
     this._formService.initForm(this.task());
@@ -86,49 +92,39 @@ export class ScheduleSettingsComponent implements OnInit {
     }
   }
 
-  public onEditAction(action: TaskAction): void {
-    this._dialog
-      .open(ActionFormComponent, {
-        data: action,
-        closable: true,
-        width: '95vw',
-        height: '95vh',
-        modal: true,
-      })
-      ?.onClose.pipe(first())
-      .subscribe((results) => {
-        if (results) {
-          this.actions.update((actions) => {
-            const index: number = actions.indexOf(action);
-            action = { ...action, ...results };
-            actions[index] = action;
-            return [...actions];
-          });
-        }
-      });
+  protected onEditActionData(action?: TaskAction): void {
+    if (!action || !this.actionToEdit) return;
+
+    this.actions.update((actions) => {
+      const index: number = actions.indexOf(this.actionToEdit as TaskAction);
+
+      console.log(action, this.actionToEdit);
+
+      actions[index] = { ...this.actionToEdit, ...action };
+      return [...actions];
+    });
+
+    this.showEditAction = false;
   }
 
-  protected onAddAction(): void {
-    this._dialog
-      .open(ActionFormComponent, { closable: true, width: '95vw', height: '95vh', modal: true })
-      ?.onClose.pipe(first())
-      .subscribe((results: TaskAction) => {
-        if (results) {
-          const device: AvailableDevice | undefined = this.devices().find(
-            (device) => device.homeDeviceId === results.zigbeeDeviceId
-          );
+  protected onAddActionData(results?: TaskAction): void {
+    if (!results) return;
 
-          this.actions.update((actions) => [
-            ...actions,
-            {
-              ...results,
-              zigbeeDeviceId: device?.homeDeviceId ?? '',
-              deviceName: device?.name ?? '',
-              deviceDescription: device?.description ?? '',
-            },
-          ]);
-        }
-      });
+    const device: AvailableDevice | undefined = this.devices().find(
+      (device) => device.homeDeviceId === results.zigbeeDeviceId
+    );
+
+    this.actions.update((actions) => [
+      ...actions,
+      {
+        ...results,
+        zigbeeDeviceId: device?.homeDeviceId ?? '',
+        deviceName: device?.name ?? '',
+        deviceDescription: device?.description ?? '',
+      },
+    ]);
+
+    this.showAddAction = false;
   }
 
   protected onDeleteAction(index: number): void {
@@ -144,5 +140,14 @@ export class ScheduleSettingsComponent implements OnInit {
       action[index] = { ...action[index], action: { ...deviceAction, currentValue: payload[deviceAction.key] } };
       return [...action];
     });
+  }
+
+  protected showAddActionForm(): void {
+    this.showAddAction = true;
+  }
+
+  protected showEditActionForm(action: TaskAction): void {
+    this.actionToEdit = action;
+    this.showEditAction = true;
   }
 }
