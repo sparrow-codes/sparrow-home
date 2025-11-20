@@ -55,13 +55,17 @@ describe('TaskService', () => {
   });
 
   it('should create a task and save it', async () => {
-    await service.createTask({ actions: [], name: 'test' });
-    expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({ name: 'test', isActive: false }));
+    await service.createTask({ actions: [], name: 'test', daysOfTheWeek: [1, 2] });
+    expect(repository.save).toHaveBeenCalledWith(
+      expect.objectContaining({ actionJobs: [], daysOfWeek: [1, 2], isActive: false, name: 'test' })
+    );
   });
 
   it('should throw if task not found when updating', async () => {
     repository.findOneBy.mockResolvedValue(null);
-    await expect(service.updateTask(1, { actions: [], name: 'update' })).rejects.toThrow(NotFoundException);
+    await expect(service.updateTask(1, { actions: [], name: 'update', daysOfTheWeek: [] })).rejects.toThrow(
+      NotFoundException
+    );
   });
 
   it('should update task and reset active', async () => {
@@ -69,8 +73,11 @@ describe('TaskService', () => {
     await service.updateTask(1, {
       actions: [],
       name: 'update',
+      daysOfTheWeek: [1, 2],
     });
-    expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({ name: 'update' }));
+    expect(repository.save).toHaveBeenCalledWith(
+      expect.objectContaining({ actionJobs: [], daysOfWeek: [1, 2], id: 1, name: 'update' })
+    );
   });
 
   it('should delete task and clear its schedule', async () => {

@@ -8,7 +8,7 @@ describe('toTaskAction', () => {
 
   it('should map job action to device profile', () => {
     const profile: DeviceProfile = prepareDeviceProfile();
-    const action: ActionJob = prepareAction(JSON.stringify({ switch: 'on' }));
+    const action: ActionJob = prepareAction({ switch: 'on' });
 
     const dto: DeviceActionDto | null = toTaskAction({ profile, action });
 
@@ -23,14 +23,14 @@ describe('toTaskAction', () => {
 
   it('should return null if no action found', () => {
     const profile: DeviceProfile = prepareDeviceProfile();
-    const action: ActionJob = prepareAction(JSON.stringify({ test: 'on' }));
+    const action: ActionJob = prepareAction({ test: 'on' });
 
     expect(toTaskAction({ profile, action })).toBeNull();
   });
 
   it('should return null if payload can`t be parsed', () => {
     const profile: DeviceProfile = prepareDeviceProfile();
-    const action: ActionJob = prepareAction(JSON.stringify('2221'));
+    const action: ActionJob = prepareAction('2221' as never);
 
     expect(toTaskAction({ profile, action })).toBeNull();
   });
@@ -44,17 +44,18 @@ describe('toTaskAction', () => {
 
   it('should return null if payload is empty object', () => {
     const profile: DeviceProfile = prepareDeviceProfile();
-    const action: ActionJob = prepareAction(JSON.stringify({}));
+    const action: ActionJob = prepareAction({});
 
     expect(toTaskAction({ profile, action })).toBeNull();
   });
 
-  function prepareAction(payload: string): ActionJob {
+  function prepareAction(payload: Record<string, unknown>): ActionJob {
     return {
       assignedDeviceId: deviceID,
       executionTime: new Date(),
       id: 0,
       payload,
+      daysOfWeek: [1, 2],
       task: null as never,
     };
   }

@@ -14,11 +14,10 @@ import {
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
-import { DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { DaysOfWeekControl, DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
-import { PrimeTemplate } from 'primeng/api';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { DataView } from 'primeng/dataview';
 import { Drawer } from 'primeng/drawer';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -43,10 +42,13 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     Tag,
     DeviceActionComponent,
     Panel,
-    PrimeTemplate,
-    Card,
     Drawer,
     ActionFormComponent,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
+    DaysOfWeekControl,
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],
@@ -87,6 +89,7 @@ export class ScheduleSettingsComponent implements OnInit {
         name: this.formGroup?.value.name ?? '',
         isActive: this.task()?.isActive ?? false,
         actions: this.actions(),
+        daysOfWeek: this.formGroup?.value?.daysOfWeek,
       });
       this.formGroup.markAsPristine();
     }
@@ -98,12 +101,9 @@ export class ScheduleSettingsComponent implements OnInit {
     this.actions.update((actions) => {
       const index: number = actions.indexOf(this.actionToEdit as TaskAction);
 
-      console.log(action, this.actionToEdit);
-
       actions[index] = { ...this.actionToEdit, ...action };
       return [...actions];
     });
-
     this.showEditAction = false;
   }
 
@@ -135,10 +135,10 @@ export class ScheduleSettingsComponent implements OnInit {
   }
 
   protected onActionChange(index: number, payload: Record<string, unknown>): void {
-    this.actions.update((action) => {
-      const deviceAction: DeviceAction = action[index].action;
-      action[index] = { ...action[index], action: { ...deviceAction, currentValue: payload[deviceAction.key] } };
-      return [...action];
+    this.actions.update((actions) => {
+      const deviceAction: DeviceAction = actions[index].action;
+      actions[index] = { ...actions[index], action: { ...deviceAction, currentValue: payload[deviceAction.key] } };
+      return actions;
     });
   }
 

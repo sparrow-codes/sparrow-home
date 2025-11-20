@@ -11,7 +11,10 @@ export class ActionJob {
   public assignedDeviceId!: string;
 
   @Column({ name: 'payload', type: 'json' })
-  public payload!: string;
+  public payload!: Record<string, unknown>;
+
+  @Column({ name: 'daysOfWeek', type: 'json', nullable: true })
+  public daysOfWeek: number[] | null = null;
 
   @Column({ name: 'execution_time' })
   public executionTime!: Date;

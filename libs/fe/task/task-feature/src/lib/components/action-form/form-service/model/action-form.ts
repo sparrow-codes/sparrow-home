@@ -5,4 +5,5 @@ export interface ActionForm {
   action: FormControl<string | null>;
   payload: FormControl<Record<string, unknown> | null>;
   time: FormControl<Date>;
+  daysOfWeek: FormControl<number[] | null>;
 }

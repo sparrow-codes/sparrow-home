@@ -11,6 +11,9 @@ export class TaskDto {
   @ApiProperty()
   public isActive!: boolean;
 
+  @ApiProperty({ nullable: true, type: 'number', isArray: true })
+  public daysOfWeek!: number[] | null;
+
   @ApiProperty({ type: TaskActionDto, isArray: true })
   public actions!: TaskActionDto[];
 }

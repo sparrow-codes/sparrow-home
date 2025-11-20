@@ -15,11 +15,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AppStore, appStore } from '@sparrow-home/core';
 import { AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
-import { DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
+import { DaysOfWeekControl, DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { DeviceAction, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
-import { Divider } from 'primeng/divider';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 
@@ -28,7 +27,16 @@ import { ActionForm } from './form-service/model/action-form';
 
 @Component({
   selector: 'sp-action-form',
-  imports: [CommonModule, Select, ReactiveFormsModule, DeviceActionComponent, DatePicker, FloatLabel, Button, Divider],
+  imports: [
+    CommonModule,
+    Select,
+    ReactiveFormsModule,
+    DeviceActionComponent,
+    DatePicker,
+    FloatLabel,
+    Button,
+    DaysOfWeekControl,
+  ],
   templateUrl: './action-form.component.html',
   animations: [spFadeInAnimation],
   providers: [ActionFormService],
@@ -56,6 +64,7 @@ export class ActionFormComponent implements OnInit {
         time: action.executionTime,
         device: action.zigbeeDeviceId,
         action: action.action.key,
+        daysOfWeek: action.daysOfWeek,
         payload: {
           [action.action.key]: action.action.currentValue,
         },
@@ -63,7 +72,7 @@ export class ActionFormComponent implements OnInit {
 
       this._setActions(action.zigbeeDeviceId);
       this.selectedAction.set(action.action);
-      this.form.controls.payload.patchValue({ [action.action.key]: action.action.currentValue });
+      this._patchActionPayload(action.action);
     }
 
     this._handleFormEvents();
@@ -79,6 +88,7 @@ export class ActionFormComponent implements OnInit {
       this.taskAction.set({
         zigbeeDeviceId: this.form.controls.device.value,
         executionTime: this.form.controls.time.value,
+        daysOfWeek: this.form.value.daysOfWeek,
         action: { ...deviceAction, currentValue: payload[deviceAction?.key] },
       } as TaskAction);
     }
@@ -107,7 +117,7 @@ export class ActionFormComponent implements OnInit {
     const action: DeviceAction | null = this.selectedAction();
 
     if (action) {
-      this.form.controls.payload.patchValue({ [action.key]: action.currentValue });
+      this._patchActionPayload(action);
     }
   }
 
@@ -118,5 +128,11 @@ export class ActionFormComponent implements OnInit {
     } else {
       this.actions.set([]);
     }
+  }
+
+  private _patchActionPayload(action: DeviceAction): void {
+    this.form.controls.payload.patchValue({
+      [action.key]: action.currentValue ?? action.enumValues[0],
+    });
   }
 }

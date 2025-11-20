@@ -9,5 +9,6 @@ export function toAutomaticTask(model: TaskDtoApiModel): AutomaticTask {
     isActive: model.isActive,
     name: model.name,
     actions: model.actions.map(toTaskAction),
+    daysOfWeek: model.daysOfWeek,
   };
 }

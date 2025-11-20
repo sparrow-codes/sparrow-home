@@ -10,5 +10,6 @@ export function toTaskAction(action: TaskActionDtoApiModel): TaskAction {
     deviceDescription: action.deviceDescription,
     deviceName: action.deviceName,
     action: toDeviceAction(action.action),
+    daysOfWeek: action.daysOfTheWeek,
   };
 }

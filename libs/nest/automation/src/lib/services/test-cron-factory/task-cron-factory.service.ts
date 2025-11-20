@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { getEverydayCronTime } from '@sparrow-server/shared';
+import { getCronTime } from '@sparrow-server/shared';
 import { Task } from '@sparrow-server/entities';
 import { ZigbeeDeviceService } from '@sparrow-server/external-api';
 
@@ -25,10 +25,13 @@ export class TaskCronFactory {
           this.clearScheduledTask(actionJob.id);
         }
 
-        const nextJobTime = new CronJob(getEverydayCronTime(actionJob.executionTime), () => {
-          this.logger.log(`Starting job ${jobId}`);
-          this._zigbeeDeviceService.publishEvent(actionJob.assignedDeviceId, actionJob.payload);
-        });
+        const nextJobTime = new CronJob(
+          getCronTime(actionJob.executionTime, actionJob.daysOfWeek ?? task.daysOfWeek),
+          () => {
+            this.logger.log(`Starting job ${jobId}`);
+            this._zigbeeDeviceService.publishEvent(actionJob.assignedDeviceId, JSON.stringify(actionJob.payload));
+          }
+        );
 
         this._schedulerRegistry.addCronJob(jobId, nextJobTime);
         this.logger.log(`Next execution of job ${jobId} will be at ${nextJobTime.nextDate()}`);

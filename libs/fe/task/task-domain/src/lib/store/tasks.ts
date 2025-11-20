@@ -100,6 +100,7 @@ export function withTasks() {
               .createTask({
                 body: {
                   name: newTask.name ?? '',
+                  daysOfTheWeek: newTask.daysOfWeek,
                   actions: newTask.actions?.map((action) => toActionJobDto(action)) ?? null,
                 },
               })
@@ -125,6 +126,7 @@ export function withTasks() {
               .updateTask({
                 body: {
                   name: task.name,
+                  daysOfTheWeek: task.daysOfWeek,
                   actions: task.actions.map((action) => toActionJobDto(action)),
                 },
                 id: task.id.toString(),

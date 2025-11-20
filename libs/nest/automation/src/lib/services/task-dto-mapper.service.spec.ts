@@ -45,7 +45,7 @@ describe('TaskDtoMapperService', () => {
     });
 
     it('should contain one action', async () => {
-      const task: Task = prepareTask([prepareAction(JSON.stringify({ switch: 'currentValue' }))]);
+      const task: Task = prepareTask([prepareAction({ switch: 'currentValue' })]);
       const dto: TaskDto = await service.map(task);
       expect(dto.actions.length).toBe(1);
       expect(dto.actions[0].action?.key).toBe('switch');
@@ -53,6 +53,7 @@ describe('TaskDtoMapperService', () => {
       expect(dto.actions[0].executionTime).toBeDefined();
       expect(dto.actions[0].deviceName).toBe(mockedDevice.deviceName);
       expect(dto.actions[0].deviceDescription).toBe('description');
+      expect(dto.actions[0].daysOfTheWeek).toStrictEqual([1, 2]);
     });
   });
 
@@ -68,6 +69,7 @@ describe('TaskDtoMapperService', () => {
 
   function prepareTask(actionJobs: ActionJob[]): Task {
     return {
+      daysOfWeek: [1, 2],
       actionJobs,
       id: 0,
       isActive: true,
@@ -75,12 +77,13 @@ describe('TaskDtoMapperService', () => {
     };
   }
 
-  function prepareAction(payload: string): ActionJob {
+  function prepareAction(payload: Record<string, unknown>): ActionJob {
     return {
       assignedDeviceId: deviceID,
       executionTime: new Date(),
       id: 0,
       payload,
+      daysOfWeek: [1, 2],
       task: null as never,
     };
   }

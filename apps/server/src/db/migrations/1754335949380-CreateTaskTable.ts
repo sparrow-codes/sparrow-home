@@ -19,6 +19,11 @@ export class CreateTaskTable1690000000000 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'daysOfWeek',
+            type: 'json',
+            isNullable: true,
+          },
+          {
             name: 'isActive',
             type: 'boolean',
             isNullable: false,
