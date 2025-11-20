@@ -17,6 +17,7 @@ export class ScheduleFormService {
   public initForm(task?: Partial<AutomaticTask>): void {
     this._form = this._fb.group({
       name: this._fb.control(task?.name ?? '', { validators: [Validators.required] }),
+      daysOfWeek: this._fb.control<number[] | null>(task?.daysOfWeek ?? null),
     });
   }
 }

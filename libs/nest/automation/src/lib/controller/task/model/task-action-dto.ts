@@ -14,6 +14,9 @@ export class TaskActionDto {
   @ApiProperty({ type: Date })
   public executionTime!: Date;
 
+  @ApiProperty({ nullable: true, type: 'number', isArray: true })
+  public daysOfTheWeek!: number[] | null;
+
   @ApiProperty({ type: DeviceActionDto, nullable: false })
   public action!: DeviceActionDto;
 }

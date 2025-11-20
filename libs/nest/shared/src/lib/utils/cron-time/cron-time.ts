@@ -1,3 +1,5 @@
-export function getEverydayCronTime(time: Date): string {
-  return `0 ${time.getMinutes()} ${time.getHours()} * * *`;
+import { toCronWeekday } from './cron-week-day/to-cron-weekday';
+
+export function getCronTime(time: Date, weekdays: number[] | null = null): string {
+  return `0 ${time.getMinutes()} ${time.getHours()} * * ${toCronWeekday(weekdays)}`;
 }

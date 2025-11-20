@@ -68,19 +68,21 @@ describe('TaskCronFactory', () => {
     job();
     expect(zigbeeService.publishEvent).toHaveBeenCalledWith(
       task.actionJobs[0].assignedDeviceId,
-      task.actionJobs[0].payload
+      JSON.stringify(task.actionJobs[0].payload)
     );
   });
 
   function prepareTask(): Task {
     return {
+      daysOfWeek: null,
       actionJobs: [
         {
           executionTime: new Date(),
-          payload: '{ action: "on" }',
+          payload: { action: 'on' },
           assignedDeviceId: 'abc',
           id: 1,
           task: new Task(),
+          daysOfWeek: null,
         },
       ],
       isActive: false,

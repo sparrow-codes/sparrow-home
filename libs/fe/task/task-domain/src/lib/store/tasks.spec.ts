@@ -41,7 +41,7 @@ describe('withTasks signal store', () => {
   });
 
   it('should fetch tasks list successfully', () => {
-    const tasks: AutomaticTask[] = [{ id: 1, name: 'Test', isActive: false, actions: [] }];
+    const tasks: AutomaticTask[] = [{ id: 1, name: 'Test', isActive: false, actions: [], daysOfWeek: null }];
     mockTaskApiService.getTaskList.mockReturnValue(of(tasks));
     const store = TestBed.inject(rootStore);
 
@@ -127,6 +127,7 @@ describe('withTasks signal store', () => {
       name: 'Edit',
       isActive: false,
       actions: [],
+      daysOfWeek: null,
     });
 
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));
@@ -147,6 +148,7 @@ describe('withTasks signal store', () => {
       name: 'Edit',
       actions: [],
       isActive: false,
+      daysOfWeek: null,
     });
 
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));

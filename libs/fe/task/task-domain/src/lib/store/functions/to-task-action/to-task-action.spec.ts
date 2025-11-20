@@ -17,6 +17,7 @@ describe('toTaskAction', () => {
     deviceDescription: 'description',
     deviceName: 'device name',
     executionTime: '2023-01-01T00:00:00.000Z',
+    daysOfTheWeek: [1, 2],
   };
 
   it('should map task action', () => {
@@ -31,5 +32,6 @@ describe('toTaskAction', () => {
     expect(taskAction.action.currentValue).toEqual(taskActionDto.action.currentValue);
     expect(taskAction.deviceName).toEqual(taskActionDto.deviceName);
     expect(taskAction.deviceDescription).toEqual(taskActionDto.deviceDescription);
+    expect(taskAction.daysOfWeek).toEqual(taskActionDto.daysOfTheWeek);
   });
 });

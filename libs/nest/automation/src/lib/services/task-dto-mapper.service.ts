@@ -37,6 +37,7 @@ export class TaskDtoMapperService {
       action: (deviceProfile && toTaskAction({ action, profile: deviceProfile })) as DeviceActionDto,
       deviceName: homeDevice?.deviceName ?? '',
       deviceDescription: deviceProfile?.deviceDefinition.description ?? '',
+      daysOfTheWeek: action.daysOfWeek?.length ? action.daysOfWeek : null,
     };
   }
 }

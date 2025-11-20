@@ -1,7 +1,7 @@
 <div class="flex flex-col h-full">
   <sp-page-title [routerLink]="['../']">Nowe zadanie</sp-page-title>
 
-  <sp-schedule-settings class="flex-grow" [devices]="devices()" [isLoading]="isLoading()"
+  <sp-schedule-settings [devices]="devices()" [isLoading]="isLoading()"
                         (taskChange)="onCreateTask($event)"></sp-schedule-settings>
 </div>
 

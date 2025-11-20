@@ -1,55 +1,55 @@
-@switch (action().type) {
-  @case ('boolean') {
-    <div class="w-full flex justify-between items-center">
-      <div class="text-sm">{{ action().key | humanize }}</div>
-      <p-togglebutton
-        class="w-[80px]"
-        size="large"
-        [disabled]="disabled()"
-        [ngModel]="action().currentValue === action().enumValues[1]"
-        [onLabel]="action().enumValues[1] | humanize"
-        [offLabel]="action().enumValues[0] | humanize"
-        (onChange)="updateValue($event.checked ? action().enumValues[1] : action().enumValues[0])"
-      ></p-togglebutton>
-    </div>
-  }
-  @case ('enum') {
-    @if (options().length > 1) {
-      <p-float-label [variant]="'on'">
-        <p-select
-          size="large"
-          [ngModel]="action().currentValue ?? null"
-          [disabled]="disabled()"
-          [fluid]="true"
-          [options]="options()"
-          optionLabel="key"
-          optionValue="value"
-          ariaLabel="enum"
-          (onChange)="updateValue($event.value)"
-        ></p-select>
-        <label for="enum">{{ action().key | humanize }}</label>
-      </p-float-label>
-    }
-    @if (options().length === 1) {
-      <div class="flex justify-end">
-        <p-button size="large" [disabled]="disabled()" fluid class="w-[80px]" variant="outlined" (onClick)="updateValue(options()[0].value)">
-          {{ action().key | humanize }}
-        </p-button>
-      </div>
-    }
-  }
-  @case ('number') {
-    <div class="flex flex-col gap-2">
-      <p-slider
-        [disabled]="disabled()"
-        [ngModel]="Number(action().currentValue)"
-        #slider
-        [min]="action().range?.min ?? 0"
-        [max]="action().range?.max ?? 10"
-        (onChange)="stateValue.next($event.value)"
-        size="large"
-      ></p-slider>
-      <div class="w-full text-right">{{ action().key | humanize }} {{ slider.value }} {{ action().unit }}</div>
-    </div>
-  }
-}
+@switch (action().type) { @case ('boolean') {
+<div class="w-full flex justify-between items-center">
+  <div class="text-sm">{{ action().key | humanize }}</div>
+  <p-selectbutton
+    [options]="selectButtonOptions()"
+    [ngModel]="action().currentValue || action().enumValues[0]"
+    (onChange)="setValue($event.value)"
+    [disabled]="disabled()"
+    [allowEmpty]="false"
+    optionLabel="key"
+    optionValue="value"
+  />
+</div>
+} @case ('enum') { @if (options().length > 1) {
+<p-float-label [variant]="'on'">
+  <p-select
+    size="large"
+    [ngModel]="action().currentValue ?? null"
+    [disabled]="disabled()"
+    [fluid]="true"
+    [options]="options()"
+    optionLabel="key"
+    optionValue="value"
+    ariaLabel="enum"
+    (onChange)="setValue($event.value)"
+  ></p-select>
+  <label for="enum">{{ action().key | humanize }}</label>
+</p-float-label>
+} @if (options().length === 1) {
+<div class="flex justify-end">
+  <p-button
+    size="large"
+    [disabled]="disabled()"
+    fluid
+    class="w-[80px]"
+    variant="outlined"
+    (onClick)="setValue(options()[0].value)"
+  >
+    {{ action().key | humanize }}
+  </p-button>
+</div>
+} } @case ('number') {
+<div class="flex flex-col gap-2">
+  <p-slider
+    [disabled]="disabled()"
+    [ngModel]="Number(action().currentValue)"
+    #slider
+    [min]="action().range?.min ?? 0"
+    [max]="action().range?.max ?? 10"
+    (onChange)="stateValue.next($event.value)"
+    size="large"
+  ></p-slider>
+  <div class="w-full text-right">{{ action().key | humanize }} {{ slider.value }} {{ action().unit }}</div>
+</div>
+} }
