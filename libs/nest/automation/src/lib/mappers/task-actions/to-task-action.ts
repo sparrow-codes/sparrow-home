@@ -12,7 +12,7 @@ export function toTaskAction({ profile, action }: ToTaskActionParams): DeviceAct
   let key: string;
 
   try {
-    key = Object.keys(JSON.parse(action.payload))[0];
+    key = Object.keys(action.payload)[0];
   } catch (error) {
     Logger.error('Invalid payload: ' + action.payload);
     return null;
@@ -31,6 +31,6 @@ export function toTaskAction({ profile, action }: ToTaskActionParams): DeviceAct
     range: actionProfile.range,
     unit: actionProfile.unit,
     enumValues: actionProfile.enumValues,
-    currentValue: JSON.parse(action.payload)[key],
+    currentValue: action.payload[key],
   };
 }

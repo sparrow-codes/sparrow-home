@@ -9,6 +9,7 @@ describe('toTaskEntity', () => {
       id: 42,
       isActive: true,
       name: 'Morning watering',
+      daysOfWeek: [1, 2],
       actions: [],
     };
 
@@ -17,5 +18,6 @@ describe('toTaskEntity', () => {
     expect(result.id).toBe(42);
     expect(result.isActive).toBe(true);
     expect(result.name).toBe('Morning watering');
+    expect(result.daysOfWeek).toBe(input.daysOfWeek);
   });
 });

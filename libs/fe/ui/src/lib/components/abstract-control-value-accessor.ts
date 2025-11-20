@@ -23,4 +23,9 @@ export abstract class AbstractControlValueAccessor<T> implements ControlValueAcc
   public setDisabledState?(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
   }
+
+  public updateValue(value: T): void {
+    this._value.set(value);
+    this.onChange?.(value);
+  }
 }

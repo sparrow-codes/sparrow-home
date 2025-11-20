@@ -7,6 +7,9 @@ export class CreateTaskRequest {
   @IsNotEmpty()
   public name!: string;
 
+  @ApiProperty({ required: false, nullable: true, type: 'number', isArray: true })
+  public daysOfTheWeek!: number[] | null;
+
   @ApiProperty({ type: ActionJobDto, isArray: true, nullable: true })
   public actions: ActionJobDto[] | null = null;
 }

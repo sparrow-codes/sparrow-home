@@ -5,5 +5,6 @@ export interface TaskAction {
   deviceName: string;
   deviceDescription: string;
   executionTime: Date;
+  daysOfWeek: number[] | null;
   action: DeviceAction;
 }

@@ -18,15 +18,26 @@ import { DeviceAction, humanize, HumanizePipe } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
+import { SelectButton } from 'primeng/selectbutton';
 import { Slider } from 'primeng/slider';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { debounceTime, Subject } from 'rxjs';
 
-import { AbstractControlValueAccessor } from '../absctract-control-value-accessor';
+import { AbstractControlValueAccessor } from '../abstract-control-value-accessor';
 
 @Component({
   selector: 'sp-device-action',
-  imports: [CommonModule, ToggleButtonModule, Select, FloatLabel, Slider, FormsModule, Button, HumanizePipe],
+  imports: [
+    CommonModule,
+    ToggleButtonModule,
+    Select,
+    FloatLabel,
+    Slider,
+    FormsModule,
+    Button,
+    HumanizePipe,
+    SelectButton,
+  ],
   templateUrl: './device-action.component.html',
   providers: [
     {
@@ -41,6 +52,9 @@ export class DeviceActionComponent extends AbstractControlValueAccessor<Record<s
   public readonly callAction: OutputEmitterRef<Record<string, unknown>> = output();
 
   protected readonly stateValue: Subject<unknown> = new Subject();
+  protected readonly selectButtonOptions: Signal<{ key: string; value: unknown }[]> = computed(() =>
+    this.action().enumValues.map((value) => ({ key: humanize(value), value }))
+  );
   protected readonly options: Signal<{ key: string; value: unknown }[]> = computed(() => {
     return this.action()
       .enumValues.filter((value) => !!value)
@@ -52,20 +66,16 @@ export class DeviceActionComponent extends AbstractControlValueAccessor<Record<s
   public ngOnInit(): void {
     this.stateValue
       .pipe(debounceTime(500), takeUntilDestroyed(this._destroyRef))
-      .subscribe((stateValue) => this.updateValue(stateValue));
+      .subscribe((stateValue) => this.setValue(stateValue));
   }
 
-  protected updateValue(value: unknown): void {
+  protected setValue(value: unknown): void {
     const payload: Record<string, unknown> = {
       [this.action().key]: value,
     };
 
     this.callAction.emit(payload);
-    this.writeValue(payload);
-
-    if (this.onChange) {
-      this.onChange(payload);
-    }
+    this.updateValue(payload);
   }
 
   protected readonly Number = Number;

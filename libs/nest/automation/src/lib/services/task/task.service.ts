@@ -57,6 +57,7 @@ export class TaskService implements OnModuleInit {
 
   private setTaskParams(task: Task, request: UpdateTaskRequest): void {
     task.name = request.name;
+    task.daysOfWeek = request.daysOfTheWeek ? request.daysOfTheWeek : null;
     task.actionJobs =
       request.actions?.map((actionDto) => {
         const entity: ActionJob = new ActionJob();
@@ -64,6 +65,7 @@ export class TaskService implements OnModuleInit {
         entity.executionTime = new Date(actionDto.executionTime);
         entity.payload = actionDto.payload;
         entity.task = task;
+        entity.daysOfWeek = actionDto.daysOfTheWeek ? actionDto.daysOfTheWeek : null;
 
         return entity;
       }) ?? [];
@@ -84,7 +86,8 @@ export class TaskService implements OnModuleInit {
     if (isActive) {
       try {
         await this.activateTask(task);
-      } catch {
+      } catch (error) {
+        Logger.error(error);
         Logger.error('Failed to activate task', `[Task] ${task.name}`);
       }
     } else {
@@ -101,7 +104,8 @@ export class TaskService implements OnModuleInit {
       if (task.isActive) {
         try {
           await this.activateTask(task);
-        } catch {
+        } catch (error) {
+          Logger.error(error);
           Logger.error('Failed to activate task', `[Task] ${task.name}`);
         }
       }

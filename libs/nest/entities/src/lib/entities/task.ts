@@ -13,6 +13,9 @@ export class Task {
   @Column({ name: 'isActive' })
   public isActive!: boolean;
 
+  @Column({ name: 'daysOfWeek', type: 'json', nullable: true })
+  public daysOfWeek: number[] | null = null;
+
   @OneToMany(() => ActionJob, (actionJob) => actionJob.task, {
     cascade: true,
     eager: true,

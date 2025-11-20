@@ -16,6 +16,7 @@ export class ActionFormService {
       action: this._fb.control(null, Validators.required),
       payload: this._fb.control(null, { validators: [Validators.required] }),
       time: this._fb.control(new Date(), { validators: [Validators.required] }),
+      daysOfWeek: this._fb.control<number[] | null>(null),
     });
   }
 }

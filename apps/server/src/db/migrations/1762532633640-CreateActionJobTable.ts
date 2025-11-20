@@ -23,6 +23,11 @@ export class CreateActionJobTable1762532633640 implements MigrationInterface {
             type: 'json',
           },
           {
+            name: 'daysOfWeek',
+            type: 'json',
+            isNullable: true,
+          },
+          {
             name: 'execution_time',
             type: 'timestamp',
           },

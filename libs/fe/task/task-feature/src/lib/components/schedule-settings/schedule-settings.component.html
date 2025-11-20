@@ -1,5 +1,5 @@
 <div class="h-full flex flex-col justify-between gap-2">
-  <p-card class="flex-grow">
+  <div class="flex-grow">
     @if (formGroup) {
     <form [formGroup]="formGroup" class="flex-grow">
       <div class="flex flex-col gap-4">
@@ -8,63 +8,81 @@
           <label for="name">Nazwa</label>
         </p-float-label>
 
-        <div class="flex justify-end">
-          <p-button
-            [buttonProps]="{ styleClass: 'h-[40px]' }"
-            [outlined]="true"
-            icon="pi pi-plus"
-            (onClick)="showAddActionForm()"
-          ></p-button>
-        </div>
+        <p-accordion [value]="1">
+          <p-accordion-panel [value]="0">
+            <p-accordion-header>Zaawansowane</p-accordion-header>
+            <p-accordion-content>
+              <sp-days-of-week-control [formControl]="formGroup.controls.daysOfWeek" [notDefinedLabel]="'Wszystkie'"></sp-days-of-week-control>
+            </p-accordion-content>
+          </p-accordion-panel>
 
-        <p-data-view [value]="sortedActions()" [emptyMessage]="'Brak akcji'">
-          <ng-template #list let-items>
-            @for (item of items; track item.zigbeeDeviceId; let index = $index) {
+          <p-accordion-panel [value]="1">
+            <p-accordion-header>Akcje</p-accordion-header>
+            <p-accordion-content>
+              <div class="mb-2">
+                <p-button
+                  [buttonProps]="{ styleClass: 'h-[30px]' }"
+                  [outlined]="true"
+                  icon="pi pi-plus"
+                  (onClick)="showAddActionForm()"
+                ></p-button>
+              </div>
 
-            <div @sparrowFadeIn class="mb-2">
-              <p-panel>
-                <ng-template pTemplate="header">
-                  <div class="flex justify-between items-center w-full">
-                    <span class="font-semibold">{{ item.deviceName }}</span>
-                    <p-tag [severity]="'info'">
-                      <div class="flex gap-2">
-                        <i class="pi pi-clock"></i>
-                        {{ item.executionTime | date : 'HH:mm' }}
+              <p-data-view [value]="sortedActions()" emptyMessage=" ">
+                <ng-template #list let-items>
+                  @for (item of items; track index; let index = $index) {
+
+                  <div @sparrowFadeIn class="mb-2">
+                    <p-panel [showHeader]="false">
+                      <div class="flex flex-col gap-2 mt-[18px]">
+                        <div class="flex justify-between items-center w-full">
+                          <p-tag [severity]="'secondary'">
+                            <div class="flex gap-2">
+                              <i class="pi pi-clock"></i>
+                              {{ item.executionTime | date : 'HH:mm' }}
+                              @if (item.daysOfWeek?.length) {
+                                <i class="pi pi-calendar"></i>
+                              }
+                            </div>
+                          </p-tag>
+                          <span class="font-semibold">{{ item.deviceName }}</span>
+                        </div>
+                        <sp-device-action
+                          [action]="item.action"
+                          (callAction)="onActionChange(index, $event)"
+                        ></sp-device-action>
+                        <div class="flex gap-2">
+                          <p-button
+                            [buttonProps]="{ styleClass: 'h-[30px]' }"
+                            icon="pi pi-trash"
+                            severity="secondary"
+                            (onClick)="onDeleteAction(index)"
+                          ></p-button>
+                          <p-button
+                            [buttonProps]="{ styleClass: 'h-[30px]' }"
+                            icon="pi pi-pencil"
+                            outlined="true"
+                            (onClick)="showEditActionForm(item)"
+                          ></p-button>
+                        </div>
                       </div>
-                    </p-tag>
+                    </p-panel>
                   </div>
-                </ng-template>
-                <div class="flex flex-col gap-2">
-                  <!--            <span class="text-sm">{{ item.deviceDescription }}</span>-->
-                  <sp-device-action
-                    [action]="item.action"
-                    (callAction)="onActionChange(index, $event)"
-                  ></sp-device-action>
-                  <div class="flex gap-2">
-                    <p-button
-                      [buttonProps]="{ styleClass: 'h-[40px]' }"
-                      icon="pi pi-trash"
-                      severity="danger"
-                      (onClick)="onDeleteAction(index)"
-                    ></p-button>
-                    <p-button
-                      [buttonProps]="{ styleClass: 'h-[40px]' }"
-                      icon="pi pi-pencil"
-                      outlined="true"
-                      (onClick)="showEditActionForm(item)"
-                    ></p-button>
-                  </div>
-                </div>
-              </p-panel>
-            </div>
 
-            }
-          </ng-template>
-        </p-data-view>
+                  }
+                </ng-template>
+              </p-data-view>
+
+              @if (sortedActions().length === 0) {
+                <div class="text-gray-500 text-sm w-full text-center">Brak akcji</div>
+              }
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
       </div>
     </form>
     }
-  </p-card>
+  </div>
   <div class="flex flex-row sm:flex-row justify-end gap-4 fade-step mb-2">
     <p-button
       [disabled]="formGroup?.invalid"

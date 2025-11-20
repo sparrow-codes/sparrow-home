@@ -7,6 +7,7 @@ describe('toActionJobDto', () => {
     deviceName: 'name',
     deviceDescription: 'description',
     executionTime: new Date(),
+    daysOfWeek: null,
     action: {
       key: 'switch',
       type: 'number',
@@ -26,6 +27,10 @@ describe('toActionJobDto', () => {
   });
 
   it('should create payload string from action', () => {
-    expect(toActionJobDto(task).payload).toBe('{"switch":"on"}');
+    expect(toActionJobDto(task).payload).toStrictEqual({ switch: 'on' });
+  });
+
+  it('should map days of the week', () => {
+    expect(toActionJobDto(task).daysOfTheWeek).toBe(task.daysOfWeek);
   });
 });

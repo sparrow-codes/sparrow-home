@@ -7,23 +7,11 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateNewUserRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateNewUserRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
+        "responses": { "201": { "description": "" } },
         "summary": "",
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/user/create-additional": {
@@ -32,23 +20,11 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateNewUserRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateNewUserRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
+        "responses": { "201": { "description": "" } },
         "summary": "",
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/user/activate-user": {
@@ -57,23 +33,11 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ActivateUserRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActivateUserRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
+        "responses": { "201": { "description": "" } },
         "summary": "",
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/user/additional-users": {
@@ -84,18 +48,12 @@
           "default": {
             "description": "",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetListOfAdditionalUsersResponse"
-                }
-              }
+              "application/json": { "schema": { "$ref": "#/components/schemas/GetListOfAdditionalUsersResponse" } }
             }
           }
         },
         "summary": "",
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/user/details": {
@@ -105,19 +63,11 @@
         "responses": {
           "default": {
             "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUserDetailsResponse"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetUserDetailsResponse" } } }
           }
         },
         "summary": "",
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/auth/login": {
@@ -126,76 +76,39 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } }
         },
         "responses": {
           "default": {
             "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginResponse" } } }
           }
         },
         "summary": "",
-        "tags": [
-          "Authentication"
-        ]
+        "tags": ["Authentication"]
       }
     },
     "/api/auth/refresh": {
       "get": {
         "operationId": "refreshToken",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "required": true,
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "Authorization", "required": true, "in": "header", "schema": { "type": "string" } }],
         "responses": {
           "default": {
             "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponse"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RefreshTokenResponse" } } }
           }
         },
         "summary": "",
-        "tags": [
-          "Authentication"
-        ]
+        "tags": ["Authentication"]
       }
     },
     "/api/setup/ready": {
       "get": {
         "operationId": "isConfigurationReady",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
+        "responses": { "200": { "description": "" } },
         "summary": "",
-        "tags": [
-          "Setup"
-        ]
+        "tags": ["Setup"]
       }
     },
     "/api/home-device/all": {
@@ -204,38 +117,21 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetAllDeviceFilters"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetAllDeviceFilters" } } }
         },
         "responses": {
           "default": {
             "description": "",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HomeDeviceDetailsDto"
-                  }
-                }
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/HomeDeviceDetailsDto" } }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/create": {
@@ -244,28 +140,12 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateDeviceRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateDeviceRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "201": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/updateDeviceName": {
@@ -274,93 +154,37 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangeDeviceNameRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ChangeDeviceNameRequest" } } }
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/delete/{id}": {
       "delete": {
         "operationId": "deleteDevice",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/details/{id}": {
       "get": {
         "operationId": "getDeviceDetails",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
         "responses": {
           "default": {
             "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetDeviceDetailsResponse"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetDeviceDetailsResponse" } } }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/avg-temperature": {
@@ -370,24 +194,12 @@
         "responses": {
           "default": {
             "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetHomeAvgTemperature"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetHomeAvgTemperature" } } }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/are-all-doors-and-windows-closed": {
@@ -398,23 +210,13 @@
           "default": {
             "description": "",
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAllDoorAndWindowsStatus"
-                }
-              }
+              "application/json": { "schema": { "$ref": "#/components/schemas/GetAllDoorAndWindowsStatus" } }
             }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/home-device/publish-zigbee-event": {
@@ -423,28 +225,12 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PublishEventRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PublishEventRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "201": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Home Device"
-        ]
+        "tags": ["Home Device"]
       }
     },
     "/api/alarm/set-mode": {
@@ -453,28 +239,12 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetAlarmModeRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SetAlarmModeRequest" } } }
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Alarm"
-        ]
+        "tags": ["Alarm"]
       }
     },
     "/api/alarm/mode": {
@@ -484,24 +254,12 @@
         "responses": {
           "default": {
             "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAlarmModeResponse"
-                }
-              }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetAlarmModeResponse" } } }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Alarm"
-        ]
+        "tags": ["Alarm"]
       }
     },
     "/api/push-notification/add-subscription": {
@@ -510,28 +268,12 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PushSubscriptionRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PushSubscriptionRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "201": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Push Notification"
-        ]
+        "tags": ["Push Notification"]
       }
     },
     "/api/task/create": {
@@ -540,133 +282,49 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTaskRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateTaskRequest" } } }
         },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "201": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Tasks"
-        ]
+        "tags": ["Tasks"]
       }
     },
     "/api/task/update/{id}": {
       "put": {
         "operationId": "updateTask",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTaskRequest"
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UpdateTaskRequest" } } }
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Tasks"
-        ]
+        "tags": ["Tasks"]
       }
     },
     "/api/task/delete/{id}": {
       "delete": {
         "operationId": "deleteTask",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "number" } }],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Tasks"
-        ]
+        "tags": ["Tasks"]
       }
     },
     "/api/task/update-status/{id}": {
       "get": {
         "operationId": "setTaskStatus",
         "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "active",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          }
+          { "name": "id", "required": true, "in": "path", "schema": { "type": "number" } },
+          { "name": "active", "required": true, "in": "query", "schema": { "type": "boolean" } }
         ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Tasks"
-        ]
+        "tags": ["Tasks"]
       }
     },
     "/api/task/task-list": {
@@ -677,289 +335,112 @@
           "default": {
             "description": "",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskDto"
-                  }
-                }
-              }
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TaskDto" } } }
             }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
+        "security": [{ "bearer": [] }],
         "summary": "",
-        "tags": [
-          "Tasks"
-        ]
+        "tags": ["Tasks"]
       }
     }
   },
-  "info": {
-    "title": "",
-    "description": "",
-    "version": "1.0",
-    "contact": {}
-  },
+  "info": { "title": "", "description": "", "version": "1.0", "contact": {} },
   "tags": [],
   "servers": [],
   "components": {
-    "securitySchemes": {
-      "bearer": {
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "type": "http"
-      }
-    },
+    "securitySchemes": { "bearer": { "scheme": "bearer", "bearerFormat": "JWT", "type": "http" } },
     "schemas": {
       "CreateNewUserRequest": {
         "type": "object",
         "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          }
+          "firstName": { "type": "string" },
+          "password": { "type": "string" },
+          "email": { "type": "string" },
+          "lastName": { "type": "string", "nullable": true }
         },
-        "required": [
-          "firstName",
-          "password",
-          "email",
-          "lastName"
-        ]
+        "required": ["firstName", "password", "email", "lastName"]
       },
       "ActivateUserRequest": {
         "type": "object",
-        "properties": {
-          "userId": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "userId",
-          "isActive"
-        ]
+        "properties": { "userId": { "type": "number" }, "isActive": { "type": "boolean" } },
+        "required": ["userId", "isActive"]
       },
       "AdditionalUserDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "lastName": {
-            "type": "string"
-          }
+          "id": { "type": "number" },
+          "firstName": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "lastName": { "type": "string" }
         },
-        "required": [
-          "id",
-          "firstName",
-          "isActive",
-          "lastName"
-        ]
+        "required": ["id", "firstName", "isActive", "lastName"]
       },
       "GetListOfAdditionalUsersResponse": {
         "type": "object",
-        "properties": {
-          "users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AdditionalUserDto"
-            }
-          }
-        },
-        "required": [
-          "users"
-        ]
+        "properties": { "users": { "type": "array", "items": { "$ref": "#/components/schemas/AdditionalUserDto" } } },
+        "required": ["users"]
       },
       "GetUserDetailsResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "role": {
-            "type": "number"
-          }
+          "id": { "type": "number" },
+          "firstName": { "type": "string" },
+          "email": { "type": "string" },
+          "lastName": { "type": "string", "nullable": true },
+          "role": { "type": "number" }
         },
-        "required": [
-          "id",
-          "firstName",
-          "email",
-          "lastName",
-          "role"
-        ]
+        "required": ["id", "firstName", "email", "lastName", "role"]
       },
       "LoginRequest": {
         "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ]
+        "properties": { "email": { "type": "string" }, "password": { "type": "string" } },
+        "required": ["email", "password"]
       },
       "LoginResponse": {
         "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": false
-          }
-        },
-        "required": [
-          "token"
-        ]
+        "properties": { "token": { "type": "string", "nullable": false } },
+        "required": ["token"]
       },
       "RefreshTokenResponse": {
         "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": false
-          }
-        },
-        "required": [
-          "token"
-        ]
+        "properties": { "token": { "type": "string", "nullable": false } },
+        "required": ["token"]
       },
       "GetAllDeviceFilters": {
         "type": "object",
         "properties": {
-          "deviceType": {
-            "type": "number",
-            "nullable": true
-          },
-          "isOpen": {
-            "type": "boolean",
-            "nullable": true
-          }
+          "deviceType": { "type": "number", "nullable": true },
+          "isOpen": { "type": "boolean", "nullable": true }
         }
       },
       "DeviceActionDto": {
         "type": "object",
         "properties": {
-          "key": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "boolean",
-              "number",
-              "enum",
-              "unknown"
-            ]
-          },
-          "enumValues": {
-            "nullable": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "unit": {
-            "type": "string",
-            "nullable": true
-          },
-          "range": {
-            "type": "object",
-            "nullable": true
-          },
-          "currentValue": {
-            "type": "object",
-            "nullable": true
-          }
+          "key": { "type": "string" },
+          "type": { "type": "string", "enum": ["boolean", "number", "enum", "unknown"] },
+          "enumValues": { "nullable": true, "type": "array", "items": { "type": "string" } },
+          "unit": { "type": "string", "nullable": true },
+          "range": { "type": "object", "nullable": true },
+          "currentValue": { "type": "object", "nullable": true }
         },
-        "required": [
-          "key",
-          "type",
-          "enumValues",
-          "unit",
-          "range",
-          "currentValue"
-        ]
+        "required": ["key", "type", "enumValues", "unit", "range", "currentValue"]
       },
       "HomeDeviceDetailsDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number"
-          },
-          "type": {
-            "type": "number"
-          },
-          "homeDeviceId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "vendor": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "isOnline": {
-            "type": "boolean"
-          },
-          "signalStrength": {
-            "type": "number"
-          },
-          "battery": {
-            "type": "number",
-            "nullable": true
-          },
-          "params": {
-            "type": "object"
-          },
-          "actions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DeviceActionDto"
-            }
-          }
+          "id": { "type": "number" },
+          "type": { "type": "number" },
+          "homeDeviceId": { "type": "string" },
+          "name": { "type": "string" },
+          "vendor": { "type": "string" },
+          "model": { "type": "string" },
+          "description": { "type": "string" },
+          "isOnline": { "type": "boolean" },
+          "signalStrength": { "type": "number" },
+          "battery": { "type": "number", "nullable": true },
+          "params": { "type": "object" },
+          "actions": { "type": "array", "items": { "$ref": "#/components/schemas/DeviceActionDto" } }
         },
         "required": [
           "id",
@@ -978,250 +459,104 @@
       },
       "CreateDeviceRequest": {
         "type": "object",
-        "properties": {
-          "type": {
-            "type": "number"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type",
-          "name"
-        ]
+        "properties": { "type": { "type": "number" }, "name": { "type": "string" } },
+        "required": ["type", "name"]
       },
       "ChangeDeviceNameRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number",
-            "nullable": false
-          },
-          "deviceName": {
-            "type": "string",
-            "nullable": false
-          }
+          "id": { "type": "number", "nullable": false },
+          "deviceName": { "type": "string", "nullable": false }
         },
-        "required": [
-          "id",
-          "deviceName"
-        ]
+        "required": ["id", "deviceName"]
       },
       "GetDeviceDetailsResponse": {
         "type": "object",
         "properties": {
-          "deviceDetails": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HomeDeviceDetailsDto"
-              }
-            ]
-          }
+          "deviceDetails": { "nullable": true, "allOf": [{ "$ref": "#/components/schemas/HomeDeviceDetailsDto" }] }
         },
-        "required": [
-          "deviceDetails"
-        ]
+        "required": ["deviceDetails"]
       },
       "GetHomeAvgTemperature": {
         "type": "object",
-        "properties": {
-          "avgTemperature": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "avgTemperature"
-        ]
+        "properties": { "avgTemperature": { "type": "number" } },
+        "required": ["avgTemperature"]
       },
       "GetAllDoorAndWindowsStatus": {
         "type": "object",
-        "properties": {
-          "areAllDoorsAndWindowsClosed": {
-            "type": "boolean",
-            "nullable": true
-          }
-        },
-        "required": [
-          "areAllDoorsAndWindowsClosed"
-        ]
+        "properties": { "areAllDoorsAndWindowsClosed": { "type": "boolean", "nullable": true } },
+        "required": ["areAllDoorsAndWindowsClosed"]
       },
       "PublishEventRequest": {
         "type": "object",
-        "properties": {
-          "deviceId": {
-            "type": "string"
-          },
-          "payload": {
-            "type": "object"
-          }
-        },
-        "required": [
-          "deviceId",
-          "payload"
-        ]
+        "properties": { "deviceId": { "type": "string" }, "payload": { "type": "object" } },
+        "required": ["deviceId", "payload"]
       },
       "SetAlarmModeRequest": {
         "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "isActive"
-        ]
+        "properties": { "isActive": { "type": "boolean" } },
+        "required": ["isActive"]
       },
       "GetAlarmModeResponse": {
         "type": "object",
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          },
-          "isAvailable": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "isActive",
-          "isAvailable"
-        ]
+        "properties": { "isActive": { "type": "boolean" }, "isAvailable": { "type": "boolean" } },
+        "required": ["isActive", "isAvailable"]
       },
       "PushSubscriptionRequest": {
         "type": "object",
-        "properties": {
-          "endpoint": {
-            "type": "string"
-          },
-          "keys": {
-            "type": "object"
-          }
-        },
-        "required": [
-          "endpoint",
-          "keys"
-        ]
+        "properties": { "endpoint": { "type": "string" }, "keys": { "type": "object" } },
+        "required": ["endpoint", "keys"]
       },
       "ActionJobDto": {
         "type": "object",
         "properties": {
-          "assignedDeviceId": {
-            "type": "string",
-            "nullable": false
-          },
-          "payload": {
-            "type": "string",
-            "nullable": false
-          },
-          "executionTime": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": false
-          }
+          "assignedDeviceId": { "type": "string", "nullable": false },
+          "payload": { "type": "object", "nullable": false },
+          "daysOfTheWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
+          "executionTime": { "format": "date-time", "type": "string", "nullable": false }
         },
-        "required": [
-          "assignedDeviceId",
-          "payload",
-          "executionTime"
-        ]
+        "required": ["assignedDeviceId", "payload", "daysOfTheWeek", "executionTime"]
       },
       "CreateTaskRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "actions": {
-            "nullable": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionJobDto"
-            }
-          }
+          "name": { "type": "string" },
+          "daysOfTheWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
+          "actions": { "nullable": true, "type": "array", "items": { "$ref": "#/components/schemas/ActionJobDto" } }
         },
-        "required": [
-          "name",
-          "actions"
-        ]
+        "required": ["name", "actions"]
       },
       "UpdateTaskRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "actions": {
-            "nullable": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionJobDto"
-            }
-          }
+          "name": { "type": "string" },
+          "daysOfTheWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
+          "actions": { "nullable": true, "type": "array", "items": { "$ref": "#/components/schemas/ActionJobDto" } }
         },
-        "required": [
-          "name",
-          "actions"
-        ]
+        "required": ["name", "actions"]
       },
       "TaskActionDto": {
         "type": "object",
         "properties": {
-          "zigbeeDeviceId": {
-            "type": "string"
-          },
-          "deviceName": {
-            "type": "string"
-          },
-          "deviceDescription": {
-            "type": "string"
-          },
-          "executionTime": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "action": {
-            "nullable": false,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DeviceActionDto"
-              }
-            ]
-          }
+          "zigbeeDeviceId": { "type": "string" },
+          "deviceName": { "type": "string" },
+          "deviceDescription": { "type": "string" },
+          "executionTime": { "format": "date-time", "type": "string" },
+          "daysOfTheWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
+          "action": { "nullable": false, "allOf": [{ "$ref": "#/components/schemas/DeviceActionDto" }] }
         },
-        "required": [
-          "zigbeeDeviceId",
-          "deviceName",
-          "deviceDescription",
-          "executionTime",
-          "action"
-        ]
+        "required": ["zigbeeDeviceId", "deviceName", "deviceDescription", "executionTime", "daysOfTheWeek", "action"]
       },
       "TaskDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "actions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TaskActionDto"
-            }
-          }
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "daysOfWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
+          "actions": { "type": "array", "items": { "$ref": "#/components/schemas/TaskActionDto" } }
         },
-        "required": [
-          "id",
-          "name",
-          "isActive",
-          "actions"
-        ]
+        "required": ["id", "name", "isActive", "daysOfWeek", "actions"]
       }
     }
   }

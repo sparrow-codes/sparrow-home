@@ -1,0 +1,58 @@
+<div class="inline-block">
+  <i class="pi pi-calendar mr-2"></i>
+  <span>Dni tygodnia:</span>
+</div>
+<p-divider></p-divider>
+<div class="flex flex-col gap-4 mt-2">
+  <div class="flex items-center">
+    <p-radio-button name="daysOfTheWeek" [formControl]="areAllDays" [value]="true"  inputId="all" />
+    <label for="all" class="ml-2">{{ notDefinedLabel() }}</label>
+  </div>
+
+  <div class="flex items-center">
+    <p-radio-button name="daysOfTheWeek" [formControl]="areAllDays" [value]="false" inputId="custom" />
+    <label for="custom" class="ml-2">Zdefiniuj</label>
+  </div>
+</div>
+
+@if (value()) {
+  <p-divider></p-divider>
+
+  <div class="grid grid-cols-4 mt-2 gap-4">
+    <div class="inline-block">
+      <p-check-box [value]="1" inputId="mon" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="mon">Pon</label>
+    </div>
+
+    <div class="inline-block">
+      <p-check-box [value]="2" inputId="tue" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="tue">Wt</label>
+    </div>
+
+    <div class="inline-block">
+      <p-check-box [value]="3" inputId="wd" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="wd">Śr</label>
+    </div>
+
+    <div class="inline-block">
+      <p-check-box [value]="4" inputId="th" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="th">Czw</label>
+    </div>
+
+    <div class="inline-block">
+      <p-check-box [value]="5" inputId="fr" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="fr">Pt</label>
+    </div>
+
+    <div class="inline-block">
+      <p-check-box [value]="6" inputId="sat" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="sat">Sob</label>
+    </div>
+
+    <div class="inline-block">
+      <p-check-box [value]="0" inputId="sun" [formControl]="daysOfWeek"></p-check-box>
+      <label class="ml-2" for="sun">N</label>
+    </div>
+
+  </div>
+}

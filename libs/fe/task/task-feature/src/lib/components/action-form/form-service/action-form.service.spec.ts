@@ -42,5 +42,10 @@ describe('ActionFormService', () => {
       form.controls.time.setValue(null as never);
       expect(form.controls.time.valid).toBe(false);
     });
+
+    it('should have a optional days of the week', () => {
+      const form: FormGroup<ActionForm> = service.form;
+      expect(form.controls.daysOfWeek).toBeTruthy();
+    });
   });
 });
