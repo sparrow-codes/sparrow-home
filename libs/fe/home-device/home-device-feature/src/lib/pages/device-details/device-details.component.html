@@ -53,7 +53,8 @@
                       name="mainAction"
                       [value]="action.key"
                       (ngModelChange)="setMainAction($event)"
-                      [ngModel]="mainActionKey()">
+                      [ngModel]="mainActionKey()"
+                      [attr.aria-label]="'Ustaw ' + (action.key | humanize) + ' jako główną akcję'">
                     </p-radio-button>
                   }
                 </div>
