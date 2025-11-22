@@ -76,7 +76,8 @@
                   name="mainParam"
                   [value]="param[0]"
                   (ngModelChange)="setMainParam($event)"
-                  [ngModel]="mainParamKey()">
+                  [ngModel]="mainParamKey()"
+                  [attr.aria-label]="'Ustaw ' + param[0] + ' jako główny parametr'">
                 </p-radio-button>
 
             </div>
