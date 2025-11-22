@@ -6,7 +6,7 @@ export function toDeviceAction(action: DeviceActionDtoApiModel): DeviceAction {
   return {
     type: action.type,
     key: action.key,
-    enumValues: action.enumValues ?? [],
+    enumValues: action.enumValues?.filter((value) => !!value) ?? [],
     range: action.range,
     unit: action.unit,
     currentValue: action.currentValue,

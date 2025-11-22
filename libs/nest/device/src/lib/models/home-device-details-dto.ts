@@ -26,4 +26,8 @@ export abstract class HomeDeviceDetailsDto {
   public params: Record<string, string> = {};
   @ApiProperty({ type: DeviceActionDto, isArray: true })
   public actions: DeviceActionDto[] = [];
+  @ApiProperty({ nullable: true })
+  public mainActionKey: string | null = null;
+  @ApiProperty({ nullable: true })
+  public mainParamKey: string | null = null;
 }

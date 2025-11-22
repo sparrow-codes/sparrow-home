@@ -31,10 +31,33 @@
       @if (deviceDetails()?.actions?.length) {
         <p-divider></p-divider>
 
+        <div class="flex gap-2 w-full justify-end mb-3">
+          <span class="text-xs font-semibold text-gray-500">Główna</span>
+        </div>
         <div class="flex flex-col gap-4">
+
           @for (action of homeDevice.actions; track action.key) {
             @if (action.type !== 'unknown') {
-              <sp-device-action [action]="action" (callAction)="publishZigbeeEvent(homeDevice.homeDeviceId, $event)"></sp-device-action>
+              <div class="grid grid-cols-[minmax(0,1fr)_2.5rem] gap-x-4 gap-y-2 items-start">
+                <div class="min-w-0">
+                  <sp-device-action
+                    [action]="action"
+                    (callAction)="publishZigbeeEvent(homeDevice.homeDeviceId, $event)">
+                  </sp-device-action>
+                </div>
+
+                <!-- prawa kolumna: „slot” na radio, zawsze istnieje -->
+                <div class="flex items-start pt-1 justify-end">
+                  @if (action.type === 'boolean' || (action.type === 'enum' && action.enumValues.length === 1)) {
+                    <p-radio-button
+                      name="mainAction"
+                      [value]="action.key"
+                      (ngModelChange)="setMainAction($event)"
+                      [ngModel]="mainActionKey()">
+                    </p-radio-button>
+                  }
+                </div>
+              </div>
             }
           }
         </div>
@@ -43,7 +66,21 @@
         <p-divider></p-divider>
 
         @for (param of params(); track param[0]) {
-          <sp-device-param [deviceParam]="param"></sp-device-param>
+          <div class="grid grid-cols-[minmax(0,1fr)_2.5rem] gap-x-4 gap-y-2 items-start">
+            <div class="min-w-0">
+              <sp-device-param [deviceParam]="param"></sp-device-param>
+            </div>
+
+            <div class="flex items-start pt-2 justify-end">
+                <p-radio-button
+                  name="mainParam"
+                  [value]="param[0]"
+                  (ngModelChange)="setMainParam($event)"
+                  [ngModel]="mainParamKey()">
+                </p-radio-button>
+
+            </div>
+          </div>
         }
       }
 
@@ -69,7 +106,7 @@
     </p-card>
   </div>
 
-  <p-dialog header="Edytuj urządzenie" [visible]="showEditDialog()">
+  <p-dialog header="Edytuj urządzenie"  [visible]="showEditDialog()">
     <div class="flex flex-col gap-4">
       <input #nameInput pInputText [fluid]="true" placeholder="Nazwa..." [value]="deviceDetails()?.name" />
 

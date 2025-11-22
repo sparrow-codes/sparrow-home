@@ -1,8 +1,7 @@
 import { inject, Injectable, Signal } from '@angular/core';
-import { DeviceType } from '@sparrow-home/utils';
+import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Observable } from 'rxjs';
 
-import { HomeDevice } from '../models';
 import { HomeDeviceDataService } from './data/home-device-data.service';
 
 @Injectable({
@@ -57,5 +56,9 @@ export class DeviceFacadeService {
 
   public publishZigbeeEvent(deviceId: string, payload: Record<string, unknown>): void {
     this._dataService.publishZigbeeEvent(deviceId, payload);
+  }
+
+  public updateDeviceMainFields(id: string, mainActionKey: string | null, mainParamKey: string | null): void {
+    this._dataService.updateDeviceMainFields(id, mainActionKey, mainParamKey);
   }
 }

@@ -3,7 +3,7 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
-import { PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
+import { deviceTypeDictionary, PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -11,7 +11,6 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { finalize, first } from 'rxjs';
 
-import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
 import { CreateDeviceForm } from './form-service/model/create-device-form';
 

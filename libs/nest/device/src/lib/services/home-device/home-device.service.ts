@@ -6,6 +6,7 @@ import { first, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
 import { DataSource, Repository } from 'typeorm';
 
 import { GetAllDeviceFilters } from '../../controllers/models/get-all-device-filters';
+import { UpdateDeviceMainFieldsRequest } from '../../controllers/models/update-device-main-fields-request';
 import { DeviceDetailsMapper } from '../../mappers/device-details-mapper';
 import { HomeDeviceDetailsDto } from '../../models/home-device-details-dto';
 
@@ -17,6 +18,19 @@ export class HomeDeviceService {
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
     private readonly _zigbeeDeviceService: ZigbeeDeviceService
   ) {}
+
+  public async setDeviceMainFields(id: number, request: UpdateDeviceMainFieldsRequest): Promise<void> {
+    const device: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
+
+    if (!device) {
+      throw new NotFoundException(`Device ${id} not found`);
+    }
+
+    device.mainActionKey = request.mainActionKey ?? null;
+    device.mainParamKey = request.mainParamKey ?? null;
+
+    await this._homeDeviceRepository.save(device);
+  }
 
   public publishEvent(deviceId: string, payload: Record<string, unknown>): void {
     this._zigbeeDeviceService.publishEvent(deviceId, JSON.stringify(payload));

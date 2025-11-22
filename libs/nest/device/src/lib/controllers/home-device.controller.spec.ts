@@ -12,6 +12,7 @@ import { GetAllDeviceFilters } from './models/get-all-device-filters';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { PublishEventRequest } from './models/publish-event-request';
+import { UpdateDeviceMainFieldsRequest } from './models/update-device-main-fields-request';
 
 describe('HomeDeviceController', () => {
   let controller: HomeDeviceController;
@@ -26,6 +27,7 @@ describe('HomeDeviceController', () => {
     getAvgTemperature: jest.fn(),
     areAllDoorsAndWindowsClosed: jest.fn(),
     publishEvent: jest.fn(),
+    setDeviceMainFields: jest.fn(),
   } as unknown as jest.Mocked<HomeDeviceService>;
 
   beforeEach(async () => {
@@ -70,6 +72,8 @@ describe('HomeDeviceController', () => {
           battery: null,
           params: {},
           actions: [],
+          mainActionKey: null,
+          mainParamKey: null,
         },
       ];
 
@@ -130,6 +134,8 @@ describe('HomeDeviceController', () => {
         signalStrength: 0,
         type: DeviceType.SIREN,
         id: 9,
+        mainParamKey: '',
+        mainActionKey: '',
       };
       homeDeviceServiceMock.getDeviceDetails.mockReturnValue(of(details));
 
@@ -180,6 +186,19 @@ describe('HomeDeviceController', () => {
 
       controller.publishZigbeeEvent(request);
       expect(homeDeviceServiceMock.publishEvent).toHaveBeenCalledWith(request.deviceId, request.payload);
+    });
+  });
+
+  describe('update device main fields', () => {
+    it('should update device main fields', () => {
+      const request: UpdateDeviceMainFieldsRequest = {
+        mainParamKey: 'param',
+        mainActionKey: 'action',
+      };
+      const id: string = '1';
+
+      controller.setDeviceMainFields(id, request);
+      expect(homeDeviceServiceMock.setDeviceMainFields).toHaveBeenCalledWith(1, request);
     });
   });
 });

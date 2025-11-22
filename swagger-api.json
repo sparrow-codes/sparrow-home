@@ -233,6 +233,22 @@
         "tags": ["Home Device"]
       }
     },
+    "/api/home-device/main-fields/{id}": {
+      "put": {
+        "operationId": "setDeviceMainFields",
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateDeviceMainFieldsRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
+        "summary": "",
+        "tags": ["Home Device"]
+      }
+    },
     "/api/alarm/set-mode": {
       "put": {
         "operationId": "setAlarmMode",
@@ -440,7 +456,9 @@
           "signalStrength": { "type": "number" },
           "battery": { "type": "number", "nullable": true },
           "params": { "type": "object" },
-          "actions": { "type": "array", "items": { "$ref": "#/components/schemas/DeviceActionDto" } }
+          "actions": { "type": "array", "items": { "$ref": "#/components/schemas/DeviceActionDto" } },
+          "mainActionKey": { "type": "string", "nullable": true },
+          "mainParamKey": { "type": "string", "nullable": true }
         },
         "required": [
           "id",
@@ -454,7 +472,9 @@
           "signalStrength",
           "battery",
           "params",
-          "actions"
+          "actions",
+          "mainActionKey",
+          "mainParamKey"
         ]
       },
       "CreateDeviceRequest": {
@@ -491,6 +511,14 @@
         "type": "object",
         "properties": { "deviceId": { "type": "string" }, "payload": { "type": "object" } },
         "required": ["deviceId", "payload"]
+      },
+      "UpdateDeviceMainFieldsRequest": {
+        "type": "object",
+        "properties": {
+          "mainActionKey": { "type": "string", "nullable": true },
+          "mainParamKey": { "type": "string", "nullable": true }
+        },
+        "required": ["mainActionKey", "mainParamKey"]
       },
       "SetAlarmModeRequest": {
         "type": "object",

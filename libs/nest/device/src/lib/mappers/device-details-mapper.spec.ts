@@ -26,7 +26,7 @@ const makeProfile = (overrides?: Partial<DeviceProfile>): DeviceProfile =>
 
 describe('DeviceDetailsMapper.toDeviceDetails', () => {
   it('maps base fields and computed flags', () => {
-    const entity = makeHomeDevice();
+    const entity = makeHomeDevice({ mainActionKey: 'State', mainParamKey: 'linkquality' });
     const profile = makeProfile();
     const dto = DeviceDetailsMapper.toDeviceDetails(entity, profile);
     expect(dto).toMatchObject({
@@ -39,6 +39,8 @@ describe('DeviceDetailsMapper.toDeviceDetails', () => {
       model: 'M1',
       vendor: 'Acme',
       description: 'Desc',
+      mainActionKey: 'State',
+      mainParamKey: 'linkquality',
     });
     const expectedSignal = calculatePercentage(0, 255, 120);
     expect(dto.signalStrength).toBe(expectedSignal);
