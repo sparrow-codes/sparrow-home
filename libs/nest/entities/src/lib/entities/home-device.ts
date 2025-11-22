@@ -17,5 +17,11 @@ export class HomeDevice {
   public deviceName!: string;
 
   @Column({ nullable: true })
+  public mainActionKey: string | null = null;
+
+  @Column({ nullable: true })
+  public mainParamKey: string | null = null;
+
+  @Column({ nullable: true })
   public lastChanged: Date | null = null;
 }

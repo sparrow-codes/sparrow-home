@@ -1,7 +1,5 @@
 import { HomeDeviceDetailsDtoApiModel } from '@sparrow-home/api';
-import { toDeviceAction } from '@sparrow-home/utils';
-
-import { HomeDevice } from '../../models';
+import { HomeDevice, toDeviceAction } from '@sparrow-home/utils';
 
 export class HomeDeviceMapper {
   public static mapDetails(device: HomeDeviceDetailsDtoApiModel): HomeDevice {
@@ -19,6 +17,8 @@ export class HomeDeviceMapper {
         description: device.description,
         params: device.params,
         actions: device.actions.map(toDeviceAction),
+        mainActionKey: device.mainActionKey,
+        mainParamKey: device.mainParamKey,
       };
     }
   }

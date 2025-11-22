@@ -50,15 +50,14 @@ import { AbstractControlValueAccessor } from '../abstract-control-value-accessor
 export class DeviceActionComponent extends AbstractControlValueAccessor<Record<string, unknown>> implements OnInit {
   public readonly action: InputSignal<DeviceAction> = input.required();
   public readonly callAction: OutputEmitterRef<Record<string, unknown>> = output();
+  public readonly short: InputSignal<boolean> = input(false);
 
   protected readonly stateValue: Subject<unknown> = new Subject();
   protected readonly selectButtonOptions: Signal<{ key: string; value: unknown }[]> = computed(() =>
     this.action().enumValues.map((value) => ({ key: humanize(value), value }))
   );
   protected readonly options: Signal<{ key: string; value: unknown }[]> = computed(() => {
-    return this.action()
-      .enumValues.filter((value) => !!value)
-      .map((value) => ({ key: humanize(value), value: value }));
+    return this.action().enumValues.map((value) => ({ key: humanize(value), value: value }));
   });
 
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);

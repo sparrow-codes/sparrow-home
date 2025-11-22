@@ -12,6 +12,7 @@ import { GetAllDoorAndWindowsStatus } from './models/get-all-door-and-windows-st
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { PublishEventRequest } from './models/publish-event-request';
+import { UpdateDeviceMainFieldsRequest } from './models/update-device-main-fields-request';
 
 @ApiBearerAuth()
 @ApiTags('Home Device')
@@ -77,5 +78,15 @@ export class HomeDeviceController {
   @Post('publish-zigbee-event')
   public publishZigbeeEvent(@Body() request: PublishEventRequest): void {
     return this._homeDeviceService.publishEvent(request.deviceId, request.payload);
+  }
+
+  @ApiOperation({ operationId: 'setDeviceMainFields' })
+  @ApiBody({ type: UpdateDeviceMainFieldsRequest })
+  @Put('main-fields/:id')
+  public async setDeviceMainFields(
+    @Param('id') id: string,
+    @Body() request: UpdateDeviceMainFieldsRequest
+  ): Promise<void> {
+    await this._homeDeviceService.setDeviceMainFields(Number(id), request);
   }
 }

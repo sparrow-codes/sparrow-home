@@ -59,6 +59,8 @@ describe('TaskDtoMapperService', () => {
 
   function prepareHomeDevice(): HomeDevice {
     return {
+      mainActionKey: null,
+      mainParamKey: null,
       deviceName: 'Device Name',
       deviceType: 0,
       id: 0,
