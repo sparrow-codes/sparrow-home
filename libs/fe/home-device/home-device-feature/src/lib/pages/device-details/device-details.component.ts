@@ -9,7 +9,7 @@ import {
   PageTitleComponent,
   sparrowFadeIn,
 } from '@sparrow-home/ui';
-import { DeviceType, HomeDevice } from '@sparrow-home/utils';
+import { DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Dialog } from 'primeng/dialog';
@@ -37,6 +37,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     DeviceParamComponent,
     DeviceActionComponent,
     RadioButton,
+    HumanizePipe,
   ],
   templateUrl: './device-details.component.html',
   animations: [sparrowFadeIn],
