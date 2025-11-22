@@ -11,7 +11,7 @@ import {
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DeviceType } from '@sparrow-home/utils';
 
-import { deviceTypeDictionary } from '../../dictionary/device-type-dictionary';
+import { deviceTypeDictionary } from '../../dictionary';
 
 @Component({
   selector: 'sp-device-type',
