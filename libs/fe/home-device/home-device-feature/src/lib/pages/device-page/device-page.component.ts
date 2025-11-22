@@ -4,18 +4,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonChip } from '@ionic/angular/standalone';
-import { DeviceFacadeService, OpenDoorSensor, SwitchDevice, TemperatureSensor } from '@sparrow-home/home-device-domain';
-import { PageTitleComponent, sparrowFadeIn, spFadeInAnimation } from '@sparrow-home/ui';
-import { DeviceType } from '@sparrow-home/utils';
+import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
+import { DeviceListItemComponent, PageTitleComponent, sparrowFadeIn, spFadeInAnimation } from '@sparrow-home/ui';
+import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
-
-import { DeviceListItemComponent } from '../../components/device-list-item/device-list-item.component';
-
-type Device = OpenDoorSensor & TemperatureSensor & SwitchDevice;
 
 @Component({
   imports: [
@@ -39,11 +35,11 @@ export class DevicePageComponent implements OnInit {
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
-  protected readonly data: Signal<Device[] | null> = this._facadeService.homeDevices as Signal<Device[]>;
+  protected readonly data: Signal<HomeDevice[] | null> = this._facadeService.homeDevices;
   protected readonly deviceFilter: Signal<DeviceType | null> = this._facadeService.deviceFilter;
   protected readonly pagination: WritableSignal<PaginatorState> = signal({ page: 0, rows: 4, first: 0 });
   protected readonly paginatedDevices = computed(() => {
-    const allDevices: Device[] = this.data() ?? [];
+    const allDevices: HomeDevice[] = this.data() ?? [];
     const { first = 0, rows = 4 } = this.pagination() ?? {};
 
     return allDevices.slice(first, first + rows);
@@ -66,6 +62,10 @@ export class DevicePageComponent implements OnInit {
   protected onRemoveFilter(): void {
     this._facadeService.setDeviceTypeFilter('');
     this._facadeService.fetchDevices();
+  }
+
+  protected onDeviceEvent(id: number, payload: Record<string, unknown>): void {
+    this._facadeService.publishZigbeeEvent(id.toString(), payload);
   }
 
   private _handleSearchEvent(): void {

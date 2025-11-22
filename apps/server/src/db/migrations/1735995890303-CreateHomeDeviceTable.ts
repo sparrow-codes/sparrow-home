@@ -9,6 +9,8 @@ export class CreateHomeDeviceTable1735995890303 implements MigrationInterface {
       { name: 'deviceType', type: 'int' },
       { name: 'deviceName', type: 'varchar', length: '100' },
       { name: 'lastChanged', type: 'timestamp', isNullable: true },
+      { name: 'mainActionKey', type: 'varchar', isNullable: true },
+      { name: 'mainParamKey', type: 'varchar', isNullable: true },
     ],
   });
 

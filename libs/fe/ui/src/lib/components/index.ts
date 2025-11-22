@@ -3,6 +3,8 @@ export * from './confirmation-dialog/confirmation-dialog.component';
 export * from './confirmation-dialog/model/confirmation-dialog-data';
 export * from './days-of-week/days-of-week-control';
 export * from './device-action/device-action.component';
+export * from './device-list-item/device-list-item.component';
+export * from './device-type/device-type.component';
 export * from './frame/mobile-frame.component';
 export * from './page-not-found/page-not-found.component';
 export * from './page-title/page-title.component';

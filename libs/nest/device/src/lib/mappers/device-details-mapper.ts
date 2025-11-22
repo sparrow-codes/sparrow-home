@@ -24,6 +24,8 @@ export class DeviceDetailsMapper {
       description: deviceProfile.deviceDefinition.description ?? '',
       params: this._toParams(deviceProfile),
       actions: toActions(deviceProfile),
+      mainActionKey: entity.mainActionKey,
+      mainParamKey: entity.mainParamKey,
     };
   }
 

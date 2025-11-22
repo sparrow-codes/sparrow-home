@@ -1,0 +1,18 @@
+<p-card>
+  <div class="flex justify-between items-center">
+    <a
+      class="flex flex-row items-center gap-4 cursor-pointer hover:bg-gray-50 rounded no-underline text-inherit focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      [routerLink]="['details', device().id]"
+      [attr.aria-label]="'Przejdź do szczegółów urządzenia ' + device().name"
+    >
+      <sp-device-type [fullLabel]="false" [deviceType]="device().type" />
+      <div class="flex flex-col gap-2">
+        <div class="font-semibold text-gray-700">{{ device().name }}</div>
+        <div class="text-gray-500">{{ label() | humanize }}</div>
+      </div>
+    </a>
+    @if (mainAction(); as mainAction) {
+      <sp-device-action (callAction)="deviceEvent.emit($event)" [short]="true" [action]="mainAction"></sp-device-action>
+    }
+  </div>
+</p-card>

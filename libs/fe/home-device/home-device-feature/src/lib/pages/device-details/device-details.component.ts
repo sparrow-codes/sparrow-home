@@ -1,17 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, InputSignal, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DeviceFacadeService, HomeDevice } from '@sparrow-home/home-device-domain';
-import { BatteryStatusComponent, DeviceActionComponent, PageTitleComponent, sparrowFadeIn } from '@sparrow-home/ui';
-import { DeviceType } from '@sparrow-home/utils';
+import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
+import {
+  BatteryStatusComponent,
+  DeviceActionComponent,
+  DeviceTypeComponent,
+  PageTitleComponent,
+  sparrowFadeIn,
+} from '@sparrow-home/ui';
+import { DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
 import { InputText } from 'primeng/inputtext';
+import { RadioButton } from 'primeng/radiobutton';
 
 import { DeviceParamComponent } from '../../components/device-param/device-param.component';
-import { DeviceTypeComponent } from '../../components/device-type/device-type.component';
 import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
 
 @Component({
@@ -30,6 +36,8 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     InputText,
     DeviceParamComponent,
     DeviceActionComponent,
+    RadioButton,
+    HumanizePipe,
   ],
   templateUrl: './device-details.component.html',
   animations: [sparrowFadeIn],
@@ -44,8 +52,9 @@ export class DeviceDetailsComponent implements OnInit {
   protected readonly params: Signal<[string, string][]> = computed(() =>
     Object.entries(this.deviceDetails()?.params ?? {})
   );
-
   protected readonly deviceType: typeof DeviceType = DeviceType;
+  protected mainActionKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainActionKey ?? null);
+  protected mainParamKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainParamKey ?? null);
 
   public ngOnInit(): void {
     if (this.id()) {
@@ -64,5 +73,13 @@ export class DeviceDetailsComponent implements OnInit {
 
   protected publishZigbeeEvent(deviceId: string, payload: Record<string, unknown>): void {
     this._facadeService.publishZigbeeEvent(deviceId, payload);
+  }
+
+  protected setMainAction(actionKey: string | null): void {
+    this._facadeService.updateDeviceMainFields(this.id() as string, actionKey, this.mainParamKey());
+  }
+
+  protected setMainParam(paramKey: string | null): void {
+    this._facadeService.updateDeviceMainFields(this.id() as string, this.mainActionKey(), paramKey);
   }
 }

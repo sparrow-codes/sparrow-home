@@ -1,4 +1,5 @@
-import { DeviceAction, DeviceType } from '@sparrow-home/utils';
+import { DeviceType } from '../enum';
+import { DeviceAction } from './device-action';
 
 export interface HomeDevice {
   id: number;
@@ -13,4 +14,6 @@ export interface HomeDevice {
   description: string;
   params: Record<string, string>;
   actions: DeviceAction[];
+  mainActionKey: string | null;
+  mainParamKey: string | null;
 }

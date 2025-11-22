@@ -1,6 +1,8 @@
 @switch (action().type) { @case ('boolean') {
 <div class="w-full flex justify-between items-center">
-  <div class="text-sm">{{ action().key | humanize }}</div>
+  @if (!short()) {
+    <div class="text-sm">{{ action().key | humanize }}</div>
+  }
   <p-selectbutton
     [options]="selectButtonOptions()"
     [ngModel]="action().currentValue || action().enumValues[0]"

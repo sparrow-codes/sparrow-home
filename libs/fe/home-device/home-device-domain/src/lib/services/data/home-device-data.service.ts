@@ -8,12 +8,11 @@ import {
 } from '@sparrow-home/api';
 import { LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
-import { DeviceType } from '@sparrow-home/utils';
+import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
 
-import { HomeDevice } from '../../models';
 import { HomeDeviceMapper } from '../mapper/home-device-mapper';
 
 @Injectable({
@@ -150,6 +149,25 @@ export class HomeDeviceDataService {
 
   public publishZigbeeEvent(deviceId: string, payload: Record<string, unknown>): void {
     this._apiService.publishZigbeeEvent({ body: { deviceId, payload } }).pipe(first()).subscribe();
+  }
+
+  public updateDeviceMainFields(id: string, mainActionKey: string | null, mainParamKey: string | null): void {
+    this._apiService
+      .setDeviceMainFields({
+        id,
+        body: {
+          mainActionKey,
+          mainParamKey,
+        },
+      })
+      .pipe(
+        first(),
+        tap({
+          error: () => this._messageService.add({ text: 'Błąd aktualizacji pól', severity: 'error' }),
+        }),
+        switchMap(() => this._fetchDeviceDetails(Number(id)))
+      )
+      .subscribe();
   }
 
   private _fetchDeviceDetails(id: number): Observable<GetDeviceDetailsResponseApiModel> {
