@@ -16,4 +16,5 @@ export interface HomeDevice {
   actions: DeviceAction[];
   mainActionKey: string | null;
   mainParamKey: string | null;
+  isOnMainPage: boolean;
 }

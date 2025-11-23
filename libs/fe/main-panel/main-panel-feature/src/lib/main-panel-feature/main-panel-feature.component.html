@@ -1,10 +1,19 @@
-<div @staggeredFadeIn class="flex flex-col gap-6 w-full max-w-[440px] mx-auto">
+<div @staggeredFadeIn class="flex flex-col gap-2 w-full max-w-[440px] mx-auto">
   <!-- Temperatura + status drzwi -->
   <sp-temperature-panel class="fade-step" [temperature]="avgTemperature()" [isHouseClosed]="isHouseClosed()" />
 
-  <!-- Alarm -->
-  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" [isAlarmAvailable]="isAlarmAvailable()" (isAlarmOnChange)="setAlarm($event)" />
-
   <!-- Lista urządzeń -->
   <sp-device-list-panel class="fade-step" />
+
+  <p-divider></p-divider>
+
+  <!-- Alarm -->
+  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" [isAlarmAvailable]="isAlarmAvailable()"
+                  (isAlarmOnChange)="setAlarm($event)" />
+
+  @for (device of mainDevices(); track device.id) {
+    <sp-device-list-item [disableRouting]="true" [device]="device" (deviceEvent)="handleDeviceEvent(device.id, $event)"></sp-device-list-item>
+  }
+
+
 </div>

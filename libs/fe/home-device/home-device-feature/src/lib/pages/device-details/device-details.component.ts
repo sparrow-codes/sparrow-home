@@ -12,6 +12,7 @@ import {
 import { DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Checkbox } from 'primeng/checkbox';
 import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
 import { InputText } from 'primeng/inputtext';
@@ -38,6 +39,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     DeviceActionComponent,
     RadioButton,
     HumanizePipe,
+    Checkbox,
   ],
   templateUrl: './device-details.component.html',
   animations: [sparrowFadeIn],
@@ -55,6 +57,7 @@ export class DeviceDetailsComponent implements OnInit {
   protected readonly deviceType: typeof DeviceType = DeviceType;
   protected mainActionKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainActionKey ?? null);
   protected mainParamKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainParamKey ?? null);
+  protected isOnMainPage: Signal<boolean> = computed(() => this.deviceDetails()?.isOnMainPage ?? false);
 
   public ngOnInit(): void {
     if (this.id()) {
@@ -76,10 +79,26 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   protected setMainAction(actionKey: string | null): void {
-    this._facadeService.updateDeviceMainFields(this.id() as string, actionKey, this.mainParamKey());
+    this._facadeService.updateDeviceSettings(this.id() as string, {
+      mainActionKey: actionKey,
+      mainParamKey: this.mainParamKey(),
+      isOnMainPage: this.isOnMainPage(),
+    });
   }
 
   protected setMainParam(paramKey: string | null): void {
-    this._facadeService.updateDeviceMainFields(this.id() as string, this.mainActionKey(), paramKey);
+    this._facadeService.updateDeviceSettings(this.id() as string, {
+      mainActionKey: this.mainActionKey(),
+      mainParamKey: paramKey,
+      isOnMainPage: this.isOnMainPage(),
+    });
+  }
+
+  protected setIsOnMainPage(isOnMainPage: boolean): void {
+    this._facadeService.updateDeviceSettings(this.id() as string, {
+      mainActionKey: this.mainActionKey(),
+      mainParamKey: this.mainParamKey(),
+      isOnMainPage: isOnMainPage,
+    });
   }
 }

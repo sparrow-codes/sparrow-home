@@ -1,1 +1,1 @@
-export * from './lib/services/main-panel-facade.service';
+export * from './lib/store/main-panel-store';

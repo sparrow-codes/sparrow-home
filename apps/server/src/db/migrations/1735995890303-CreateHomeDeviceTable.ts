@@ -11,6 +11,7 @@ export class CreateHomeDeviceTable1735995890303 implements MigrationInterface {
       { name: 'lastChanged', type: 'timestamp', isNullable: true },
       { name: 'mainActionKey', type: 'varchar', isNullable: true },
       { name: 'mainParamKey', type: 'varchar', isNullable: true },
+      { name: 'isOnMainPage', type: 'boolean', default: false },
     ],
   });
 

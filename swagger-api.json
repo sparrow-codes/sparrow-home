@@ -235,13 +235,11 @@
     },
     "/api/home-device/main-fields/{id}": {
       "put": {
-        "operationId": "setDeviceMainFields",
+        "operationId": "setDeviceSettings",
         "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
         "requestBody": {
           "required": true,
-          "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateDeviceMainFieldsRequest" } }
-          }
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SetDeviceSettingsRequest" } } }
         },
         "responses": { "200": { "description": "" } },
         "security": [{ "bearer": [] }],
@@ -427,7 +425,8 @@
         "type": "object",
         "properties": {
           "deviceType": { "type": "number", "nullable": true },
-          "isOpen": { "type": "boolean", "nullable": true }
+          "isOpen": { "type": "boolean", "nullable": true },
+          "isOnMainPage": { "type": "boolean", "nullable": true }
         }
       },
       "DeviceActionDto": {
@@ -458,7 +457,8 @@
           "params": { "type": "object" },
           "actions": { "type": "array", "items": { "$ref": "#/components/schemas/DeviceActionDto" } },
           "mainActionKey": { "type": "string", "nullable": true },
-          "mainParamKey": { "type": "string", "nullable": true }
+          "mainParamKey": { "type": "string", "nullable": true },
+          "isOnMainPage": { "type": "boolean", "nullable": true }
         },
         "required": [
           "id",
@@ -474,7 +474,8 @@
           "params",
           "actions",
           "mainActionKey",
-          "mainParamKey"
+          "mainParamKey",
+          "isOnMainPage"
         ]
       },
       "CreateDeviceRequest": {
@@ -512,13 +513,14 @@
         "properties": { "deviceId": { "type": "string" }, "payload": { "type": "object" } },
         "required": ["deviceId", "payload"]
       },
-      "UpdateDeviceMainFieldsRequest": {
+      "SetDeviceSettingsRequest": {
         "type": "object",
         "properties": {
           "mainActionKey": { "type": "string", "nullable": true },
-          "mainParamKey": { "type": "string", "nullable": true }
+          "mainParamKey": { "type": "string", "nullable": true },
+          "isOnMainPage": { "type": "boolean", "nullable": true }
         },
-        "required": ["mainActionKey", "mainParamKey"]
+        "required": ["mainActionKey", "mainParamKey", "isOnMainPage"]
       },
       "SetAlarmModeRequest": {
         "type": "object",

@@ -12,7 +12,7 @@ import { GetAllDeviceFilters } from './models/get-all-device-filters';
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { PublishEventRequest } from './models/publish-event-request';
-import { UpdateDeviceMainFieldsRequest } from './models/update-device-main-fields-request';
+import { SetDeviceSettingsRequest } from './models/set-device-settings-request';
 
 describe('HomeDeviceController', () => {
   let controller: HomeDeviceController;
@@ -27,7 +27,7 @@ describe('HomeDeviceController', () => {
     getAvgTemperature: jest.fn(),
     areAllDoorsAndWindowsClosed: jest.fn(),
     publishEvent: jest.fn(),
-    setDeviceMainFields: jest.fn(),
+    setDeviceSettings: jest.fn(),
   } as unknown as jest.Mocked<HomeDeviceService>;
 
   beforeEach(async () => {
@@ -191,14 +191,14 @@ describe('HomeDeviceController', () => {
 
   describe('update device main fields', () => {
     it('should update device main fields', () => {
-      const request: UpdateDeviceMainFieldsRequest = {
+      const request: SetDeviceSettingsRequest = {
         mainParamKey: 'param',
         mainActionKey: 'action',
       };
       const id: string = '1';
 
-      controller.setDeviceMainFields(id, request);
-      expect(homeDeviceServiceMock.setDeviceMainFields).toHaveBeenCalledWith(1, request);
+      controller.setDeviceSettings(id, request);
+      expect(homeDeviceServiceMock.setDeviceSettings).toHaveBeenCalledWith(1, request);
     });
   });
 });

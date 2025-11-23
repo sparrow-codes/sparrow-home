@@ -184,8 +184,9 @@ describe('withTasks signal store', () => {
         model: '',
         params: {},
         vendor: '',
-        mainActionKey: null,
-        mainParamKey: null,
+        mainActionKey: 'state',
+        mainParamKey: 'test',
+        isOnMainPage: false,
       },
     ];
     mockHomeDeviceApiService.getAllDevices.mockReturnValue(of(devices));

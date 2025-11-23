@@ -26,6 +26,7 @@ export class DeviceDetailsMapper {
       actions: toActions(deviceProfile),
       mainActionKey: entity.mainActionKey,
       mainParamKey: entity.mainParamKey,
+      isOnMainPage: entity.isOnMainPage,
     };
   }
 

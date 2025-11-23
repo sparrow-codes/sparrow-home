@@ -30,4 +30,6 @@ export abstract class HomeDeviceDetailsDto {
   public mainActionKey: string | null = null;
   @ApiProperty({ nullable: true })
   public mainParamKey: string | null = null;
+  @ApiProperty({ nullable: true })
+  public isOnMainPage?: boolean;
 }
