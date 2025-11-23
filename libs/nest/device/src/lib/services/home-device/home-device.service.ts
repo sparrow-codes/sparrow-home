@@ -6,7 +6,7 @@ import { first, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
 import { DataSource, Repository } from 'typeorm';
 
 import { GetAllDeviceFilters } from '../../controllers/models/get-all-device-filters';
-import { UpdateDeviceMainFieldsRequest } from '../../controllers/models/update-device-main-fields-request';
+import { SetDeviceSettingsRequest } from '../../controllers/models/set-device-settings-request';
 import { DeviceDetailsMapper } from '../../mappers/device-details-mapper';
 import { HomeDeviceDetailsDto } from '../../models/home-device-details-dto';
 
@@ -19,7 +19,7 @@ export class HomeDeviceService {
     private readonly _zigbeeDeviceService: ZigbeeDeviceService
   ) {}
 
-  public async setDeviceMainFields(id: number, request: UpdateDeviceMainFieldsRequest): Promise<void> {
+  public async setDeviceSettings(id: number, request: SetDeviceSettingsRequest): Promise<void> {
     const device: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
 
     if (!device) {
@@ -28,6 +28,7 @@ export class HomeDeviceService {
 
     device.mainActionKey = request.mainActionKey ?? null;
     device.mainParamKey = request.mainParamKey ?? null;
+    device.isOnMainPage = Boolean(request.isOnMainPage);
 
     await this._homeDeviceRepository.save(device);
   }
@@ -40,6 +41,7 @@ export class HomeDeviceService {
     return from(
       this._homeDeviceRepository.findBy({
         deviceType: filters?.deviceType,
+        isOnMainPage: filters?.isOnMainPage,
       })
     ).pipe(
       map((entities) => {

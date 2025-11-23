@@ -12,7 +12,7 @@ import { GetAllDoorAndWindowsStatus } from './models/get-all-door-and-windows-st
 import { GetDeviceDetailsResponse } from './models/get-device-details-response';
 import { GetHomeAvgTemperature } from './models/get-home-avg-temperature';
 import { PublishEventRequest } from './models/publish-event-request';
-import { UpdateDeviceMainFieldsRequest } from './models/update-device-main-fields-request';
+import { SetDeviceSettingsRequest } from './models/set-device-settings-request';
 
 @ApiBearerAuth()
 @ApiTags('Home Device')
@@ -80,13 +80,10 @@ export class HomeDeviceController {
     return this._homeDeviceService.publishEvent(request.deviceId, request.payload);
   }
 
-  @ApiOperation({ operationId: 'setDeviceMainFields' })
-  @ApiBody({ type: UpdateDeviceMainFieldsRequest })
+  @ApiOperation({ operationId: 'setDeviceSettings' })
+  @ApiBody({ type: SetDeviceSettingsRequest })
   @Put('main-fields/:id')
-  public async setDeviceMainFields(
-    @Param('id') id: string,
-    @Body() request: UpdateDeviceMainFieldsRequest
-  ): Promise<void> {
-    await this._homeDeviceService.setDeviceMainFields(Number(id), request);
+  public async setDeviceSettings(@Param('id') id: string, @Body() request: SetDeviceSettingsRequest): Promise<void> {
+    await this._homeDeviceService.setDeviceSettings(Number(id), request);
   }
 }

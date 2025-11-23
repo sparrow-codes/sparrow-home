@@ -23,5 +23,8 @@ export class HomeDevice {
   public mainParamKey: string | null = null;
 
   @Column({ nullable: true })
+  public isOnMainPage?: boolean;
+
+  @Column({ nullable: true })
   public lastChanged: Date | null = null;
 }

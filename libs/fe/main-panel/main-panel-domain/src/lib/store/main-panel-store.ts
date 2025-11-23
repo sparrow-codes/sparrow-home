@@ -7,25 +7,31 @@ import {
   GetAlarmModeResponseApiModel,
   GetAllDoorAndWindowsStatusApiModel,
   HomeDeviceApiService,
+  HomeDeviceDetailsDtoApiModel,
 } from '@sparrow-home/api';
 import { LoaderService } from '@sparrow-home/core';
+import { HomeDevice, toHomeDevice } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
-import { combineLatest, finalize, first, map, Observable, pipe, switchMap, tap } from 'rxjs';
+import { finalize, first, forkJoin, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 interface MainPanelStoreState {
   avgTemperature: number | null;
   isAlarmOn: boolean;
   isAlarmAvailable: boolean;
   areAllWindowsAndDoorsClosed: boolean | null;
+  mainPageDevices: HomeDevice[];
 }
 
-export const MainPanelStore = signalStore(
+export type MainPanelStore = InstanceType<typeof mainPanelStore>;
+
+export const mainPanelStore = signalStore(
   { providedIn: 'root' },
   withState<MainPanelStoreState>({
     avgTemperature: null,
     isAlarmOn: false,
     isAlarmAvailable: false,
     areAllWindowsAndDoorsClosed: null,
+    mainPageDevices: [],
   }),
   withMethods(
     (
@@ -65,12 +71,21 @@ export const MainPanelStore = signalStore(
         );
       }
 
+      function getMainDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
+        return homeDeviceApiService.getAllDevices({ body: { isOnMainPage: true } }).pipe(
+          tapResponse({
+            error: () => messageService.add({ summary: 'Błąd pobierania listy urządzeń' }),
+            next: (devices) => patchState(store, { mainPageDevices: devices.map(toHomeDevice) }),
+          })
+        );
+      }
+
       return {
         fetchInitData: rxMethod<void>(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap(() =>
-              combineLatest([getAvgTemperature(), getAlarmStatus(), getWindowsAndDoorStatus()]).pipe(
+              forkJoin([getAvgTemperature(), getAlarmStatus(), getWindowsAndDoorStatus(), getMainDevices()]).pipe(
                 finalize(() => (loaderService.showLoader = false))
               )
             )
@@ -94,6 +109,24 @@ export const MainPanelStore = signalStore(
                 }),
                 switchMap(() => getAlarmStatus().pipe(finalize(() => (loaderService.showLoader = false))))
               )
+            )
+          )
+        ),
+        publishEvent: rxMethod<{ id: number; payload: Record<string, unknown> }>(
+          pipe(
+            tap(() => (loaderService.showLoader = true)),
+            switchMap((request) =>
+              homeDeviceApiService
+                .publishZigbeeEvent({
+                  body: { deviceId: request.id.toString(), payload: request.payload },
+                })
+                .pipe(
+                  tapResponse({
+                    error: () => messageService.add({ summary: 'Nie udało się wysłać zdarzenia!', severity: 'error' }),
+                    next: () => messageService.add({ summary: 'Akcja wywoałana pomyślnie!', severity: 'success' }),
+                  }),
+                  finalize(() => (loaderService.showLoader = false))
+                )
             )
           )
         ),

@@ -88,6 +88,12 @@
 
       <p-divider></p-divider>
       <div class="flex justify-between items-center mt-4">
+        <span>Pokaż na głównej stronie</span>
+        <p-checkbox [size]="'large'" [ngModel]="isOnMainPage()" (ngModelChange)="setIsOnMainPage($event)" [binary]="true"></p-checkbox>
+      </div>
+
+      <p-divider></p-divider>
+      <div class="flex justify-between items-center mt-4">
         <span>Id:</span>
         <div class="flex gap-2 items-center">
           <span>{{ homeDevice.homeDeviceId }}</span>

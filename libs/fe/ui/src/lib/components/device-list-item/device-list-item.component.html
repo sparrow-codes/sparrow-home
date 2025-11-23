@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center">
     <a
       class="flex flex-row items-center gap-4 cursor-pointer hover:bg-gray-50 rounded no-underline text-inherit focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      [routerLink]="['details', device().id]"
+      [routerLink]="disableRouting() ? '' : ['details', device().id]"
       [attr.aria-label]="'Przejdź do szczegółów urządzenia ' + device().name"
     >
       <sp-device-type [fullLabel]="false" [deviceType]="device().type" />

@@ -8,12 +8,12 @@ import {
 } from '@sparrow-home/api';
 import { LoaderService, RoutePath } from '@sparrow-home/core';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-home/ui';
-import { DeviceType, HomeDevice } from '@sparrow-home/utils';
+import { DeviceType, HomeDevice, toHomeDevice } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
 
-import { HomeDeviceMapper } from '../mapper/home-device-mapper';
+import { DeviceSettings } from '../../model/device-settings';
 
 @Injectable({
   providedIn: 'root',
@@ -151,14 +151,11 @@ export class HomeDeviceDataService {
     this._apiService.publishZigbeeEvent({ body: { deviceId, payload } }).pipe(first()).subscribe();
   }
 
-  public updateDeviceMainFields(id: string, mainActionKey: string | null, mainParamKey: string | null): void {
+  public updateDeviceMainFields(id: string, settings: DeviceSettings): void {
     this._apiService
-      .setDeviceMainFields({
+      .setDeviceSettings({
         id,
-        body: {
-          mainActionKey,
-          mainParamKey,
-        },
+        body: settings,
       })
       .pipe(
         first(),
@@ -176,7 +173,7 @@ export class HomeDeviceDataService {
       tap({
         next: (details) => {
           if (details.deviceDetails) {
-            this._homeDeviceDetails.set(HomeDeviceMapper.mapDetails(details.deviceDetails));
+            this._homeDeviceDetails.set(toHomeDevice(details.deviceDetails));
           }
         },
         error: (error: HttpErrorResponse) => {
@@ -201,7 +198,7 @@ export class HomeDeviceDataService {
       .pipe(
         first(),
         tap({
-          next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(HomeDeviceMapper.mapDetails)),
+          next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(toHomeDevice)),
           error: () => this._messageService.add({ summary: 'Błąd pobierania listy urządzeń', severity: 'error' }),
         })
       );
