@@ -1,8 +1,8 @@
-<sp-page-title [navigationDisabled]="joinInProgress()" [routerLink]="['../']">Dodaj nowe urządzenie</sp-page-title>
+<sp-page-title [navigationDisabled]="joinInProgress()" [routerLink]="['../']">{{ 'home.add_new_device' | translate }}
+</sp-page-title>
 
 <p-card>
   <form @staggeredFadeIn [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-6 pt-2">
-    <!-- Nazwa urządzenia -->
     <p-float-label variant="on">
       <input
         id="deviceName"
@@ -14,7 +14,7 @@
         fluid="true"
         class="fade-step"
       />
-      <label for="deviceName">Podaj nazwę urządzenia</label>
+      <label for="deviceName">{{'home.device_name' | translate}}</label>
     </p-float-label>
 
     <p-floatlabel class="w-full fade-step" variant="on">
@@ -27,41 +27,41 @@
         optionValue="value"
         [fluid]="true"
       />
-      <label for="in_label">Wybierz typ urządzenia</label>
+      <label for="in_label">{{'home.device_type' | translate}}</label>
     </p-floatlabel>
 
     <div class="h-[40px]">
       @if (deviceJoined() === true && !joinInProgress()) {
-      <div class="flex gap-2 items-center justify-center w-full">
-        <i class="pi pi-check-circle text-green-600"></i>
-        <span class="text-green-600">Nazwiązano połączenie!</span>
-      </div>
-      } @if (deviceJoined() === false && !joinInProgress()) {
-      <div class="flex gap-2 items-center justify-center w-full">
-        <i class="pi pi-ban text-red-500"></i>
-        <span class="text-red-500">Parowanie zakończone niepowodzeniem</span>
-      </div>
-      } @if (joinInProgress()) {
-      <div class="flex gap-2 items-center justify-center w-full">
-        <span class="text-red-gray-700">Parowanie w toku...</span>
-      </div>
+        <div class="flex gap-2 items-center justify-center w-full">
+          <i class="pi pi-check-circle text-green-600"></i>
+          <span class="text-green-600">{{'home.connection_established' | translate}}</span>
+        </div>
+      }
+      @if (deviceJoined() === false && !joinInProgress()) {
+        <div class="flex gap-2 items-center justify-center w-full">
+          <i class="pi pi-ban text-red-500"></i>
+          <span class="text-red-500">{{'home.device_paring_failed' | translate}}</span>
+        </div>
+      }
+      @if (joinInProgress()) {
+        <div class="flex gap-2 items-center justify-center w-full">
+          <span class="text-red-gray-700">{{'home.pairing_in_progress' | translate}}</span>
+        </div>
       }
     </div>
-    <!-- Komunikat błędu -->
 
-    <!-- Przycisk dodania -->
     @if (deviceJoined() === true) {
-    <p-button type="button" label="Ok" size="large" fluid="true" [routerLink]="['../']"></p-button>
+      <p-button type="button" label="Ok" size="large" fluid="true" [routerLink]="['../']"></p-button>
     } @else {
-    <p-button
-      type="submit"
-      class="fade-step"
-      [disabled]="formGroup.invalid || joinInProgress()"
-      label="Dodaj urządzenie"
-      [loading]="joinInProgress()"
-      size="large"
-      fluid="true"
-    ></p-button>
+      <p-button
+        type="submit"
+        class="fade-step"
+        [disabled]="formGroup.invalid || joinInProgress()"
+        [label]="'common.connect' | translate"
+        [loading]="joinInProgress()"
+        size="large"
+        fluid="true"
+      ></p-button>
     }
   </form>
 </p-card>

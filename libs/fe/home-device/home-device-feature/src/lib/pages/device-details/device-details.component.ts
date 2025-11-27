@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, InputSignal, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import {
   BatteryStatusComponent,
@@ -40,6 +41,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     RadioButton,
     HumanizePipe,
     Checkbox,
+    TranslatePipe,
   ],
   templateUrl: './device-details.component.html',
   animations: [sparrowFadeIn],

@@ -5,15 +5,15 @@
         <i class="pi pi-bell"></i>
       </div>
       <div>
-        <div class="font-semibold text-base mb-2">Alarm domowy</div>
+        <div class="font-semibold text-base mb-2">{{ 'main_panel.alarm_home' | translate }}</div>
         @if (isAlarmAvailable()) {
           @if (isAlarmOn()) {
-            <p-tag severity="success">Aktywny</p-tag>
+            <p-tag severity="success">{{ 'main_panel.active' | translate }}</p-tag>
           } @else {
-            <p-tag severity="secondary">Nieaktywny</p-tag>
+            <p-tag severity="secondary">{{ 'main_panel.inactive' | translate }}</p-tag>
           }
         } @else {
-          <p-tag severity="warn">Brak dostępnych syren</p-tag>
+          <p-tag severity="warn">{{ 'main_panel.no_sirens' | translate }}</p-tag>
         }
       </div>
     </div>
