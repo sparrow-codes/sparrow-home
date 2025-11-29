@@ -26,11 +26,6 @@ export class ZigbeeDeviceService implements OnModuleInit {
   }
 
   public onModuleInit(): void {
-    this._logger.log('Zigbee device service initialized');
-    this._client.subscribe(ZigbeeDeviceService._BRIDGE_EVENT_URL);
-    this._client.subscribe(ZigbeeDeviceService._BRIDGE_DEVICES_URL);
-    this._client.subscribe(`${ZigbeeDeviceService._BASE}/+`);
-
     this._client.on('connect', () => {
       this._logger.log(`MQTT connected`);
     });
@@ -55,6 +50,11 @@ export class ZigbeeDeviceService implements OnModuleInit {
         }
       }
     });
+
+    this._client.subscribe(ZigbeeDeviceService._BRIDGE_EVENT_URL);
+    this._client.subscribe(ZigbeeDeviceService._BRIDGE_DEVICES_URL);
+    this._client.subscribe(`${ZigbeeDeviceService._BASE}/+`);
+    this._logger.log('Zigbee device service initialized');
   }
 
   public publishEvent(deviceId: string, payload: string): void {
