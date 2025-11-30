@@ -65,7 +65,7 @@ export class DevicePageComponent implements OnInit {
   }
 
   protected onDeviceEvent(id: string, payload: Record<string, unknown>): void {
-    this._facadeService.publishZigbeeEvent(id.toString(), payload);
+    this._facadeService.publishZigbeeEvent(id, payload);
   }
 
   private _handleSearchEvent(): void {
