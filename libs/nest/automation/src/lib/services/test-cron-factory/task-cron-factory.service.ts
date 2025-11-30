@@ -28,7 +28,7 @@ export class TaskCronFactory {
         const nextJobTime = new CronJob(
           getCronTime(actionJob.executionTime, actionJob.daysOfWeek ?? task.daysOfWeek),
           () => {
-            this.logger.log(`Starting job ${jobId}`);
+            this.logger.log(`Starting job ${jobId} for task: ${task.name}`);
             this._zigbeeDeviceService.publishEvent(actionJob.assignedDeviceId, JSON.stringify(actionJob.payload));
           }
         );

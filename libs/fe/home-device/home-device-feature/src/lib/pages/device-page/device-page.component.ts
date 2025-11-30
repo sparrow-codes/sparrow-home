@@ -64,7 +64,7 @@ export class DevicePageComponent implements OnInit {
     this._facadeService.fetchDevices();
   }
 
-  protected onDeviceEvent(id: number, payload: Record<string, unknown>): void {
+  protected onDeviceEvent(id: string, payload: Record<string, unknown>): void {
     this._facadeService.publishZigbeeEvent(id.toString(), payload);
   }
 
