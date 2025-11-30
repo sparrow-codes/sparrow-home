@@ -30,7 +30,7 @@
         <sp-device-list-item
           @spFadeIn
           [device]="device"
-          (deviceEvent)="onDeviceEvent(device.id, $event)"
+          (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"
         ></sp-device-list-item>
       }
 
