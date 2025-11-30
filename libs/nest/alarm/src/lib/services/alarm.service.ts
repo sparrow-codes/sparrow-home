@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeviceType, HomeDevice } from '@sparrow-server/entities';
 import { DeviceProfile, ZigbeeDeviceService } from '@sparrow-server/external-api';
 import { PushNotificationService } from '@sparrow-server/push';
-import { distinctUntilChanged, filter, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { GetAlarmModeResponse } from '../controller/model/get-alarm-mode.response';
@@ -29,7 +29,6 @@ export class AlarmService implements OnModuleInit, OnModuleDestroy {
     this._zigbeeDeviceService.deviceEvent$
       .pipe(
         takeUntil(this._destroy$),
-        filter(() => this._isAlarmActive),
         distinctUntilChanged((prev, next) => JSON.stringify(prev.state) === JSON.stringify(next.state))
       )
       .subscribe((deviceProfile) => this._handleSensorEvent(deviceProfile));
