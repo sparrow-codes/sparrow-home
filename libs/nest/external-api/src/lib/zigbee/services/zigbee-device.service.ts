@@ -37,7 +37,7 @@ export class ZigbeeDeviceService implements OnModuleInit {
         joinedDevices.forEach((device: DeviceJoined) => {
           const deviceProfile: DeviceProfile = toDevice(device);
 
-          if(!this.devices.has(deviceProfile.deviceIdentity.friendlyName)) {
+          if (!this.devices.has(deviceProfile.deviceIdentity.friendlyName)) {
             this._devices.set(device.friendly_name, deviceProfile);
           }
         });
