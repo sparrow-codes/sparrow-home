@@ -112,13 +112,13 @@ export const mainPanelStore = signalStore(
             )
           )
         ),
-        publishEvent: rxMethod<{ id: number; payload: Record<string, unknown> }>(
+        publishEvent: rxMethod<{ id: string; payload: Record<string, unknown> }>(
           pipe(
             tap(() => (loaderService.showLoader = true)),
             switchMap((request) =>
               homeDeviceApiService
                 .publishZigbeeEvent({
-                  body: { deviceId: request.id.toString(), payload: request.payload },
+                  body: { deviceId: request.id, payload: request.payload },
                 })
                 .pipe(
                   tapResponse({

@@ -12,7 +12,7 @@
                   (isAlarmOnChange)="setAlarm($event)" />
 
   @for (device of mainDevices(); track device.id) {
-    <sp-device-list-item [disableRouting]="true" [device]="device" (deviceEvent)="handleDeviceEvent(device.id, $event)"></sp-device-list-item>
+    <sp-device-list-item [disableRouting]="true" [device]="device" (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"></sp-device-list-item>
   }
 
 
