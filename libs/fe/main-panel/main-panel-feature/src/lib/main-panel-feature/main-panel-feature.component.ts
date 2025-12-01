@@ -50,7 +50,7 @@ export class MainPanelFeatureComponent implements OnInit {
     this._mainPanelStore.setAlarm(isAlarmOn);
   }
 
-  protected handleDeviceEvent(id: number, payload: Record<string, unknown>): void {
+  protected handleDeviceEvent(id: string, payload: Record<string, unknown>): void {
     this._mainPanelStore.publishEvent({ id, payload });
   }
 }
