@@ -76,7 +76,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
 
   public onModuleDestroy(): void {
     this._destroy.next();
-    this._destroy.unsubscribe();
+    this._destroy.complete();
   }
 
   public publishEvent(deviceId: string, payload: string): void {
