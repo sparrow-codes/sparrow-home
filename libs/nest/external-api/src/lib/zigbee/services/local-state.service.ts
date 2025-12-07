@@ -23,7 +23,7 @@ export class LocalStateService {
       return new Map(JSON.parse(data));
     } catch (err) {
       if (err instanceof Error && (err as NodeJS.ErrnoException).code === 'ENOENT') {
-        this._logger.log('No state file found.');
+        this._logger.log(`No state file found at ${this._filePath}. Starting with empty state.`);
         return new Map();
       }
       throw err;
