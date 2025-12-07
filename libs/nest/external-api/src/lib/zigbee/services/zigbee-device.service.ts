@@ -5,7 +5,9 @@ import { debounceTime, Observable, Subject } from 'rxjs';
 
 import { DeviceProfile } from '../model';
 import { DeviceJoined } from '../model/device-joined';
+import { DeviceState } from '../model/device-state';
 import { toDevice } from './functions/to-device';
+import { LocalStateService } from './local-state.service';
 
 @Injectable()
 export class ZigbeeDeviceService implements OnModuleInit {
@@ -16,12 +18,16 @@ export class ZigbeeDeviceService implements OnModuleInit {
 
   private static readonly _BRIDGE_EVENT_URL: string = 'zigbee2mqtt/bridge/event';
   private static readonly _BRIDGE_DEVICES_URL: string = 'zigbee2mqtt/bridge/devices';
+  private static readonly _REMOVE_DEVICE_URL: string = 'zigbee2mqtt/bridge/request/device/remove';
   private static readonly _BASE = 'zigbee2mqtt';
 
   public readonly devices: ReadonlyMap<string, DeviceProfile> = this._devices;
   public readonly deviceEvent$: Observable<DeviceProfile> = this._deviceEvent.asObservable().pipe(debounceTime(1000));
 
-  public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {
+  public constructor(
+    @Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt,
+    private readonly _localStateService: LocalStateService
+  ) {
     this._client = this._zigbeeClient.createClient();
   }
 
@@ -30,16 +36,16 @@ export class ZigbeeDeviceService implements OnModuleInit {
       this._logger.log(`MQTT connected`);
     });
 
-    this._client.on('message', (topic: string, payload: BufferSource) => {
+    this._client.on('message', async (topic: string, payload: BufferSource) => {
       if (topic === ZigbeeDeviceService._BRIDGE_DEVICES_URL) {
+        const cachedState: Map<string, DeviceState> | null = await this._localStateService.getState();
         const joinedDevices: DeviceJoined[] = JSON.parse(payload.toString());
 
         joinedDevices.forEach((device: DeviceJoined) => {
           const deviceProfile: DeviceProfile = toDevice(device);
 
-          if (!this.devices.has(deviceProfile.deviceIdentity.friendlyName)) {
-            this._devices.set(device.friendly_name, deviceProfile);
-          }
+          deviceProfile.state = cachedState?.get(deviceProfile.deviceIdentity.friendlyName) ?? {};
+          this._devices.set(device.friendly_name, deviceProfile);
         });
       } else {
         const result: RegExpExecArray | null = new RegExp(
@@ -48,7 +54,10 @@ export class ZigbeeDeviceService implements OnModuleInit {
         const friendlyName: string = result ? result[1] : '';
 
         if (friendlyName && this._devices.has(friendlyName)) {
-          this._updateDeviceState(this._devices.get(friendlyName) as DeviceProfile, JSON.parse(payload.toString()));
+          await this._updateDeviceState(
+            this._devices.get(friendlyName) as DeviceProfile,
+            JSON.parse(payload.toString())
+          );
         }
       }
     });
@@ -64,18 +73,35 @@ export class ZigbeeDeviceService implements OnModuleInit {
     this._client.publish(`${ZigbeeDeviceService._BASE}/${deviceId}/set`, payload);
   }
 
-  public removeDevice(deviceId: string): void {
+  public async removeDevice(deviceId: string): Promise<void> {
+    const cachedState: Map<string, DeviceState> | null = await this._localStateService.getState();
+
+    if (cachedState) {
+      cachedState.delete(deviceId);
+      await this._localStateService.setState(cachedState);
+    }
+
+    this._client.publish(ZigbeeDeviceService._REMOVE_DEVICE_URL, JSON.stringify({ id: deviceId }));
     this._devices.delete(deviceId);
   }
 
-  private _updateDeviceState(deviceProfile: DeviceProfile, payload: Record<string, unknown>): void {
+  private async _updateDeviceState(deviceProfile: DeviceProfile, payload: Record<string, unknown>): Promise<void> {
+    this._logger.log(`Updating device state: ${JSON.stringify(payload)}`, deviceProfile.deviceIdentity.friendlyName);
+    const cachedState: Map<string, DeviceState> | null = await this._localStateService.getState();
+    const state: DeviceState = {
+      ...deviceProfile.state,
+      ...payload,
+    };
+
     const device: DeviceProfile = {
       ...deviceProfile,
-      state: {
-        ...deviceProfile.state,
-        ...payload,
-      },
+      state,
     };
+
+    if (cachedState) {
+      cachedState.set(device.deviceIdentity.friendlyName, state);
+      await this._localStateService.setState(cachedState);
+    }
 
     this._devices.set(device.deviceIdentity.friendlyName, device);
     this._deviceEvent.next(device);

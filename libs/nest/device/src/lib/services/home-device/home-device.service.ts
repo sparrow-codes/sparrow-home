@@ -109,7 +109,6 @@ export class HomeDeviceService {
       return;
     }
 
-    await this._zigbeeManageDeviceService.removeDevice(homeDevice.zigbeeDeviceId);
     await this._homeDeviceRepository
       .delete({ id })
       .then(() => this._zigbeeDeviceService.removeDevice(homeDevice.zigbeeDeviceId));

@@ -6,6 +6,7 @@ import { ConfigKey } from '@sparrow-server/shared';
 
 import { ZigbeeDeviceService, ZigbeeManageDeviceService } from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
+import { LocalStateService } from './zigbee/services/local-state.service';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service'
       },
     ]),
   ],
-  providers: [MqttConnectorService, ZigbeeManageDeviceService, ZigbeeDeviceService],
+  providers: [MqttConnectorService, ZigbeeManageDeviceService, ZigbeeDeviceService, LocalStateService],
   exports: [ZigbeeManageDeviceService, ZigbeeDeviceService],
 })
 export class ApiModule implements OnModuleInit {
