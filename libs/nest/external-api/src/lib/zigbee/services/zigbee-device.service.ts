@@ -47,13 +47,12 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
 
     this._client.on('message', (topic: string, payload: BufferSource) => {
       if (topic === ZigbeeDeviceService._BRIDGE_DEVICES_URL) {
-        const cachedState: Map<string, DeviceState> = this._cachedState;
         const joinedDevices: DeviceJoined[] = JSON.parse(payload.toString());
 
         joinedDevices.forEach((device: DeviceJoined) => {
           const deviceProfile: DeviceProfile = toDevice(device);
 
-          deviceProfile.state = cachedState.get(deviceProfile.deviceIdentity.friendlyName) ?? {};
+          deviceProfile.state = this._cachedState.get(deviceProfile.deviceIdentity.friendlyName) ?? {};
           this._devices.set(device.friendly_name, deviceProfile);
         });
       } else {
