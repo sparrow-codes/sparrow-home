@@ -52,13 +52,6 @@ export class ZigbeeManageDeviceService {
     );
   }
 
-  public async removeDevice(deviceId: string): Promise<void> {
-    this.client.publish(
-      `${ZigbeeManageDeviceService._ZIGBEE_MQTT_BRIDGE_REQUEST_URL}/device/remove`,
-      this.mqttService.toMessage({ id: deviceId })
-    );
-  }
-
   private _handleEventMessage() {
     return (_topic: string, message: Buffer): void => {
       const bridgeEventMessage: BridgeEventMessage = JSON.parse(message.toString());

@@ -1,9 +1,11 @@
+import { DeviceState } from './device-state';
+
 export interface DeviceProfile {
   deviceIdentity: DeviceIdentity;
   deviceDefinition: DeviceDefinition;
   actions: DeviceAction[];
   readonlyFields: ReadonlyField[];
-  state: Record<string, unknown>;
+  state: DeviceState;
 }
 
 interface DeviceIdentity {
