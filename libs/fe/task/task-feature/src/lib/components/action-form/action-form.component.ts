@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AvailableDevice, TaskAction, TasksSignalStore,tasksSignalStore } from '@sparrow-home/task-domain';
+import { AvailableDevice, TaskAction, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { DaysOfWeekControl, DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { DeviceAction, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
