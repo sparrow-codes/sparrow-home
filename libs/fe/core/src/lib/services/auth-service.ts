@@ -3,7 +3,7 @@ import { AuthenticationApiService } from '@sparrow-home/api';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 import { first, map, Observable, switchMap, tap } from 'rxjs';
 
-import { MobilePushNotificationService } from '../services';
+import { MobilePushNotificationService } from './index';
 
 @Injectable({
   providedIn: 'root',

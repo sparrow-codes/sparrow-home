@@ -10,7 +10,7 @@
         [fluid]="true"
         size="large"
       ></p-select>
-      <label for="device">Urządzenie</label>
+      <label for="device">{{ 'tasks.device' | translate }}</label>
     </p-float-label>
 
     <p-float-label variant="on">
@@ -23,7 +23,7 @@
         optionValue="value"
         size="large"
       ></p-select>
-      <label for="action">Akcja</label>
+      <label for="action">{{ 'tasks.action' | translate }}</label>
     </p-float-label>
 
     <div class="min-h-[50px]">
@@ -43,13 +43,13 @@
         showIcon="true"
         iconDisplay="input"
       ></p-datePicker>
-      <label for="time">Czas wykonania</label>
+      <label for="time">{{ 'tasks.time' | translate }}</label>
     </p-float-label>
   </div>
 
-    <sp-days-of-week-control [formControl]="form.controls.daysOfWeek" notDefinedLabel="Domyślne"></sp-days-of-week-control>
+    <sp-days-of-week-control [formControl]="form.controls.daysOfWeek" [notDefinedLabel]="'tasks.default' | translate"></sp-days-of-week-control>
 </form>
 
 <div class="w-full flex justify-end mt-4">
-  <p-button severity="primary" size="large" [disabled]="form.invalid" (onClick)="save()"> Zapisz</p-button>
+  <p-button severity="primary" size="large" [disabled]="form.invalid" (onClick)="save()">{{ 'common.save' | translate }}</p-button>
 </div>

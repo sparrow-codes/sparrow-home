@@ -2,13 +2,13 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { CreateNewUserRequestApiModel, LoginRequestApiModel } from '@sparrow-home/api';
 
 import { User } from '../model';
-import { UserStore } from '../store/user-store';
+import { UserStore, userStore } from '../store/user-store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserDataFacadeService {
-  private readonly _userStore = inject(UserStore);
+  private readonly _userStore: UserStore = inject(userStore);
 
   public get user(): Signal<User | null> {
     return this._userStore.user;

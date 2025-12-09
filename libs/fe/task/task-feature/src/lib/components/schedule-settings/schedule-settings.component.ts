@@ -13,6 +13,7 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
 import { DaysOfWeekControl, DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
@@ -49,6 +50,7 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     AccordionHeader,
     AccordionContent,
     DaysOfWeekControl,
+    TranslatePipe,
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],

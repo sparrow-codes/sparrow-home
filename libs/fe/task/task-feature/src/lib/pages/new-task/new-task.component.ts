@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
 
@@ -7,7 +8,7 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
 
 @Component({
   selector: 'sp-new-task',
-  imports: [CommonModule, PageTitleComponent, ScheduleSettingsComponent],
+  imports: [CommonModule, PageTitleComponent, ScheduleSettingsComponent, TranslatePipe],
   templateUrl: './new-task.component.html',
 })
 export class NewTaskComponent implements OnInit {

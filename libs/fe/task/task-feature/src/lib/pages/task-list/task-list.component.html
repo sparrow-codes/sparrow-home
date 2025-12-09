@@ -1,11 +1,11 @@
 <div class="w-full flex flex-col h-full">
-  <sp-page-title>Automatyka</sp-page-title>
+  <sp-page-title>{{ 'tasks.title' | translate }}</sp-page-title>
 
   <div class="flex w-full justify-end">
-    <p-button icon="pi pi-plus" label="Dodaj" size="large" severity="primary" [routerLink]="['new']"></p-button>
+    <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary" [routerLink]="['new']"></p-button>
   </div>
 
-  <span class="h-[45px]">Zadania: {{tasks().length}}</span>
+  <span class="h-[45px]">{{ 'tasks.count' | translate:{count: tasks().length} }}</span>
 
   <div class="flex flex-col gap-2">
     @defer () {
@@ -16,7 +16,7 @@
 
     @if (tasks().length === 0) {
       <p-divider></p-divider>
-      <span class="w-full text-center">Brak zadań</span>
+      <span class="w-full text-center">{{ 'tasks.no_tasks' | translate }}</span>
     }
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { LoginRequestApiModel } from '@sparrow-home/api';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -12,7 +13,7 @@ import { LoginForm } from './form-service/model/login-form';
 
 @Component({
   selector: 'sp-login-form',
-  imports: [CommonModule, ReactiveFormsModule, InputText, Password, FloatLabel, Button],
+  imports: [CommonModule, ReactiveFormsModule, InputText, Password, FloatLabel, Button, TranslatePipe],
   templateUrl: './login-form.component.html',
   providers: [LoginFormService],
 })

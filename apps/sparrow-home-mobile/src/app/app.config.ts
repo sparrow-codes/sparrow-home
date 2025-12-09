@@ -37,8 +37,8 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideAnimationsAsync(),
     provideTranslateService({
-      fallbackLang: 'en',
-      lang: 'en',
+      fallbackLang: 'lang',
+      lang: 'lang',
       loader: provideTranslateHttpLoader({
         prefix: '/assets/i18n/',
         suffix: '.json',

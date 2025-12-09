@@ -2,7 +2,7 @@
 
 <div class="flex justify-end mt-2">
   <div class="flex gap-4">
-    <button pButton severity="secondary" (click)="dialogRef.close()">Anuluj</button>
-    <button pButton severity="primary" (click)="onConfirm()">Usuń</button>
+    <button pButton severity="secondary" (click)="dialogRef.close()">{{ 'common.cancel' | translate }}</button>
+    <button pButton severity="primary" (click)="onConfirm()">{{ 'common.remove' | translate }}</button>
   </div>
 </div>

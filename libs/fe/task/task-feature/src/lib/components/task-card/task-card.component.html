@@ -3,7 +3,7 @@
     <a
       class="flex flex-row items-center gap-4 cursor-pointer hover:bg-gray-50 rounded no-underline text-inherit focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       [routerLink]="['edit', task().id]"
-      [attr.aria-label]="'Przejdź do szczegółów urządzenia ' + task().id"
+      [attr.aria-label]="('tasks.go_to_device_details' | translate) + task().id"
     >
 
       <div class="w-10 h-10 bg-gray-700 rounded-md flex items-center justify-center text-white">

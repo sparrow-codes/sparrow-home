@@ -2,7 +2,6 @@
 
 <p-card>
   <div @staggeredFadeIn class="w-full max-w-[360px]">
-    <!-- Avatar i dane głównego użytkownika -->
     <div class="flex flex-col items-center text-center gap-4 py-6 fade-step">
       <p-avatar
         size="xlarge"
@@ -20,10 +19,9 @@
       <span class="text-gray-500 text-sm">{{ user.email }}</span>
     </div>
 
-    <!-- Lista użytkowników dodatkowych -->
     @if (additionalUsers()?.length) {
     <div class="flex flex-col gap-2 mb-6 fade-step">
-      <span class="font-medium text-sm">Lista użytkowników:</span>
+      <span class="font-medium text-sm">{{ 'user.additional_users_list' | translate }}</span>
 
       @for (user of additionalUsers(); track user.id) {
       <div class="flex justify-between items-center border-b border-light-gray py-2 text-sm">
@@ -42,12 +40,10 @@
     </div>
     }
 
-    <!-- Divider -->
     <p-divider class="my-4 fade-step"></p-divider>
 
-    <!-- Przycisk wylogowania -->
     <p-button
-      label="Wyloguj"
+      [label]="'user.logout' | translate"
       icon="pi pi-sign-out"
       variant="text"
       fluid="true"

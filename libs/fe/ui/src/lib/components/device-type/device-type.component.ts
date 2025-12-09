@@ -9,13 +9,14 @@ import {
   bootstrapWifi,
 } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceType } from '@sparrow-home/utils';
 
 import { deviceTypeDictionary } from '../../dictionary';
 
 @Component({
   selector: 'sp-device-type',
-  imports: [CommonModule, NgIcon],
+  imports: [CommonModule, NgIcon, TranslatePipe],
   templateUrl: './device-type.component.html',
   styleUrl: './device-type.component.css',
   providers: [

@@ -1,3 +1,4 @@
+export * from './auth-service';
 export * from './data-facade.service';
 export * from './loader.service';
 export * from './mobile-push-notification.service';
