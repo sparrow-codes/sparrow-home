@@ -23,7 +23,7 @@ const mockHomeDeviceApiService = {
   getAllDevices: jest.fn(),
 };
 
-describe('withTasks signal store', () => {
+describe('tasksSignalStore', () => {
   const rootStore = tasksSignalStore;
 
   beforeEach(() => {
