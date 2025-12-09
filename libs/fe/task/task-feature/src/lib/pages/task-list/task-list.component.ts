@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AutomaticTask, TasksSignalStore,tasksSignalStore } from '@sparrow-home/task-domain';
+import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
