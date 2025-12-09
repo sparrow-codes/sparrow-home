@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AppStore, appStore } from '@sparrow-home/core';
-import { AutomaticTask } from '@sparrow-home/task-domain';
+import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
@@ -16,7 +15,7 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
   animations: [spFadeInAnimation],
 })
 export class TaskListComponent implements OnInit {
-  private readonly _store: AppStore = inject(appStore);
+  private readonly _store: TasksSignalStore = inject(tasksSignalStore);
 
   protected readonly tasks: Signal<AutomaticTask[]> = this._store.entities;
 

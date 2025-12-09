@@ -13,8 +13,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AppStore, appStore } from '@sparrow-home/core';
-import { AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
+import { AvailableDevice, TaskAction, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { DaysOfWeekControl, DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { DeviceAction, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
@@ -44,7 +43,7 @@ import { ActionForm } from './form-service/model/action-form';
 export class ActionFormComponent implements OnInit {
   public readonly taskAction: ModelSignal<TaskAction | undefined> = model();
 
-  private readonly _store: AppStore = inject(appStore);
+  private readonly _store: TasksSignalStore = inject(tasksSignalStore);
   private readonly _formService: ActionFormService = inject(ActionFormService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
 

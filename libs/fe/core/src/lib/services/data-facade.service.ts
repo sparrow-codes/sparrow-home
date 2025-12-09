@@ -2,18 +2,16 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppConfig } from '../models';
-import { appStore } from '../stores/app-store';
-import { SetupStore } from '../stores/setup-store';
+import { AppStore, appStore } from '../stores/app-store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataFacadeService {
-  private readonly _rootStore = inject(appStore);
-  private readonly _setupStore = inject(SetupStore);
+  private readonly _rootStore: AppStore = inject(appStore);
 
   public get configurationReady(): Signal<boolean | null> {
-    return this._setupStore.isConfigurationReady;
+    return this._rootStore.isConfigurationReady;
   }
 
   public get applicationConfig(): Signal<AppConfig | null> {
@@ -21,7 +19,7 @@ export class DataFacadeService {
   }
 
   public isConfigurationReady(): Observable<boolean> {
-    return this._setupStore.verifyConfigurationReady();
+    return this._rootStore.verifyConfigurationReady();
   }
 
   public saveAppConfig(appConfig: AppConfig): void {
