@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
-import { AutomaticTask, AvailableDevice, TasksSignalStore,tasksSignalStore } from '@sparrow-home/task-domain';
+import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { ConfirmationDialogComponent, ConfirmationDialogData, PageTitleComponent } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
