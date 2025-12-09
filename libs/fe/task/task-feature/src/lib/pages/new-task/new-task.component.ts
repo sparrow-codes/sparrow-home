@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
-import { AutomaticTask, AvailableDevice, TasksSignalStore,tasksSignalStore } from '@sparrow-home/task-domain';
+import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
 
 import { ScheduleSettingsComponent } from '../../components/schedule-settings/schedule-settings.component';
