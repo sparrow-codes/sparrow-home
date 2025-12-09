@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { signalStore, withState } from '@ngrx/signals';
 import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel, TasksApiService } from '@sparrow-home/api';
+import { appStore } from '@sparrow-home/core';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
 
 import { AutomaticTask } from '../model/automatic-task';
-import { withTasks } from './tasks';
+import { tasksSignalStore } from './tasks';
 
 const mockMessageService = {
   add: jest.fn(),
@@ -24,12 +24,13 @@ const mockHomeDeviceApiService = {
 };
 
 describe('withTasks signal store', () => {
-  const rootStore = signalStore(withState<{ isLoading: boolean }>({ isLoading: false }), withTasks());
+  const rootStore = tasksSignalStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         rootStore,
+        {provide: appStore, useValue: {withGlobalLoading: jest.fn(), withGlobalError: jest.fn(), withNoGlobalLoading: jest.fn()}},
         { provide: TasksApiService, useValue: mockTaskApiService },
         { provide: MessageService, useValue: mockMessageService },
         { provide: MessageService, useValue: mockMessageService },

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
-import { AppStore, appStore } from '@sparrow-home/core';
-import { AutomaticTask, AvailableDevice } from '@sparrow-home/task-domain';
+import { AutomaticTask, AvailableDevice, TasksSignalStore,tasksSignalStore } from '@sparrow-home/task-domain';
 import { ConfirmationDialogComponent, ConfirmationDialogData, PageTitleComponent } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
@@ -18,7 +17,7 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
 export class EditTaskComponent implements OnInit {
   public readonly taskId: InputSignal<string> = input.required();
 
-  private readonly _store: AppStore = inject(appStore);
+  private readonly _store: TasksSignalStore = inject(tasksSignalStore);
   private readonly _dialogService: DialogService = inject(DialogService);
 
   protected readonly task: Signal<AutomaticTask | undefined> = computed(() => this._store.entityMap()[this.taskId()]);
