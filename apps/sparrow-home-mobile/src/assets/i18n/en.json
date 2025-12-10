@@ -11,7 +11,7 @@
     "ok": "OK"
   },
   "ui": {
-    "new_version_available": "New version is now available. Press OK to reload the application.",
+    "new_version_available": "A new version is available. Press OK to reload the application.",
     "days_of_week_label": "Days of week:",
     "all_days": "All days",
     "define": "Define",
