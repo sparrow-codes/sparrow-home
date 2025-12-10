@@ -11,7 +11,6 @@
     "ok": "OK"
   },
   "ui": {
-    "new_app_version": "New version available!",
     "new_version_available": "New version is now available. Press OK to reload the application.",
     "days_of_week_label": "Days of week:",
     "all_days": "All days",
@@ -47,7 +46,6 @@
     "device_type": "Device type",
     "connection_established": "Connection established!",
     "connection_not_established": "Connection not established!",
-    "device_paring_failed": "Device pairing failed!",
     "device_pairing_failed": "Device pairing failed!",
     "pairing_in_progress": "Pairing in progress...",
     "device_details": "Device details",
@@ -144,7 +142,7 @@
     "create_account": "Create account",
     "login": "Log in",
     "required_fields": "* required fields",
-    "creat_new_user_to_start": "Create new user to start",
+    "create_new_user_to_start": "Create new user to start",
     "additional_users_list": "Additional users",
     "logout": "Log out"
   },

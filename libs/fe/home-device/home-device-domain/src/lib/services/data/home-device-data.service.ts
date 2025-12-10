@@ -93,7 +93,7 @@ export class HomeDeviceDataService {
             }),
           error: () =>
             this._messageService.add({
-              summary: this._translateService.instant('home.device_paring_failed'),
+              summary: this._translateService.instant('home.device_pairing_failed'),
               severity: 'error',
             }),
         }),
