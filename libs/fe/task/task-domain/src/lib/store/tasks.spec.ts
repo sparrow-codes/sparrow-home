@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
 import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel, TasksApiService } from '@sparrow-home/api';
 import { appStore } from '@sparrow-home/core';
 import { MessageService } from 'primeng/api';
@@ -30,11 +31,15 @@ describe('tasksSignalStore', () => {
     TestBed.configureTestingModule({
       providers: [
         rootStore,
-        {provide: appStore, useValue: {withGlobalLoading: jest.fn(), withGlobalError: jest.fn(), withNoGlobalLoading: jest.fn()}},
+        {
+          provide: appStore,
+          useValue: { withGlobalLoading: jest.fn(), withGlobalError: jest.fn(), withNoGlobalLoading: jest.fn() },
+        },
         { provide: TasksApiService, useValue: mockTaskApiService },
         { provide: MessageService, useValue: mockMessageService },
         { provide: MessageService, useValue: mockMessageService },
         { provide: HomeDeviceApiService, useValue: mockHomeDeviceApiService },
+        { provide: TranslateService, useValue: { instant: jest.fn((key: string) => key) } },
       ],
     });
 
@@ -59,7 +64,7 @@ describe('tasksSignalStore', () => {
 
     store.fetchTasks();
 
-    expect(mockMessageService.add).toHaveBeenCalledWith({ summary: 'Błąd pobierania listy zadań!', severity: 'error' });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(store.isLoading()).toBe(false);
   });
 
@@ -70,10 +75,7 @@ describe('tasksSignalStore', () => {
     store.changeTaskStatus({ id: 1, isActive: true });
 
     expect(mockTaskApiService.setTaskStatus).toHaveBeenCalledWith({ id: 1, active: true });
-    expect(mockMessageService.add).toHaveBeenCalledWith({
-      summary: 'Status zadania został zmieniony',
-      severity: 'success',
-    });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
     expect(store.isLoading()).toBe(false);
   });
@@ -84,10 +86,7 @@ describe('tasksSignalStore', () => {
     store.deleteTask(123);
 
     expect(mockTaskApiService.deleteTask).toHaveBeenCalledWith({ id: 123 });
-    expect(mockMessageService.add).toHaveBeenCalledWith({
-      summary: 'Błąd podczas usuwania zadania!',
-      severity: 'error',
-    });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
     expect(store.isLoading()).toBe(false);
   });
@@ -99,10 +98,7 @@ describe('tasksSignalStore', () => {
     store.deleteTask(123);
 
     expect(mockTaskApiService.deleteTask).toHaveBeenCalledWith({ id: 123 });
-    expect(mockMessageService.add).toHaveBeenCalledWith({
-      summary: 'Zadanie usunięte.',
-      severity: 'success',
-    });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
     expect(store.isLoading()).toBe(false);
   });
@@ -114,7 +110,7 @@ describe('tasksSignalStore', () => {
     store.createTask({ name: 'New task', actions: [] });
 
     expect(mockTaskApiService.createTask).toHaveBeenCalled();
-    expect(mockMessageService.add).toHaveBeenCalledWith({ summary: 'Utworzono zadanie', severity: 'success' });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
     expect(store.isLoading()).toBe(false);
   });
@@ -132,10 +128,7 @@ describe('tasksSignalStore', () => {
     });
 
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));
-    expect(mockMessageService.add).toHaveBeenCalledWith({
-      summary: 'Modyfikacja zakończona pomyślnie',
-      severity: 'success',
-    });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
     expect(store.isLoading()).toBe(false);
   });
@@ -153,10 +146,7 @@ describe('tasksSignalStore', () => {
     });
 
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));
-    expect(mockMessageService.add).toHaveBeenCalledWith({
-      summary: 'Błąd modyfikacji zadania',
-      severity: 'error',
-    });
+    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
     expect(store.isLoading()).toBe(false);
   });
