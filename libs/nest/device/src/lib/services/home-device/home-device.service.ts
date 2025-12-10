@@ -153,7 +153,7 @@ export class HomeDeviceService {
 
         return deviceProfile?.state['temperature'];
       })
-      .filter((value) => value !== null) as number[];
+      .filter((value): value is number => typeof value === 'number' && !isNaN(value));
 
     if (validTemperatures.length === 0) {
       return null;
