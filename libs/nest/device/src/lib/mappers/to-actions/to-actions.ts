@@ -1,9 +1,9 @@
 import { DeviceAction, DeviceProfile } from '@sparrow-server/external-api';
 import { DeviceActionDto } from '@sparrow-server/shared';
 
-export function toActions(deviceProfile: DeviceProfile): DeviceActionDto[] {
-  const actions: DeviceAction[] = deviceProfile.actions ?? [];
-  const state: Record<string, unknown> = deviceProfile.state ?? {};
+export function toActions(deviceProfile?: DeviceProfile): DeviceActionDto[] {
+  const actions: DeviceAction[] = deviceProfile?.actions ?? [];
+  const state: Record<string, unknown> = deviceProfile?.state ?? {};
 
   return actions.map<Readonly<DeviceActionDto>>((action) => {
     const raw: unknown = state[action.key as keyof typeof state];
