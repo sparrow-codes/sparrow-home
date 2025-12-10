@@ -8,8 +8,8 @@ import { toSignalStrength } from './to-signal-strength/to-signal-strength';
 export class DeviceDetailsMapper {
   private static readonly _COMMON_PARAMS: string[] = ['battery', 'linkquality', 'update', 'battery_low'];
 
-  public static toDeviceDetails(entity: HomeDevice, deviceProfile: DeviceProfile): HomeDeviceDetailsDto {
-    const linkQuality: number = (deviceProfile.state['linkquality'] as number) ?? 0;
+  public static toDeviceDetails(entity: HomeDevice, deviceProfile?: DeviceProfile): HomeDeviceDetailsDto {
+    const linkQuality: number = (deviceProfile?.state['linkquality'] as number) ?? 0;
 
     return {
       id: entity.id,
@@ -18,10 +18,10 @@ export class DeviceDetailsMapper {
       name: entity.deviceName,
       signalStrength: toSignalStrength(linkQuality),
       isOnline: linkQuality > 0,
-      battery: (deviceProfile.state['battery'] as number) ?? null,
-      model: deviceProfile.deviceDefinition.model ?? '',
-      vendor: deviceProfile.deviceDefinition.vendor ?? '',
-      description: deviceProfile.deviceDefinition.description ?? '',
+      battery: (deviceProfile?.state['battery'] as number) ?? null,
+      model: deviceProfile?.deviceDefinition.model ?? '',
+      vendor: deviceProfile?.deviceDefinition.vendor ?? '',
+      description: deviceProfile?.deviceDefinition.description ?? '',
       params: this._toParams(deviceProfile),
       actions: toActions(deviceProfile),
       mainActionKey: entity.mainActionKey,
@@ -30,8 +30,12 @@ export class DeviceDetailsMapper {
     };
   }
 
-  private static _toParams(deviceProfile: DeviceProfile): Record<string, string> {
+  private static _toParams(deviceProfile?: DeviceProfile): Record<string, string> {
     const params: Record<string, string> = {};
+
+    if (!deviceProfile) {
+      return params;
+    }
 
     for (const param of Object.keys(deviceProfile.state)) {
       const readonlyField: ReadonlyField | undefined = deviceProfile.readonlyFields.find(

@@ -149,13 +149,11 @@ export class HomeDeviceService {
 
     const validTemperatures: number[] = temperatureSensors
       .map((device) => {
-        const deviceProfile: DeviceProfile = this._zigbeeDeviceService.devices.get(
-          device.zigbeeDeviceId
-        ) as DeviceProfile;
+        const deviceProfile: DeviceProfile | undefined = this._zigbeeDeviceService.devices.get(device.zigbeeDeviceId);
 
-        return deviceProfile.state['temperature'] as number;
+        return deviceProfile?.state['temperature'];
       })
-      .filter((value) => value !== null);
+      .filter((value) => value !== null) as number[];
 
     if (validTemperatures.length === 0) {
       return null;
@@ -171,7 +169,9 @@ export class HomeDeviceService {
       await this._homeDeviceRepository.findBy({
         deviceType: DeviceType.OPEN_DOOR_SENSOR,
       })
-    ).map((device) => this._zigbeeDeviceService.devices.get(device.zigbeeDeviceId) as DeviceProfile);
+    )
+      .map((device) => this._zigbeeDeviceService.devices.get(device.zigbeeDeviceId))
+      .filter((device) => !!device);
 
     if (openSensors.length === 0) {
       return null;
