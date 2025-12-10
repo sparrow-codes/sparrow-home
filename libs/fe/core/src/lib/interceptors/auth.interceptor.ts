@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
 
 import { RoutePath } from '../enum';
-import { AuthService } from '../models';
+import { AuthService } from '../services';
 
 export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEvent<unknown>> => {
   const authService: AuthService = inject(AuthService);

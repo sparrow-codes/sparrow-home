@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonChip } from '@ionic/angular/standalone';
+import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { DeviceListItemComponent, PageTitleComponent, sparrowFadeIn, spFadeInAnimation } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
@@ -26,6 +27,7 @@ import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
     RouterLink,
     IonChip,
     Divider,
+    TranslatePipe,
   ],
   templateUrl: './device-page.component.html',
   animations: [sparrowFadeIn, spFadeInAnimation],

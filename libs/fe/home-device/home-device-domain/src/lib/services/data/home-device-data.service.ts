@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import {
   GetDeviceDetailsResponseApiModel,
   HomeDeviceApiService,
@@ -24,6 +25,7 @@ export class HomeDeviceDataService {
   private readonly _dialogService: DialogService = inject(DialogService);
   private readonly _router: Router = inject(Router);
   private readonly _messageService: MessageService = inject(MessageService);
+  private readonly _translateService: TranslateService = inject(TranslateService);
 
   private readonly _deviceTypeFilter: WritableSignal<DeviceType | null> = signal(null);
   private readonly _homeDevices: WritableSignal<HomeDevice[] | null> = signal(null);
@@ -84,10 +86,16 @@ export class HomeDeviceDataService {
         tap({
           next: (isCreated) =>
             this._messageService.add({
-              summary: isCreated ? 'Połączono urządzenie!' : 'Nie udało się nawiązać połączenia',
+              summary: isCreated
+                ? this._translateService.instant('home.connection_established')
+                : this._translateService.instant('home.connection_not_established'),
               severity: isCreated ? 'success' : 'contrast',
             }),
-          error: () => this._messageService.add({ summary: 'Błąd podczas towrzenia urządzenia', severity: 'error' }),
+          error: () =>
+            this._messageService.add({
+              summary: this._translateService.instant('home.device_pairing_failed'),
+              severity: 'error',
+            }),
         }),
         catchError(() => of(false))
       );
@@ -96,11 +104,10 @@ export class HomeDeviceDataService {
   public removeDevice(id: number, deviceName: string): void {
     this._dialogService
       .open(ConfirmationDialogComponent, {
-        header: 'Usuń urządzenie',
-
+        header: this._translateService.instant('home.remove_device'),
         width: '90vw',
         data: {
-          content: `Czy na pewno chcesz usunąć urządzenie o nazwie: ${deviceName}? Powiązane akcje w zadaniach zostaną automatycznie usunięte.`,
+          content: this._translateService.instant('home.remove_device_confirmation_content', { deviceName }),
         } as ConfirmationDialogData,
       })
       ?.onClose.pipe(
@@ -111,9 +118,16 @@ export class HomeDeviceDataService {
           this._apiService.deleteDevice({ id: id.toString() }).pipe(
             first(),
             tap({
-              next: () => this._messageService.add({ summary: 'Usunięto urządzenie!', severity: 'contrast' }),
+              next: () =>
+                this._messageService.add({
+                  summary: this._translateService.instant('home.device_deleted'),
+                  severity: 'contrast',
+                }),
               error: () =>
-                this._messageService.add({ summary: 'Błąd podczas usuwania urządzenia!', severity: 'error' }),
+                this._messageService.add({
+                  summary: this._translateService.instant('home.device_delete_error'),
+                  severity: 'error',
+                }),
             }),
             finalize(() => (this._loadingService.showLoader = false))
           )
@@ -141,9 +155,16 @@ export class HomeDeviceDataService {
       .subscribe({
         next: () => {
           this._loadingService.showLoader = false;
-          this._messageService.add({ text: 'Poprawnie zmieniono nazwę!', severity: 'success' });
+          this._messageService.add({
+            summary: this._translateService.instant('home.name_change_success'),
+            severity: 'success',
+          });
         },
-        error: () => this._messageService.add({ text: 'Błąd zmiany nazwy urządzenia!', severity: 'error' }),
+        error: () =>
+          this._messageService.add({
+            summary: this._translateService.instant('home.name_change_error'),
+            severity: 'error',
+          }),
       });
   }
 
@@ -160,7 +181,11 @@ export class HomeDeviceDataService {
       .pipe(
         first(),
         tap({
-          error: () => this._messageService.add({ text: 'Błąd aktualizacji pól', severity: 'error' }),
+          error: () =>
+            this._messageService.add({
+              summary: this._translateService.instant('home.update_fields_error'),
+              severity: 'error',
+            }),
         }),
         switchMap(() => this._fetchDeviceDetails(Number(id)))
       )
@@ -181,7 +206,7 @@ export class HomeDeviceDataService {
             this._router.navigate([RoutePath.NOT_FOUND]);
           } else {
             this._messageService.add({
-              summary: 'Błąd podczas pobierania szczegółów urządzenia!',
+              summary: this._translateService.instant('home.fetch_device_details_error'),
               severity: 'error',
             });
           }
@@ -199,7 +224,11 @@ export class HomeDeviceDataService {
         first(),
         tap({
           next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(toHomeDevice)),
-          error: () => this._messageService.add({ summary: 'Błąd pobierania listy urządzeń', severity: 'error' }),
+          error: () =>
+            this._messageService.add({
+              summary: this._translateService.instant('home.fetch_devices_error'),
+              severity: 'error',
+            }),
         })
       );
   }

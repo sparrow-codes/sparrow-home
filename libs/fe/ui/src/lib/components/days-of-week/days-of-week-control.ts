@@ -1,6 +1,7 @@
 import { Component, DestroyRef, effect, forwardRef, inject, Injector, input, InputSignal, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Checkbox } from 'primeng/checkbox';
 import { Divider } from 'primeng/divider';
 import { RadioButton } from 'primeng/radiobutton';
@@ -9,7 +10,7 @@ import { AbstractControlValueAccessor } from '../abstract-control-value-accessor
 
 @Component({
   selector: 'sp-days-of-week-control',
-  imports: [Checkbox, Divider, RadioButton, FormsModule, ReactiveFormsModule],
+  imports: [Checkbox, Divider, RadioButton, FormsModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './days-of-week-control.html',
   providers: [
     {

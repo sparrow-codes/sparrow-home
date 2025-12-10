@@ -4,6 +4,7 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
 import { HomeDeviceApiService, TasksApiService } from '@sparrow-home/api';
 import { appStore } from '@sparrow-home/core';
 import { toDeviceAction } from '@sparrow-home/utils';
@@ -27,17 +28,20 @@ export const tasksSignalStore = signalStore(
       store,
       _taskApiService = inject(TasksApiService),
       _messageService = inject(MessageService),
-      _homeDeviceApiService = inject(HomeDeviceApiService)
+      _homeDeviceApiService = inject(HomeDeviceApiService),
+      _translate = inject(TranslateService)
     ) => ({
       _taskApiService,
       _homeDeviceApiService,
       _messageService,
+      _translate,
       _fetchTasksList: _taskApiService.getTaskList().pipe(
         tapResponse({
           next: (tasks) => {
             patchState(store, setAllEntities(tasks.map((task) => toAutomaticTask(task))));
           },
-          error: () => _messageService.add({ summary: 'Błąd pobierania listy zadań!', severity: 'error' }),
+          error: () =>
+            _messageService.add({ summary: _translate.instant('tasks.fetch_list_error'), severity: 'error' }),
         })
       ),
     })
@@ -64,8 +68,15 @@ export const tasksSignalStore = signalStore(
             .pipe(
               tapResponse({
                 next: () =>
-                  store._messageService.add({ summary: 'Status zadania został zmieniony', severity: 'success' }),
-                error: () => store._messageService.add({ summary: 'Błąd aktywacji zadania!', severity: 'error' }),
+                  store._messageService.add({
+                    summary: store._translate.instant('tasks.status_changed'),
+                    severity: 'success',
+                  }),
+                error: () =>
+                  store._messageService.add({
+                    summary: store._translate.instant('tasks.activation_error'),
+                    severity: 'error',
+                  }),
               }),
               switchMap(() => store._fetchTasksList),
               finalize(() => patchState(store, { isLoading: false }))
@@ -80,10 +91,17 @@ export const tasksSignalStore = signalStore(
           store._taskApiService.deleteTask({ id: taskId }).pipe(
             tapResponse({
               next: () => {
-                store._messageService.add({ summary: 'Zadanie usunięte.', severity: 'success' });
+                store._messageService.add({
+                  summary: store._translate.instant('tasks.deleted'),
+                  severity: 'success',
+                });
                 router.navigate(['automation']);
               },
-              error: () => store._messageService.add({ summary: 'Błąd podczas usuwania zadania!', severity: 'error' }),
+              error: () =>
+                store._messageService.add({
+                  summary: store._translate.instant('tasks.delete_error'),
+                  severity: 'error',
+                }),
             }),
             switchMap(() => store._fetchTasksList),
             finalize(() => patchState(store, { isLoading: false }))
@@ -106,10 +124,17 @@ export const tasksSignalStore = signalStore(
             .pipe(
               tapResponse({
                 next: () => {
-                  store._messageService.add({ summary: 'Utworzono zadanie', severity: 'success' });
+                  store._messageService.add({
+                    summary: store._translate.instant('tasks.created'),
+                    severity: 'success',
+                  });
                   router.navigate(['automation']);
                 },
-                error: () => store._messageService.add({ summary: 'Błąd tworzenia zadania', severity: 'error' }),
+                error: () =>
+                  store._messageService.add({
+                    summary: store._translate.instant('tasks.creation_error'),
+                    severity: 'error',
+                  }),
               }),
               switchMap(() => store._fetchTasksList),
               finalize(() => patchState(store, { isLoading: false }))
@@ -133,10 +158,17 @@ export const tasksSignalStore = signalStore(
             .pipe(
               tapResponse({
                 next: () => {
-                  store._messageService.add({ summary: 'Modyfikacja zakończona pomyślnie', severity: 'success' });
+                  store._messageService.add({
+                    summary: store._translate.instant('tasks.update_success'),
+                    severity: 'success',
+                  });
                   router.navigate(['automation']);
                 },
-                error: () => store._messageService.add({ summary: 'Błąd modyfikacji zadania', severity: 'error' }),
+                error: () =>
+                  store._messageService.add({
+                    summary: store._translate.instant('tasks.update_error'),
+                    severity: 'error',
+                  }),
               }),
               switchMap(() => store._fetchTasksList),
               finalize(() => patchState(store, { isLoading: false }))
@@ -161,7 +193,11 @@ export const tasksSignalStore = signalStore(
                     actions: device.actions.map((action) => toDeviceAction(action)),
                   })),
                 }),
-              error: () => store._messageService.add({ summary: 'Błąd pobierania listy urządeń!', severity: 'error' }),
+              error: () =>
+                store._messageService.add({
+                  summary: store._translate.instant('tasks.fetch_devices_error'),
+                  severity: 'error',
+                }),
             }),
             finalize(() => patchState(store, { isLoading: false }))
           )
@@ -178,6 +214,6 @@ export const tasksSignalStore = signalStore(
           appSignalStore.withNoGlobalLoading();
         }
       });
-    }
+    },
   }))
 );

@@ -1,4 +1,4 @@
-<sp-page-title [routerLink]="['../']">Edytuj zadanie</sp-page-title>
+<sp-page-title [routerLink]="['../']">{{ 'tasks.edit_task' | translate }}</sp-page-title>
 
 <div class="flex flex-col gap-2">
   <sp-schedule-settings
@@ -12,7 +12,7 @@
   <p-divider></p-divider>
 
   <p-button
-    label="Usuń"
+    [label]="'tasks.delete' | translate"
     [outlined]="true"
     [fluid]="true"
     icon="pi pi-trash"
@@ -22,4 +22,3 @@
   ></p-button>
 
 </div>
-

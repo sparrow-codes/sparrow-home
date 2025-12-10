@@ -52,3 +52,7 @@ storybook-static
 
 /data/
 /data/*.json
+
+# i18n files
+!/apps/sparrow-home-mobile/src/assets/i18n/en.json
+/apps/sparrow-home-mobile/src/assets/i18n/

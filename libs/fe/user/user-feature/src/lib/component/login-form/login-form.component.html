@@ -2,7 +2,7 @@
   <!-- E-mail -->
   <p-floatlabel class="fade-step" variant="on">
     <input id="email" type="email" pInputText pSize="large" formControlName="email" fluid="true" />
-    <label for="email">E-mail</label>
+    <label for="email">{{ 'user.email' | translate }}</label>
   </p-floatlabel>
 
   <!-- Hasło -->
@@ -16,13 +16,13 @@
       [feedback]="false"
       [toggleMask]="true"
     ></p-password>
-    <label for="password">Hasło</label>
+    <label for="password">{{ 'user.password' | translate }}</label>
   </p-floatlabel>
 
   <!-- Przyciski -->
-  <p-button type="submit" fluid="true" size="large" class="fade-step" [disabled]="loginForm.invalid"
-    >Zaloguj się</p-button
-  >
+  <p-button type="submit" fluid="true" size="large" class="fade-step" [disabled]="loginForm.invalid">
+    {{ 'user.login' | translate }}
+  </p-button>
 
   <p-button
     (onClick)="newUserNavigation.emit()"
@@ -30,6 +30,6 @@
     [link]="true"
     class="p-button-link w-full text-center fade-step"
   >
-    Utwórz nowe konto
+    {{ 'user.create_account' | translate }}
   </p-button>
 </form>

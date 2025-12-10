@@ -1,13 +1,10 @@
-<div @staggeredFadeIn class="flex flex-col gap-2 w-full max-w-[440px] mx-auto">
-  <!-- Temperatura + status drzwi -->
+<div @staggeredFadeIn class="flex flex-col gap-4 w-full max-w-[440px] mx-auto">
   <sp-temperature-panel class="fade-step" [temperature]="avgTemperature()" [isHouseClosed]="isHouseClosed()" />
 
-  <!-- Lista urządzeń -->
   <sp-device-list-panel class="fade-step" />
 
   <p-divider></p-divider>
 
-  <!-- Alarm -->
   <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" [isAlarmAvailable]="isAlarmAvailable()"
                   (isAlarmOnChange)="setAlarm($event)" />
 

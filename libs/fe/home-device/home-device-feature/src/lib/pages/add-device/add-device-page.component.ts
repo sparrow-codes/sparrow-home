@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { deviceTypeDictionary, PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
@@ -25,6 +26,7 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
     FloatLabel,
     Select,
     RouterLink,
+    TranslatePipe,
   ],
   templateUrl: './add-device-page.component.html',
   providers: [CreateDeviceFormService],
@@ -32,6 +34,7 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
 })
 export class AddDevicePageComponent {
   private readonly _formService: CreateDeviceFormService = inject(CreateDeviceFormService);
+  private readonly _translateService: TranslateService = inject(TranslateService);
   private readonly facadeService: DeviceFacadeService = inject(DeviceFacadeService);
 
   protected readonly formGroup: FormGroup<CreateDeviceForm> = this._formService.form;
@@ -62,7 +65,8 @@ export class AddDevicePageComponent {
 
   private prepareDropdownOptions(): { value: number; label: string }[] {
     return Array.from(deviceTypeDictionary.entries()).map(
-      ([deviceType, label]) => ({ label: label, value: deviceType } as { value: number; label: string })
+      ([deviceType, label]) =>
+        ({ label: this._translateService.instant(label), value: deviceType } as { value: number; label: string })
     );
   }
 }

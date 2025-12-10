@@ -8,16 +8,16 @@
         [link]="true"
         size="small"
         class="ml-[-8px]"
-        label="Wróć"
+        [label]="'common.back' | translate"
       >
       </p-button>
-      <span class="text-md block font-semibold">Utwórz konto</span>
+      <span class="text-md block font-semibold">{{ 'user.create_account' | translate }}</span>
     </div>
 
     <!-- Formularz -->
     <sp-create-user-form (formSave)="dataService.createAdditionalUser($event)"></sp-create-user-form>
 
     <!-- Opis pod formularzem -->
-    <span class="text-xs text-gray-500 mt-4 block fade-step">* pola wymagane</span>
+    <span class="text-xs text-gray-500 mt-4 block fade-step">{{ 'user.required_fields' | translate }}</span>
   </p-card>
 </div>

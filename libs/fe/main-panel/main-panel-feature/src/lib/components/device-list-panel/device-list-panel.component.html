@@ -2,15 +2,15 @@
   class="flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-3 w-full cursor-pointer hover:bg-gray-50 transition no-underline"
   [routerLink]="['../', 'devices']"
   [queryParams]="{ deviceType: '' }"
-  aria-label="Przejdź do listy urządzeń"
+  aria-label="{{ 'main_panel.go_to_devices_list' | translate }}"
 >
   <div class="flex items-center gap-3">
     <div class="w-10 h-10 bg-gray-700 rounded-md flex items-center justify-center text-white">
       <i class="pi pi-objects-column"></i>
     </div>
     <div>
-      <div class="font-semibold text-gray-700">Zarządzaj urządzeniami</div>
-      <div class="text-sm text-gray-500">Lista dostępnych urządzeń</div>
+      <div class="font-semibold text-gray-700">{{ 'main_panel.manage_devices' | translate }}</div>
+      <div class="text-sm text-gray-500">{{ 'main_panel.available_devices' | translate }}</div>
     </div>
   </div>
 

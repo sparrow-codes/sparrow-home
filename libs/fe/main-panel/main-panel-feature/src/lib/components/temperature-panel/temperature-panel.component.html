@@ -4,23 +4,23 @@
 >
   @if (isHouseClosed() === true) {
   <div class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-right">
-    <span class="text-sm font-medium text-gray-700">Wszystkie drzwi i okna są zamknięte</span>
+    <span class="text-sm font-medium text-gray-700">{{ 'main_panel.all_closed' | translate }}</span>
   </div>
   } @else if (isHouseClosed() === false) {
   <a
     class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-sm font-medium text-gray-700 hover:bg-white/90 transition no-underline"
     [routerLink]="['../', 'devices']"
     [queryParams]="{ deviceType: DeviceType.OPEN_DOOR_SENSOR }"
-    aria-label="Przejdź do listy urządzeń z otwartymi drzwiami i oknami"
+    aria-label="{{ 'main_panel.go_to_open_devices_aria' | translate }}"
   >
-    Niektóre drzwi i okna są otwarte
+    {{ 'main_panel.some_open' | translate }}
   </a>
   } @if (temperature()) {
   <div class="absolute top-4 right-4 bg-white/50 backdrop-blur px-4 py-2 rounded-lg text-right">
     <div class="text-3xl font-semibold leading-none">
       {{ temperature() + ' °C' }}
     </div>
-    <div class="text-sm font-medium text-gray-600">Temperatura w domu</div>
+    <div class="text-sm font-medium text-gray-600">{{ 'main_panel.temperature_home' | translate }}</div>
   </div>
   }
 </div>

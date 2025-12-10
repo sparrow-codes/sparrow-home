@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
 import {
   CreateNewUserRequestApiModel,
   GetListOfAdditionalUsersResponseApiModel,
@@ -21,7 +22,9 @@ type UserState = {
   additionalUsers: User[] | null;
 };
 
-export const UserStore = signalStore(
+export type UserStore = InstanceType<typeof userStore>;
+
+export const userStore = signalStore(
   { providedIn: 'root' },
   withState<UserState>({ user: null, additionalUsers: null }),
   withMethods(
@@ -31,7 +34,8 @@ export const UserStore = signalStore(
       authService: AuthService = inject(AuthService),
       router: Router = inject(Router),
       loaderService = inject(LoaderService),
-      messageService = inject(MessageService)
+      messageService = inject(MessageService),
+      _translate = inject(TranslateService)
     ) => {
       function _getAdditionalUsers(): Observable<GetListOfAdditionalUsersResponseApiModel> {
         loaderService.showLoader = true;
@@ -48,7 +52,11 @@ export const UserStore = signalStore(
                   role: UserRole.ADDITIONAL,
                 })),
               }),
-            error: () => messageService.add({ summary: 'Błąd pobierania listy użytkowników', severity: 'error' }),
+            error: () =>
+              messageService.add({
+                summary: _translate.instant('user.fetch_additional_users_error'),
+                severity: 'error',
+              }),
           }),
           finalize(() => (loaderService.showLoader = false))
         );
@@ -63,14 +71,14 @@ export const UserStore = signalStore(
                 first(),
                 tapResponse({
                   next: () => {
-                    messageService.add({ summary: 'Konfiguracja zakończona powodzeniem', severity: 'contrast' });
+                    messageService.add({
+                      summary: _translate.instant('user.create_first_success'),
+                      severity: 'contrast',
+                    });
                     router.navigate([RoutePath.LOGIN]);
                   },
                   error: () =>
-                    messageService.add({
-                      summary: 'Konfiguracja zakończona niepowodzeniem',
-                      severity: 'error',
-                    }),
+                    messageService.add({ summary: _translate.instant('user.create_first_error'), severity: 'error' }),
                   finalize: () => (loaderService.showLoader = false),
                 })
               )
@@ -85,12 +93,15 @@ export const UserStore = signalStore(
                 first(),
                 tapResponse({
                   next: () => {
-                    messageService.add({ summary: 'Użytkownik został utworzony!', severity: 'contrast' });
+                    messageService.add({
+                      summary: _translate.instant('user.create_additional_success'),
+                      severity: 'contrast',
+                    });
                     router.navigate([RoutePath.LOGIN]);
                   },
                   error: () =>
                     messageService.add({
-                      summary: 'Błąd podczas tworzenia użytkownika!',
+                      summary: _translate.instant('user.create_additional_error'),
                       severity: 'error',
                     }),
                   finalize: () => (loaderService.showLoader = false),
@@ -112,7 +123,10 @@ export const UserStore = signalStore(
                     router.navigate([RoutePath.MAIN]).then(() => (loaderService.showLoader = false));
                   },
                   error: () => {
-                    messageService.add({ summary: 'Niepoprawny login lub hasło!', severity: 'error' });
+                    messageService.add({
+                      summary: _translate.instant('user.login_invalid_credentials'),
+                      severity: 'error',
+                    });
                     loaderService.showLoader = false;
                   },
                 })
@@ -141,10 +155,7 @@ export const UserStore = signalStore(
                       },
                     }),
                   error: () =>
-                    messageService.add({
-                      summary: 'Błąd pobierania szczegółów użytkownika',
-                      severity: 'error',
-                    }),
+                    messageService.add({ summary: _translate.instant('user.fetch_details_error'), severity: 'error' }),
                 }),
                 finalize(() => (loaderService.showLoader = false))
               )
@@ -158,12 +169,10 @@ export const UserStore = signalStore(
             switchMap((value) =>
               userApiService.activateUser({ body: { userId: value.id, isActive: value.isActive } }).pipe(
                 tapResponse({
-                  next: () => messageService.add({ summary: 'Zmieniono status użytkownika', severity: 'success' }),
+                  next: () =>
+                    messageService.add({ summary: _translate.instant('user.activate_success'), severity: 'success' }),
                   error: () =>
-                    messageService.add({
-                      summary: 'Błąd podczas zmiany statusu użytkownika!',
-                      severity: 'error',
-                    }),
+                    messageService.add({ summary: _translate.instant('user.activate_error'), severity: 'error' }),
                 }),
                 switchMap(() => _getAdditionalUsers())
               )

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -14,7 +15,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 
 @Component({
   selector: 'sp-create-user-form',
-  imports: [CommonModule, ReactiveFormsModule, Button, Password, FloatLabel, InputText],
+  imports: [CommonModule, ReactiveFormsModule, Button, Password, FloatLabel, InputText, TranslatePipe],
   templateUrl: './create-user-form.component.html',
   providers: [CreateUserFormService],
 })

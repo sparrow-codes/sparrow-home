@@ -46,6 +46,8 @@
     "@ng-icons/core": "^29.5.0",
     "@ngrx/operators": "^19.2.1",
     "@ngrx/signals": "^20.1.0",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "@primeng/themes": "^20.3.0",
     "@types/express": "4.17.25",
     "@types/web-push": "^3.6.4",

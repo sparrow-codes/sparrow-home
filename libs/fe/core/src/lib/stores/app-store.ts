@@ -75,7 +75,6 @@ export const appStore = signalStore(
               () =>
                 dialog.open(NewVersionDialogComponent, {
                   closable: false,
-                  header: 'Nowa wersja aplikacji',
                 })!.onClose
             )
           )
