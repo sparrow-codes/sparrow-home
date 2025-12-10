@@ -171,7 +171,7 @@ export class HomeDeviceService {
       })
     )
       .map((device) => this._zigbeeDeviceService.devices.get(device.zigbeeDeviceId))
-      .filter((device) => !!device);
+      .filter((device): device is DeviceProfile => device !== undefined);
 
     if (openSensors.length === 0) {
       return null;
