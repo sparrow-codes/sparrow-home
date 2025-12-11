@@ -142,7 +142,9 @@
           "required": true,
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateDeviceRequest" } } }
         },
-        "responses": { "201": { "description": "" } },
+        "responses": {
+          "default": { "description": "", "content": { "application/json": { "schema": { "type": "boolean" } } } }
+        },
         "security": [{ "bearer": [] }],
         "summary": "",
         "tags": ["Home Device"]
