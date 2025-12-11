@@ -53,8 +53,11 @@ export class AlarmService implements OnModuleInit, OnModuleDestroy {
 
   public async getAlarmMode(): Promise<GetAlarmModeResponse> {
     const siren: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ deviceType: DeviceType.SIREN });
+    const doorSensors: HomeDevice[] = await this._homeDeviceRepository.findBy({
+      deviceType: DeviceType.OPEN_DOOR_SENSOR,
+    });
 
-    return { isActive: this._isAlarmActive, isAvailable: siren !== null };
+    return { isActive: this._isAlarmActive, isAvailable: siren !== null && !!doorSensors.length };
   }
 
   private async _handleSensorEvent(deviceProfile: DeviceProfile): Promise<void> {

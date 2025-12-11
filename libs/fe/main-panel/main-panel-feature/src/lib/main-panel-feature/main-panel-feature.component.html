@@ -3,14 +3,13 @@
 
   <sp-device-list-panel class="fade-step" />
 
-  <p-divider></p-divider>
-
-  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" [isAlarmAvailable]="isAlarmAvailable()"
-                  (isAlarmOnChange)="setAlarm($event)" />
-
-  @for (device of mainDevices(); track device.id) {
-    <sp-device-list-item [disableRouting]="true" [device]="device" (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"></sp-device-list-item>
+  @if (isAlarmAvailable()) {
+  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" (isAlarmOnChange)="setAlarm($event)" />
+  } @for (device of mainDevices(); track device.id) {
+  <sp-device-list-item
+    [disableRouting]="true"
+    [device]="device"
+    (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"
+  ></sp-device-list-item>
   }
-
-
 </div>
