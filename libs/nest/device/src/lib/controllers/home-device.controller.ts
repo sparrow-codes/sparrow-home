@@ -30,6 +30,7 @@ export class HomeDeviceController {
 
   @ApiOperation({ operationId: 'createDevice' })
   @ApiBody({ type: CreateDeviceRequest })
+  @ApiResponse({ type: Boolean })
   @Post('create')
   public createDevice(@Body() request: CreateDeviceRequest): Observable<boolean> {
     return this._homeDeviceService.addDevice(request.type, request.name);

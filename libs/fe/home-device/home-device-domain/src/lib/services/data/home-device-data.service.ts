@@ -12,7 +12,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@sparrow-ho
 import { DeviceType, HomeDevice, toHomeDevice } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { catchError, filter, finalize, first, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { catchError, filter, finalize, first, Observable, of, switchMap, take, tap } from 'rxjs';
 
 import { DeviceSettings } from '../../model/device-settings';
 
@@ -82,7 +82,6 @@ export class HomeDeviceDataService {
       })
       .pipe(
         first(),
-        map(() => true),
         tap({
           next: (isCreated) =>
             this._messageService.add({
