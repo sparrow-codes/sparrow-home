@@ -103,6 +103,7 @@ export class HomeDeviceDataService {
   public removeDevice(id: number, deviceName: string): void {
     this._dialogService
       .open(ConfirmationDialogComponent, {
+        modal: true,
         header: this._translateService.instant('home.remove_device'),
         width: '90vw',
         data: {
