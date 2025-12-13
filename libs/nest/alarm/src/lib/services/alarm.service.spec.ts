@@ -19,7 +19,7 @@ describe('AlarmService', () => {
         AlarmService,
         { provide: ZigbeeDeviceService, useValue: { publishEvent: new Subject(), devices: new Map() } },
         { provide: PushNotificationService, useValue: mockedPushNotificationService },
-        { provide: getRepositoryToken(HomeDevice), useValue: { findOneBy: jest.fn() } },
+        { provide: getRepositoryToken(HomeDevice), useValue: { findOneBy: jest.fn(), findBy: jest.fn(() => []) } },
       ],
     }).compile();
 
