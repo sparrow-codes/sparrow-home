@@ -5,7 +5,6 @@ import { VisibilityService } from '@sparrow-home/core';
 import { MainPanelStore, mainPanelStore } from '@sparrow-home/main-panel-domain';
 import { DeviceListItemComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { HomeDevice } from '@sparrow-home/utils';
-import { Divider } from 'primeng/divider';
 import { filter } from 'rxjs';
 
 import { AlarmPanelComponent } from '../components/alarm-panel/alarm-panel.component';
@@ -18,7 +17,6 @@ import { TemperaturePanelComponent } from '../components/temperature-panel/tempe
     TemperaturePanelComponent,
     AlarmPanelComponent,
     DeviceListPanelComponent,
-    Divider,
     DeviceListItemComponent,
   ],
   templateUrl: './main-panel-feature.component.html',

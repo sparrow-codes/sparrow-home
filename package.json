@@ -6,9 +6,10 @@
     "build:mobile": "npm run generate-fe-api && nx run sparrow-home-mobile:build:production",
     "build:server": "nx run server:build && cp -a apps/server/.env dist/apps/server",
     "build:app": "npm run build:mobile && npm run build:server",
-    "run:borker": "docker run --name mqtt -p 1883:1883 -d eclipse-mosquitto:2",
     "test:all": "npx nx run-many -t test",
     "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json",
+    "run:env": "docker compose -f docker/docker-compose.yaml -p docker up -d",
+    "run:local": "npm run generate-fe-api && (npx nx run server:serve:development & npx nx run sparrow-home-mobile:serve:development & wait)",
     "run-dev-http-mobile": "http-server dist/apps/sparrow-home-mobile/browser -S -C cert.pem -o",
     "lint:all": "npx nx run-many -t eslint:lint"
   },
