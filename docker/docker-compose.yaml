@@ -9,7 +9,8 @@ services:
       POSTGRES_PASSWORD: sparrow
     ports:
       - "5432:5432"
-
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
   mqtt:
     image: eclipse-mosquitto:latest
     container_name: sparrow-mqtt
