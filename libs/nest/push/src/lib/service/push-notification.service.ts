@@ -10,6 +10,8 @@ import { PushMessage } from '../models';
 
 @Injectable()
 export class PushNotificationService {
+  private readonly _logger: Logger = new Logger(PushNotificationService.name);
+
   public constructor(
     @InjectRepository(PushSubscriptionClient)
     private readonly _pushSubscriptionsClientRepository: Repository<PushSubscriptionClient>,
@@ -28,7 +30,12 @@ export class PushNotificationService {
   }
 
   public async notify(message: PushMessage): Promise<void> {
-    const options: RequestOptions = this._prepareOptions();
+    const options: RequestOptions | undefined = this._prepareOptions();
+
+    if (!options) {
+      return;
+    }
+
     const users: User[] = await this._userRepository.findBy({ isActive: true });
     const subscriptions: PushSubscriptionClient[] = users
       .filter((user) => user.pushSubscriptionClient !== null)
@@ -55,13 +62,14 @@ export class PushNotificationService {
     });
   }
 
-  private _prepareOptions(): RequestOptions {
+  private _prepareOptions(): RequestOptions | undefined {
     const webPushPrivateKey: string | undefined = this._configService.get(ConfigKey.PUSH_PRIVATE_KEY);
     const webPushPublicKey: string | undefined = this._configService.get(ConfigKey.PUSH_PUBLIC_KEY);
     const pushAdminEmail: string | undefined = this._configService.get(ConfigKey.PUSH_ADMIN_EMAIL);
 
     if (!webPushPrivateKey || !webPushPublicKey || !pushAdminEmail) {
-      throw Error('Missing configuration for Push Notification Service!');
+      this._logger.warn('Missing configuration for Push Notification Service!');
+      return undefined;
     }
 
     return {
