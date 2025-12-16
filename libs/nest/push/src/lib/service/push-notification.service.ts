@@ -69,7 +69,7 @@ export class PushNotificationService {
 
     if (!webPushPrivateKey || !webPushPublicKey || !pushAdminEmail) {
       this._logger.warn('Missing configuration for Push Notification Service!');
-      return;
+      return undefined;
     }
 
     return {
