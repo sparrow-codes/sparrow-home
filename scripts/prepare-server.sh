@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -euo pipefail
 
 [[ "${EUID:-$(id -u)}" -eq 0 ]] || { echo "ERROR: Run as root (sudo)."; exit 1; }
@@ -7,9 +8,7 @@ echo "--------------------------------------"
 
 echo "This script will install:"
 echo "- Node.js"
-echo "- PM2"
 echo "- nginx"
-echo "- Mosquitto"
 echo "- Docker"
 echo "- and setup system firewall rules"
 
@@ -31,5 +30,9 @@ echo "--------------------------------------"
 echo "nginx installation completed."
 
 bash ./system/docker.sh
+echo "--------------------------------------"
+echo "Docker installation completed."
+
+bash ./system/firewall.sh
 echo "--------------------------------------"
 echo "Server preparation completed successfully!"
