@@ -32,7 +32,6 @@ services:
     environment:
       TZ: ${zigbeeTimeZone}
       ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto:1883
-      ZIGBEE2MQTT_SERIAL_PORT: ${zigbeeSerialPort}
       ZIGBEE2MQTT_SERIAL_ADAPTER: ${zigbeeSerialAdapter}
       ZIGBEE2MQTT_FRONTEND: "false"
       ZIGBEE2MQTT_PERMIT_JOIN: "false"

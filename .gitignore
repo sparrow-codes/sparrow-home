@@ -58,3 +58,5 @@ storybook-static
 /apps/sparrow-home-mobile/src/assets/i18n/
 /scripts/.env
 /scripts/data/
+/scripts/postgres-data/
+/scripts/zigbee2mqtt/
