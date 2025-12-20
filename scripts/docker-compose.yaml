@@ -3,6 +3,7 @@ services:
     image: postgres:latest
     container_name: sparrow-postgres
     restart: unless-stopped
+    env_file: .env
     environment:
       POSTGRES_DB: ${dbName}
       POSTGRES_USER: ${dbUserName}
@@ -27,6 +28,7 @@ services:
       - mosquitto
     ports:
       - "8080:8080"
+    env_file: .env
     environment:
       TZ: ${zigbeeTimeZone}
       ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto:1883
@@ -46,8 +48,7 @@ services:
       dockerfile: ./scripts/backend/Dockerfile.api
     container_name: sparrow-home-backend
     restart: unless-stopped
-    env_file:
-      - .env
+    env_file: .env
     environment:
       mode: ${mode}
       dbHost: postgres

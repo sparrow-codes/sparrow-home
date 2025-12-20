@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build:mobile": "npm run generate-fe-api && nx run sparrow-home-mobile:build:production",
-    "build:server": "nx run server:build && cp -a apps/server/.env dist/apps/server",
+    "build:server": "nx run server:build",
     "build:app": "npm run build:mobile && npm run build:server",
     "test:all": "npx nx run-many -t test",
     "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json",
