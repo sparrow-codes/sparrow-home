@@ -26,8 +26,6 @@ services:
     restart: unless-stopped
     depends_on:
       - mosquitto
-    ports:
-      - "8080:8080"
     env_file: .env
     environment:
       TZ: ${zigbeeTimeZone}
