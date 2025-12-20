@@ -56,3 +56,5 @@ storybook-static
 # i18n files
 !/apps/sparrow-home-mobile/src/assets/i18n/en.json
 /apps/sparrow-home-mobile/src/assets/i18n/
+/scripts/.env
+/scripts/data/
