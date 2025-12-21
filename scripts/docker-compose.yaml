@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: ${dbUserName}
       POSTGRES_PASSWORD: ${dbPassword}
     ports:
-      - "127.0.0.1:5432:5432"
+      - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
@@ -17,8 +17,6 @@ services:
     image: eclipse-mosquitto:latest
     container_name: sparrow-mqtt
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:1883:1883"
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
 
@@ -31,15 +29,15 @@ services:
     env_file: .env
     environment:
       TZ: ${zigbeeTimeZone}
-      ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto:1883
+      ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto
       ZIGBEE2MQTT_SERIAL_ADAPTER: ${zigbeeSerialAdapter}
       ZIGBEE2MQTT_FRONTEND: "false"
       ZIGBEE2MQTT_PERMIT_JOIN: "false"
       ZIGBEE2MQTT_ADVANCED_NETWORK_KEY: GENERATE
     volumes:
       - ./zigbee2mqtt/data:/app/data
-    devices:
-      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
+#    devices:
+#      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
 
   nodejs:
     depends_on:
@@ -48,7 +46,7 @@ services:
       - zigbee2mqtt
     build:
       context: ../
-      dockerfile: ./scripts/backend/Dockerfile.api
+      dockerfile: ./scripts/backend/Dockerfile
     container_name: sparrow-home-backend
     restart: unless-stopped
     env_file: .env
@@ -61,11 +59,19 @@ services:
       dbPassword: ${dbPassword}
       jwtSecret: ${jwtSecret}
       jwtExpiry: ${jwtExpiry}
-      mqttUrl: mqtt://mosquitto:1883
+      mqttUrl: mqtt://mosquitto
       pushPublicKey: ${pushPublicKey}
       pushPrivateKey: ${pushPrivateKey}
       pushAdminEmail: ${pushAdminEmail}
-    ports:
-      - "127.0.0.1:3000:3000"
     volumes:
       - ./data:/app/data
+  frontend:
+    build:
+      context: ../
+      dockerfile: ./scripts/frontend/Dockerfile
+    container_name: sparrow-home-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend/config.json:/usr/share/nginx/html/config.json:ro

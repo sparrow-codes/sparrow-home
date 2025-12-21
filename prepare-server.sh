@@ -7,10 +7,7 @@ echo "Sparrow Home - Server Preparation Script"
 echo "--------------------------------------"
 
 echo "This script will install:"
-echo "- Node.js"
-echo "- nginx"
 echo "- Docker"
-echo "- and setup system firewall rules"
 
 read -p "Continue? [y/N]: " answer
 
@@ -21,18 +18,7 @@ else
   exit 0
 fi
 
-bash ./system/node.sh --node-major 22
-echo "--------------------------------------"
-echo "Node.js installation completed."
-
-bash ./system/nginx.sh
-echo "--------------------------------------"
-echo "nginx installation completed."
-
 bash ./system/docker.sh
 echo "--------------------------------------"
-echo "Docker installation completed."
 
-bash ./system/firewall.sh
-echo "--------------------------------------"
-echo "Server preparation completed successfully!"
+echo "Server preparation completed."

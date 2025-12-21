@@ -60,3 +60,4 @@ storybook-static
 /scripts/data/
 /scripts/postgres-data/
 /scripts/zigbee2mqtt/
+/scripts/frontend/config.json
