@@ -18,7 +18,7 @@ else
   exit 0
 fi
 
-bash ./system/docker.sh
+bash ./scripts/system/docker.sh
 echo "--------------------------------------"
 
 echo "Server preparation completed."
