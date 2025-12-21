@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:18
     container_name: sparrow-postgres
     restart: unless-stopped
     env_file: .env
@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql
 
   mosquitto:
     image: eclipse-mosquitto:latest
