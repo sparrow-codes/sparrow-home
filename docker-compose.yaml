@@ -36,8 +36,8 @@ services:
       ZIGBEE2MQTT_ADVANCED_NETWORK_KEY: GENERATE
     volumes:
       - ./home-server/zigbee2mqtt/data:/app/data
-#    devices:
-#      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
+    devices:
+      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
 
   backend:
     depends_on:
