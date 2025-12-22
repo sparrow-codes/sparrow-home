@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: sparrow-postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${dbName}
+      POSTGRES_USER: ${dbUserName}
+      POSTGRES_PASSWORD: ${dbPassword}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./home-server/postgres_data:/var/lib/postgresql
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: sparrow-mqtt
+    restart: unless-stopped
+    volumes:
+      - ./home-server/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt:latest
+    container_name: sparrow-zigbee2mqtt
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    env_file: .env
+    environment:
+      TZ: ${zigbeeTimeZone}
+      ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto
+      ZIGBEE2MQTT_SERIAL_ADAPTER: ${zigbeeSerialAdapter}
+      ZIGBEE2MQTT_FRONTEND: "false"
+      ZIGBEE2MQTT_PERMIT_JOIN: "false"
+      ZIGBEE2MQTT_ADVANCED_NETWORK_KEY: GENERATE
+    volumes:
+      - ./home-server/zigbee2mqtt/data:/app/data
+    devices:
+      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
+
+  backend:
+    depends_on:
+      - postgres
+      - mosquitto
+      - zigbee2mqtt
+    build:
+      dockerfile: ./home-server/backend/Dockerfile
+    container_name: sparrow-home-backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      mode: ${mode}
+      dbHost: postgres
+      dbPort: 5432
+      dbName: ${dbName}
+      dbUserName: ${dbUserName}
+      dbPassword: ${dbPassword}
+      jwtSecret: ${jwtSecret}
+      jwtExpiry: ${jwtExpiry}
+      mqttUrl: mqtt://mosquitto
+      pushPublicKey: ${pushPublicKey}
+      pushPrivateKey: ${pushPrivateKey}
+      pushAdminEmail: ${pushAdminEmail}
+    volumes:
+      - ./home-server/backend/data:/app/data
+  frontend:
+    build:
+      dockerfile: ./home-server/frontend/Dockerfile
+    container_name: sparrow-home-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./config.json:/usr/share/nginx/html/config.json:ro

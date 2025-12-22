@@ -56,3 +56,11 @@ storybook-static
 # i18n files
 !/apps/sparrow-home-mobile/src/assets/i18n/en.json
 /apps/sparrow-home-mobile/src/assets/i18n/
+
+# Home Server files
+/home-server/data/
+/home-server/postgres-data/
+/home-server/zigbee2mqtt/
+/config.json
+/.env
+/home-server/postgres_data/
