@@ -11,14 +11,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql
+      - ./home-server/postgres_data:/var/lib/postgresql
 
   mosquitto:
     image: eclipse-mosquitto:latest
     container_name: sparrow-mqtt
     restart: unless-stopped
     volumes:
-      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./home-server/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
 
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:latest
@@ -35,18 +35,17 @@ services:
       ZIGBEE2MQTT_PERMIT_JOIN: "false"
       ZIGBEE2MQTT_ADVANCED_NETWORK_KEY: GENERATE
     volumes:
-      - ./zigbee2mqtt/data:/app/data
+      - ./home-server/zigbee2mqtt/data:/app/data
 #    devices:
 #      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
 
-  nodejs:
+  backend:
     depends_on:
       - postgres
       - mosquitto
       - zigbee2mqtt
     build:
-      context: ../
-      dockerfile: ./scripts/backend/Dockerfile
+      dockerfile: ./home-server/backend/Dockerfile
     container_name: sparrow-home-backend
     restart: unless-stopped
     env_file: .env
@@ -64,14 +63,13 @@ services:
       pushPrivateKey: ${pushPrivateKey}
       pushAdminEmail: ${pushAdminEmail}
     volumes:
-      - ./data:/app/data
+      - ./home-server/backend/data:/app/data
   frontend:
     build:
-      context: ../
-      dockerfile: ./scripts/frontend/Dockerfile
+      dockerfile: ./home-server/frontend/Dockerfile
     container_name: sparrow-home-frontend
     restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
-      - ./frontend/config.json:/usr/share/nginx/html/config.json:ro
+      - ./config.json:/usr/share/nginx/html/config.json:ro

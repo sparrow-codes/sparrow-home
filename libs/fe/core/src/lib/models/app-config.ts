@@ -1,4 +1,4 @@
 export interface AppConfig {
-  webPushPublicKey: string;
+  webPushPublicKey?: string;
   lang?: string;
 }

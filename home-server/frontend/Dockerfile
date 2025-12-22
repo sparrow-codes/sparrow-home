@@ -15,7 +15,7 @@ RUN npm run build:mobile
 FROM nginx:1.27-alpine AS runner
 WORKDIR /usr/share/nginx/html
 
-COPY scripts/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY home-server/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/dist/apps/sparrow-home-mobile/browser ./
 
 EXPOSE 80
