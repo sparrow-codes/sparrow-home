@@ -1,4 +1,4 @@
-name: Publish NEXT (develop)
+name: BACKEND - NEXT (develop)
 
 on:
   push:
