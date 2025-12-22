@@ -4,8 +4,6 @@
 name: Building Sparrow Home Application before merge
 
 on:
-  push:
-    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
 
