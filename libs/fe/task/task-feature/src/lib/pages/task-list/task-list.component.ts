@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { bootstrapClockHistory } from '@ng-icons/bootstrap-icons';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
@@ -11,14 +13,16 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
 
 @Component({
   selector: 'sp-task-list',
-  imports: [CommonModule, PageTitleComponent, TaskCardComponent, Button, RouterLink, Divider, TranslatePipe],
+  imports: [CommonModule, PageTitleComponent, TaskCardComponent, Button, RouterLink, Divider, TranslatePipe, NgIcon],
   templateUrl: './task-list.component.html',
   animations: [spFadeInAnimation],
+  providers: [provideIcons({ bootstrapClockHistory })],
 })
 export class TaskListComponent implements OnInit {
   private readonly _store: TasksSignalStore = inject(tasksSignalStore);
 
   protected readonly tasks: Signal<AutomaticTask[]> = this._store.entities;
+  protected readonly noTasks: Signal<boolean> = computed(() => this.tasks().length === 0);
 
   public ngOnInit(): void {
     this._store.fetchTasks();

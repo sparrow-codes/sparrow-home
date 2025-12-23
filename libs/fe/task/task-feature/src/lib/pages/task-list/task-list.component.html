@@ -1,11 +1,18 @@
 <div class="w-full flex flex-col h-full">
   <sp-page-title>{{ 'tasks.title' | translate }}</sp-page-title>
 
-  <div class="flex w-full justify-end">
-    <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary" [routerLink]="['new']"></p-button>
-  </div>
+  @if (!noTasks()) {
+    <div class="flex w-full justify-end">
+      <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary" [routerLink]="['new']"></p-button>
+    </div>
+  }
 
-  <span class="h-[45px]">{{ 'tasks.count' | translate:{count: tasks().length} }}</span>
+  <span class="h-[45px]">
+    @if (!noTasks()) {
+      {{ 'tasks.count' | translate:{count: tasks().length} }}
+    }
+  </span>
+
 
   <div class="flex flex-col gap-2">
     @defer () {
@@ -14,9 +21,21 @@
       }
     }
 
-    @if (tasks().length === 0) {
+    @if (noTasks()) {
+      <div class="w-full text-center p-4">
+        <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
+      </div>
+      <span class="w-full text-center text-2xl">{{ 'tasks.no_tasks_yet' | translate }}</span>
+      <span class="text-center text-gray-800 mb-2">{{ 'tasks.create_first_task' | translate }}</span>
+      <p-button
+        class="text-center"
+        [label]="'tasks.create_first_task_button' | translate"
+        size="large"
+        severity="primary"
+        [routerLink]="['new']"
+      ></p-button>
       <p-divider></p-divider>
-      <span class="w-full text-center">{{ 'tasks.no_tasks' | translate }}</span>
+      <span class="text-center text-gray-600 text-sm">{{ 'tasks.create_first_task_content' | translate }}</span>
     }
   </div>
 </div>
