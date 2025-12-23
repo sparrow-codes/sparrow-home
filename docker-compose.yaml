@@ -18,7 +18,7 @@ services:
     container_name: sparrow-mqtt
     restart: unless-stopped
     volumes:
-      - ./home-server/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
 
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:latest
@@ -44,8 +44,7 @@ services:
       - postgres
       - mosquitto
       - zigbee2mqtt
-    build:
-      dockerfile: ./home-server/backend/Dockerfile
+    image: ghcr.io/sparrow-codes/sparrow-backend:next
     container_name: sparrow-home-backend
     restart: unless-stopped
     env_file: .env
@@ -65,8 +64,7 @@ services:
     volumes:
       - ./home-server/backend/data:/app/data
   frontend:
-    build:
-      dockerfile: ./home-server/frontend/Dockerfile
+    image: ghcr.io/sparrow-codes/sparrow-frontend:next
     container_name: sparrow-home-frontend
     restart: unless-stopped
     ports:
