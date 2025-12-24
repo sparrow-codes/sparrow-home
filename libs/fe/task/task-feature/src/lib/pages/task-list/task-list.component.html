@@ -3,13 +3,14 @@
 
   @if (!noTasks()) {
     <div class="flex w-full justify-end">
-      <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary" [routerLink]="['new']"></p-button>
+      <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary"
+                [routerLink]="['new']"></p-button>
     </div>
   }
 
   <span class="h-[45px]">
     @if (!noTasks()) {
-      {{ 'tasks.count' | translate:{count: tasks().length} }}
+      {{ 'tasks.count' | translate:{ count: tasks().length } }}
     }
   </span>
 
@@ -22,20 +23,11 @@
     }
 
     @if (noTasks()) {
-      <div class="w-full text-center p-4">
+      <sp-onboarding [title]="'tasks.no_tasks_yet' | translate" [description]="'tasks.create_first_task' | translate"
+                     [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
+                     [content]="'tasks.create_first_task_content' | translate">
         <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
-      </div>
-      <span class="w-full text-center text-2xl">{{ 'tasks.no_tasks_yet' | translate }}</span>
-      <span class="text-center text-gray-800 mb-2">{{ 'tasks.create_first_task' | translate }}</span>
-      <p-button
-        class="text-center"
-        [label]="'tasks.create_first_task_button' | translate"
-        size="large"
-        severity="primary"
-        [routerLink]="['new']"
-      ></p-button>
-      <p-divider></p-divider>
-      <span class="text-center text-gray-600 text-sm">{{ 'tasks.create_first_task_content' | translate }}</span>
+      </sp-onboarding>
     }
   </div>
 </div>

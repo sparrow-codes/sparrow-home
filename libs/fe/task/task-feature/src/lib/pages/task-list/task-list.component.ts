@@ -5,15 +5,23 @@ import { bootstrapClockHistory } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
-import { PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
+import { OnboardingComponent, PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
-import { Divider } from 'primeng/divider';
 
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
 
 @Component({
   selector: 'sp-task-list',
-  imports: [CommonModule, PageTitleComponent, TaskCardComponent, Button, RouterLink, Divider, TranslatePipe, NgIcon],
+  imports: [
+    CommonModule,
+    PageTitleComponent,
+    TaskCardComponent,
+    Button,
+    RouterLink,
+    TranslatePipe,
+    NgIcon,
+    OnboardingComponent,
+  ],
   templateUrl: './task-list.component.html',
   animations: [spFadeInAnimation],
   providers: [provideIcons({ bootstrapClockHistory })],

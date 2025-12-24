@@ -3,14 +3,14 @@
 
   <div class="flex flex-row gap-2 justify-center items-center mb-1">
     @if (!noDevices()) {
-    <input
-      type="text"
-      pInputText
-      fluid="true"
-      pSize="large"
-      [placeholder]="'home.search_for_device' | translate"
-      [formControl]="searchControl"
-    />
+      <input
+        type="text"
+        pInputText
+        fluid="true"
+        pSize="large"
+        [placeholder]="'home.search_for_device' | translate"
+        [formControl]="searchControl"
+      />
 
 
       <p-button
@@ -26,37 +26,30 @@
 
   <div class="min-h-[45px] text-end">
     @if (deviceFilter() === deviceType.OPEN_DOOR_SENSOR) {
-    <ion-chip>
-      <div class="flex flex-row gap-2">
-        <span>{{ 'home.doors_and_windows' | translate }}</span>
-        <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
-      </div>
-    </ion-chip>
+      <ion-chip>
+        <div class="flex flex-row gap-2">
+          <span>{{ 'home.doors_and_windows' | translate }}</span>
+          <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
+        </div>
+      </ion-chip>
     }
   </div>
   <div class="flex flex-col h-full justify-between">
     <div class="h-[420px] flex flex-col gap-2">
       @for (device of paginatedDevices(); track device.id) {
-      <sp-device-list-item
-        @spFadeIn
-        [device]="device"
-        (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"
-      ></sp-device-list-item>
-      } @if (noDevices()) {
-      <div class="w-full text-center p-4">
-        <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapHouseGear"></ng-icon>
-      </div>
-      <span class="w-full text-center text-2xl">{{ 'home.no_devices_yet' | translate }}</span>
-      <span class="text-center text-gray-800 mb-2">{{ 'home.add_your_first_device' | translate }}</span>
-      <p-button
-        class="text-center"
-        [label]="'home.add_first_device' | translate"
-        size="large"
-        severity="primary"
-        [routerLink]="['add']"
-      ></p-button>
-      <p-divider></p-divider>
-      <span class="text-center text-gray-600 text-sm">{{ 'home.you_can_add' | translate }}</span>
+        <sp-device-list-item
+          @spFadeIn
+          [device]="device"
+          (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"
+        ></sp-device-list-item>
+      }
+      @if (noDevices()) {
+        <sp-onboarding [title]="'home.no_devices_yet' | translate"
+                       [description]="'home.add_your_first_device' | translate"
+                       [buttonLabel]="'home.add_first_device' | translate" [buttonRouterLink]="['add']"
+                       [content]="'home.you_can_add' | translate">
+          <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapHouseGear"></ng-icon>
+        </sp-onboarding>
       }
     </div>
 

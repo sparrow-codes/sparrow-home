@@ -21,6 +21,7 @@ interface MainPanelStoreState {
   isAlarmAvailable: boolean;
   areAllWindowsAndDoorsClosed: boolean | null;
   mainPageDevices: HomeDevice[];
+  noDevices: boolean;
 }
 
 export type MainPanelStore = InstanceType<typeof mainPanelStore>;
@@ -33,6 +34,7 @@ export const mainPanelStore = signalStore(
     isAlarmAvailable: false,
     areAllWindowsAndDoorsClosed: null,
     mainPageDevices: [],
+    noDevices: true,
   }),
   withMethods(
     (

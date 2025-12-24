@@ -90,7 +90,10 @@
     "alarm_deactivated": "Alarm deactivated!",
     "set_alarm_error": "Error setting alarm!",
     "publish_event_error": "Failed to send event!",
-    "publish_event_success": "Action triggered successfully"
+    "publish_event_success": "Action triggered successfully",
+    "welcome": "Welcome to Sparrow Home",
+    "add_your_first_device": "Add your first device to start monitoring and automating your home.",
+    "add_first_device": "Add first device"
   },
   "tasks": {
     "fetch_list_error": "Error fetching  list!",

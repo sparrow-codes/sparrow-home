@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 import { VisibilityService } from '@sparrow-home/core';
 import { MainPanelStore, mainPanelStore } from '@sparrow-home/main-panel-domain';
-import { DeviceListItemComponent, staggeredFadeIn } from '@sparrow-home/ui';
+import { DeviceListItemComponent, OnboardingComponent, staggeredFadeIn } from '@sparrow-home/ui';
 import { HomeDevice } from '@sparrow-home/utils';
 import { filter } from 'rxjs';
 
@@ -18,6 +19,8 @@ import { TemperaturePanelComponent } from '../components/temperature-panel/tempe
     AlarmPanelComponent,
     DeviceListPanelComponent,
     DeviceListItemComponent,
+    TranslatePipe,
+    OnboardingComponent,
   ],
   templateUrl: './main-panel-feature.component.html',
   animations: [staggeredFadeIn],
@@ -32,6 +35,7 @@ export class MainPanelFeatureComponent implements OnInit {
   protected readonly isAlarmAvailable: Signal<boolean> = this._mainPanelStore.isAlarmAvailable;
   protected readonly isHouseClosed: Signal<boolean | null> = this._mainPanelStore.areAllWindowsAndDoorsClosed;
   protected readonly mainDevices: Signal<HomeDevice[]> = this._mainPanelStore.mainPageDevices;
+  protected readonly noDevices: Signal<boolean> = this._mainPanelStore.noDevices;
 
   public ngOnInit(): void {
     this._mainPanelStore.fetchInitData();
