@@ -19,13 +19,7 @@ import { bootstrapHouseGear } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
-import {
-  DeviceListItemComponent,
-  OnboardingComponent,
-  PageTitleComponent,
-  sparrowFadeIn,
-  spFadeInAnimation,
-} from '@sparrow-home/ui';
+import { DeviceListItemComponent, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -49,7 +43,6 @@ import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
     OnboardingComponent,
   ],
   templateUrl: './device-page.component.html',
-  animations: [sparrowFadeIn, spFadeInAnimation],
   providers: [provideIcons({ bootstrapHouseGear })],
 })
 export class DevicePageComponent implements OnInit {

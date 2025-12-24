@@ -1,7 +1,7 @@
 @if (deviceDetails(); as homeDevice) {
-  <sp-page-title @sparrowFadeIn [routerLink]="['/devices']">{{ 'home.device_details' | translate }}</sp-page-title>
+  <sp-page-title [routerLink]="['/devices']">{{ 'home.device_details' | translate }}</sp-page-title>
 
-  <div class="w-full flex justify-center mt-2">
+  <div class="w-full flex justify-center mt-2 animate-fade-in">
     <p-card class="w-full">
       <ng-template #header>
         <div class="p-[20px] pb-0 flex justify-between items-center">

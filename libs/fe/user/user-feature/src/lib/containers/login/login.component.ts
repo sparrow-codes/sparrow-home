@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { staggeredFadeIn } from '@sparrow-home/ui';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { first } from 'rxjs';
 
@@ -10,7 +9,6 @@ import { LoginFormComponent } from '../../component/login-form/login-form.compon
 @Component({
   imports: [CommonModule, LoginFormComponent],
   templateUrl: './login.component.html',
-  animations: [staggeredFadeIn],
 })
 export class LoginComponent implements OnInit {
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);

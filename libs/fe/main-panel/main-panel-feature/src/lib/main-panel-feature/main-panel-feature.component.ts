@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { VisibilityService } from '@sparrow-home/core';
 import { MainPanelStore, mainPanelStore } from '@sparrow-home/main-panel-domain';
-import { DeviceListItemComponent, OnboardingComponent, staggeredFadeIn } from '@sparrow-home/ui';
+import { DeviceListItemComponent, OnboardingComponent } from '@sparrow-home/ui';
 import { HomeDevice } from '@sparrow-home/utils';
 import { filter } from 'rxjs';
 
@@ -23,7 +23,6 @@ import { TemperaturePanelComponent } from '../components/temperature-panel/tempe
     OnboardingComponent,
   ],
   templateUrl: './main-panel-feature.component.html',
-  animations: [staggeredFadeIn],
 })
 export class MainPanelFeatureComponent implements OnInit {
   private readonly _mainPanelStore: MainPanelStore = inject(mainPanelStore);

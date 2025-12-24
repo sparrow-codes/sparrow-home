@@ -5,7 +5,7 @@ import { bootstrapClockHistory } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
-import { OnboardingComponent, PageTitleComponent, spFadeInAnimation } from '@sparrow-home/ui';
+import { OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
@@ -23,7 +23,6 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
     OnboardingComponent,
   ],
   templateUrl: './task-list.component.html',
-  animations: [spFadeInAnimation],
   providers: [provideIcons({ bootstrapClockHistory })],
 })
 export class TaskListComponent implements OnInit {

@@ -1,6 +1,6 @@
 <form [formGroup]="form">
   <div class="flex flex-col gap-4 mb-8">
-    <p-float-label variant="on" class="fade-step mt-2">
+    <p-float-label variant="on" class="mt-2">
       <p-select
         inputId="device"
         [formControl]="form.controls.device"
@@ -28,11 +28,11 @@
 
     <div class="min-h-[50px]">
       @if (selectedAction(); as action) {
-        <sp-device-action @spFadeIn [action]="action" [formControl]="form.controls.payload"></sp-device-action>
+        <sp-device-action class="animate-fade-in" [action]="action" [formControl]="form.controls.payload"></sp-device-action>
       }
     </div>
 
-    <p-float-label variant="on" class="fade-step">
+    <p-float-label variant="on">
       <p-datePicker
         inputId="time"
         [timeOnly]="true"

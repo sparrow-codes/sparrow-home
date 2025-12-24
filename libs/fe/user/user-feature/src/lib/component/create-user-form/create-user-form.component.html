@@ -1,20 +1,20 @@
 <form [formGroup]="formGroup" class="w-full flex flex-col gap-6">
-  <p-floatlabel class="fade-step" variant="on">
+  <p-floatlabel variant="on">
     <input pInputText id="firstName" fluid="true" pSize="large" type="text" [formControlName]="formName.FIRST_NAME" />
     <label for="firstName">{{ 'user.first_name' | translate }}*</label>
   </p-floatlabel>
 
-  <p-floatlabel class="fade-step" variant="on">
+  <p-floatlabel variant="on">
     <input pInputText id="lastName" fluid="true" pSize="large" type="text" [formControlName]="formName.LAST_NAME" />
     <label for="lastName">{{ 'user.last_name' | translate }}</label>
   </p-floatlabel>
 
-  <p-floatlabel class="fade-step" variant="on">
+  <p-floatlabel variant="on">
     <input pInputText id="email" fluid="true" pSize="large" type="email" [formControlName]="formName.EMAIL" />
     <label for="email">{{ 'user.email' | translate }}*</label>
   </p-floatlabel>
 
-  <p-floatlabel class="fade-step" variant="on">
+  <p-floatlabel variant="on">
     <p-password
       id="password"
       fluid="true"
@@ -30,7 +30,7 @@
     <label for="password">{{ 'user.password' | translate }}*</label>
   </p-floatlabel>
 
-  <p-floatlabel class="fade-step" variant="on">
+  <p-floatlabel variant="on">
     <p-password
       id="repeatPassword"
       fluid="true"
@@ -42,13 +42,13 @@
     <label for="repeatPassword">{{ 'user.repeat_password' | translate }}*</label>
   </p-floatlabel>
 
-  <div class="min-h-[30px] fade-step flex items-center">
+  <div class="min-h-[30px] flex items-center">
     @if (showMismatchPasswordError()) {
     <span class="text-error text-sm">{{ 'user.passwords_mismatch' | translate }}</span>
     }
   </div>
 
-  <p-button class="fade-step" fluid="true" size="large" [disabled]="formGroup.invalid" (onClick)="onSave()">
+  <p-button fluid="true" size="large" [disabled]="formGroup.invalid" (onClick)="onSave()">
     {{ 'user.create_account' | translate }}
   </p-button>
 </form>

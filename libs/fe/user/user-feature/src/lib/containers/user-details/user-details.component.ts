@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, effect, inject, Injector, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { staggeredFadeIn } from '@sparrow-home/ui';
 import { User, UserDataFacadeService, UserRole } from '@sparrow-home/user-domain';
 import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
@@ -14,7 +13,6 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
   selector: 'sp-user-details',
   imports: [CommonModule, FormsModule, Button, Avatar, Divider, ToggleSwitch, Card, TranslatePipe],
   templateUrl: './user-details.component.html',
-  animations: [staggeredFadeIn],
 })
 export class UserDetailsComponent implements OnInit {
   private readonly _dataService: UserDataFacadeService = inject(UserDataFacadeService);
