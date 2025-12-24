@@ -9,14 +9,14 @@ services:
       POSTGRES_PASSWORD: sparrow
     ports:
       - "5432:5432"
-    volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
   mqtt:
     image: eclipse-mosquitto:latest
     container_name: sparrow-mqtt
     restart: unless-stopped
     ports:
       - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
 
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:latest
