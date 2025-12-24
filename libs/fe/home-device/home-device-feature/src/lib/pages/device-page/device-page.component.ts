@@ -60,7 +60,7 @@ export class DevicePageComponent implements OnInit {
 
     return allDevices.slice(first, first + rows);
   });
-  protected readonly noDevices: Signal<boolean> = computed(() => this.data()?.length === 0);
+  protected readonly noDevices: Signal<boolean | null> = this._facadeService.noDevices;
   protected readonly searchControl: FormControl<string | null> = new FormControl(
     this._facadeService.searchQuery() ?? ''
   );

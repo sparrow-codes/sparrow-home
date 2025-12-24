@@ -27,6 +27,10 @@ export class DeviceFacadeService {
     return this._dataService.searchQuery;
   }
 
+  public get noDevices(): Signal<boolean | null> {
+    return this._dataService.noDevices;
+  }
+
   public fetchDevices(): void {
     this._dataService.fetchAvailableDevices();
   }

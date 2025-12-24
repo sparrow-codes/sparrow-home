@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col h-full">
   <sp-page-title>{{ 'tasks.title' | translate }}</sp-page-title>
 
-  @if (!noTasks()) {
+  @if (noSchedules() === false) {
     <div class="flex w-full justify-end">
       <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary"
                 [routerLink]="['new']"></p-button>
@@ -9,7 +9,7 @@
   }
 
   <span class="h-[45px]">
-    @if (!noTasks()) {
+    @if (noSchedules() === false) {
       {{ 'tasks.count' | translate:{ count: tasks().length } }}
     }
   </span>
@@ -22,7 +22,7 @@
       }
     }
 
-    @if (noTasks()) {
+    @if (noSchedules() === true) {
       <sp-onboarding [title]="'tasks.no_tasks_yet' | translate" [description]="'tasks.create_first_task' | translate"
                      [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
                      [content]="'tasks.create_first_task_content' | translate">

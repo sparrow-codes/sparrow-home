@@ -34,7 +34,7 @@ export class MainPanelFeatureComponent implements OnInit {
   protected readonly isAlarmAvailable: Signal<boolean> = this._mainPanelStore.isAlarmAvailable;
   protected readonly isHouseClosed: Signal<boolean | null> = this._mainPanelStore.areAllWindowsAndDoorsClosed;
   protected readonly mainDevices: Signal<HomeDevice[]> = this._mainPanelStore.mainPageDevices;
-  protected readonly noDevices: Signal<boolean> = this._mainPanelStore.noDevices;
+  protected readonly noDevices: Signal<boolean | null> = this._mainPanelStore.noDevices;
 
   public ngOnInit(): void {
     this._mainPanelStore.fetchInitData();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { bootstrapClockHistory } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -29,7 +29,7 @@ export class TaskListComponent implements OnInit {
   private readonly _store: TasksSignalStore = inject(tasksSignalStore);
 
   protected readonly tasks: Signal<AutomaticTask[]> = this._store.entities;
-  protected readonly noTasks: Signal<boolean> = computed(() => this.tasks().length === 0);
+  protected readonly noSchedules: Signal<boolean | null> = this._store.noSchedules;
 
   public ngOnInit(): void {
     this._store.fetchTasks();

@@ -3,7 +3,7 @@
 
   <sp-device-list-panel />
 
-  @if (noDevices()) {
+  @if (noDevices() === true) {
   <sp-onboarding
     [title]="'main_panel.welcome' | translate"
     [description]="'main_panel.add_your_first_device' | translate"
