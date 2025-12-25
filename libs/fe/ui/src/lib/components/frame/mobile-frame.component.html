@@ -1,18 +1,23 @@
-<ion-header></ion-header>
 <ion-content class="ion-padding">
   <router-outlet></router-outlet>
 </ion-content>
-<ion-tab-bar slot="bottom" class="bg-nav-background">
-  @for (item of navigationItems; track item.routerLink) {
-  <ion-tab-button
-    class="transition-colors"
-    [class.text-gray-500]="currentUrl() !== '/' + item.routerLink"
-    [class.text-black]="currentUrl() === '/' + item.routerLink"
-    [routerLink]="item.routerLink"
-    [selected]="currentUrl() === '/' + item.routerLink"
-  >
-    <i size="1.5rem" [class]="item.icon" class="text-[32px]"></i>
-    <span class="text-sm">{{ item.label }}</span>
-  </ion-tab-button>
-  }
-</ion-tab-bar>
+<nav
+  class="pb-[var(--safe-bottom)] fixed bottom-0 left-0 right-0 z-50 bg-nav-background border-t border-solid border-r-0 border-l-0 shadow-[0_-1px_8px_rgba(0,0,0,0.06)] border-gray-300"
+  role="navigation"
+  aria-label="Primary"
+>
+  <div class="flex h-16">
+    @for (item of navigationItems; track item.routerLink) {
+    <a
+      class="flex-1 flex flex-col items-center justify-center gap-1 transition-colors no-underline"
+      [class.text-gray-500]="currentUrl() !== '/' + item.routerLink"
+      [class.text-primary]="currentUrl() === '/' + item.routerLink"
+      [routerLink]="item.routerLink"
+      [attr.aria-current]="currentUrl() === '/' + item.routerLink ? 'page' : null"
+    >
+      <i [class]="item.icon"></i>
+      <span class="text-md leading-none">{{ item.label }}</span>
+    </a>
+    }
+  </div>
+</nav>
