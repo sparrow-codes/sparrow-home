@@ -228,7 +228,10 @@ export class HomeDeviceDataService {
       .pipe(
         first(),
         tap({
-          next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(toHomeDevice)),
+          next: (devices) => {
+            this._homeDevices.set(devices.sort(this._homeDeviceSort).map(toHomeDevice));
+            this._noDevices.set(devices.length === 0);
+          },
           error: () =>
             this._messageService.add({
               summary: this._translateService.instant('home.fetch_devices_error'),
