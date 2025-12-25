@@ -25,12 +25,12 @@
 
   <div class="min-h-[45px] text-end">
     @if (deviceFilter() === deviceType.OPEN_DOOR_SENSOR) {
-      <ion-chip>
+      <p-chip>
         <div class="flex flex-row gap-2">
           <span>{{ 'home.doors_and_windows' | translate }}</span>
           <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
         </div>
-      </ion-chip>
+      </p-chip>
     }
   </div>
   <div class="flex flex-col h-full justify-between">

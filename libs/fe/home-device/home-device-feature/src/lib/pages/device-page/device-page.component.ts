@@ -14,7 +14,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { IonChip } from '@ionic/angular/standalone';
 import { bootstrapHouseGear } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,6 +21,7 @@ import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { DeviceListItemComponent, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
+import { Chip } from 'primeng/chip';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
@@ -37,10 +37,10 @@ import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
     PageTitleComponent,
     Paginator,
     RouterLink,
-    IonChip,
     TranslatePipe,
     NgIcon,
     OnboardingComponent,
+    Chip,
   ],
   templateUrl: './device-page.component.html',
   providers: [provideIcons({ bootstrapHouseGear })],

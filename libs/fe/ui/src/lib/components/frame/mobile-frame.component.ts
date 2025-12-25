@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { IonContent, IonHeader, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
 import { TranslateService } from '@ngx-translate/core';
 import { RoutePath } from '@sparrow-home/core';
 import { PrimeIcons } from 'primeng/api';
@@ -12,9 +11,8 @@ import { NavigationItem } from '../../models/navigation-item';
 
 @Component({
   selector: 'sp-mobile-frame',
-  imports: [CommonModule, IonHeader, IonContent, RouterOutlet, IonTabBar, IonTabButton, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink],
   templateUrl: './mobile-frame.component.html',
-  styleUrl: './mobile-frame.component.css',
 })
 export class MobileFrameComponent {
   private readonly _translateService: TranslateService = inject(TranslateService);

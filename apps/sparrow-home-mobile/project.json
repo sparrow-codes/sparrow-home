@@ -19,26 +19,9 @@
           "apps/sparrow-home-mobile/src/manifest.json",
           "apps/sparrow-home-mobile/src/apple-touch-icon.png",
           "apps/sparrow-home-mobile/src/apple-touch-icon-precomposed.png",
-          "apps/sparrow-home-mobile/src/assets",
-          {
-            "glob": "**/*.svg",
-            "input": "node_modules/ionicons/dist/ionicons/svg",
-            "output": "./svg"
-          }
+          "apps/sparrow-home-mobile/src/assets"
         ],
-        "styles": [
-          "node_modules/@ionic/angular/css/core.css",
-          "node_modules/@ionic/angular/css/normalize.css",
-          "node_modules/@ionic/angular/css/structure.css",
-          "node_modules/@ionic/angular/css/typography.css",
-          "node_modules/@ionic/angular/css/display.css",
-          "node_modules/@ionic/angular/css/padding.css",
-          "node_modules/@ionic/angular/css/float-elements.css",
-          "node_modules/@ionic/angular/css/text-alignment.css",
-          "node_modules/@ionic/angular/css/text-transformation.css",
-          "node_modules/@ionic/angular/css/flex-utils.css",
-          "apps/sparrow-home-mobile/src/styles.scss"
-        ],
+        "styles": ["apps/sparrow-home-mobile/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
