@@ -7,17 +7,7 @@ const { join } = require('path');
 module.exports = {
   content: [join(__dirname, 'src/**/!(*.stories|*.spec).{ts,html}'), ...createGlobPatternsForDependencies(__dirname)],
   theme: {
-    extend: {
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(0px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-      },
-      animation: {
-        'fade-in': 'fadeIn 300ms ease-out forwards',
-      },
-    },
+    extend: {},
   },
   plugins: [PrimeUI],
 };

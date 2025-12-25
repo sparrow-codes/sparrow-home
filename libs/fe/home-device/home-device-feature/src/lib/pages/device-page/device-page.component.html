@@ -37,7 +37,7 @@
     <div class="h-[420px] flex flex-col gap-2">
       @for (device of paginatedDevices(); track device.id) {
         <sp-device-list-item
-          class="animate-fade-in"
+          class="animate-fadein"
           [device]="device"
           (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"
         ></sp-device-list-item>

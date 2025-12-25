@@ -18,7 +18,7 @@
   <div class="flex flex-col gap-2">
     @defer () {
       @for (task of tasks(); track task.id) {
-        <sp-task-card class="animate-fade-in" [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
+        <sp-task-card class="animate-fadein" [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
       }
     }
 
