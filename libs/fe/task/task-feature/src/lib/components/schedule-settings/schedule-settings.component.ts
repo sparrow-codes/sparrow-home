@@ -15,7 +15,7 @@ import {
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
-import { DaysOfWeekControl, DeviceActionComponent, sparrowFadeIn } from '@sparrow-home/ui';
+import { DaysOfWeekControl, DeviceActionComponent } from '@sparrow-home/ui';
 import { DeviceAction } from '@sparrow-home/utils';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { Button } from 'primeng/button';
@@ -54,7 +54,6 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],
-  animations: [sparrowFadeIn],
 })
 export class ScheduleSettingsComponent implements OnInit {
   public readonly task: InputSignal<AutomaticTask | undefined> = input();

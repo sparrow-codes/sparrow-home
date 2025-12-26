@@ -2,7 +2,7 @@
 </sp-page-title>
 
 <p-card>
-  <form @staggeredFadeIn [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-6 pt-2">
+  <form [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-6 pt-2">
     <p-float-label variant="on">
       <input
         id="deviceName"
@@ -12,12 +12,11 @@
         [formControl]="formGroup.controls.name"
         [disabled]="joinInProgress()"
         fluid="true"
-        class="fade-step"
       />
       <label for="deviceName">{{'home.device_name' | translate}}</label>
     </p-float-label>
 
-    <p-floatlabel class="w-full fade-step" variant="on">
+    <p-floatlabel class="w-full" variant="on">
       <p-select
         [formControl]="formGroup.controls.deviceType"
         inputId="in_label"
@@ -55,7 +54,6 @@
     } @else {
       <p-button
         type="submit"
-        class="fade-step"
         [disabled]="formGroup.invalid || joinInProgress()"
         [label]="'common.connect' | translate"
         [loading]="joinInProgress()"

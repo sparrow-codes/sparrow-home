@@ -1,8 +1,8 @@
 @if (user(); as user) {
 
 <p-card>
-  <div @staggeredFadeIn class="w-full max-w-[360px]">
-    <div class="flex flex-col items-center text-center gap-4 py-6 fade-step">
+  <div class="w-full">
+    <div class="flex flex-col items-center text-center gap-4 py-6">
       <p-avatar
         size="xlarge"
         label="{{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}"
@@ -20,7 +20,7 @@
     </div>
 
     @if (additionalUsers()?.length) {
-    <div class="flex flex-col gap-2 mb-6 fade-step">
+    <div class="flex flex-col gap-2 mb-6">
       <span class="font-medium text-sm">{{ 'user.additional_users_list' | translate }}</span>
 
       @for (user of additionalUsers(); track user.id) {
@@ -40,7 +40,7 @@
     </div>
     }
 
-    <p-divider class="my-4 fade-step"></p-divider>
+    <p-divider class="my-4"></p-divider>
 
     <p-button
       [label]="'user.logout' | translate"
@@ -48,7 +48,6 @@
       variant="text"
       fluid="true"
       severity="danger"
-      class="fade-step"
       (onClick)="handleLogout()"
     ></p-button>
   </div>

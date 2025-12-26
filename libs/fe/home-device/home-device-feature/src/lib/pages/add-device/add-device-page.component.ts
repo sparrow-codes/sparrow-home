@@ -4,7 +4,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
-import { deviceTypeDictionary, PageTitleComponent, staggeredFadeIn } from '@sparrow-home/ui';
+import { deviceTypeDictionary, PageTitleComponent } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -30,7 +30,6 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
   ],
   templateUrl: './add-device-page.component.html',
   providers: [CreateDeviceFormService],
-  animations: [staggeredFadeIn],
 })
 export class AddDevicePageComponent {
   private readonly _formService: CreateDeviceFormService = inject(CreateDeviceFormService);

@@ -1,15 +1,24 @@
-<div @staggeredFadeIn class="flex flex-col gap-4 w-full max-w-[440px] mx-auto">
-  <sp-temperature-panel class="fade-step" [temperature]="avgTemperature()" [isHouseClosed]="isHouseClosed()" />
+<div class="flex flex-col gap-4 w-full">
+  <sp-temperature-panel [temperature]="avgTemperature()" [isHouseClosed]="isHouseClosed()" />
 
-  <sp-device-list-panel class="fade-step" />
+  <sp-device-list-panel />
 
-  @if (isAlarmAvailable()) {
-  <sp-alarm-panel class="fade-step" [isAlarmOn]="isAlarmOn()" (isAlarmOnChange)="setAlarm($event)" />
+  @if (noDevices() === true) {
+  <sp-onboarding
+    [title]="'main_panel.welcome' | translate"
+    [description]="'main_panel.add_your_first_device' | translate"
+    [buttonLabel]="'main_panel.add_first_device' | translate"
+    [buttonRouterLink]="'/devices/add'"
+  >
+    <img src="assets/icons/icon-192x192.png" alt="No Devices" />
+  </sp-onboarding>
+  } @else { @if (isAlarmAvailable()) {
+  <sp-alarm-panel [isAlarmOn]="isAlarmOn()" (isAlarmOnChange)="setAlarm($event)" />
   } @for (device of mainDevices(); track device.id) {
   <sp-device-list-item
     [disableRouting]="true"
     [device]="device"
     (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"
   ></sp-device-list-item>
-  }
+  } }
 </div>

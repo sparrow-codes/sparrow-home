@@ -1,22 +1,33 @@
 <div class="w-full flex flex-col h-full">
   <sp-page-title>{{ 'tasks.title' | translate }}</sp-page-title>
 
-  <div class="flex w-full justify-end">
-    <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary" [routerLink]="['new']"></p-button>
-  </div>
+  @if (noSchedules() === false) {
+    <div class="flex w-full justify-end">
+      <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary"
+                [routerLink]="['new']"></p-button>
+    </div>
+  }
 
-  <span class="h-[45px]">{{ 'tasks.count' | translate:{count: tasks().length} }}</span>
+  <span class="h-[45px]">
+    @if (noSchedules() === false) {
+      {{ 'tasks.count' | translate:{ count: tasks().length } }}
+    }
+  </span>
+
 
   <div class="flex flex-col gap-2">
     @defer () {
       @for (task of tasks(); track task.id) {
-        <sp-task-card @spFadeIn [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
+        <sp-task-card [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
       }
     }
 
-    @if (tasks().length === 0) {
-      <p-divider></p-divider>
-      <span class="w-full text-center">{{ 'tasks.no_tasks' | translate }}</span>
+    @if (noSchedules() === true) {
+      <sp-onboarding [title]="'tasks.no_tasks_yet' | translate" [description]="'tasks.create_first_task' | translate"
+                     [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
+                     [content]="'tasks.create_first_task_content' | translate">
+        <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
+      </sp-onboarding>
     }
   </div>
 </div>

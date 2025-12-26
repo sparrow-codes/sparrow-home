@@ -31,9 +31,16 @@ import { LocalStateService } from './zigbee/services/local-state.service';
   exports: [ZigbeeManageDeviceService, ZigbeeDeviceService],
 })
 export class ApiModule implements OnModuleInit {
+  private readonly _logger = new Logger(ApiModule.name);
+
   public constructor(@Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt) {}
 
   public async onModuleInit(): Promise<void> {
-    await this._zigbeeClient.connect().then(() => Logger.log('Connected to MQTT'));
+    await this._zigbeeClient
+      .connect()
+      .then(() => this._logger.log('Connected to MQTT'))
+      .catch((e) => {
+        this._logger.error('Error connecting to MQTT', e);
+      });
   }
 }

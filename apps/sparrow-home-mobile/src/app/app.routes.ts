@@ -5,12 +5,14 @@ import { MobileFrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
 export const appRoutes: Route[] = [
   {
     path: RoutePath.CREATE_USER,
+    data: { vt: 'auth' },
     canActivate: [configurationNotReadyGuard],
     loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.CreateUserPageComponent),
   },
   {
     path: RoutePath.LOGIN,
     data: {
+      vt: 'auth',
       createNewUserLink: RoutePath.CREATE_ADDITIONAL_USER,
     },
     loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.LoginComponent),
@@ -19,6 +21,7 @@ export const appRoutes: Route[] = [
   {
     path: RoutePath.CREATE_ADDITIONAL_USER,
     data: {
+      vt: 'auth',
       loginPath: RoutePath.LOGIN,
     },
     loadComponent: () => import('@sparrow-home/user-feature').then((feature) => feature.CreateAdditionalUserComponent),

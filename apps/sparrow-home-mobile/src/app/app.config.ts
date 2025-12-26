@@ -4,12 +4,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   PreloadAllModules,
   provideRouter,
-  RouteReuseStrategy,
   withComponentInputBinding,
   withPreloading,
+  withViewTransitions,
 } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { APP_TITLE, authInterceptor, initializeApp, SHORT_APP_TITLE } from '@sparrow-home/core';
@@ -22,9 +21,7 @@ import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular({ mode: 'ios' }),
-    provideRouter(appRoutes, withPreloading(PreloadAllModules), withComponentInputBinding()),
+    provideRouter(appRoutes, withPreloading(PreloadAllModules), withComponentInputBinding(), withViewTransitions()),
     provideAppInitializer(initializeApp),
     {
       provide: APP_TITLE,

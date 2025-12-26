@@ -8,7 +8,6 @@ import {
   DeviceActionComponent,
   DeviceTypeComponent,
   PageTitleComponent,
-  sparrowFadeIn,
 } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
@@ -43,7 +42,6 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     TranslatePipe,
   ],
   templateUrl: './device-details.component.html',
-  animations: [sparrowFadeIn],
 })
 export class DeviceDetailsComponent implements OnInit {
   public readonly id: InputSignal<string | null> = input<string | null>(null);

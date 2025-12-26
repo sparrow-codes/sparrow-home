@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AvailableDevice, TaskAction, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
-import { DaysOfWeekControl, DeviceActionComponent, spFadeInAnimation } from '@sparrow-home/ui';
+import { DaysOfWeekControl, DeviceActionComponent } from '@sparrow-home/ui';
 import { DeviceAction, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
@@ -39,7 +39,6 @@ import { ActionForm } from './form-service/model/action-form';
     TranslatePipe,
   ],
   templateUrl: './action-form.component.html',
-  animations: [spFadeInAnimation],
   providers: [ActionFormService],
 })
 export class ActionFormComponent implements OnInit {

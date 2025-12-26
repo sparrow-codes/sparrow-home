@@ -18,9 +18,10 @@ import { toAutomaticTask } from './functions/to-automatic-task/to-automatic-task
 export type TasksSignalStore = InstanceType<typeof tasksSignalStore>;
 
 export const tasksSignalStore = signalStore(
-  withState<{ availableDevices: AvailableDevice[]; isLoading: boolean }>({
+  withState<{ availableDevices: AvailableDevice[]; isLoading: boolean; noSchedules: boolean | null }>({
     availableDevices: [],
     isLoading: false,
+    noSchedules: null,
   }),
   withEntities<AutomaticTask>(),
   withProps(
@@ -38,7 +39,9 @@ export const tasksSignalStore = signalStore(
       _fetchTasksList: _taskApiService.getTaskList().pipe(
         tapResponse({
           next: (tasks) => {
-            patchState(store, setAllEntities(tasks.map((task) => toAutomaticTask(task))));
+            patchState(store, setAllEntities(tasks.map((task) => toAutomaticTask(task))), {
+              noSchedules: tasks.length === 0,
+            });
           },
           error: () =>
             _messageService.add({ summary: _translate.instant('tasks.fetch_list_error'), severity: 'error' }),

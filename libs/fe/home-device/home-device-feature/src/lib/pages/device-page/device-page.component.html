@@ -1,42 +1,54 @@
 <div class="w-full flex flex-col h-full">
-  <sp-page-title [routerLink]="['../']">{{'home.available_devices' | translate}}</sp-page-title>
+  <sp-page-title [routerLink]="['../']">{{ 'home.available_devices' | translate }}</sp-page-title>
 
   <div class="flex flex-row gap-2 justify-center items-center mb-1">
-    <input
-      type="text"
-      pInputText
-      fluid="true"
-      pSize="large"
-      [placeholder]="'home.search_for_device' | translate"
-      [formControl]="searchControl"
-    />
+    @if (noDevices() === false) {
+      <input
+        type="text"
+        pInputText
+        fluid="true"
+        pSize="large"
+        [placeholder]="'home.search_for_device' | translate"
+        [formControl]="searchControl"
+      />
 
-    <p-button icon="pi pi-plus" [label]="'common.add' | translate" size="large" severity="primary" [routerLink]="['add']"></p-button>
+      <p-button
+        icon="pi pi-plus"
+        [label]="'common.add' | translate"
+        size="large"
+        severity="primary"
+        [routerLink]="['add']"
+      ></p-button>
+    }
+
   </div>
 
   <div class="min-h-[45px] text-end">
     @if (deviceFilter() === deviceType.OPEN_DOOR_SENSOR) {
-      <ion-chip>
+      <p-chip>
         <div class="flex flex-row gap-2">
-          <span>{{'home.doors_and_windows' | translate}}</span>
+          <span>{{ 'home.doors_and_windows' | translate }}</span>
           <i class="pi pi-times-circle" (click)="onRemoveFilter()"></i>
         </div>
-      </ion-chip>
+      </p-chip>
     }
   </div>
   <div class="flex flex-col h-full justify-between">
     <div class="h-[420px] flex flex-col gap-2">
       @for (device of paginatedDevices(); track device.id) {
         <sp-device-list-item
-          @spFadeIn
+          class="animate-fadein"
           [device]="device"
           (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"
         ></sp-device-list-item>
       }
-
-      @if (data()?.length === 0) {
-        <p-divider></p-divider>
-        <span class="w-full text-center">{{'home.no_devices_found' | translate}}</span>
+      @if (noDevices() === true) {
+        <sp-onboarding [title]="'home.no_devices_yet' | translate"
+                       [description]="'home.add_your_first_device' | translate"
+                       [buttonLabel]="'home.add_first_device' | translate" [buttonRouterLink]="['add']"
+                       [content]="'home.you_can_add' | translate">
+          <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapHouseGear"></ng-icon>
+        </sp-onboarding>
       }
     </div>
 

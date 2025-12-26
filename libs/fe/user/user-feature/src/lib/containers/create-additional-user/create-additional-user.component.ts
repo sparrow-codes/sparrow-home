@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { staggeredFadeIn } from '@sparrow-home/ui';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
@@ -13,7 +12,6 @@ import { CreateUserFormComponent } from '../../component/create-user-form/create
   selector: 'sp-create-additional-user',
   imports: [CommonModule, CreateUserFormComponent, Button, Card, TranslatePipe],
   templateUrl: './create-additional-user.component.html',
-  animations: [staggeredFadeIn],
 })
 export class CreateAdditionalUserComponent implements OnInit {
   private readonly _router: Router = inject(Router);

@@ -31,6 +31,7 @@ export class HomeDeviceDataService {
   private readonly _homeDevices: WritableSignal<HomeDevice[] | null> = signal(null);
   private readonly _searchQuery: WritableSignal<string> = signal('');
   private readonly _homeDeviceDetails: WritableSignal<HomeDevice | null> = signal(null);
+  private readonly _noDevices: WritableSignal<boolean | null> = signal(null);
 
   public readonly homeDevices: Signal<HomeDevice[] | null> = computed(() => {
     if (this._searchQuery() === '') {
@@ -53,6 +54,10 @@ export class HomeDeviceDataService {
 
   public get searchQuery(): Signal<string> {
     return this._searchQuery.asReadonly();
+  }
+
+  public get noDevices(): Signal<boolean | null> {
+    return this._noDevices.asReadonly();
   }
 
   public setSearchQuery(query: string): void {
@@ -223,7 +228,10 @@ export class HomeDeviceDataService {
       .pipe(
         first(),
         tap({
-          next: (devices) => this._homeDevices.set(devices.sort(this._homeDeviceSort).map(toHomeDevice)),
+          next: (devices) => {
+            this._homeDevices.set(devices.sort(this._homeDeviceSort).map(toHomeDevice));
+            this._noDevices.set(devices.length === 0);
+          },
           error: () =>
             this._messageService.add({
               summary: this._translateService.instant('home.fetch_devices_error'),

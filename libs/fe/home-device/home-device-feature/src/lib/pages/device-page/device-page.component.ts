@@ -1,15 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  Injector,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { IonChip } from '@ionic/angular/standalone';
+import { bootstrapHouseGear } from '@ng-icons/bootstrap-icons';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
-import { DeviceListItemComponent, PageTitleComponent, sparrowFadeIn, spFadeInAnimation } from '@sparrow-home/ui';
+import { DeviceListItemComponent, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
-import { Divider } from 'primeng/divider';
+import { Chip } from 'primeng/chip';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
@@ -25,17 +37,19 @@ import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
     PageTitleComponent,
     Paginator,
     RouterLink,
-    IonChip,
-    Divider,
     TranslatePipe,
+    NgIcon,
+    OnboardingComponent,
+    Chip,
   ],
   templateUrl: './device-page.component.html',
-  animations: [sparrowFadeIn, spFadeInAnimation],
+  providers: [provideIcons({ bootstrapHouseGear })],
 })
 export class DevicePageComponent implements OnInit {
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private readonly _injector: Injector = inject(Injector);
 
   protected readonly data: Signal<HomeDevice[] | null> = this._facadeService.homeDevices;
   protected readonly deviceFilter: Signal<DeviceType | null> = this._facadeService.deviceFilter;
@@ -46,6 +60,7 @@ export class DevicePageComponent implements OnInit {
 
     return allDevices.slice(first, first + rows);
   });
+  protected readonly noDevices: Signal<boolean | null> = this._facadeService.noDevices;
   protected readonly searchControl: FormControl<string | null> = new FormControl(
     this._facadeService.searchQuery() ?? ''
   );
@@ -59,6 +74,15 @@ export class DevicePageComponent implements OnInit {
 
     this._facadeService.fetchDevices();
     this._handleSearchEvent();
+
+    effect(
+      () => {
+        if (this.noDevices()) {
+          this.searchControl.disable();
+        }
+      },
+      { injector: this._injector }
+    );
   }
 
   protected onRemoveFilter(): void {

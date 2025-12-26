@@ -32,7 +32,7 @@
                 <ng-template #list let-items>
                   @for (item of items; track index; let index = $index) {
 
-                  <div @sparrowFadeIn class="mb-2">
+                  <div class="mb-2 animate-fadein">
                     <p-panel [showHeader]="false">
                       <div class="flex flex-col gap-2 mt-[18px]">
                         <div class="flex justify-between items-center w-full">
@@ -83,7 +83,7 @@
     </form>
     }
   </div>
-  <div class="flex flex-row sm:flex-row justify-end gap-4 fade-step mb-2">
+  <div class="flex flex-row sm:flex-row justify-end gap-4 mb-2">
     <p-button
       [disabled]="formGroup?.invalid"
       [label]="'common.save' | translate"

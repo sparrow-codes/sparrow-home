@@ -21,6 +21,7 @@ interface MainPanelStoreState {
   isAlarmAvailable: boolean;
   areAllWindowsAndDoorsClosed: boolean | null;
   mainPageDevices: HomeDevice[];
+  noDevices: boolean | null;
 }
 
 export type MainPanelStore = InstanceType<typeof mainPanelStore>;
@@ -33,6 +34,7 @@ export const mainPanelStore = signalStore(
     isAlarmAvailable: false,
     areAllWindowsAndDoorsClosed: null,
     mainPageDevices: [],
+    noDevices: null,
   }),
   withMethods(
     (
@@ -86,14 +88,19 @@ export const mainPanelStore = signalStore(
       }
 
       function getMainDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
-        return homeDeviceApiService.getAllDevices({ body: { isOnMainPage: true } }).pipe(
+        return homeDeviceApiService.getAllDevices({ body: { deviceType: undefined } }).pipe(
           tapResponse({
             error: () =>
               messageService.add({
                 summary: translateService.instant('main_panel.fetch_devices_error'),
                 severity: 'error',
               }),
-            next: (devices) => patchState(store, { mainPageDevices: devices.map(toHomeDevice) }),
+            next: (devices) => {
+              patchState(store, {
+                mainPageDevices: devices.filter((device) => device.isOnMainPage).map(toHomeDevice),
+                noDevices: devices.length === 0,
+              });
+            },
           })
         );
       }

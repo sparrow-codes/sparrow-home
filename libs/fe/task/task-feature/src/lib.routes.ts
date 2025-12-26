@@ -16,10 +16,12 @@ export const TASK_ROUTES: Routes = [
       },
       {
         path: 'new',
+        data: { vt: 'sub' },
         component: NewTaskComponent,
       },
       {
         path: 'edit/:taskId',
+        data: { vt: 'sub' },
         component: EditTaskComponent,
       },
       {
