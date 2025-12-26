@@ -24,3 +24,39 @@ p-card {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+
+/* AUTH i SUB mają dłużej + większy offset */
+html.vt-auth::view-transition-group(root),
+html.vt-sub-forward::view-transition-group(root),
+html.vt-sub-back::view-transition-group(root) {
+  animation-duration: 340ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* AUTH: login -> shell */
+html.vt-auth::view-transition-old(root) { animation-name: vt-auth-out; }
+html.vt-auth::view-transition-new(root) { animation-name: vt-auth-in; }
+
+@keyframes vt-auth-in {
+  from { transform: translateX(100%); opacity: 0.9; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+@keyframes vt-auth-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0.9; }
+}
+
+/* SUB: push/pop */
+html.vt-sub-forward::view-transition-old(root) { animation-name: vt-sub-out-left; }
+html.vt-sub-forward::view-transition-new(root) { animation-name: vt-sub-in-right; }
+
+html.vt-sub-back::view-transition-old(root) { animation-name: vt-sub-out-right; }
+html.vt-sub-back::view-transition-new(root) { animation-name: vt-sub-in-left; }
+
+@keyframes vt-sub-in-right { from { transform: translateX(100%); opacity: 0.9; } to { transform: translateX(0); opacity: 1; } }
+@keyframes vt-sub-out-left { from { transform: translateX(0);  opacity: 1; } to { transform: translateX(-100%); opacity: 0.9; } }
+@keyframes vt-sub-in-left  { from { transform: translateX(-100%); opacity: 0.9; } to { transform: translateX(0); opacity: 1; } }
+@keyframes vt-sub-out-right{ from { transform: translateX(0);  opacity: 1; } to { transform: translateX(100%); opacity: 0.9; } }
+
+
+

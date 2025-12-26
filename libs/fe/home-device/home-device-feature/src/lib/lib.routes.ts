@@ -11,10 +11,12 @@ export const homeDeviceRoutes: Route[] = [
   },
   {
     path: 'details/:id',
+    data: { vt: 'sub' },
     component: DeviceDetailsComponent,
   },
   {
     path: 'add',
+    data: { vt: 'sub' },
     component: AddDevicePageComponent,
   },
 ];
