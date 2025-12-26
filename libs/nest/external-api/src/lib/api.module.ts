@@ -38,7 +38,7 @@ export class ApiModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     await this._zigbeeClient
       .connect()
-      .then(() => Logger.log('Connected to MQTT'))
+      .then(() => this._logger.log('Connected to MQTT'))
       .catch((e) => {
         this._logger.error('Error connecting to MQTT', e);
       });
