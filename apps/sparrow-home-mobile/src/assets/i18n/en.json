@@ -96,7 +96,7 @@
     "add_first_device": "Add first device"
   },
   "tasks": {
-    "fetch_list_error": "Error fetching  list!",
+    "fetch_list_error": "Error fetching schedules list!",
     "status_changed": "Schedule status changed",
     "activation_error": "Error activating schedule!",
     "deleted": "Schedule deleted.",
