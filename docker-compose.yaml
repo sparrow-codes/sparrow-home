@@ -10,19 +10,22 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./home-server/postgres_data:/var/lib/postgresql
+      - ./home-server/postgres_data:/var/lib/postgresql/data
+    networks: [sparrow]
 
   mosquitto:
     image: eclipse-mosquitto:latest
     restart: unless-stopped
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    ports:
+      - "1883:1883"
+    networks: [sparrow]
 
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:latest
     restart: unless-stopped
-    depends_on:
-      - mosquitto
+    depends_on: [mosquitto]
     env_file: .env
     environment:
       TZ: ${zigbeeTimeZone}
@@ -35,14 +38,12 @@ services:
       - ./home-server/zigbee2mqtt/data:/app/data
     devices:
       - "${zigbeeSerialPort}:${zigbeeSerialPort}"
+    networks: [sparrow]
 
   backend:
-    depends_on:
-      - postgres
-      - mosquitto
-      - zigbee2mqtt
     image: ghcr.io/sparrow-codes/sparrow-backend:next
     restart: unless-stopped
+    depends_on: [postgres, mosquitto, zigbee2mqtt]
     env_file: .env
     environment:
       mode: ${mode}
@@ -59,10 +60,18 @@ services:
       pushAdminEmail: ${pushAdminEmail}
     volumes:
       - ./home-server/backend/data:/app/data
+    networks: [sparrow]
+
   frontend:
     image: ghcr.io/sparrow-codes/sparrow-frontend:next
     restart: unless-stopped
+    depends_on: [backend]
     ports:
       - "8080:80"
     volumes:
       - ./config.json:/usr/share/nginx/html/config.json:ro
+    networks: [sparrow]
+
+networks:
+  sparrow:
+    driver: bridge
