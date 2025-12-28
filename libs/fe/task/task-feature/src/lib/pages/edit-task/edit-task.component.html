@@ -1,13 +1,12 @@
-<sp-page-title [routerLink]="['../']">{{ 'tasks.edit_task' | translate }}</sp-page-title>
+<sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{ 'tasks.edit_task' | translate }}</sp-page-title>
 
 <div class="flex flex-col gap-2">
   <sp-schedule-settings
     [task]="task()"
     [devices]="devices()"
-    [isLoading]="isLoading()"
+    [isLoading]="(isRefreshing$ | async) ?? false"
     (taskChange)="onUpdateTask($event)"
   ></sp-schedule-settings>
-
 
   <p-divider></p-divider>
 
@@ -15,6 +14,7 @@
     [label]="'tasks.delete' | translate"
     [outlined]="true"
     [fluid]="true"
+    [disabled]="(isRefreshing$ | async) ?? false"
     icon="pi pi-trash"
     (onClick)="deleteTask()"
     severity="danger"

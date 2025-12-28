@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
+  effect,
   inject,
+  Injector,
   input,
   InputSignal,
   OnInit,
@@ -76,11 +78,23 @@ export class ScheduleSettingsComponent implements OnInit {
   );
 
   private readonly _formService: ScheduleFormService = inject(ScheduleFormService);
+  private readonly _injector: Injector = inject(Injector);
 
   public ngOnInit(): void {
     this._formService.initForm(this.task());
     this.formGroup = this._formService.form;
     this.actions.set(this.task()?.actions ?? []);
+
+    effect(
+      () => {
+        if (this.isLoading()) {
+          this.formGroup?.disable();
+        } else {
+          this.formGroup?.enable();
+        }
+      },
+      { injector: this._injector }
+    );
   }
 
   protected onSubmitPreferences(): void {

@@ -1,5 +1,5 @@
 <div class="w-full flex flex-col h-full">
-  <sp-page-title>{{ 'tasks.title' | translate }}</sp-page-title>
+  <sp-page-title [showProgressBar]="(showProgressBar | async) ?? false">{{ 'tasks.title' | translate }}</sp-page-title>
 
   @if (noSchedules() === false) {
     <div class="flex w-full justify-end">
@@ -16,18 +16,27 @@
 
 
   <div class="flex flex-col gap-2">
-    @defer () {
-      @for (task of tasks(); track task.id) {
-        <sp-task-card [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
+    <p-divider></p-divider>
+    @if (showSkeleton$ | async) {
+      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
+      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
+      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
+      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
+    } @else {
+      @defer () {
+        @for (task of tasks(); track task.id) {
+          <sp-task-card class="animate-fadein" [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
+        }
+      }
+
+      @if (noSchedules() === true) {
+        <sp-onboarding [title]="'tasks.no_tasks_yet' | translate" [description]="'tasks.create_first_task' | translate"
+                       [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
+                       [content]="'tasks.create_first_task_content' | translate">
+          <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
+        </sp-onboarding>
       }
     }
 
-    @if (noSchedules() === true) {
-      <sp-onboarding [title]="'tasks.no_tasks_yet' | translate" [description]="'tasks.create_first_task' | translate"
-                     [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
-                     [content]="'tasks.create_first_task_content' | translate">
-        <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
-      </sp-onboarding>
-    }
   </div>
 </div>

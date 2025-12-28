@@ -1,4 +1,4 @@
-<div class="h-[50px] text-md uppercase whitespace-nowrap text-gray-800 flex gap-2 items-center">
+<div class="h-[30px] text-md uppercase whitespace-nowrap text-gray-800 flex gap-2 items-center">
   <div class="w-[1rem]">
     @if (routerLink(); as link) { @if (!navigationDisabled()) {
     <a [routerLink]="link" class="no-underline text-[1rem] text-gray-500">
@@ -8,4 +8,10 @@
   </div>
 
   <ng-content></ng-content>
+</div>
+
+<div class="h-[10px]">
+  @if (showProgressBar()) {
+    <p-progressbar class="animate-fadein" mode="indeterminate" [style]="{ height: '2px' }"></p-progressbar>
+  }
 </div>

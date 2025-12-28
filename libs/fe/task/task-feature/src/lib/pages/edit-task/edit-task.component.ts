@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData, PageTitleComponent
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { DialogService } from 'primeng/dynamicdialog';
-import { filter, take } from 'rxjs';
+import { filter, Observable, take } from 'rxjs';
 
 import { ScheduleSettingsComponent } from '../../components/schedule-settings/schedule-settings.component';
 
@@ -23,8 +23,8 @@ export class EditTaskComponent implements OnInit {
   private readonly _translateService: TranslateService = inject(TranslateService);
 
   protected readonly task: Signal<AutomaticTask | undefined> = computed(() => this._store.entityMap()[this.taskId()]);
-  protected readonly isLoading: Signal<boolean> = this._store.isLoading;
   protected readonly devices: Signal<AvailableDevice[]> = this._store.availableDevices;
+  protected readonly isRefreshing$: Observable<boolean> = this._store.isRefreshing$;
 
   public ngOnInit(): void {
     this._store.getAvailableDevices();

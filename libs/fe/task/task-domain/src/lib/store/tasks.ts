@@ -1,28 +1,28 @@
-import { effect, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
+import { removeAllEntities, removeEntity, setAllEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeDeviceApiService, TasksApiService } from '@sparrow-home/api';
-import { appStore } from '@sparrow-home/core';
-import { toDeviceAction } from '@sparrow-home/utils';
+import { toDeviceAction, withFetching } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { finalize, map, pipe, switchMap, tap } from 'rxjs';
 
-import { AutomaticTask, AvailableDevice } from '../model';
+import { AutomaticTask } from '../model';
+import { TaskSignalStoreState } from '../model/task-signal-store-state';
 import { toActionJobDto } from './functions/to-action-job-dto/to-action-job-dto';
 import { toAutomaticTask } from './functions/to-automatic-task/to-automatic-task';
 
 export type TasksSignalStore = InstanceType<typeof tasksSignalStore>;
 
 export const tasksSignalStore = signalStore(
-  withState<{ availableDevices: AvailableDevice[]; isLoading: boolean; noSchedules: boolean | null }>({
+  withState<TaskSignalStoreState>({
     availableDevices: [],
-    isLoading: false,
     noSchedules: null,
   }),
+  withFetching(),
   withEntities<AutomaticTask>(),
   withProps(
     (
@@ -52,8 +52,12 @@ export const tasksSignalStore = signalStore(
   withMethods((store, router = inject(Router)) => ({
     fetchTasks: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        switchMap(() => store._fetchTasksList.pipe(finalize(() => patchState(store, { isLoading: false }))))
+        tap(() =>
+          patchState(store, { _isRefreshing: store.entities().length !== 0, _isLoading: store.entities().length === 0 })
+        ),
+        switchMap(() =>
+          store._fetchTasksList.pipe(finalize(() => patchState(store, { _isLoading: false, _isRefreshing: false })))
+        )
       )
     ),
     changeTaskStatus: rxMethod<{
@@ -61,7 +65,7 @@ export const tasksSignalStore = signalStore(
       isActive: boolean;
     }>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { _isRefreshing: true })),
         switchMap((input) =>
           store._taskApiService
             .setTaskStatus({
@@ -82,14 +86,14 @@ export const tasksSignalStore = signalStore(
                   }),
               }),
               switchMap(() => store._fetchTasksList),
-              finalize(() => patchState(store, { isLoading: false }))
+              finalize(() => patchState(store, { _isRefreshing: false }))
             )
         )
       )
     ),
     deleteTask: rxMethod<number>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { _isRefreshing: true })),
         switchMap((taskId) =>
           store._taskApiService.deleteTask({ id: taskId }).pipe(
             tapResponse({
@@ -98,6 +102,7 @@ export const tasksSignalStore = signalStore(
                   summary: store._translate.instant('tasks.deleted'),
                   severity: 'success',
                 });
+                patchState(store, removeEntity(taskId));
                 router.navigate(['automation']);
               },
               error: () =>
@@ -105,16 +110,14 @@ export const tasksSignalStore = signalStore(
                   summary: store._translate.instant('tasks.delete_error'),
                   severity: 'error',
                 }),
-            }),
-            switchMap(() => store._fetchTasksList),
-            finalize(() => patchState(store, { isLoading: false }))
+            })
           )
         )
       )
     ),
     createTask: rxMethod<Partial<AutomaticTask>>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { _isRefreshing: true })),
         switchMap((newTask) =>
           store._taskApiService
             .createTask({
@@ -131,6 +134,7 @@ export const tasksSignalStore = signalStore(
                     summary: store._translate.instant('tasks.created'),
                     severity: 'success',
                   });
+                  patchState(store, removeAllEntities());
                   router.navigate(['automation']);
                 },
                 error: () =>
@@ -138,16 +142,14 @@ export const tasksSignalStore = signalStore(
                     summary: store._translate.instant('tasks.creation_error'),
                     severity: 'error',
                   }),
-              }),
-              switchMap(() => store._fetchTasksList),
-              finalize(() => patchState(store, { isLoading: false }))
+              })
             )
         )
       )
     ),
     updateTask: rxMethod<AutomaticTask>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { _isRefreshing: true })),
         switchMap((task) =>
           store._taskApiService
             .updateTask({
@@ -165,6 +167,7 @@ export const tasksSignalStore = signalStore(
                     summary: store._translate.instant('tasks.update_success'),
                     severity: 'success',
                   });
+                  patchState(store, updateEntity({ id: task.id, changes: task }));
                   router.navigate(['automation']);
                 },
                 error: () =>
@@ -172,16 +175,14 @@ export const tasksSignalStore = signalStore(
                     summary: store._translate.instant('tasks.update_error'),
                     severity: 'error',
                   }),
-              }),
-              switchMap(() => store._fetchTasksList),
-              finalize(() => patchState(store, { isLoading: false }))
+              })
             )
         )
       )
     ),
     getAvailableDevices: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { _isRefreshing: true })),
         switchMap(() =>
           store._homeDeviceApiService.getAllDevices({ body: {} }).pipe(
             map((devices) => devices.filter((device) => device.actions.length)),
@@ -202,21 +203,10 @@ export const tasksSignalStore = signalStore(
                   severity: 'error',
                 }),
             }),
-            finalize(() => patchState(store, { isLoading: false }))
+            finalize(() => patchState(store, { _isRefreshing: false }))
           )
         )
       )
     ),
-  })),
-  withHooks((store, appSignalStore = inject(appStore)) => ({
-    onInit: (): void => {
-      effect(() => {
-        if (store.isLoading()) {
-          appSignalStore.withGlobalLoading();
-        } else {
-          appSignalStore.withNoGlobalLoading();
-        }
-      });
-    },
   }))
 );
