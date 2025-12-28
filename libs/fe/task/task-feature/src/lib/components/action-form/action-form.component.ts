@@ -3,7 +3,11 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
+  Injector,
+  input,
+  InputSignal,
   model,
   ModelSignal,
   OnInit,
@@ -43,10 +47,12 @@ import { ActionForm } from './form-service/model/action-form';
 })
 export class ActionFormComponent implements OnInit {
   public readonly taskAction: ModelSignal<TaskAction | undefined> = model();
+  public readonly isLoading: InputSignal<boolean> = input(false);
 
   private readonly _store: TasksSignalStore = inject(tasksSignalStore);
   private readonly _formService: ActionFormService = inject(ActionFormService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly _injector: Injector = inject(Injector);
 
   protected readonly form: FormGroup<ActionForm> = this._formService.form;
   protected readonly devices: Signal<AvailableDevice[]> = this._store.availableDevices;
@@ -76,6 +82,17 @@ export class ActionFormComponent implements OnInit {
     }
 
     this._handleFormEvents();
+
+    effect(
+      () => {
+        if (this.isLoading()) {
+          this.form.disable();
+        } else {
+          this.form.enable();
+        }
+      },
+      { injector: this._injector }
+    );
   }
 
   protected save(): void {

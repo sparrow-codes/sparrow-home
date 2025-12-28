@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel, TasksApiService } from '@sparrow-home/api';
-import { appStore } from '@sparrow-home/core';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
 
@@ -31,10 +30,6 @@ describe('tasksSignalStore', () => {
     TestBed.configureTestingModule({
       providers: [
         rootStore,
-        {
-          provide: appStore,
-          useValue: { withGlobalLoading: jest.fn(), withGlobalError: jest.fn(), withNoGlobalLoading: jest.fn() },
-        },
         { provide: TasksApiService, useValue: mockTaskApiService },
         { provide: MessageService, useValue: mockMessageService },
         { provide: MessageService, useValue: mockMessageService },
@@ -65,7 +60,6 @@ describe('tasksSignalStore', () => {
     store.fetchTasks();
 
     expect(mockMessageService.add).toHaveBeenCalled();
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should change task status and refetch', () => {
@@ -77,7 +71,6 @@ describe('tasksSignalStore', () => {
     expect(mockTaskApiService.setTaskStatus).toHaveBeenCalledWith({ id: 1, active: true });
     expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should delete task and refetch', () => {
@@ -88,7 +81,6 @@ describe('tasksSignalStore', () => {
     expect(mockTaskApiService.deleteTask).toHaveBeenCalledWith({ id: 123 });
     expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should handle delete error', () => {
@@ -100,7 +92,6 @@ describe('tasksSignalStore', () => {
     expect(mockTaskApiService.deleteTask).toHaveBeenCalledWith({ id: 123 });
     expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should create a task and refetch', () => {
@@ -112,7 +103,6 @@ describe('tasksSignalStore', () => {
     expect(mockTaskApiService.createTask).toHaveBeenCalled();
     expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should update a task and refetch', () => {
@@ -130,7 +120,6 @@ describe('tasksSignalStore', () => {
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));
     expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should handle error update', () => {
@@ -148,7 +137,6 @@ describe('tasksSignalStore', () => {
     expect(mockTaskApiService.updateTask).toHaveBeenCalledWith(expect.objectContaining({ id: '7' }));
     expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should fetch device list successfully', () => {
@@ -190,7 +178,6 @@ describe('tasksSignalStore', () => {
     });
     expect(store.availableDevices().length).toBe(1);
     expect(store.availableDevices()[0].name).toBe('Device 1');
-    expect(store.isLoading()).toBe(false);
   });
 
   it('should handle fetch device error', () => {
@@ -202,6 +189,5 @@ describe('tasksSignalStore', () => {
     expect(mockHomeDeviceApiService.getAllDevices).toHaveBeenNthCalledWith(1, {
       body: {},
     });
-    expect(store.isLoading()).toBe(false);
   });
 });

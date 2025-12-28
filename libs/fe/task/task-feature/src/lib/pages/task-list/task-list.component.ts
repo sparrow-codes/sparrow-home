@@ -7,6 +7,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { Button } from 'primeng/button';
+import { Divider } from 'primeng/divider';
+import { Skeleton } from 'primeng/skeleton';
+import { Observable } from 'rxjs';
 
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
 
@@ -21,6 +24,8 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
     TranslatePipe,
     NgIcon,
     OnboardingComponent,
+    Skeleton,
+    Divider,
   ],
   templateUrl: './task-list.component.html',
   providers: [provideIcons({ bootstrapClockHistory })],
@@ -30,6 +35,8 @@ export class TaskListComponent implements OnInit {
 
   protected readonly tasks: Signal<AutomaticTask[]> = this._store.entities;
   protected readonly noSchedules: Signal<boolean | null> = this._store.noSchedules;
+  protected readonly showSkeleton$: Observable<boolean> = this._store.isLoading$;
+  protected readonly showProgressBar: Observable<boolean> = this._store.isRefreshing$;
 
   public ngOnInit(): void {
     this._store.fetchTasks();

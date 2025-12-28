@@ -85,7 +85,7 @@
   </div>
   <div class="flex flex-row sm:flex-row justify-end gap-4 mb-2">
     <p-button
-      [disabled]="formGroup?.invalid"
+      [disabled]="formGroup?.invalid || isLoading()"
       [label]="'common.save' | translate"
       icon="pi pi-check"
       (onClick)="onSubmitPreferences()"
@@ -97,12 +97,12 @@
 
 <p-drawer [fullScreen]="true" header="{{ 'common.add' | translate }}" [(visible)]="showAddAction" styleClass="w-full">
   @if (showAddAction) {
-  <sp-action-form (taskActionChange)="onAddActionData($event)"></sp-action-form>
+  <sp-action-form [isLoading]="isLoading()" (taskActionChange)="onAddActionData($event)"></sp-action-form>
   }
 </p-drawer>
 
 <p-drawer [fullScreen]="true" header="{{ 'common.edit' | translate }}" [(visible)]="showEditAction" styleClass="w-full">
   @if (showEditAction) {
-  <sp-action-form [taskAction]="actionToEdit" (taskActionChange)="onEditActionData($event)"></sp-action-form>
+  <sp-action-form [isLoading]="isLoading()" [taskAction]="actionToEdit" (taskActionChange)="onEditActionData($event)"></sp-action-form>
   }
 </p-drawer>
