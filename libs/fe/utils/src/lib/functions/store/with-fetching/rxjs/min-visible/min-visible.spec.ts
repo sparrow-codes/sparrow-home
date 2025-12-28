@@ -11,7 +11,7 @@ describe('minVisibleMs', () => {
   });
 
   it('throws when time is negative', () => {
-    expect(() => minVisibleMs(-1)).toThrowError(/Time must be greater than or equal to 0/);
+    expect(() => minVisibleMs(-1)).toThrow(/Time must be greater than or equal to 0/);
   });
 
   it('for time 0 behaves like distinctUntilChanged (immediate propagation)', () => {
