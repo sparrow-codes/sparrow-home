@@ -1,4 +1,6 @@
-<sp-page-title [navigationDisabled]="joinInProgress()" [routerLink]="['../']">{{ 'home.add_new_device' | translate }}
+@let joinInProgress = (joinInProgress$ | async) ?? false;
+
+<sp-page-title [navigationDisabled]="joinInProgress" [routerLink]="['../']">{{ 'home.add_new_device' | translate }}
 </sp-page-title>
 
 <p-card>
@@ -10,7 +12,7 @@
         pInputText
         pSize="large"
         [formControl]="formGroup.controls.name"
-        [disabled]="joinInProgress()"
+        [disabled]="joinInProgress"
         fluid="true"
       />
       <label for="deviceName">{{'home.device_name' | translate}}</label>
@@ -30,19 +32,19 @@
     </p-floatlabel>
 
     <div class="h-[40px]">
-      @if (deviceJoined() === true && !joinInProgress()) {
+      @if (deviceJoined() === true && !joinInProgress) {
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="pi pi-check-circle text-green-600"></i>
           <span class="text-green-600">{{'home.connection_established' | translate}}</span>
         </div>
       }
-      @if (deviceJoined() === false && !joinInProgress()) {
+      @if (deviceJoined() === false && !joinInProgress) {
         <div class="flex gap-2 items-center justify-center w-full">
           <i class="pi pi-ban text-red-500"></i>
           <span class="text-red-500">{{'home.device_pairing_failed' | translate}}</span>
         </div>
       }
-      @if (joinInProgress()) {
+      @if (joinInProgress) {
         <div class="flex gap-2 items-center justify-center w-full">
           <span class="text-red-gray-700">{{'home.pairing_in_progress' | translate}}</span>
         </div>
@@ -54,9 +56,9 @@
     } @else {
       <p-button
         type="submit"
-        [disabled]="formGroup.invalid || joinInProgress()"
+        [disabled]="formGroup.invalid || joinInProgress"
         [label]="'common.connect' | translate"
-        [loading]="joinInProgress()"
+        [loading]="joinInProgress"
         size="large"
         fluid="true"
       ></p-button>

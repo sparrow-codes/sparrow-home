@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DeviceAction, HomeDevice } from '@sparrow-home/utils';
+import { DeviceAction, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 import { Card } from 'primeng/card';
+import { Tag } from 'primeng/tag';
 
 import { deviceTypeDictionary } from '../../dictionary';
 import { DeviceActionComponent } from '../device-action/device-action.component';
@@ -19,6 +20,8 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
     DeviceTypeComponent,
     DeviceActionComponent,
     TranslatePipe,
+    HumanizePipe,
+    Tag,
   ],
   templateUrl: './device-list-item.component.html',
 })
@@ -45,4 +48,5 @@ export class DeviceListItemComponent {
 
     return deviceTypeDictionary.get(this.device().type);
   });
+  protected showTag: Signal<boolean> = computed(() => !!this.device().mainParamKey);
 }

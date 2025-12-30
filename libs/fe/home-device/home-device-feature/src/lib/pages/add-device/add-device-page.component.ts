@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, effect, inject, Injector, OnInit, Signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -10,7 +10,7 @@ import { Card } from 'primeng/card';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
-import { finalize, first } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
 import { CreateDeviceForm } from './form-service/model/create-device-form';
@@ -31,34 +31,33 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
   templateUrl: './add-device-page.component.html',
   providers: [CreateDeviceFormService],
 })
-export class AddDevicePageComponent {
+export class AddDevicePageComponent implements OnInit {
   private readonly _formService: CreateDeviceFormService = inject(CreateDeviceFormService);
   private readonly _translateService: TranslateService = inject(TranslateService);
-  private readonly facadeService: DeviceFacadeService = inject(DeviceFacadeService);
+  private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
+  private readonly _injector: Injector = inject(Injector);
 
   protected readonly formGroup: FormGroup<CreateDeviceForm> = this._formService.form;
   protected readonly dropdownOptions: { value: number; label: string }[] = this.prepareDropdownOptions();
-  protected readonly joinInProgress: WritableSignal<boolean> = signal(false);
-  protected readonly deviceJoined: WritableSignal<boolean | null> = signal(null);
+  protected readonly joinInProgress$: Observable<boolean> = this._facadeService.isRefreshing$;
+  protected readonly deviceJoined: Signal<boolean | null> = this._facadeService.devicePaired;
+
+  public ngOnInit(): void {
+    effect(
+      () => {
+        if (this.deviceJoined() !== null) {
+          this.formGroup.enable();
+        }
+      },
+      { injector: this._injector }
+    );
+  }
 
   protected onJoin(): void {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
-      this.joinInProgress.set(true);
-      this.deviceJoined.set(null);
       this.formGroup.disable();
-      this.facadeService
-        .createDevice(this.formGroup.value.deviceType as number, this.formGroup.value.name as string)
-        .pipe(
-          first(),
-          finalize(() => this.joinInProgress.set(false))
-        )
-        .subscribe((created) => {
-          if (!created) {
-            this.formGroup.enable();
-          }
-          this.deviceJoined.set(created);
-        });
+      this._facadeService.createDevice(this.formGroup.value.deviceType as number, this.formGroup.value.name as string);
     }
   }
 

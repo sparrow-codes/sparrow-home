@@ -7,7 +7,7 @@
     'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
     siren: deviceType() === deviceTypes.SIREN,
     pilot: deviceType() === deviceTypes.PILOT,
-    'pet-feeder': deviceType() === deviceTypes.PET_FEEDER,
+    other: deviceType() === deviceTypes.OTHER,
   }"
 >
   <ng-icon [name]="iconName()" size="1.2rem"></ng-icon>
@@ -23,9 +23,9 @@
     'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
     siren: deviceType() === deviceTypes.SIREN,
     pilot: deviceType() === deviceTypes.PILOT,
-    'pet-feeder': deviceType() === deviceTypes.PET_FEEDER,
+    other: deviceType() === deviceTypes.OTHER,
   }"
 >
-  <ng-icon class="text-white" [name]="iconName()" size="1.5rem"></ng-icon>
+  <ng-icon class="text-white" [name]="iconName()" size="32px"></ng-icon>
 </div>
 }

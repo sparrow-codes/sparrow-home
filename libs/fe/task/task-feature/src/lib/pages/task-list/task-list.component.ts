@@ -35,8 +35,8 @@ export class TaskListComponent implements OnInit {
 
   protected readonly tasks: Signal<AutomaticTask[]> = this._store.entities;
   protected readonly noSchedules: Signal<boolean | null> = this._store.noSchedules;
-  protected readonly showSkeleton$: Observable<boolean> = this._store.isLoading$;
-  protected readonly showProgressBar: Observable<boolean> = this._store.isRefreshing$;
+  protected readonly isLoading$: Observable<boolean> = this._store.isLoading$;
+  protected readonly isRefreshing$: Observable<boolean> = this._store.isRefreshing$;
 
   public ngOnInit(): void {
     this._store.fetchTasks();

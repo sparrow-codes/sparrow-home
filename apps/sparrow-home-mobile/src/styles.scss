@@ -23,6 +23,17 @@ html {
 p-card {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --p-card-body-padding: 1rem 0.75rem
+}
+
+p-chip {
+  --p-chip-background: rgba(131, 131, 131, 0.16);
+}
+
+@media (max-width: 360px) {
+  p-card {
+    --p-card-body-padding: 0.5rem;
+  }
 }
 
 /* AUTH i SUB mają dłużej + większy offset */

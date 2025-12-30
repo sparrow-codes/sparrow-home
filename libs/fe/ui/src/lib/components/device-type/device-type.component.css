@@ -4,6 +4,7 @@
   --door-sensor: #048444;
   --siren: #840404;
   --pilot: #989898;
+  --other: rgb(55, 65, 81, 1);
 
   .lsc-plug-in {
     background-color: var(--plugin);
@@ -50,8 +51,8 @@
     color: var(--pilot);
   }
 
-  .pet-feeder {
-    background-color: var(--temperature-sensor);
+  .other {
+    background-color: var(--other);
     color: white;
   }
 }

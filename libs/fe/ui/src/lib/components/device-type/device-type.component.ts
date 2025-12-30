@@ -4,6 +4,7 @@ import {
   bootstrapBellFill,
   bootstrapBuildingFillGear,
   bootstrapDoorOpenFill,
+  bootstrapGridFill,
   bootstrapPlugin,
   bootstrapThermometerHalf,
   bootstrapWifi,
@@ -27,6 +28,7 @@ import { deviceTypeDictionary } from '../../dictionary';
       bootstrapBellFill,
       bootstrapWifi,
       bootstrapBuildingFillGear,
+      bootstrapGridFill,
     }),
   ],
 })
@@ -48,8 +50,8 @@ export class DeviceTypeComponent {
         return 'bootstrapBellFill';
       case DeviceType.PILOT:
         return 'bootstrapWifi';
-      case DeviceType.PET_FEEDER:
-        return 'bootstrapBuildingFillGear';
+      case DeviceType.OTHER:
+        return 'bootstrapGridFill';
       default:
         return '';
     }

@@ -5,6 +5,8 @@ import { minVisibleMs } from './rxjs/min-visible/min-visible';
 import { showAfterMs } from './rxjs/show-after/show-after-ms';
 import { UI_LATENCY } from './tokens/ui-latency/ui-latency';
 
+type WithFetchingState = { _isLoading: boolean; _isRefreshing: boolean };
+
 export function withFetching() {
   return signalStoreFeature(
     withState<{ _isLoading: boolean; _isRefreshing: boolean }>({ _isLoading: false, _isRefreshing: false }),
@@ -19,4 +21,20 @@ export function withFetching() {
       ),
     }))
   );
+}
+
+export function withLoading(): Pick<WithFetchingState, '_isLoading'> {
+  return { _isLoading: true };
+}
+
+export function withoutLoading(): Pick<WithFetchingState, '_isLoading'> {
+  return { _isLoading: false };
+}
+
+export function withRefreshing(): Pick<WithFetchingState, '_isRefreshing'> {
+  return { _isRefreshing: true };
+}
+
+export function withoutRefreshing(): Pick<WithFetchingState, '_isRefreshing'> {
+  return { _isRefreshing: false };
 }

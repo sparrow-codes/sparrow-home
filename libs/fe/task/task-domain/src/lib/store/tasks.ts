@@ -6,7 +6,7 @@ import { removeAllEntities, removeEntity, setAllEntities, updateEntity, withEnti
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeDeviceApiService, TasksApiService } from '@sparrow-home/api';
-import { toDeviceAction, withFetching } from '@sparrow-home/utils';
+import { toDeviceAction, withFetching, withoutRefreshing, withRefreshing } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { finalize, map, pipe, switchMap, tap } from 'rxjs';
 
@@ -74,11 +74,7 @@ export const tasksSignalStore = signalStore(
             })
             .pipe(
               tapResponse({
-                next: () =>
-                  store._messageService.add({
-                    summary: store._translate.instant('tasks.status_changed'),
-                    severity: 'success',
-                  }),
+                next: () => void 0,
                 error: () =>
                   store._messageService.add({
                     summary: store._translate.instant('tasks.activation_error'),
@@ -93,7 +89,7 @@ export const tasksSignalStore = signalStore(
     ),
     deleteTask: rxMethod<number>(
       pipe(
-        tap(() => patchState(store, { _isRefreshing: true })),
+        tap(() => patchState(store, withRefreshing())),
         switchMap((taskId) =>
           store._taskApiService.deleteTask({ id: taskId }).pipe(
             tapResponse({
@@ -105,11 +101,14 @@ export const tasksSignalStore = signalStore(
                 patchState(store, removeEntity(taskId));
                 router.navigate(['automation']);
               },
-              error: () =>
+              error: () => {
                 store._messageService.add({
                   summary: store._translate.instant('tasks.delete_error'),
                   severity: 'error',
-                }),
+                });
+
+                patchState(store, withoutRefreshing());
+              },
             })
           )
         )
@@ -117,7 +116,7 @@ export const tasksSignalStore = signalStore(
     ),
     createTask: rxMethod<Partial<AutomaticTask>>(
       pipe(
-        tap(() => patchState(store, { _isRefreshing: true })),
+        tap(() => patchState(store, withRefreshing())),
         switchMap((newTask) =>
           store._taskApiService
             .createTask({
@@ -137,11 +136,14 @@ export const tasksSignalStore = signalStore(
                   patchState(store, removeAllEntities());
                   router.navigate(['automation']);
                 },
-                error: () =>
+                error: () => {
                   store._messageService.add({
                     summary: store._translate.instant('tasks.creation_error'),
                     severity: 'error',
-                  }),
+                  });
+
+                  patchState(store, withoutRefreshing());
+                },
               })
             )
         )
@@ -149,7 +151,7 @@ export const tasksSignalStore = signalStore(
     ),
     updateTask: rxMethod<AutomaticTask>(
       pipe(
-        tap(() => patchState(store, { _isRefreshing: true })),
+        tap(() => patchState(store, withRefreshing())),
         switchMap((task) =>
           store._taskApiService
             .updateTask({
@@ -170,11 +172,14 @@ export const tasksSignalStore = signalStore(
                   patchState(store, updateEntity({ id: task.id, changes: task }));
                   router.navigate(['automation']);
                 },
-                error: () =>
+                error: () => {
                   store._messageService.add({
                     summary: store._translate.instant('tasks.update_error'),
                     severity: 'error',
-                  }),
+                  });
+
+                  patchState(store, withoutRefreshing());
+                },
               })
             )
         )

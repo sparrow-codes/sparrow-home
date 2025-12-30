@@ -89,12 +89,12 @@ describe('HomeDeviceController', () => {
   describe('createDevice', () => {
     it('calls service with request fields and returns observable result', async () => {
       const req: CreateDeviceRequest = { type: 7, name: 'Bedroom Plug' };
-      homeDeviceServiceMock.addDevice.mockReturnValue(of(true));
+      homeDeviceServiceMock.addDevice.mockReturnValue(of(1));
 
-      const result: boolean = await firstValueFrom(controller.createDevice(req));
+      const result: number | null = await firstValueFrom(controller.createDevice(req));
 
       expect(homeDeviceServiceMock.addDevice).toHaveBeenCalledWith(req.type, req.name);
-      expect(result).toBe(true);
+      expect(result).toBe(1);
     });
   });
 

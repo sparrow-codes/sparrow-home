@@ -1,19 +1,8 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  computed,
-  DestroyRef,
-  effect,
-  inject,
-  Injector,
-  OnInit,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, DestroyRef, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { bootstrapHouseGear } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,9 +11,10 @@ import { DeviceListItemComponent, OnboardingComponent, PageTitleComponent } from
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Chip } from 'primeng/chip';
+import { Divider } from 'primeng/divider';
 import { InputText } from 'primeng/inputtext';
-import { Paginator, PaginatorState } from 'primeng/paginator';
-import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
+import { Skeleton } from 'primeng/skeleton';
+import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
 
 @Component({
   imports: [
@@ -35,58 +25,45 @@ import { debounceTime, distinctUntilChanged, filter, first } from 'rxjs';
     DeviceListItemComponent,
     FormsModule,
     PageTitleComponent,
-    Paginator,
     RouterLink,
     TranslatePipe,
     NgIcon,
     OnboardingComponent,
     Chip,
+    Skeleton,
+    Divider,
   ],
   templateUrl: './device-page.component.html',
   providers: [provideIcons({ bootstrapHouseGear })],
 })
 export class DevicePageComponent implements OnInit {
+  public readonly deviceType: InputSignal<string> = input('');
+
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
-  private readonly _injector: Injector = inject(Injector);
 
-  protected readonly data: Signal<HomeDevice[] | null> = this._facadeService.homeDevices;
+  protected readonly homeDevices: Signal<HomeDevice[] | null> = this._facadeService.homeDevices;
   protected readonly deviceFilter: Signal<DeviceType | null> = this._facadeService.deviceFilter;
-  protected readonly pagination: WritableSignal<PaginatorState> = signal({ page: 0, rows: 4, first: 0 });
-  protected readonly paginatedDevices = computed(() => {
-    const allDevices: HomeDevice[] = this.data() ?? [];
-    const { first = 0, rows = 4 } = this.pagination() ?? {};
-
-    return allDevices.slice(first, first + rows);
-  });
   protected readonly noDevices: Signal<boolean | null> = this._facadeService.noDevices;
   protected readonly searchControl: FormControl<string | null> = new FormControl(
     this._facadeService.searchQuery() ?? ''
   );
-  protected readonly deviceType: typeof DeviceType = DeviceType;
+  protected readonly deviceTypeEnum: typeof DeviceType = DeviceType;
+  protected readonly isLoading$: Observable<boolean> = this._facadeService.isLoading$;
+  protected readonly isRefreshing$: Observable<boolean> = this._facadeService.isRefreshing$;
 
   public ngOnInit(): void {
-    this._activatedRoute.queryParams.pipe(first()).subscribe((params) => {
-      this._facadeService.setDeviceTypeFilter(params['deviceType']);
-      this._facadeService.fetchDevices();
-    });
+    if (this.deviceType()) {
+      this._facadeService.setDeviceTypeFilter(+this.deviceType());
+    }
 
     this._facadeService.fetchDevices();
-    this._handleSearchEvent();
 
-    effect(
-      () => {
-        if (this.noDevices()) {
-          this.searchControl.disable();
-        }
-      },
-      { injector: this._injector }
-    );
+    this._handleSearchEvent();
   }
 
   protected onRemoveFilter(): void {
-    this._facadeService.setDeviceTypeFilter('');
+    this._facadeService.setDeviceTypeFilter();
     this._facadeService.fetchDevices();
   }
 
@@ -104,7 +81,6 @@ export class DevicePageComponent implements OnInit {
       )
       .subscribe((value) => {
         this._facadeService.setSearchQuery(value);
-        this.pagination.update((value) => ({ ...value, first: 0 }));
       });
   }
 }
