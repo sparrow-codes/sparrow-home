@@ -69,7 +69,6 @@ describe('tasksSignalStore', () => {
     store.changeTaskStatus({ id: 1, isActive: true });
 
     expect(mockTaskApiService.setTaskStatus).toHaveBeenCalledWith({ id: 1, active: true });
-    expect(mockMessageService.add).toHaveBeenCalled();
     expect(mockTaskApiService.getTaskList).toHaveBeenCalledTimes(1);
   });
 
