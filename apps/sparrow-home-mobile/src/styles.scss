@@ -25,6 +25,10 @@ p-card {
   --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+p-chip {
+  --p-chip-background: rgba(131, 131, 131, 0.16);
+}
+
 /* AUTH i SUB mają dłużej + większy offset */
 html.vt-auth::view-transition-group(root),
 html.vt-sub-forward::view-transition-group(root),

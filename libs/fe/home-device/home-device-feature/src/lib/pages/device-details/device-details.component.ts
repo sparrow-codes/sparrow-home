@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, InputSignal, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import {
   BatteryStatusComponent,
+  ConfirmationDialogComponent,
+  ConfirmationDialogData,
   DeviceActionComponent,
   DeviceTypeComponent,
   PageTitleComponent,
@@ -15,8 +17,11 @@ import { Card } from 'primeng/card';
 import { Checkbox } from 'primeng/checkbox';
 import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
+import { DialogService } from 'primeng/dynamicdialog';
 import { InputText } from 'primeng/inputtext';
 import { RadioButton } from 'primeng/radiobutton';
+import { Skeleton } from 'primeng/skeleton';
+import { filter, Observable, take } from 'rxjs';
 
 import { DeviceParamComponent } from '../../components/device-param/device-param.component';
 import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
@@ -40,6 +45,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     RadioButton,
     Checkbox,
     TranslatePipe,
+    Skeleton,
   ],
   templateUrl: './device-details.component.html',
 })
@@ -47,7 +53,11 @@ export class DeviceDetailsComponent implements OnInit {
   public readonly id: InputSignal<string | null> = input<string | null>(null);
 
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
+  private readonly _translateService: TranslateService = inject(TranslateService);
+  private readonly _dialogService: DialogService = inject(DialogService);
 
+  protected readonly isLoading$: Observable<boolean> = this._facadeService.isLoading$;
+  protected readonly isRefreshing$: Observable<boolean> = this._facadeService.isRefreshing$;
   protected readonly showEditDialog: WritableSignal<boolean> = signal(false);
   protected readonly deviceDetails: Signal<HomeDevice | null> = this._facadeService.homeDeviceDetails;
   protected readonly params: Signal<[string, string][]> = computed(() =>
@@ -65,7 +75,20 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   protected onDeviceDelete(id: number, name: string): void {
-    this._facadeService.deleteDevice(id, name);
+    this._dialogService
+      .open(ConfirmationDialogComponent, {
+        modal: true,
+        header: this._translateService.instant('home.remove_device'),
+        width: '90vw',
+        data: {
+          content: this._translateService.instant('home.remove_device_confirmation_content', { deviceName: name }),
+        } as ConfirmationDialogData,
+      })
+      ?.onClose.pipe(
+        take(1),
+        filter((result) => !!result)
+      )
+      .subscribe(() => this._facadeService.deleteDevice(id));
   }
 
   protected onDeviceNameChange(id: number, value: string): void {

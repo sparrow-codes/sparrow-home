@@ -63,13 +63,12 @@
     "you_can_add": "Add sensors, switches and more...",
     "remove_device": "Remove device",
     "remove_device_confirmation_content": "Are you sure you want to remove the device named: {{deviceName}}? Associated actions in schedules will be automatically removed.",
-    "device_deleted": "Device removed!",
     "device_delete_error": "Error occurred while removing the device!",
     "fetch_device_details_error": "Error while fetching device details!",
-    "name_change_success": "Device name changed successfully!",
     "name_change_error": "Error changing device name!",
     "update_fields_error": "Error updating device fields",
-    "fetch_devices_error": "Error fetching devices list"
+    "fetch_devices_error": "Error fetching devices list",
+    "error_sending_event": "Error sending event"
   },
   "main_panel": {
     "alarm_home": "Alarm at home",

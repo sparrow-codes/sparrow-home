@@ -73,12 +73,12 @@ export class HomeDeviceService {
     );
   }
 
-  public addDevice(type: DeviceType, name: string): Observable<boolean> {
+  public addDevice(type: DeviceType, name: string): Observable<number | null> {
     return this._zigbeeManageDeviceService.joinDeviceAndSetId().pipe(
       first(),
       switchMap((zigbeeDeviceId) => {
         if (!zigbeeDeviceId) {
-          return of(false);
+          return of(null);
         }
 
         const device: HomeDevice = new HomeDevice();
@@ -86,7 +86,7 @@ export class HomeDeviceService {
         device.zigbeeDeviceId = zigbeeDeviceId;
         device.deviceName = name;
 
-        return from(this._homeDeviceRepository.save(device)).pipe(map(() => true));
+        return from(this._homeDeviceRepository.save(device)).pipe(map((device) => device.id));
       })
     );
   }
