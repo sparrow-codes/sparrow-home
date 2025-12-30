@@ -37,7 +37,7 @@
       "open_door_sensor": "Door sensor",
       "siren": "Siren",
       "pilot": "Remote",
-      "pet_feeder": "Pet feeder"
+      "other": "Standard device"
     }
   },
   "home": {
@@ -52,7 +52,7 @@
     "main": "Main",
     "set_as_main_action": "Set {{actionKey}} as main action",
     "set_as_main_param": "Set {{paramKey}} as main parameter",
-    "present_on_main_page": "Present on main page",
+    "present_on_main_page": "Show on dashboard",
     "edit_device": "Edit device",
     "available_devices": "Available devices",
     "search_for_device": "Search for device...",
@@ -68,7 +68,11 @@
     "name_change_error": "Error changing device name!",
     "update_fields_error": "Error updating device fields",
     "fetch_devices_error": "Error fetching devices list",
-    "error_sending_event": "Error sending event"
+    "error_sending_event": "Error sending event",
+    "quick-action": "Quick action",
+    "quick-param-preview": "Quick parameter preview",
+    "show-quick-param": "Displays a quick parameter view on device cards",
+    "show-quick-action": "Displays as a quick control on device cards"
   },
   "main_panel": {
     "alarm_home": "Alarm at home",
@@ -96,7 +100,6 @@
   },
   "tasks": {
     "fetch_list_error": "Error fetching schedules list!",
-    "status_changed": "Schedule status changed",
     "activation_error": "Error activating schedule!",
     "deleted": "Schedule deleted.",
     "delete_error": "Error deleting schedule!",
@@ -124,7 +127,9 @@
     "no_tasks_yet": "No schedules yet",
     "create_first_task": "Create your first schedule to automate your home.",
     "create_first_task_content": "Schedules run at specific times or on repeating intervals.",
-    "create_first_task_button": "Create first schedule"
+    "create_first_task_button": "Create first schedule",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "user": {
     "fetch_additional_users_error": "Error fetching additional users list",

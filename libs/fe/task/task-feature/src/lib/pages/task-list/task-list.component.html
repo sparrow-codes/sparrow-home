@@ -1,5 +1,5 @@
 <div class="w-full flex flex-col h-full">
-  <sp-page-title [showProgressBar]="(showProgressBar | async) ?? false">{{ 'tasks.title' | translate }}</sp-page-title>
+  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false">{{ 'tasks.title' | translate }}</sp-page-title>
 
   @if (noSchedules() === false) {
     <div class="flex w-full justify-end">
@@ -17,7 +17,7 @@
 
   <div class="flex flex-col gap-2">
     <p-divider></p-divider>
-    @if (showSkeleton$ | async) {
+    @if (isLoading$ | async) {
       <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
       <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
       <p-skeleton class="animate-fadein" height="80px"></p-skeleton>

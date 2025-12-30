@@ -74,11 +74,7 @@ export const tasksSignalStore = signalStore(
             })
             .pipe(
               tapResponse({
-                next: () =>
-                  store._messageService.add({
-                    summary: store._translate.instant('tasks.status_changed'),
-                    severity: 'success',
-                  }),
+                next: () => void 0,
                 error: () =>
                   store._messageService.add({
                     summary: store._translate.instant('tasks.activation_error'),

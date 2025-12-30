@@ -11,15 +11,16 @@ import {
   DeviceTypeComponent,
   PageTitleComponent,
 } from '@sparrow-home/ui';
-import { DeviceType, HomeDevice } from '@sparrow-home/utils';
+import { DeviceType, HomeDevice, humanize } from '@sparrow-home/utils';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Checkbox } from 'primeng/checkbox';
 import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
 import { DialogService } from 'primeng/dynamicdialog';
+import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { RadioButton } from 'primeng/radiobutton';
+import { Select } from 'primeng/select';
 import { Skeleton } from 'primeng/skeleton';
 import { filter, Observable, take } from 'rxjs';
 
@@ -42,10 +43,11 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     InputText,
     DeviceParamComponent,
     DeviceActionComponent,
-    RadioButton,
     Checkbox,
     TranslatePipe,
     Skeleton,
+    FloatLabel,
+    Select,
   ],
   templateUrl: './device-details.component.html',
 })
@@ -64,9 +66,21 @@ export class DeviceDetailsComponent implements OnInit {
     Object.entries(this.deviceDetails()?.params ?? {})
   );
   protected readonly deviceType: typeof DeviceType = DeviceType;
-  protected mainActionKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainActionKey ?? null);
-  protected mainParamKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainParamKey ?? null);
-  protected isOnMainPage: Signal<boolean> = computed(() => this.deviceDetails()?.isOnMainPage ?? false);
+  protected readonly mainActionKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainActionKey ?? null);
+  protected readonly mainParamKey: Signal<string | null> = computed(() => this.deviceDetails()?.mainParamKey ?? null);
+  protected readonly isOnMainPage: Signal<boolean> = computed(() => this.deviceDetails()?.isOnMainPage ?? false);
+  protected readonly mainActions: Signal<{ value: string; label: string }[]> = computed(
+    () =>
+      this.deviceDetails()
+        ?.actions?.filter(
+          (action) => action.type === 'boolean' || (action.type === 'enum' && action.enumValues.length === 1)
+        )
+        .map((action) => ({ value: action.key, label: humanize(action.key) })) ?? []
+  );
+
+  protected readonly mainParams: Signal<{ value: string; label: string }[]> = computed(
+    () => this.params()?.map(([value]) => ({ value: value, label: humanize(value) })) ?? []
+  );
 
   public ngOnInit(): void {
     if (this.id()) {

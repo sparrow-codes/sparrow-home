@@ -1,19 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
+import { Component, model, ModelSignal, output, OutputEmitterRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask } from '@sparrow-home/task-domain';
 import { Card } from 'primeng/card';
+import { Tag } from 'primeng/tag';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-task-card',
-  imports: [CommonModule, Card, RouterLink, ToggleSwitch, FormsModule, TranslatePipe],
+  imports: [CommonModule, Card, RouterLink, ToggleSwitch, FormsModule, TranslatePipe, Tag],
   templateUrl: './task-card.component.html',
 })
 export class TaskCardComponent {
-  public readonly task: InputSignal<AutomaticTask> = input.required();
-
+  public readonly task: ModelSignal<AutomaticTask> = model.required();
   public readonly isActive: OutputEmitterRef<boolean> = output();
+
+  protected changeTaskStatus(isActive: boolean): void {
+    this.task.update((task) => ({ ...task, isActive }));
+    this.isActive.emit(isActive);
+  }
 }

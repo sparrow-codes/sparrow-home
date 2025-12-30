@@ -1,157 +1,160 @@
-<sp-page-title [routerLink]="['/devices']" [showProgressBar]="(isRefreshing$ | async) ?? false">{{ 'home.device_details' | translate }}</sp-page-title>
+<sp-page-title [routerLink]="['/devices']"
+               [showProgressBar]="(isRefreshing$ | async) ?? false">{{ 'home.device_details' | translate }}
+</sp-page-title>
 
 <div class="w-full flex justify-center mt-2">
   @if (isLoading$ | async) {
-  <p-skeleton class="animate-fadein" height="300px"></p-skeleton>
+    <p-skeleton class="animate-fadein" height="300px"></p-skeleton>
   } @else if (deviceDetails(); as homeDevice) {
 
-  <p-card class="w-full">
-    <ng-template #header>
-      <div class="p-[20px] pb-0 flex justify-between items-center">
-        {{ homeDevice.name }}
+    <p-card class="w-full">
+      <ng-template #header>
+        <div class="p-[20px] pb-0 flex justify-between items-center">
+          {{ homeDevice.name }}
 
-        @if (homeDevice.battery !== null) {
-        <div class="flex justify-end">
-          <sp-battery-status [batteryStatus]="homeDevice.battery"></sp-battery-status>
-        </div>
-        }
-      </div>
-    </ng-template>
-    <div class="flex flex-col gap-1 mb-2">
-      <span class="text-sm opacity-80">{{ homeDevice.description }}</span>
-      <span class="text-xs opacity-80">{{ homeDevice.vendor }}</span>
-    </div>
-
-    <div class="flex justify-between">
-      <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
-      @if (homeDevice.signalStrength !== undefined) {
-      <div class="w-full flex justify-end">
-        <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
-      </div>
-      }
-    </div>
-
-    @if (deviceDetails()?.actions?.length) {
-    <p-divider></p-divider>
-
-    <div class="flex gap-2 w-full justify-end mb-3">
-      <span class="text-xs font-semibold text-gray-500">{{ 'home.main' | translate }}</span>
-    </div>
-    <div class="flex flex-col gap-4">
-      @for (action of homeDevice.actions; track action.key) { @if (action.type !== 'unknown') {
-      <div class="grid grid-cols-[minmax(0,1fr)_2.5rem] gap-x-4 gap-y-2 items-start">
-        <div class="min-w-0">
-          <sp-device-action [action]="action" (callAction)="publishZigbeeEvent(homeDevice.homeDeviceId, $event)">
-          </sp-device-action>
-        </div>
-
-        <div class="flex items-start pt-1 justify-end">
-          @if (action.type === 'boolean' || (action.type === 'enum' && action.enumValues.length === 1)) {
-          <p-radio-button
-            name="mainAction"
-            [value]="action.key"
-            (ngModelChange)="setMainAction($event)"
-            [ngModel]="mainActionKey()"
-            [ariaLabel]="'home.set_as_main_action' | translate : { actionKey: action.key }"
-          >
-          </p-radio-button>
+          @if (homeDevice.battery !== null) {
+            <div class="flex justify-end">
+              <sp-battery-status [batteryStatus]="homeDevice.battery"></sp-battery-status>
+            </div>
           }
         </div>
-      </div>
-      } }
-    </div>
-    } @if (params().length) {
-    <p-divider></p-divider>
-
-    @for (param of params(); track param[0]) {
-    <div class="grid grid-cols-[minmax(0,1fr)_2.5rem] gap-x-4 gap-y-2 items-start">
-      <div class="min-w-0">
-        <sp-device-param [deviceParam]="param"></sp-device-param>
+      </ng-template>
+      <div class="flex flex-col gap-1 mb-2">
+        <span class="text-sm opacity-80">{{ homeDevice.description }}</span>
+        <span class="text-xs opacity-80">{{ homeDevice.vendor }}</span>
       </div>
 
-      <div class="flex items-start pt-2 justify-end">
-        <p-radio-button
-          name="mainParam"
-          [value]="param[0]"
-          (ngModelChange)="setMainParam($event)"
-          [ngModel]="mainParamKey()"
-          [ariaLabel]="'home.set_as_main_param' | translate : { paramKey: param[0] }"
-        >
-        </p-radio-button>
+      <div class="flex justify-between">
+        <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
+        @if (homeDevice.signalStrength !== undefined) {
+          <div class="w-full flex justify-end">
+            <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
+          </div>
+        }
       </div>
-    </div>
-    } }
 
-    <p-divider></p-divider>
-    <div class="flex justify-between items-center mt-4">
-      <span>{{ 'home.present_on_main_page' | translate }}</span>
-      <p-checkbox
-        [size]="'large'"
-        [ngModel]="isOnMainPage()"
-        (ngModelChange)="setIsOnMainPage($event)"
-        [binary]="true"
-      ></p-checkbox>
-    </div>
+      @if (deviceDetails()?.actions?.length) {
+        <p-divider></p-divider>
 
-    <p-divider></p-divider>
-    <div class="flex justify-between items-center mt-4">
-      <span>Id:</span>
-      <div class="flex gap-2 items-center">
-        <span>{{ homeDevice.homeDeviceId }}</span>
+        <div class="flex gap-2 w-full justify-end mb-3">
+          <span class="text-xs font-semibold text-gray-500">{{ 'home.main' | translate }}</span>
+        </div>
+        <div class="flex flex-col gap-4">
+          @for (action of homeDevice.actions; track action.key) {
+            @if (action.type !== 'unknown') {
+              <sp-device-action [action]="action"
+                                (callAction)="publishZigbeeEvent(homeDevice.homeDeviceId, $event)">
+              </sp-device-action>
+            }
+          }
+        </div>
+      }
+      @if (params().length) {
+        <p-divider></p-divider>
+
+        @for (param of params(); track param[0]) {
+          <sp-device-param [deviceParam]="param"></sp-device-param>
+        }
+      }
+
+      <p-divider></p-divider>
+      <div class="flex justify-between items-center mt-4">
+        <span>{{ 'home.present_on_main_page' | translate }}</span>
+        <p-checkbox
+          [size]="'large'"
+          [ngModel]="isOnMainPage()"
+          (ngModelChange)="setIsOnMainPage($event)"
+          [binary]="true"
+        ></p-checkbox>
       </div>
-    </div>
 
-    <!-- Usuń -->
-  </p-card>
+      @if (mainActions().length) {
+        <p-divider></p-divider>
+        <p-float-label [variant]="'on'"  class="mt-4">
+          <p-select [fluid]="true" inputId="main-action" [options]="mainActions()" optionLabel="label" optionValue="value" size="large"
+                    [showClear]="true"
+                    [ngModel]="mainActionKey()" (ngModelChange)="setMainAction($event)"></p-select>
+          <label for="main-action">{{ 'home.quick-action' | translate }}</label>
+        </p-float-label>
+        <div class="flex gap-2 justify-between text-sm text-gray-500 mt-4">
+          <i class="pi pi-info-circle text-sm"></i>
+          <span>{{ 'home.show-quick-action' | translate }}</span>
+        </div>
+      }
+
+      @if (mainParams().length) {
+        <p-divider></p-divider>
+        <p-float-label [variant]="'on'"  class="mt-4">
+          <p-select [fluid]="true" inputId="main-param" [options]="mainParams()" optionLabel="label" optionValue="value" size="large"
+                    [showClear]="true"
+                    [ngModel]="mainParamKey()" (ngModelChange)="setMainParam($event)"></p-select>
+          <label for="main-param">{{ 'home.quick-param-preview' | translate }}</label>
+        </p-float-label>
+        <div class="flex gap-2 justify-between text-sm text-gray-500 mt-4">
+          <i class="pi pi-info-circle text-sm"></i>
+          <span>{{ 'home.show-quick-param' | translate }}</span>
+        </div>
+      }
+
+      <p-divider></p-divider>
+      <div class="flex justify-between items-center mt-4">
+        <span>Id:</span>
+        <div class="flex gap-2 items-center">
+          <span>{{ homeDevice.homeDeviceId }}</span>
+        </div>
+      </div>
+
+      <!-- Usuń -->
+    </p-card>
   }
 </div>
 
 <div class="flex justify-end gap-2 mt-6">
   @if (isLoading$ | async) {
-  <p-skeleton class="animate-fadein" width="120xp" height="40px"></p-skeleton>
-  <p-skeleton class="animate-fadein" width="120px" height="40px"></p-skeleton>
+    <p-skeleton class="animate-fadein" width="120xp" height="40px"></p-skeleton>
+    <p-skeleton class="animate-fadein" width="120px" height="40px"></p-skeleton>
   } @else if (deviceDetails(); as homeDevice) {
-  <p-button
-    icon="pi pi-trash"
-    class="animate-fadein"
-    [outlined]="true"
-    [label]="'common.remove' | translate"
-    (onClick)="onDeviceDelete(homeDevice.id, homeDevice.name)"
-  />
+    <p-button
+      icon="pi pi-trash"
+      class="animate-fadein"
+      [outlined]="true"
+      [label]="'common.remove' | translate"
+      (onClick)="onDeviceDelete(homeDevice.id, homeDevice.name)"
+    />
 
-  <p-button
-    class="animate-fadein"
-    icon="pi pi-pencil"
-    [label]="'common.edit' | translate"
-    (onClick)="showEditDialog.set(true)"
-  />
+    <p-button
+      class="animate-fadein"
+      icon="pi pi-pencil"
+      [label]="'common.edit' | translate"
+      (onClick)="showEditDialog.set(true)"
+    />
   }
 </div>
 
 @if (deviceDetails(); as homeDevice) {
-<p-dialog [header]="'home.edit_device' | translate" [visible]="showEditDialog()" [modal]="true">
-  <div class="flex flex-col gap-4">
-    <input
-      #nameInput
-      pInputText
-      [fluid]="true"
-      [placeholder]="('common.name' | translate) + '...'"
-      [value]="deviceDetails()?.name"
-    />
+  <p-dialog [header]="'home.edit_device' | translate" [visible]="showEditDialog()" [modal]="true">
+    <div class="flex flex-col gap-4">
+      <input
+        #nameInput
+        pInputText
+        [fluid]="true"
+        [placeholder]="('common.name' | translate) + '...'"
+        [value]="deviceDetails()?.name"
+      />
 
-    <div class="flex justify-end gap-2">
-      <p-button
-        [label]="'common.cancel' | translate"
-        [outlined]="true"
-        severity="secondary"
-        (onClick)="showEditDialog.set(false)"
-      />
-      <p-button
-        icon="pi pi-check"
-        [label]="'common.save' | translate"
-        (onClick)="onDeviceNameChange(homeDevice.id, nameInput.value)"
-      />
+      <div class="flex justify-end gap-2">
+        <p-button
+          [label]="'common.cancel' | translate"
+          [outlined]="true"
+          severity="secondary"
+          (onClick)="showEditDialog.set(false)"
+        />
+        <p-button
+          icon="pi pi-check"
+          [label]="'common.save' | translate"
+          (onClick)="onDeviceNameChange(homeDevice.id, nameInput.value)"
+        />
+      </div>
     </div>
-  </div>
-</p-dialog>
+  </p-dialog>
 }
