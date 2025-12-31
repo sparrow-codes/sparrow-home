@@ -1,6 +1,6 @@
 @if (isLoading()) {
   <p-skeleton class="animate-fadein" height="74px"></p-skeleton>
-} @else if(haveInitalData()) {
+} @else if (haveInitalData()) {
   <a
     class="animate-fadein flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-3 w-full cursor-pointer hover:bg-gray-50 transition no-underline"
     [routerLink]="['../', 'devices']"
