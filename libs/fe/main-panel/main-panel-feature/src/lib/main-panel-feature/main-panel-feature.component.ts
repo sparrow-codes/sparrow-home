@@ -6,7 +6,10 @@ import { VisibilityService } from '@sparrow-home/core';
 import { MainPanelStore, mainPanelStore } from '@sparrow-home/main-panel-domain';
 import { DeviceListItemComponent, OnboardingComponent } from '@sparrow-home/ui';
 import { HomeDevice } from '@sparrow-home/utils';
-import { filter } from 'rxjs';
+import { Divider } from 'primeng/divider';
+import { ProgressBar } from 'primeng/progressbar';
+import { Skeleton } from 'primeng/skeleton';
+import { filter, Observable } from 'rxjs';
 
 import { AlarmPanelComponent } from '../components/alarm-panel/alarm-panel.component';
 import { DeviceListPanelComponent } from '../components/device-list-panel/device-list-panel.component';
@@ -21,6 +24,9 @@ import { TemperaturePanelComponent } from '../components/temperature-panel/tempe
     DeviceListItemComponent,
     TranslatePipe,
     OnboardingComponent,
+    Divider,
+    Skeleton,
+    ProgressBar,
   ],
   templateUrl: './main-panel-feature.component.html',
 })
@@ -35,6 +41,9 @@ export class MainPanelFeatureComponent implements OnInit {
   protected readonly isHouseClosed: Signal<boolean | null> = this._mainPanelStore.areAllWindowsAndDoorsClosed;
   protected readonly mainDevices: Signal<HomeDevice[]> = this._mainPanelStore.mainPageDevices;
   protected readonly noDevices: Signal<boolean | null> = this._mainPanelStore.noDevices;
+  protected readonly isLoading$: Observable<boolean> = this._mainPanelStore.isLoading$;
+  protected readonly isRefreshing$: Observable<boolean> = this._mainPanelStore.isRefreshing$;
+  protected readonly haveInitialData: Signal<boolean> = this._mainPanelStore.haveInitialData;
 
   public ngOnInit(): void {
     this._mainPanelStore.fetchInitData();
