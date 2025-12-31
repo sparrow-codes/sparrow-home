@@ -163,7 +163,7 @@ export const mainPanelStore = signalStore(
         ),
         publishEvent: rxMethod<{ id: string; payload: Record<string, unknown> }>(
           pipe(
-            tap(() => patchState(store, withRefreshing)),
+            tap(() => patchState(store, withRefreshing())),
             switchMap((request) =>
               homeDeviceApiService
                 .publishZigbeeEvent({

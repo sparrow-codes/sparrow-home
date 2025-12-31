@@ -10,7 +10,7 @@
     [isHouseClosed]="isHouseClosed()"
   />
 
-  <sp-device-list-panel [haveInitalData]="haveInitialData()" [isLoading]="(isLoading$ | async) ?? false" />
+  <sp-device-list-panel [haveInitialData]="haveInitialData()" [isLoading]="(isLoading$ | async) ?? false" />
   <p-divider></p-divider>
 
   @if (isLoading$ | async) {
