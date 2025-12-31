@@ -1,4 +1,4 @@
-@let isLoading = (isLoading$ | async) ?? false ;
+@let isLoading = (isLoading$ | async) ?? false;
 
 <div class="w-full flex flex-col h-full">
   <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{
