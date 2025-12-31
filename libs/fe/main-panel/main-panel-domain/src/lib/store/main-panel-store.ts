@@ -122,10 +122,7 @@ export const mainPanelStore = signalStore(
             }),
             switchMap(() =>
               forkJoin([getAvgTemperature(), getAlarmStatus(), getWindowsAndDoorStatus(), getMainDevices()]).pipe(
-                finalize(() => {
-                  console.log('end');
-                  patchState(store, withoutLoading(), withoutRefreshing(), { haveInitialData: true });
-                })
+                finalize(() => patchState(store, withoutLoading(), withoutRefreshing(), { haveInitialData: true }))
               )
             )
           )
