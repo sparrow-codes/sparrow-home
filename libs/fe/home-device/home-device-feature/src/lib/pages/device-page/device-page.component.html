@@ -1,10 +1,12 @@
+@let isLoading = (isLoading$ | async) ?? false ;
+
 <div class="w-full flex flex-col h-full">
   <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{
     'home.available_devices' | translate
   }}</sp-page-title>
 
   <div class="flex flex-row gap-2 justify-center items-center mb-1">
-    @if (isLoading$ | async) {
+    @if (isLoading) {
       <p-skeleton class="flex-grow animate-fadein" height="43px"></p-skeleton>
       <p-skeleton class="animate-fadein" width="88px" height="43px"></p-skeleton>
     } @else if (noDevices() === false) {
@@ -30,7 +32,7 @@
   </div>
 
   <div class="min-h-[45px] text-end">
-    @if (deviceFilter() === deviceTypeEnum.OPEN_DOOR_SENSOR) {
+    @if (deviceFilter() === deviceTypeEnum.OPEN_DOOR_SENSOR && noDevices() === false) {
     <p-chip class="animate-fadein">
       <div class="flex flex-row gap-2">
         <span>{{ 'home.doors_and_windows' | translate }}</span>
@@ -42,11 +44,11 @@
   <div class="flex flex-col h-full justify-between">
     <p-divider></p-divider>
     <div class="flex flex-col gap-2">
-      @if (isLoading$ | async) {
-        <p-skeleton class="animate-fadein" height="85px" width="100%"></p-skeleton>
-        <p-skeleton class="animate-fadein" height="85px" width="100%"></p-skeleton>
-        <p-skeleton class="animate-fadein" height="85px" width="100%"></p-skeleton>
-        <p-skeleton class="animate-fadein" height="85px" width="100%"></p-skeleton>
+      @if (isLoading) {
+        <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
+        <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
+        <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
+        <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
       } @else {
         @for (device of homeDevices(); track device.id) {
           <sp-device-list-item

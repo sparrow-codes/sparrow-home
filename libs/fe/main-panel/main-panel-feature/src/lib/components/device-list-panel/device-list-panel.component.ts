@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Divider } from 'primeng/divider';
+import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'sp-device-list-panel',
-  imports: [CommonModule, RouterLink, TranslatePipe, Divider],
+  imports: [CommonModule, RouterLink, TranslatePipe, Skeleton],
   templateUrl: './device-list-panel.component.html',
 })
-export class DeviceListPanelComponent {}
+export class DeviceListPanelComponent {
+  public readonly isLoading: InputSignal<boolean> = input<boolean>(false);
+  public readonly haveInitalData: InputSignal<boolean> = input.required();
+}

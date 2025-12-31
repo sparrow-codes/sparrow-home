@@ -10,12 +10,20 @@ import {
   HomeDeviceApiService,
   HomeDeviceDetailsDtoApiModel,
 } from '@sparrow-home/api';
-import { LoaderService } from '@sparrow-home/core';
-import { HomeDevice, toHomeDevice } from '@sparrow-home/utils';
+import {
+  HomeDevice,
+  toHomeDevice,
+  withFetching,
+  withLoading,
+  withoutLoading,
+  withoutRefreshing,
+  withRefreshing,
+} from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { finalize, first, forkJoin, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 interface MainPanelStoreState {
+  haveInitialData: boolean;
   avgTemperature: number | null;
   isAlarmOn: boolean;
   isAlarmAvailable: boolean;
@@ -29,6 +37,7 @@ export type MainPanelStore = InstanceType<typeof mainPanelStore>;
 export const mainPanelStore = signalStore(
   { providedIn: 'root' },
   withState<MainPanelStoreState>({
+    haveInitialData: false,
     avgTemperature: null,
     isAlarmOn: false,
     isAlarmAvailable: false,
@@ -36,12 +45,12 @@ export const mainPanelStore = signalStore(
     mainPageDevices: [],
     noDevices: null,
   }),
+  withFetching(),
   withMethods(
     (
       store,
       homeDeviceApiService = inject(HomeDeviceApiService),
       alarmApiService = inject(AlarmApiService),
-      loaderService = inject(LoaderService),
       messageService = inject(MessageService),
       translateService = inject(TranslateService)
     ) => {
@@ -108,17 +117,22 @@ export const mainPanelStore = signalStore(
       return {
         fetchInitData: rxMethod<void>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => {
+              patchState(store, store.haveInitialData() ? withRefreshing() : withLoading());
+            }),
             switchMap(() =>
               forkJoin([getAvgTemperature(), getAlarmStatus(), getWindowsAndDoorStatus(), getMainDevices()]).pipe(
-                finalize(() => (loaderService.showLoader = false))
+                finalize(() => {
+                  console.log('end');
+                  patchState(store, withoutLoading(), withoutRefreshing(), { haveInitialData: true });
+                })
               )
             )
           )
         ),
         setAlarm: rxMethod<boolean>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => patchState(store, withRefreshing())),
             switchMap((isAlarmOn) =>
               alarmApiService.setAlarmMode({ body: { isActive: isAlarmOn } }).pipe(
                 first(),
@@ -127,12 +141,12 @@ export const mainPanelStore = signalStore(
                     if (isAlarmOn) {
                       messageService.add({
                         summary: translateService.instant('main_panel.alarm_activated'),
-                        severity: 'success',
+                        severity: 'contrast',
                       });
                     } else {
                       messageService.add({
                         summary: translateService.instant('main_panel.alarm_deactivated'),
-                        severity: 'success',
+                        severity: 'contrast',
                       });
                     }
                   },
@@ -142,14 +156,14 @@ export const mainPanelStore = signalStore(
                       severity: 'error',
                     }),
                 }),
-                switchMap(() => getAlarmStatus().pipe(finalize(() => (loaderService.showLoader = false))))
+                switchMap(() => getAlarmStatus().pipe(finalize(() => patchState(store, withoutRefreshing()))))
               )
             )
           )
         ),
         publishEvent: rxMethod<{ id: string; payload: Record<string, unknown> }>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => patchState(store, withRefreshing)),
             switchMap((request) =>
               homeDeviceApiService
                 .publishZigbeeEvent({
@@ -162,13 +176,9 @@ export const mainPanelStore = signalStore(
                         summary: translateService.instant('main_panel.publish_event_error'),
                         severity: 'error',
                       }),
-                    next: () =>
-                      messageService.add({
-                        summary: translateService.instant('main_panel.publish_event_success'),
-                        severity: 'success',
-                      }),
+                    next: () => void 0,
                   }),
-                  finalize(() => (loaderService.showLoader = false))
+                  finalize(() => patchState(store, withoutRefreshing()))
                 )
             )
           )
