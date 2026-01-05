@@ -1,8 +1,24 @@
-<main class="overflow-y-auto px-4 pt-4 pb-[calc(4.5rem+var(--safe-bottom))]">
+<header class="xl:visible invisible w-full border-b border-solid border-r-0 border-l-0 border-t-0 shadow-[0_1px_8px_rgba(0,0,0,0.06)] border-gray-200 bg-white">
+  <div class="flex gap-10 max-w-screen-xl m-auto p-4 items-center">
+  @for (item of navigationItems; track item.routerLink) {
+    <a
+      class="flex items-center gap-2 transition-colors no-underline"
+      [class.text-gray-500]="currentUrl() !== '/' + item.routerLink"
+      [class.text-primary]="currentUrl() === '/' + item.routerLink"
+      [routerLink]="item.routerLink"
+      [attr.aria-current]="currentUrl() === '/' + item.routerLink ? 'page' : null"
+    >
+      <i [class]="item.icon" style="font-size: 1rem"></i>
+      <span class="text-xl leading-none">{{ item.label }}</span>
+    </a>
+  }
+  </div>
+</header>
+<main class="overflow-y-auto px-4 pt-4 pb-[calc(4.5rem+var(--safe-bottom))] max-w-screen-xl m-auto">
   <router-outlet></router-outlet>
 </main>
 <nav
-  class="pb-[var(--safe-bottom)] fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-solid border-r-0 border-l-0 border-b-0 shadow-[0_-1px_8px_rgba(0,0,0,0.06)] border-gray-200"
+  class="pb-[var(--safe-bottom)] fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-solid border-r-0 border-l-0 border-b-0 shadow-[0_-1px_8px_rgba(0,0,0,0.06)] border-gray-200 xl:hidden"
   role="navigation"
   aria-label="Primary"
 >
