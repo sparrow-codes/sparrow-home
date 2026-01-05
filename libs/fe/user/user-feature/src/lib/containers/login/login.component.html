@@ -5,6 +5,10 @@
       <img src="assets/logo.png" alt="Logo Sparrow Home" class="h-[250px]" />
     </div>
 
-    <sp-login-form (newUserNavigation)="navigateToNewUser()" (login)="dataService.login($event)"></sp-login-form>
+    <sp-login-form
+      [isLoading]="(isLoading$ | async) ?? false"
+      (newUserNavigation)="navigateToNewUser()"
+      (login)="dataService.login($event)"
+    ></sp-login-form>
   </div>
 </div>

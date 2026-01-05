@@ -1,11 +1,9 @@
 <form [formGroup]="loginForm" (ngSubmit)="onLoginClick()" class="flex flex-col gap-6">
-  <!-- E-mail -->
   <p-floatlabel variant="on">
     <input id="email" type="email" pInputText pSize="large" formControlName="email" fluid="true" />
     <label for="email">{{ 'user.email' | translate }}</label>
   </p-floatlabel>
 
-  <!-- Hasło -->
   <p-floatlabel variant="on">
     <p-password
       id="password"
@@ -19,12 +17,22 @@
     <label for="password">{{ 'user.password' | translate }}</label>
   </p-floatlabel>
 
-  <!-- Przyciski -->
-  <p-button type="submit" fluid="true" size="large" [disabled]="loginForm.invalid">
+  <p-button
+    type="submit"
+    fluid="true"
+    size="large"
+    [style]="{ height: '43px' }"
+    [disabled]="loginForm.invalid || isLoading()"
+  >
+    @if (!isLoading()) {
     {{ 'user.login' | translate }}
+    } @else {
+    <i class="pi pi-spinner pi-spin"></i>
+    }
   </p-button>
 
   <p-button
+    [disabled]="isLoading()"
     (onClick)="newUserNavigation.emit()"
     type="button"
     [link]="true"

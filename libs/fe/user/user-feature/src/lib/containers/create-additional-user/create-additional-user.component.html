@@ -14,10 +14,8 @@
       <span class="text-md block font-semibold">{{ 'user.create_account' | translate }}</span>
     </div>
 
-    <!-- Formularz -->
-    <sp-create-user-form (formSave)="dataService.createAdditionalUser($event)"></sp-create-user-form>
+    <sp-create-user-form [isLoading]="(isLoading$ | async) ?? false" (formSave)="dataService.createAdditionalUser($event)"></sp-create-user-form>
 
-    <!-- Opis pod formularzem -->
     <span class="text-xs text-gray-500 mt-4 block">{{ 'user.required_fields' | translate }}</span>
   </p-card>
 </div>
