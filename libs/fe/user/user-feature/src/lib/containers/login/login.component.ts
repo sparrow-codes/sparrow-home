@@ -13,11 +13,10 @@ import { LoginFormComponent } from '../../component/login-form/login-form.compon
 export class LoginComponent implements OnInit {
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private readonly _router: Router = inject(Router);
-  private readonly _facadeService: UserDataFacadeService = inject(UserDataFacadeService);
 
   protected createNewUserLink: string = '';
-  protected readonly isLoading$: Observable<boolean> = this._facadeService.isLoading$;
   protected readonly dataService: UserDataFacadeService = inject(UserDataFacadeService);
+  protected readonly isLoading$: Observable<boolean> = this.dataService.isLoading$;
 
   public ngOnInit(): void {
     this.dataService.logout();

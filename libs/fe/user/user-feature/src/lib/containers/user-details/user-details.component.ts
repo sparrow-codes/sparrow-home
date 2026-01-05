@@ -34,7 +34,7 @@ export class UserDetailsComponent implements OnInit {
   protected readonly user: Signal<User | null> = this._dataService.user;
   protected readonly additionalUsers: Signal<User[] | null> = this._dataService.additionalUsers;
   protected readonly isLoading$: Observable<boolean> = this._dataService.isLoading$;
-  protected readonly isRefreshing$: Observable<boolean> = this._dataService.isRefreshing;
+  protected readonly isRefreshing$: Observable<boolean> = this._dataService.isRefreshing$;
 
   public ngOnInit(): void {
     this._dataService.fetchUserDetails();

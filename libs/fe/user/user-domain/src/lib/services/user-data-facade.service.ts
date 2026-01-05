@@ -23,7 +23,7 @@ export class UserDataFacadeService {
     return this._userStore.isLoading$;
   }
 
-  public get isRefreshing(): Observable<boolean> {
+  public get isRefreshing$(): Observable<boolean> {
     return this._userStore.isRefreshing$;
   }
 
