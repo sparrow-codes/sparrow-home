@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
-import { first } from 'rxjs';
+import { first, Observable } from 'rxjs';
 
 import { LoginFormComponent } from '../../component/login-form/login-form.component';
 
@@ -13,8 +13,10 @@ import { LoginFormComponent } from '../../component/login-form/login-form.compon
 export class LoginComponent implements OnInit {
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private readonly _router: Router = inject(Router);
+  private readonly _facadeService: UserDataFacadeService = inject(UserDataFacadeService);
 
   protected createNewUserLink: string = '';
+  protected readonly isLoading$: Observable<boolean> = this._facadeService.isLoading$;
   protected readonly dataService: UserDataFacadeService = inject(UserDataFacadeService);
 
   public ngOnInit(): void {

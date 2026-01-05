@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, output, OutputEmitterRef } from '@angular/core';
+import { Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoginRequestApiModel } from '@sparrow-home/api';
@@ -19,6 +19,7 @@ import { LoginForm } from './form-service/model/login-form';
 })
 export class LoginFormComponent {
   public readonly login: OutputEmitterRef<LoginRequestApiModel> = output();
+  public readonly isLoading: InputSignal<boolean> = input(false);
   public readonly newUserNavigation: OutputEmitterRef<void> = output();
 
   protected readonly formService: LoginFormService = inject(LoginFormService);
@@ -26,6 +27,5 @@ export class LoginFormComponent {
 
   protected onLoginClick(): void {
     this.login.emit(this.formService.toRequest());
-    this.loginForm.reset();
   }
 }

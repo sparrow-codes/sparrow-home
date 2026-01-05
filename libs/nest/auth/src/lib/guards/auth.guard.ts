@@ -23,7 +23,13 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const user: User = await this._authService.getUserFromToken(token);
+    let user: User | null = null;
+
+    try {
+      user = await this._authService.getUserFromToken(token);
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
 
     if (!user.isActive) {
       throw new UnauthorizedException();

@@ -44,11 +44,21 @@
 
   <div class="min-h-[30px] flex items-center">
     @if (showMismatchPasswordError()) {
-    <span class="text-error text-sm">{{ 'user.passwords_mismatch' | translate }}</span>
+    <span class="text-red-500 text-sm">{{ 'user.passwords_mismatch' | translate }}</span>
     }
   </div>
 
-  <p-button fluid="true" size="large" [disabled]="formGroup.invalid" (onClick)="onSave()">
+  <p-button
+    [style]="{ height: '43px' }"
+    fluid="true"
+    size="large"
+    [disabled]="formGroup.invalid || isLoading()"
+    (onClick)="onSave()"
+  >
+    @if (!isLoading()) {
     {{ 'user.create_account' | translate }}
+    } @else {
+    <i class="pi pi-spinner pi-spin"></i>
+    }
   </p-button>
 </form>

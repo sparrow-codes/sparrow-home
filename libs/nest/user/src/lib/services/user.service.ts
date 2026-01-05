@@ -69,12 +69,14 @@ export class UserService {
   public async getListOfAdditionalUsers(): Promise<AdditionalUserDto[]> {
     const users: User[] = await this._userRepository.findBy({ userRole: UserRole.ADDITIONAL });
 
-    return users.map((user) => ({
-      id: user.id,
-      isActive: user.isActive,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    }));
+    return users
+      .map((user) => ({
+        id: user.id,
+        isActive: user.isActive,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      }))
+      .sort((a, b) => a.id - b.id);
   }
 
   public async setUserStatus(userId: number, isActive: boolean): Promise<void> {

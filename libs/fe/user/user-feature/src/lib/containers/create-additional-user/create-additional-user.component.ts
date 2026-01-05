@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Observable } from 'rxjs';
 
 import { CreateUserFormComponent } from '../../component/create-user-form/create-user-form.component';
 
@@ -17,6 +18,7 @@ export class CreateAdditionalUserComponent implements OnInit {
   private readonly _router: Router = inject(Router);
   protected loginPath: string = '';
   protected readonly dataService: UserDataFacadeService = inject(UserDataFacadeService);
+  protected readonly isLoading$: Observable<boolean> = this.dataService.isLoading$;
 
   private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 

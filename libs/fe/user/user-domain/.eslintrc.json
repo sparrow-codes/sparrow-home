@@ -4,7 +4,11 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": ["plugin:@nx/angular", "plugin:@angular-eslint/template/process-inline-templates", "plugin:@angular-eslint/recommended"],
+      "extends": [
+        "plugin:@nx/angular",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@angular-eslint/recommended"
+      ],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -13,7 +17,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:fe-user-domain",
-                "onlyDependOnLibsWithTags": ["scope: fe-core", "scope:fe-api"]
+                "onlyDependOnLibsWithTags": ["scope: fe-core", "scope:fe-api", "scope:fe-utils"]
               }
             ]
           }

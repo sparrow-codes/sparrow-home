@@ -1,5 +1,6 @@
 import { inject, Injectable, Signal } from '@angular/core';
 import { CreateNewUserRequestApiModel, LoginRequestApiModel } from '@sparrow-home/api';
+import { Observable } from 'rxjs';
 
 import { User } from '../model';
 import { UserStore, userStore } from '../store/user-store';
@@ -18,16 +19,20 @@ export class UserDataFacadeService {
     return this._userStore.additionalUsers;
   }
 
+  public get isLoading$(): Observable<boolean> {
+    return this._userStore.isLoading$;
+  }
+
+  public get isRefreshing(): Observable<boolean> {
+    return this._userStore.isRefreshing$;
+  }
+
   public createFirstUser(request: CreateNewUserRequestApiModel): void {
     this._userStore.createFirstUser(request);
   }
 
   public createAdditionalUser(request: CreateNewUserRequestApiModel): void {
     this._userStore.createAdditionalUser(request);
-  }
-
-  public fetchAdditionalUsers(): void {
-    this._userStore.fetchAdditionalUsers();
   }
 
   public activateUser(userId: number, isActive: boolean): void {

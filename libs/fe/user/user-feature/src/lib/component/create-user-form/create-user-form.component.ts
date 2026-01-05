@@ -1,5 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  InputSignal,
+  OnInit,
+  output,
+  OutputEmitterRef,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -21,6 +32,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 })
 export class CreateUserFormComponent implements OnInit {
   public readonly formSave: OutputEmitterRef<CreateNewUserRequestApiModel> = output();
+  public readonly isLoading: InputSignal<boolean> = input(false);
 
   protected readonly formService: CreateUserFormService = inject(CreateUserFormService);
   protected readonly formGroup: FormGroup<CreateNewUserForm> = this.formService.form;

@@ -156,7 +156,8 @@
     "required_fields": "* required fields",
     "create_new_user_to_start": "Create new user to start",
     "additional_users_list": "Additional users",
-    "logout": "Log out"
+    "logout": "Log out",
+    "settings": "Settings"
   },
   "validations": {
     "required": "This field is required",

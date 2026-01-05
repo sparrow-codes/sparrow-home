@@ -10,9 +10,10 @@ import {
   LoginRequestApiModel,
   UserApiService,
 } from '@sparrow-home/api';
-import { AuthService, LoaderService, RoutePath } from '@sparrow-home/core';
+import { AuthService, RoutePath } from '@sparrow-home/core';
+import { withFetching, withLoading, withoutLoading, withoutRefreshing, withRefreshing } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
-import { finalize, first, Observable, pipe, switchMap, tap } from 'rxjs';
+import { filter, finalize, first, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { UserRole } from '../enum/user-role';
 import { User } from '../model/user';
@@ -27,19 +28,17 @@ export type UserStore = InstanceType<typeof userStore>;
 export const userStore = signalStore(
   { providedIn: 'root' },
   withState<UserState>({ user: null, additionalUsers: null }),
+  withFetching(),
   withMethods(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
       authService: AuthService = inject(AuthService),
       router: Router = inject(Router),
-      loaderService = inject(LoaderService),
       messageService = inject(MessageService),
       _translate = inject(TranslateService)
     ) => {
       function _getAdditionalUsers(): Observable<GetListOfAdditionalUsersResponseApiModel> {
-        loaderService.showLoader = true;
-
         return userApiService.getListOfAdditionalUsers().pipe(
           tapResponse({
             next: (response) =>
@@ -58,14 +57,14 @@ export const userStore = signalStore(
                 severity: 'error',
               }),
           }),
-          finalize(() => (loaderService.showLoader = false))
+          finalize(() => patchState(store, withoutRefreshing()))
         );
       }
 
       return {
         createFirstUser: rxMethod<CreateNewUserRequestApiModel>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => patchState(store, withLoading())),
             switchMap((request) =>
               userApiService.createNewUser({ body: request }).pipe(
                 first(),
@@ -79,7 +78,7 @@ export const userStore = signalStore(
                   },
                   error: () =>
                     messageService.add({ summary: _translate.instant('user.create_first_error'), severity: 'error' }),
-                  finalize: () => (loaderService.showLoader = false),
+                  finalize: () => patchState(store, withoutLoading()),
                 })
               )
             )
@@ -87,7 +86,7 @@ export const userStore = signalStore(
         ),
         createAdditionalUser: rxMethod<CreateNewUserRequestApiModel>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => patchState(store, withLoading())),
             switchMap((request) =>
               userApiService.createAdditionalUser({ body: request }).pipe(
                 first(),
@@ -104,7 +103,7 @@ export const userStore = signalStore(
                       summary: _translate.instant('user.create_additional_error'),
                       severity: 'error',
                     }),
-                  finalize: () => (loaderService.showLoader = false),
+                  finalize: () => patchState(store, withoutLoading()),
                 })
               )
             )
@@ -112,24 +111,19 @@ export const userStore = signalStore(
         ),
         login: rxMethod<LoginRequestApiModel>(
           pipe(
-            tap(() => {
-              loaderService.showLoader = true;
-            }),
+            tap(() => patchState(store, withLoading())),
             switchMap((request) =>
               authService.login(request.email, request.password).pipe(
                 first(),
                 tapResponse({
-                  next: () => {
-                    router.navigate([RoutePath.MAIN]).then(() => (loaderService.showLoader = false));
-                  },
-                  error: () => {
+                  next: () => router.navigate([RoutePath.MAIN]),
+                  error: () =>
                     messageService.add({
                       summary: _translate.instant('user.login_invalid_credentials'),
                       severity: 'error',
-                    });
-                    loaderService.showLoader = false;
-                  },
-                })
+                    }),
+                }),
+                finalize(() => patchState(store, withoutLoading()))
               )
             )
           )
@@ -140,7 +134,7 @@ export const userStore = signalStore(
         },
         fetchUserDetails: rxMethod<void>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => patchState(store, store.user() ? withRefreshing() : withLoading())),
             switchMap(() =>
               userApiService.getUserDetails().pipe(
                 tapResponse({
@@ -153,24 +147,26 @@ export const userStore = signalStore(
                         lastName: response.lastName ?? undefined,
                         role: response.role,
                       },
+                      additionalUsers: null,
                     }),
                   error: () =>
                     messageService.add({ summary: _translate.instant('user.fetch_details_error'), severity: 'error' }),
                 }),
-                finalize(() => (loaderService.showLoader = false))
+                filter((response) => response.role === UserRole.OWNER),
+                switchMap(() => _getAdditionalUsers()),
+                finalize(() => patchState(store, withoutLoading(), withoutRefreshing()))
               )
             )
           )
         ),
-        fetchAdditionalUsers: rxMethod<void>(pipe(switchMap(() => _getAdditionalUsers()))),
         activateUser: rxMethod<{ id: number; isActive: boolean }>(
           pipe(
-            tap(() => (loaderService.showLoader = true)),
+            tap(() => patchState(store, withRefreshing())),
             switchMap((value) =>
               userApiService.activateUser({ body: { userId: value.id, isActive: value.isActive } }).pipe(
                 tapResponse({
                   next: () =>
-                    messageService.add({ summary: _translate.instant('user.activate_success'), severity: 'success' }),
+                    messageService.add({ summary: _translate.instant('user.activate_success'), severity: 'contrast' }),
                   error: () =>
                     messageService.add({ summary: _translate.instant('user.activate_error'), severity: 'error' }),
                 }),
