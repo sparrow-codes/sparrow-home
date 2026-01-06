@@ -37,6 +37,7 @@ export class TaskListComponent implements OnInit {
   protected readonly noSchedules: Signal<boolean | null> = this._store.noSchedules;
   protected readonly isLoading$: Observable<boolean> = this._store.isLoading$;
   protected readonly isRefreshing$: Observable<boolean> = this._store.isRefreshing$;
+  protected readonly refreshingObjects: Signal<Set<number>> = this._store.refreshingObjects;
 
   public ngOnInit(): void {
     this._store.fetchTasks();

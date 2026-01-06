@@ -14,6 +14,7 @@ import {
   withoutLoading,
   withoutRefreshing,
   withRefreshing,
+  withRefreshingObjects,
 } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { finalize, pipe, switchMap, tap } from 'rxjs';
@@ -53,6 +54,7 @@ export const HomeDeviceStore = signalStore(
     },
   })),
   withFetching(),
+  withRefreshingObjects<string>(),
   withApi(),
   withComputed((store) => ({
     homeDevices: computed(() =>
@@ -124,7 +126,7 @@ export const HomeDeviceStore = signalStore(
           switchMap((data) =>
             store._publishZigbeeEvent(data).pipe(
               tapResponse({
-                next: () => void 0,
+                next: () => store._refreshObject(data.deviceId),
                 error: () =>
                   messageService.add({
                     summary: translateService.instant('home.error_sending_event'),

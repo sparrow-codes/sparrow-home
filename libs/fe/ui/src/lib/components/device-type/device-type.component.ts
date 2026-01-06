@@ -14,10 +14,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceType } from '@sparrow-home/utils';
 
 import { deviceTypeDictionary } from '../../dictionary';
+import { AnimatedCheckCircleComponent } from '../animated-check-circle/animated-check-circle.component';
 
 @Component({
   selector: 'sp-device-type',
-  imports: [CommonModule, NgIcon, TranslatePipe],
+  imports: [CommonModule, NgIcon, TranslatePipe, AnimatedCheckCircleComponent],
   templateUrl: './device-type.component.html',
   styleUrl: './device-type.component.css',
   providers: [
@@ -35,6 +36,7 @@ import { deviceTypeDictionary } from '../../dictionary';
 export class DeviceTypeComponent {
   public readonly deviceType: InputSignal<DeviceType> = input.required();
   public readonly fullLabel: InputSignal<boolean> = input(true);
+  public readonly animationInProgress: InputSignal<boolean> = input(false);
 
   protected readonly label: Signal<string | undefined> = computed(() => deviceTypeDictionary.get(this.deviceType()));
   protected readonly deviceTypes: typeof DeviceType = DeviceType;

@@ -1,3 +1,4 @@
+export * from './animated-check-circle/animated-check-circle.component';
 export * from './battery-status/battery-status.component';
 export * from './confirmation-dialog/confirmation-dialog.component';
 export * from './confirmation-dialog/model/confirmation-dialog-data';

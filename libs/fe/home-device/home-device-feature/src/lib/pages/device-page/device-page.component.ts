@@ -51,6 +51,7 @@ export class DevicePageComponent implements OnInit {
   protected readonly deviceTypeEnum: typeof DeviceType = DeviceType;
   protected readonly isLoading$: Observable<boolean> = this._facadeService.isLoading$;
   protected readonly isRefreshing$: Observable<boolean> = this._facadeService.isRefreshing$;
+  protected readonly refreshedDevices: Signal<Set<string>> = this._facadeService.refreshingObjects;
 
   public ngOnInit(): void {
     if (this.deviceType()) {

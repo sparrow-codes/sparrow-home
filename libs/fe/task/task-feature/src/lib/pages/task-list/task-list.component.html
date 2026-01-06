@@ -25,7 +25,7 @@
     } @else {
       @defer () {
         @for (task of tasks(); track task.id) {
-          <sp-task-card class="animate-fadein" [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
+          <sp-task-card [refreshingObjects]="refreshingObjects()" class="animate-fadein" [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
         }
       }
 

@@ -29,6 +29,12 @@ export class DeviceListItemComponent {
   public readonly device: InputSignal<HomeDevice> = input.required();
   public readonly deviceEvent: OutputEmitterRef<Record<string, unknown>> = output();
   public readonly disableRouting: InputSignal<boolean> = input(false);
+  public readonly isLoading: InputSignal<boolean> = input(false);
+  public readonly savedDevices: InputSignal<Set<string>> = input.required();
+
+  protected readonly showFinishAnimation: Signal<boolean> = computed(() => {
+    return this.savedDevices().has(this.device().homeDeviceId);
+  });
 
   protected readonly mainAction: Signal<DeviceAction | null> = computed(() => {
     const mainActionKey: string | null = this.device().mainActionKey;
@@ -49,4 +55,8 @@ export class DeviceListItemComponent {
     return deviceTypeDictionary.get(this.device().type);
   });
   protected showTag: Signal<boolean> = computed(() => !!this.device().mainParamKey);
+
+  protected onDeviceEvent(event: Record<string, unknown>): void {
+    this.deviceEvent.emit(event);
+  }
 }
