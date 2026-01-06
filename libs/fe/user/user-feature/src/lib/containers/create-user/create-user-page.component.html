@@ -1,4 +1,4 @@
-<div class="flex flex-col bg-gray-100 p-4">
+<div class="flex flex-col bg-gray-100 p-4 max-w-xl m-auto">
     <p-card [header]="appTitle">
       <div class="text-md mb-2 mt-2 block">{{'user.create_new_user_to_start' | translate}}:</div>
       <sp-create-user-form [isLoading]="(dataService.isLoading$ | async) ?? false" (formSave)="dataService.createFirstUser($event)"></sp-create-user-form>
