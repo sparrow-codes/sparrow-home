@@ -40,7 +40,6 @@ p-chip {
   }
 }
 
-/* AUTH i SUB mają dłużej + większy offset */
 html.vt-auth::view-transition-group(root),
 html.vt-sub-forward::view-transition-group(root),
 html.vt-sub-back::view-transition-group(root) {
@@ -72,7 +71,6 @@ html.vt-sub-back::view-transition-new(root) { animation-name: vt-sub-in-left; }
 @keyframes vt-sub-out-left { from { transform: translateX(0);  opacity: 1; } to { transform: translateX(-100%); opacity: 0.9; } }
 @keyframes vt-sub-in-left  { from { transform: translateX(-100%); opacity: 0.9; } to { transform: translateX(0); opacity: 1; } }
 @keyframes vt-sub-out-right{ from { transform: translateX(0);  opacity: 1; } to { transform: translateX(100%); opacity: 0.9; } }
-
 
 .app-action-overlay-backdrop {
   background: rgba(0, 0, 0, 0.22);
