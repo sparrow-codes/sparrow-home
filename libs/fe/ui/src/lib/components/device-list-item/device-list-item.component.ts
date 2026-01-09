@@ -30,10 +30,10 @@ export class DeviceListItemComponent {
   public readonly deviceEvent: OutputEmitterRef<Record<string, unknown>> = output();
   public readonly disableRouting: InputSignal<boolean> = input(false);
   public readonly isLoading: InputSignal<boolean> = input(false);
-  public readonly savedDevices: InputSignal<Set<string>> = input.required();
+  public readonly refreshingDevices: InputSignal<Set<string>> = input.required();
 
   protected readonly showFinishAnimation: Signal<boolean> = computed(() => {
-    return this.savedDevices().has(this.device().homeDeviceId);
+    return this.refreshingDevices().has(this.device().homeDeviceId);
   });
 
   protected readonly mainAction: Signal<DeviceAction | null> = computed(() => {

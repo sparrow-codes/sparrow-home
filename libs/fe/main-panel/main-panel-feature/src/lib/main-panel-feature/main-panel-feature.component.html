@@ -33,7 +33,7 @@
       }
       @for (device of mainDevices(); track device.id) {
         <sp-device-list-item
-          [savedDevices]="refreshedDevices()"
+          [refreshingDevices]="refreshingDevices()"
           [isLoading]="(isRefreshing$ | async) ?? false"
           [disableRouting]="true"
           [device]="device"

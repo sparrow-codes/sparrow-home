@@ -83,13 +83,7 @@ html.vt-sub-back::view-transition-new(root) { animation-name: vt-sub-in-left; }
   border-radius: 12px;
   width: max-content;
   height: max-content;
-}
-
-.app-action-overlay-panel {
-  display: grid;
-  place-items: center;
   background: rgba(217, 217, 217, 0.22);
   backdrop-filter: blur(1px);
-  border-radius: 12px; /* dopasuj do ikony/karty */
   pointer-events: all;
 }
