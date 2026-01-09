@@ -30,13 +30,16 @@ p-chip {
   --p-chip-background: rgba(131, 131, 131, 0.16);
 }
 
+.p-overlay-mask {
+  backdrop-filter: blur(1px);
+}
+
 @media (max-width: 360px) {
   p-card {
     --p-card-body-padding: 0.5rem;
   }
 }
 
-/* AUTH i SUB mają dłużej + większy offset */
 html.vt-auth::view-transition-group(root),
 html.vt-sub-forward::view-transition-group(root),
 html.vt-sub-back::view-transition-group(root) {
@@ -69,5 +72,18 @@ html.vt-sub-back::view-transition-new(root) { animation-name: vt-sub-in-left; }
 @keyframes vt-sub-in-left  { from { transform: translateX(-100%); opacity: 0.9; } to { transform: translateX(0); opacity: 1; } }
 @keyframes vt-sub-out-right{ from { transform: translateX(0);  opacity: 1; } to { transform: translateX(100%); opacity: 0.9; } }
 
+.app-action-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(1px);
+}
 
-
+.app-action-overlay-panel {
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  width: max-content;
+  height: max-content;
+  background: rgba(217, 217, 217, 0.22);
+  backdrop-filter: blur(1px);
+  pointer-events: all;
+}

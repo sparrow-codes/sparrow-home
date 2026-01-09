@@ -18,6 +18,7 @@ import {
   withoutLoading,
   withoutRefreshing,
   withRefreshing,
+  withRefreshingObjects,
 } from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { finalize, first, forkJoin, map, Observable, pipe, switchMap, tap } from 'rxjs';
@@ -46,6 +47,7 @@ export const mainPanelStore = signalStore(
     noDevices: null,
   }),
   withFetching(),
+  withRefreshingObjects<string>(),
   withMethods(
     (
       store,
@@ -173,7 +175,7 @@ export const mainPanelStore = signalStore(
                         summary: translateService.instant('main_panel.publish_event_error'),
                         severity: 'error',
                       }),
-                    next: () => void 0,
+                    next: () => store._refreshObject(request.id),
                   }),
                   finalize(() => patchState(store, withoutRefreshing()))
                 )

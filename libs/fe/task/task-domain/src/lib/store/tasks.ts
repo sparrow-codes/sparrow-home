@@ -6,7 +6,13 @@ import { removeAllEntities, removeEntity, setAllEntities, updateEntity, withEnti
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeDeviceApiService, TasksApiService } from '@sparrow-home/api';
-import { toDeviceAction, withFetching, withoutRefreshing, withRefreshing } from '@sparrow-home/utils';
+import {
+  toDeviceAction,
+  withFetching,
+  withoutRefreshing,
+  withRefreshing,
+  withRefreshingObjects,
+} from '@sparrow-home/utils';
 import { MessageService } from 'primeng/api';
 import { finalize, map, pipe, switchMap, tap } from 'rxjs';
 
@@ -24,6 +30,7 @@ export const tasksSignalStore = signalStore(
   }),
   withFetching(),
   withEntities<AutomaticTask>(),
+  withRefreshingObjects<number>(),
   withProps(
     (
       store,
@@ -74,7 +81,7 @@ export const tasksSignalStore = signalStore(
             })
             .pipe(
               tapResponse({
-                next: () => void 0,
+                next: () => store._refreshObject(input.id),
                 error: () =>
                   store._messageService.add({
                     summary: store._translate.instant('tasks.activation_error'),
@@ -96,7 +103,7 @@ export const tasksSignalStore = signalStore(
               next: () => {
                 store._messageService.add({
                   summary: store._translate.instant('tasks.deleted'),
-                  severity: 'success',
+                  severity: 'contrast',
                 });
                 patchState(store, removeEntity(taskId));
                 router.navigate(['automation']);
@@ -131,7 +138,7 @@ export const tasksSignalStore = signalStore(
                 next: () => {
                   store._messageService.add({
                     summary: store._translate.instant('tasks.created'),
-                    severity: 'success',
+                    severity: 'contrast',
                   });
                   patchState(store, removeAllEntities());
                   router.navigate(['automation']);
@@ -167,7 +174,7 @@ export const tasksSignalStore = signalStore(
                 next: () => {
                   store._messageService.add({
                     summary: store._translate.instant('tasks.update_success'),
-                    severity: 'success',
+                    severity: 'contrast',
                   });
                   patchState(store, updateEntity({ id: task.id, changes: task }));
                   router.navigate(['automation']);

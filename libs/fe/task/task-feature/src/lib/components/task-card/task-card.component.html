@@ -7,7 +7,11 @@
     >
 
       <div class="w-[50px] h-[50px] bg-gray-700 rounded-md flex items-center justify-center text-white">
-        <i class="pi pi-bolt" style="font-size: 32px"></i>
+        @if (showFinishAnimation()) {
+          <sp-animated-check-circle width="32px" height="32px"></sp-animated-check-circle>
+        } @else {
+          <i class="pi pi-bolt animate-fadein" style="font-size: 32px"></i>
+        }
       </div>
       <div class="block">
         <div class="font-semibold text-gray-700 mb-2 max-w-[45vw] truncate">{{ task().name }}</div>

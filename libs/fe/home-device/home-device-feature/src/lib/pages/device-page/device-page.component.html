@@ -53,6 +53,7 @@
         @for (device of homeDevices(); track device.id) {
           <sp-device-list-item
             class="animate-fadein"
+            [refreshingDevices]="refreshingDevices()"
             [device]="device"
             (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"
           ></sp-device-list-item>

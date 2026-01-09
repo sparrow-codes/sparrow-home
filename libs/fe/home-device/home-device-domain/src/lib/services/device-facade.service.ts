@@ -43,6 +43,10 @@ export class DeviceFacadeService {
     return this._store.isRefreshing$;
   }
 
+  public get refreshingObjects(): Signal<Set<string>> {
+    return this._store.refreshingObjects;
+  }
+
   public fetchDevices(): void {
     this._store.fetchDevices();
   }
