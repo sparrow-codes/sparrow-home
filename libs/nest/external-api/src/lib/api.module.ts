@@ -2,15 +2,18 @@ import { HttpModule } from '@nestjs/axios';
 import { Inject, Logger, Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientMqtt, ClientsModule, Transport } from '@nestjs/microservices';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DeviceLastState } from '@sparrow-server/entities';
 import { ConfigKey } from '@sparrow-server/shared';
 
 import { ZigbeeDeviceService, ZigbeeManageDeviceService } from './zigbee';
 import { MqttConnectorService } from './zigbee/connector/mqtt-connector.service';
-import { LocalStateService } from './zigbee/services/local-state.service';
+import { DeviceStateService } from './zigbee/services/device-state/device-state.service';
 
 @Module({
   imports: [
     HttpModule,
+    TypeOrmModule.forFeature([DeviceLastState]),
     ClientsModule.registerAsync([
       {
         imports: [ConfigModule],
@@ -27,7 +30,7 @@ import { LocalStateService } from './zigbee/services/local-state.service';
       },
     ]),
   ],
-  providers: [MqttConnectorService, ZigbeeManageDeviceService, ZigbeeDeviceService, LocalStateService],
+  providers: [MqttConnectorService, ZigbeeManageDeviceService, ZigbeeDeviceService, DeviceStateService],
   exports: [ZigbeeManageDeviceService, ZigbeeDeviceService],
 })
 export class ApiModule implements OnModuleInit {

@@ -94,7 +94,7 @@ describe('TaskService', () => {
   });
 
   it('should deactivate task and stop cron if status is false', async () => {
-    repository.findOneBy.mockResolvedValue({ id: 1, name: 't' } as any);
+    repository.findOneBy.mockResolvedValue({ id: 1, name: 't', actionJobs: [{ id: 1 }] } as Task);
     await service.updateTaskStatus(1, false);
     expect(cronFactory.clearScheduledTask).toHaveBeenCalledWith(1);
     expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({ isActive: false }));

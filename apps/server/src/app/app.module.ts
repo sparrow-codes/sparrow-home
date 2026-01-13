@@ -7,7 +7,15 @@ import { AlarmModule } from '@sparrow-server/alarm';
 import { AuthModule } from '@sparrow-server/auth';
 import { AutomationModule } from '@sparrow-server/automation';
 import { HomeDeviceModule } from '@sparrow-server/device';
-import { ActionJob, HomeDevice, PushSubscriptionClient, Setup, Task, User } from '@sparrow-server/entities';
+import {
+  ActionJob,
+  DeviceLastState,
+  HomeDevice,
+  PushSubscriptionClient,
+  Setup,
+  Task,
+  User,
+} from '@sparrow-server/entities';
 import { ApiModule } from '@sparrow-server/external-api';
 import { PushModule } from '@sparrow-server/push';
 import { SetupModule } from '@sparrow-server/setup';
@@ -20,6 +28,7 @@ import { CreateUserTable1735999040434 } from '../db/migrations/1735999040434-Cre
 import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092803-CreatePushSubscription';
 import { CreateTaskTable1690000000000 } from '../db/migrations/1754335949380-CreateTaskTable';
 import { CreateActionJobTable1762532633640 } from '../db/migrations/1762532633640-CreateActionJobTable';
+import { CreateDeviceLastState1768117412317 } from '../db/migrations/1768117412317-CreateDeviceLastState';
 
 @Module({
   imports: [
@@ -37,7 +46,7 @@ import { CreateActionJobTable1762532633640 } from '../db/migrations/176253263364
         database: configService.get<string>(ConfigKey.DB_NAME),
         password: configService?.get<string>(ConfigKey.DB_PASSWORD),
         migrationsRun: true,
-        entities: [User, HomeDevice, Setup, PushSubscriptionClient, Task, ActionJob],
+        entities: [User, HomeDevice, Setup, PushSubscriptionClient, Task, ActionJob, DeviceLastState],
         migrations: [
           CreateSetupTable1735995550693,
           CreateHomeDeviceTable1735995890303,
@@ -45,6 +54,7 @@ import { CreateActionJobTable1762532633640 } from '../db/migrations/176253263364
           CreatePushSubscription1744656092803,
           CreateTaskTable1690000000000,
           CreateActionJobTable1762532633640,
+          CreateDeviceLastState1768117412317,
         ],
       }),
     }),

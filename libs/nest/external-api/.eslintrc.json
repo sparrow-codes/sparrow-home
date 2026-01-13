@@ -10,7 +10,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope: external-api",
-                "onlyDependOnLibsWithTags": ["scope: be-shared"]
+                "onlyDependOnLibsWithTags": ["scope: be-shared", "scope: be-entities"]
               }
             ]
           }
