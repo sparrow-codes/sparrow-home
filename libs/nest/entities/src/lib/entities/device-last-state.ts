@@ -8,8 +8,8 @@ export class DeviceLastState {
   @Column({ type: 'jsonb' })
   public state!: Record<string, unknown>;
 
-  @Column({ type: 'text', nullable: true, name: 'state_hash' })
-  public stateHash!: string | null;
+  @Column({ type: 'text', nullable: false, name: 'state_hash' })
+  public stateHash!: string;
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at', default: new Date() })
   @Index('idx_device_last_state_updated_at')

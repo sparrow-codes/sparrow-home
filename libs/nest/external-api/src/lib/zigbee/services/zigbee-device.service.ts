@@ -38,7 +38,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
   public async onModuleInit(): Promise<void> {
     this._cachedState = await this._deviceStateService.getState();
     this._stateUpdated
-      .pipe(takeUntil(this._destroy), debounceTime(1000))
+      .pipe(takeUntil(this._destroy), debounceTime(10000))
       .subscribe(() => this._deviceStateService.setState(this._cachedState));
 
     this._client.on('connect', () => {
