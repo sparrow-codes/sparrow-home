@@ -5,6 +5,7 @@ export interface DeviceProfile {
   deviceDefinition: DeviceDefinition;
   actions: DeviceAction[];
   readonlyFields: ReadonlyField[];
+  stateHash?: string;
   state: DeviceState;
 }
 

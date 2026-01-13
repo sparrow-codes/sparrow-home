@@ -94,7 +94,7 @@ export class TaskService implements OnModuleInit {
       task.isActive = false;
       await this._taskRepository.save(task);
 
-      this.stopCronTask(task.id);
+      this.stopCronTask(task);
     }
   }
 
@@ -118,7 +118,9 @@ export class TaskService implements OnModuleInit {
     await this._taskRepository.save(task);
   }
 
-  public stopCronTask(id: number) {
-    this._taskCronFactory.clearScheduledTask(id);
+  private stopCronTask(task: Task): void {
+    for (const action of task.actionJobs) {
+      this._taskCronFactory.clearScheduledTask(action.id);
+    }
   }
 }

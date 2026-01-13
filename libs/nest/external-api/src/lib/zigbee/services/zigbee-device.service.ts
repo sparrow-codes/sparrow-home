@@ -6,8 +6,8 @@ import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { DeviceProfile } from '../model';
 import { DeviceJoined } from '../model/device-joined';
 import { DeviceState } from '../model/device-state';
+import { DeviceStateService } from './device-state/device-state.service';
 import { toDevice } from './functions/to-device';
-import { LocalStateService } from './local-state.service';
 
 @Injectable()
 export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
@@ -30,16 +30,16 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
 
   public constructor(
     @Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt,
-    private readonly _localStateService: LocalStateService
+    private readonly _deviceStateService: DeviceStateService
   ) {
     this._client = this._zigbeeClient.createClient();
   }
 
   public async onModuleInit(): Promise<void> {
-    this._cachedState = await this._localStateService.getState();
+    this._cachedState = await this._deviceStateService.getState();
     this._stateUpdated
-      .pipe(takeUntil(this._destroy), debounceTime(10000))
-      .subscribe(() => this._localStateService.setState(this._cachedState));
+      .pipe(takeUntil(this._destroy), debounceTime(1000))
+      .subscribe(() => this._deviceStateService.setState(this._cachedState));
 
     this._client.on('connect', () => {
       this._logger.log(`MQTT connected`);
