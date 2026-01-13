@@ -11,6 +11,7 @@ import { DeviceStateService } from './device-state.service';
 
 type MockRepository<T extends ObjectLiteral> = {
   find: jest.Mock<Promise<T[]>, []>;
+  remove: jest.Mock;
   save: jest.Mock<Promise<T | undefined>, [Partial<T>]>;
 } & Partial<Record<keyof Repository<T>, jest.Mock>>;
 
@@ -21,6 +22,7 @@ describe('DeviceStateService', () => {
   beforeEach(async () => {
     repo = {
       find: jest.fn<Promise<DeviceLastState[]>, []>(),
+      remove: jest.fn(),
       save: jest.fn<Promise<DeviceLastState | undefined>, [Partial<DeviceLastState>]>().mockResolvedValue(undefined),
     };
 
