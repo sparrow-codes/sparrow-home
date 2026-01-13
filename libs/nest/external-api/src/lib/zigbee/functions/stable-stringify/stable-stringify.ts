@@ -16,5 +16,5 @@ export function stableStringify(value: unknown): string {
     .sort()
     .filter((key) => key && obj[key] !== undefined);
 
-  return `{${keys.map((key) => `"${key}":${stableStringify(obj[key])}`).join(',')}}`;
+  return `{${keys.map((key) => `${JSON.stringify(key)}:${stableStringify(obj[key])}`).join(',')}}`;
 }
