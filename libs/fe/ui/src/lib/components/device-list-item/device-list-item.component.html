@@ -17,7 +17,7 @@
     </div>
 
     @if (mainAction(); as mainAction) {
-      <span (click)="$event.stopPropagation(); $event.preventDefault();">
+      <span (click)="$event.stopPropagation(); $event.preventDefault()">
       <sp-device-action (callAction)="onDeviceEvent($event)" [short]="true" [action]="mainAction"></sp-device-action>
       </span>
     }
