@@ -1,22 +1,26 @@
-<p-card>
-  <div class="flex justify-between items-center min-h-[50px]">
-    <a
-      class="flex flex-row items-center gap-4 cursor-pointer hover:bg-gray-50 rounded no-underline text-inherit focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      [routerLink]="disableRouting() ? '' : ['details', device().id]"
-      [attr.aria-label]="'ui.go_to_device_details' | translate:{ deviceName: device().name }"
-    >
-      <sp-device-type [animationInProgress]="showFinishAnimation()" [fullLabel]="false" [deviceType]="device().type" />
-      <div class="block">
-        <div class="font-semibold text-gray-700 mb-2">{{ device().name }}</div>
-        @if (showTag()) {
-          <p-tag>{{ label() | translate | humanize }}</p-tag>
-        } @else {
-        <div class="text-gray-500">{{ label() | translate | humanize }}</div>
-        }
-      </div>
-    </a>
-    @if (mainAction(); as mainAction) {
-      <sp-device-action (callAction)="onDeviceEvent($event)" [short]="true" [action]="mainAction"></sp-device-action>
-    }
+<a
+  class="animate-fadein flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-3 w-full cursor-pointer hover:bg-gray-50 transition no-underline"
+  [routerLink]="disableRouting() ? '' : ['details', device().id]"
+  [attr.aria-label]="'ui.go_to_device_details' | translate : { deviceName: device().name }"
+>
+  <div class="flex items-center gap-3">
+    <sp-device-type [animationInProgress]="showFinishAnimation()" [fullLabel]="false" [deviceType]="device().type" />
+    <div class="block">
+      <div class="font-semibold text-gray-700 mb-2">{{ device().name }}</div>
+      @if (showTag()) {
+      <p-tag>{{ label() | translate | humanize }}</p-tag>
+      } @else {
+      <div class="text-gray-500">{{ label() | translate | humanize }}</div>
+      }
+    </div>
   </div>
-</p-card>
+
+  @if (mainAction(); as mainAction) {
+  <sp-device-action
+    (click)="$event.stopPropagation(); $event.preventDefault()"
+    (callAction)="onDeviceEvent($event)"
+    [short]="true"
+    [action]="mainAction"
+  ></sp-device-action>
+  }
+</a>
