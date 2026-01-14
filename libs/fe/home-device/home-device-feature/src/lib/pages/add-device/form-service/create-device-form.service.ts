@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { DeviceType } from '@sparrow-home/utils';
 
 import { CreateDeviceForm } from './model/create-device-form';
 
@@ -18,7 +19,7 @@ export class CreateDeviceFormService {
 
   private _prepareForm(): FormGroup<CreateDeviceForm> {
     return this._fb.group({
-      deviceType: this._fb.control<number | null>(null, {
+      deviceType: this._fb.control<number | null>(DeviceType.OTHER, {
         validators: [Validators.required],
       }),
       name: this._fb.control<string>('', {
