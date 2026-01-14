@@ -22,7 +22,9 @@
     </div>
   </div>
 
-  <span (click)="$event.stopPropagation(); $event.preventDefault()">
-    <p-toggle-switch [ngModel]="task().isActive" (onChange)="changeTaskStatus($event.checked)"></p-toggle-switch>
-  </span>
+  <p-toggle-switch
+    (click)="$event.stopPropagation(); $event.preventDefault()"
+    [ngModel]="task().isActive"
+    (onChange)="changeTaskStatus($event.checked)"
+  ></p-toggle-switch>
 </a>

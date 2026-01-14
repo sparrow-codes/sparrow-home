@@ -11,16 +11,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 
 @Component({
   selector: 'sp-device-list-item',
-  imports: [
-    CommonModule,
-    DeviceTypeComponent,
-    RouterLink,
-    DeviceTypeComponent,
-    DeviceActionComponent,
-    TranslatePipe,
-    HumanizePipe,
-    Tag,
-  ],
+  imports: [CommonModule, RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, Tag],
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {
