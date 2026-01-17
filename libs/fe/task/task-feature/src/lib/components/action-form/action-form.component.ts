@@ -88,7 +88,7 @@ export class ActionFormComponent implements OnInit {
         if (this.isLoading()) {
           this.form.disable();
         } else {
-          this.form.enable();
+          this.form.enable({ emitEvent: false });
         }
       },
       { injector: this._injector }

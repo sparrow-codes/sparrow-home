@@ -1,24 +1,35 @@
-<sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{ 'tasks.edit_task' | translate }}</sp-page-title>
+<sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false"
+               [routerLink]="['../']">{{ 'tasks.edit_task' | translate }}
+</sp-page-title>
 
-<div class="flex flex-col gap-2">
-  <sp-schedule-settings
-    [task]="task()"
-    [devices]="devices()"
-    [isLoading]="(isRefreshing$ | async) ?? false"
-    (taskChange)="onUpdateTask($event)"
-  ></sp-schedule-settings>
+@if ((isLoading$ | async)) {
+  <div class="flex flex-col gap-4">
+    <p-skeleton class="animate-fadein" height="43px"></p-skeleton>
+    <p-skeleton class="animate-fadein" height="300px"></p-skeleton>
+  </div>
+}
 
-  <p-divider></p-divider>
+@if (task(); as task) {
+  <div class="flex flex-col gap-2">
+    <sp-schedule-settings
+      [task]="task"
+      [devices]="devices()"
+      [isLoading]="(isRefreshing$ | async) ?? false"
+      (taskChange)="onUpdateTask($event)"
+    ></sp-schedule-settings>
 
-  <p-button
-    [label]="'tasks.delete' | translate"
-    [outlined]="true"
-    [fluid]="true"
-    [disabled]="(isRefreshing$ | async) ?? false"
-    icon="pi pi-trash"
-    (onClick)="deleteTask()"
-    severity="danger"
-    size="large"
-  ></p-button>
+    <p-divider></p-divider>
 
-</div>
+    <p-button
+      [label]="'tasks.delete' | translate"
+      [outlined]="true"
+      [fluid]="true"
+      [disabled]="(isRefreshing$ | async) ?? false"
+      icon="pi pi-trash"
+      (onClick)="deleteTask()"
+      severity="danger"
+      size="large"
+    ></p-button>
+
+  </div>
+}

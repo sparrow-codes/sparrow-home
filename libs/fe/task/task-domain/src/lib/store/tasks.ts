@@ -9,6 +9,8 @@ import { HomeDeviceApiService, TasksApiService } from '@sparrow-home/api';
 import {
   toDeviceAction,
   withFetching,
+  withLoading,
+  withoutLoading,
   withoutRefreshing,
   withRefreshing,
   withRefreshingObjects,
@@ -27,6 +29,7 @@ export const tasksSignalStore = signalStore(
   withState<TaskSignalStoreState>({
     availableDevices: [],
     noSchedules: null,
+    taskDetails: null,
   }),
   withFetching(),
   withEntities<AutomaticTask>(),
@@ -192,9 +195,26 @@ export const tasksSignalStore = signalStore(
         )
       )
     ),
+    getTaskDetails: rxMethod<string>(
+      pipe(
+        tap(() => patchState(store, withLoading(), { taskDetails: null })),
+        switchMap((id) =>
+          store._taskApiService.getTaskDetails({ id: Number(id) }).pipe(
+            tapResponse({
+              next: (task) => patchState(store, { taskDetails: toAutomaticTask(task) }),
+              error: () =>
+                store._messageService.add({
+                  summary: store._translate.instant('tasks.fetch_details_error'),
+                  severity: 'error',
+                }),
+            }),
+            finalize(() => patchState(store, withoutLoading()))
+          )
+        )
+      )
+    ),
     getAvailableDevices: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { _isRefreshing: true })),
         switchMap(() =>
           store._homeDeviceApiService.getAllDevices({ body: {} }).pipe(
             map((devices) => devices.filter((device) => device.actions.length)),
@@ -214,8 +234,7 @@ export const tasksSignalStore = signalStore(
                   summary: store._translate.instant('tasks.fetch_devices_error'),
                   severity: 'error',
                 }),
-            }),
-            finalize(() => patchState(store, { _isRefreshing: false }))
+            })
           )
         )
       )

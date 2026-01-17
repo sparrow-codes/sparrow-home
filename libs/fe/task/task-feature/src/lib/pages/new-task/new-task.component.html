@@ -1,7 +1,7 @@
 <div class="flex flex-col h-full">
   <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{'tasks.new_task' | translate}}</sp-page-title>
 
-  <sp-schedule-settings [devices]="devices()" [isLoading]="(isRefreshing$ | async) ?? false"
+  <sp-schedule-settings [task]="null" [devices]="devices()" [isLoading]="(isRefreshing$ | async) ?? false"
                         (taskChange)="onCreateTask($event)"></sp-schedule-settings>
 </div>
 
