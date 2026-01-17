@@ -135,6 +135,7 @@ describe('TaskService', () => {
 
       repository.findOneBy.mockResolvedValue(task);
       mockedMapper.map.mockResolvedValue(dto);
+      await service.getTaskById(task.id);
 
       expect(repository.findOneBy).toHaveBeenCalledWith({ id: task.id });
       expect(mockedMapper.map).toHaveBeenCalledTimes(1);
