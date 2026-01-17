@@ -7,11 +7,11 @@ import {
   Injector,
   input,
   InputSignal,
+  linkedSignal,
   OnInit,
   output,
   OutputEmitterRef,
   Signal,
-  signal,
   WritableSignal,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -58,7 +58,7 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
   providers: [ScheduleFormService],
 })
 export class ScheduleSettingsComponent implements OnInit {
-  public readonly task: InputSignal<AutomaticTask | undefined> = input();
+  public readonly task: InputSignal<AutomaticTask | null> = input.required();
   public readonly taskChange: OutputEmitterRef<Partial<AutomaticTask>> = output();
   public readonly isLoading: InputSignal<boolean> = input(false);
   public readonly devices: InputSignal<AvailableDevice[]> = input.required();
@@ -68,7 +68,7 @@ export class ScheduleSettingsComponent implements OnInit {
   protected actionToEdit?: TaskAction;
 
   protected formGroup: FormGroup<ScheduleForm> | null = null;
-  protected readonly actions: WritableSignal<TaskAction[]> = signal(this.task()?.actions ?? []);
+  protected readonly actions: WritableSignal<TaskAction[]> = linkedSignal(() => this.task()?.actions ?? []);
   protected sortedActions: Signal<TaskAction[]> = computed(() =>
     [...this.actions()].sort((a, b) => {
       const timeOfDay: (d: Date) => number = (d: Date) =>
@@ -83,7 +83,6 @@ export class ScheduleSettingsComponent implements OnInit {
   public ngOnInit(): void {
     this._formService.initForm(this.task());
     this.formGroup = this._formService.form;
-    this.actions.set(this.task()?.actions ?? []);
 
     effect(
       () => {

@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { TaskCronFactory } from '../test-cron-factory/task-cron-factory.service';
 import { NotFoundException } from '@nestjs/common';
 import { TaskDtoMapperService } from '../task-dto-mapper.service';
+import { TaskDto } from '../../controller/task/model/task-dto';
 
 describe('TaskService', () => {
   let service: TaskService;
@@ -123,5 +124,25 @@ describe('TaskService', () => {
     expect(result[2].id).toBe(3);
     expect(repository.find).toHaveBeenCalled();
     expect(mockedMapper.map).toHaveBeenCalledTimes(3);
+  });
+
+  describe('task details', () => {
+    it('should return task details', async () => {
+      const task: Task = new Task();
+      task.id = 1;
+
+      const dto: TaskDto = new TaskDto();
+
+      repository.findOneBy.mockResolvedValue(task);
+      mockedMapper.map.mockResolvedValue(dto);
+
+      expect(repository.findOneBy).toHaveBeenCalledWith({ id: task.id });
+      expect(mockedMapper.map).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw not found exception on null task', () => {
+      repository.findOneBy.mockResolvedValue(null);
+      expect(service.getTaskById(1)).rejects.toThrow(NotFoundException);
+    });
   });
 });

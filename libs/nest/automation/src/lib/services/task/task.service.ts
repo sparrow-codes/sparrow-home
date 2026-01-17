@@ -98,6 +98,16 @@ export class TaskService implements OnModuleInit {
     }
   }
 
+  public async getTaskById(id: number): Promise<TaskDto> {
+    const task: Task | null = await this._taskRepository.findOneBy({ id });
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${id} not found`);
+    }
+
+    return this._taskDtoMapperService.map(task);
+  }
+
   private async _onInit(): Promise<void> {
     const tasks: Task[] = await this._taskRepository.find();
     for (const task of tasks) {

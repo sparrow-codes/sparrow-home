@@ -359,6 +359,21 @@
         "summary": "",
         "tags": ["Tasks"]
       }
+    },
+    "/api/task/task-details/{id}": {
+      "get": {
+        "operationId": "getTaskDetails",
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "number" } }],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskDto" } } }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "summary": "",
+        "tags": ["Tasks"]
+      }
     }
   },
   "info": { "title": "", "description": "", "version": "1.0", "contact": {} },

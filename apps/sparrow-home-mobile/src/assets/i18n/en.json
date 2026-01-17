@@ -108,6 +108,7 @@
     "update_success": "Modification completed successfully",
     "update_error": "Error modifying schedule",
     "fetch_devices_error": "Error fetching devices list!",
+    "fetch_details_error": "Error fetching schedule details!",
     "device": "Device",
     "action": "Action",
     "time": "Execution time",

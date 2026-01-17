@@ -1,11 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
-import { HomeDeviceApiService, HomeDeviceDetailsDtoApiModel, TasksApiService } from '@sparrow-home/api';
+import {
+  HomeDeviceApiService,
+  HomeDeviceDetailsDtoApiModel,
+  TaskDtoApiModel,
+  TasksApiService,
+} from '@sparrow-home/api';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
 
 import { AutomaticTask } from '../model/automatic-task';
-import { tasksSignalStore } from './tasks';
+import { TasksSignalStore, tasksSignalStore } from './tasks';
 
 const mockMessageService = {
   add: jest.fn(),
@@ -17,6 +22,7 @@ const mockTaskApiService = {
   deleteTask: jest.fn(),
   createTask: jest.fn(),
   updateTask: jest.fn(),
+  getTaskDetails: jest.fn(),
 };
 
 const mockHomeDeviceApiService = {
@@ -188,5 +194,19 @@ describe('tasksSignalStore', () => {
     expect(mockHomeDeviceApiService.getAllDevices).toHaveBeenNthCalledWith(1, {
       body: {},
     });
+  });
+
+  it('should fetch task details by id', () => {
+    const id: string = '1';
+    const task: TaskDtoApiModel = { id: 1, name: 'Task 1', isActive: false, actions: [], daysOfWeek: null };
+    mockTaskApiService.getTaskDetails.mockReturnValue(of(task));
+
+    const store: TasksSignalStore = TestBed.inject(rootStore);
+
+    expect(store.taskDetails()).toBeNull();
+
+    store.getTaskDetails(id);
+    expect(store.taskDetails()).toBeTruthy();
+    expect(mockTaskApiService.getTaskDetails).toHaveBeenNthCalledWith(1, { id: 1 });
   });
 });

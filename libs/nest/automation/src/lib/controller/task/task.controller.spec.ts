@@ -4,6 +4,7 @@ import { TaskService } from '../../services/task/task.service';
 import { CreateTaskRequest } from './model/create-task-request';
 import { UpdateTaskRequest } from './model/update-task-request';
 import { AuthGuard } from '@sparrow-server/auth';
+import { TaskDto } from './model/task-dto';
 
 describe('TaskController', () => {
   let controller: TaskController;
@@ -15,6 +16,7 @@ describe('TaskController', () => {
     deleteTask: jest.fn(),
     updateTaskStatus: jest.fn(),
     getTaskList: jest.fn(() => []),
+    getTaskById: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -60,5 +62,13 @@ describe('TaskController', () => {
   it('should call getTaskList on service', async () => {
     await controller.getTaskList();
     expect(service.getTaskList).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return task dto from service', async () => {
+    const taskDto: TaskDto = new TaskDto();
+    jest.spyOn(service, 'getTaskById').mockResolvedValue(taskDto);
+
+    expect(await controller.getTaskDetails(1)).toBe(taskDto);
+    expect(service.getTaskById).toHaveBeenNthCalledWith(1, 1);
   });
 });

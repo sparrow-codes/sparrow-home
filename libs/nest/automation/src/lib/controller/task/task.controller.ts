@@ -43,4 +43,11 @@ export class TaskController {
   public async getTaskList(): Promise<TaskDto[]> {
     return await this._taskService.getTaskList();
   }
+
+  @Get('task-details/:id')
+  @ApiOperation({ operationId: 'getTaskDetails' })
+  @ApiResponse({ type: TaskDto })
+  public async getTaskDetails(@Param('id') id: number): Promise<TaskDto> {
+    return await this._taskService.getTaskById(id);
+  }
 }

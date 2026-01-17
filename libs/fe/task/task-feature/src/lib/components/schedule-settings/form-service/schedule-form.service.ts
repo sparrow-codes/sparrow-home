@@ -14,7 +14,7 @@ export class ScheduleFormService {
     return this._form;
   }
 
-  public initForm(task?: Partial<AutomaticTask>): void {
+  public initForm(task: Partial<AutomaticTask> | null): void {
     this._form = this._fb.group({
       name: this._fb.control(task?.name ?? '', { validators: [Validators.required] }),
       daysOfWeek: this._fb.control<number[] | null>(task?.daysOfWeek ?? null),
