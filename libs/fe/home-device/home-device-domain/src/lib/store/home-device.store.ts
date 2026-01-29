@@ -199,10 +199,9 @@ export const HomeDeviceStore = signalStore(
       ),
       removeDevice: rxMethod<number>(
         pipe(
-          tap((id) => {
-            patchState(store, store.entities().length <= 1 ? withLoading() : withRefreshing(), removeEntity(id));
-            router.navigate([RoutePath.DEVICES]);
-          }),
+          tap((id) =>
+            patchState(store, store.entities().length <= 1 ? withLoading() : withRefreshing(), removeEntity(id))
+          ),
           switchMap((id) =>
             store._deleteDevice(id).pipe(
               tapResponse({
@@ -212,7 +211,8 @@ export const HomeDeviceStore = signalStore(
                     summary: translateService.instant('home.device_delete_error'),
                     severity: 'error',
                   }),
-              })
+              }),
+              switchMap(() => router.navigate([RoutePath.DEVICES]))
             )
           ),
           finalize(() => patchState(store, withoutRefreshing()))
