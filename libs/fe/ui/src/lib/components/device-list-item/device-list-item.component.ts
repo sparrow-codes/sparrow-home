@@ -17,7 +17,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 export class DeviceListItemComponent {
   public readonly device: InputSignal<HomeDevice> = input.required();
   public readonly deviceEvent: OutputEmitterRef<Record<string, unknown>> = output();
-  public readonly disableRouting: InputSignal<boolean> = input(false);
+  public readonly routing: InputSignal<string[] | undefined> = input();
   public readonly isLoading: InputSignal<boolean> = input(false);
   public readonly refreshingDevices: InputSignal<Set<string>> = input.required();
 

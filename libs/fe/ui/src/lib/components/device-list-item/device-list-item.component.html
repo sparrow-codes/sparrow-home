@@ -1,6 +1,6 @@
 <a
   class="animate-fadein flex items-center justify-between bg-white rounded-xl shadow-sm px-4 py-3 w-full cursor-pointer hover:bg-gray-50 transition no-underline"
-  [routerLink]="disableRouting() ? '' : ['details', device().id]"
+  [routerLink]="routing() ?? ['details', device().id]"
   [attr.aria-label]="'ui.go_to_device_details' | translate : { deviceName: device().name }"
 >
   <div class="flex items-center gap-3">

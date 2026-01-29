@@ -35,7 +35,7 @@
         <sp-device-list-item
           [refreshingDevices]="refreshingDevices()"
           [isLoading]="(isRefreshing$ | async) ?? false"
-          [disableRouting]="true"
+          [routing]="['../devices', 'details', device.id.toString()]"
           [device]="device"
           (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"
         ></sp-device-list-item>
