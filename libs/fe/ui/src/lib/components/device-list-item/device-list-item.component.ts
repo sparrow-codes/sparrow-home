@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DeviceAction, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
+import { DeviceAction, DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 import { Tag } from 'primeng/tag';
 
 import { deviceTypeDictionary } from '../../dictionary';
@@ -38,7 +38,11 @@ export class DeviceListItemComponent {
     const mainParamKey: string | null = this.device().mainParamKey;
 
     if (mainParamKey) {
-      return `${this.device().params[mainParamKey]}`;
+      if (this.device().type === DeviceType.OPEN_DOOR_SENSOR && mainParamKey === 'contact') {
+        return this.device().params[mainParamKey] === 'true' ? 'ui.closed' : 'ui.open';
+      } else {
+        return this.device().params[mainParamKey];
+      }
     }
 
     return deviceTypeDictionary.get(this.device().type);

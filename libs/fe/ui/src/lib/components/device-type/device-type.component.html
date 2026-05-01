@@ -2,7 +2,6 @@
 <div
   class="px-4 py-1 rounded max-w-fit font-bold truncate flex gap-2 items-center"
   [ngClass]="{
-    'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG,
     'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
     'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
     siren: deviceType() === deviceTypes.SIREN,
@@ -18,7 +17,6 @@
 <div
   class="p-2 flex justify-center items-center rounded-md"
   [ngClass]="{
-    'lsc-plug-in': deviceType() === deviceTypes.POWER_PLUG,
     'temperature-sensor': deviceType() === deviceTypes.TEMPERATURE_SENSOR,
     'open-door-sensor': deviceType() === deviceTypes.OPEN_DOOR_SENSOR,
     siren: deviceType() === deviceTypes.SIREN,
