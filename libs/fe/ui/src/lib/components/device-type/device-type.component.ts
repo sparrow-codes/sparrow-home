@@ -42,8 +42,6 @@ export class DeviceTypeComponent {
   protected readonly deviceTypes: typeof DeviceType = DeviceType;
   protected readonly iconName: Signal<string> = computed(() => {
     switch (this.deviceType()) {
-      case DeviceType.POWER_PLUG:
-        return 'bootstrapPlugin';
       case DeviceType.TEMPERATURE_SENSOR:
         return 'bootstrapThermometerHalf';
       case DeviceType.OPEN_DOOR_SENSOR:

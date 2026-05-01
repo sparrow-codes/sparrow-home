@@ -15,6 +15,8 @@
     "days_of_week_label": "Days of week:",
     "all_days": "All days",
     "define": "Define",
+    "open": "Open",
+    "closed": "Closed",
     "days": {
       "mon": "Mon",
       "tue": "Tue",

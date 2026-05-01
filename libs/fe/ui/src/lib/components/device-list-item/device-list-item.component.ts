@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
-import { DeviceAction, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { DeviceAction, DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 import { Tag } from 'primeng/tag';
 
 import { deviceTypeDictionary } from '../../dictionary';
@@ -15,6 +15,8 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {
+  private readonly _translateService: TranslateService = inject(TranslateService);
+
   public readonly device: InputSignal<HomeDevice> = input.required();
   public readonly deviceEvent: OutputEmitterRef<Record<string, unknown>> = output();
   public readonly routing: InputSignal<string[] | undefined> = input();
@@ -38,7 +40,13 @@ export class DeviceListItemComponent {
     const mainParamKey: string | null = this.device().mainParamKey;
 
     if (mainParamKey) {
-      return `${this.device().params[mainParamKey]}`;
+      if (this.device().type === DeviceType.OPEN_DOOR_SENSOR && mainParamKey === 'contact') {
+        return this.device().params[mainParamKey] === 'true'
+          ? this._translateService.instant('ui.closed')
+          : this._translateService.instant('ui.open');
+      } else {
+        return this.device().params[mainParamKey];
+      }
     }
 
     return deviceTypeDictionary.get(this.device().type);

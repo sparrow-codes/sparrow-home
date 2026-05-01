@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./home-server/postgres_data:/var/lib/postgresql/data
+      - ./home-server/postgres_data:/var/lib/postgresql
     networks: [sparrow]
 
   mosquitto:
@@ -27,10 +27,13 @@ services:
     restart: unless-stopped
     depends_on: [mosquitto]
     env_file: .env
+    ports:
+      - "8081:8080"
     environment:
       TZ: ${zigbeeTimeZone}
-      ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto
+      ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto:1883
       ZIGBEE2MQTT_SERIAL_ADAPTER: ${zigbeeSerialAdapter}
+      ZIGBEE2MQTT_SERIAL_PORT: ${zigbeeSerialPort}
       ZIGBEE2MQTT_FRONTEND: "false"
       ZIGBEE2MQTT_PERMIT_JOIN: "false"
       ZIGBEE2MQTT_ADVANCED_NETWORK_KEY: GENERATE
@@ -38,6 +41,7 @@ services:
       - ./home-server/zigbee2mqtt/data:/app/data
     devices:
       - "${zigbeeSerialPort}:${zigbeeSerialPort}"
+    user: "0:0"
     networks: [sparrow]
 
   backend:
@@ -67,7 +71,7 @@ services:
     restart: unless-stopped
     depends_on: [backend]
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./config.json:/usr/share/nginx/html/config.json:ro
     networks: [sparrow]
