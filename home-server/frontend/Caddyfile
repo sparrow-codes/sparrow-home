@@ -1,0 +1,31 @@
+# Użyj nazwy domeny Tailscale zamiast samego IP, aby SSL zadziałał poprawnie
+${TAILSCALE_DOMAIN} {
+
+# Poprawna metoda na certyfikat z Tailscale
+  tls {
+        get_certificate tailscale
+      }
+
+# ===== Frontend (Angular SPA) =====
+  root * /usr/share/caddy
+  file_server
+
+# Brak cachowania dla plików konfiguracyjnych i startowych
+  @no-cache path /config.json /index.html
+  header @no-cache Cache-Control "no-store, no-cache, must-revalidate"
+
+# ===== Backend API =====
+  reverse_proxy /api/* backend:3000
+
+# ===== SPA routing =====
+  try_files {path} /index.html
+
+# ===== Static assets caching =====
+@static path_regexp static \.(?:js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$
+                           header @static Cache-Control "public, max-age=604800, immutable"
+
+                                                        # Logi
+                                                        log {
+                                                            output stdout
+                                                            }
+}
