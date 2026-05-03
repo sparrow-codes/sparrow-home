@@ -1,5 +1,5 @@
 # Użyj nazwy domeny Tailscale zamiast samego IP, aby SSL zadziałał poprawnie
-${TAILSCALE_DOMAIN} {
+{$TAILSCALE_DOMAIN} {
 
 # Poprawna metoda na certyfikat z Tailscale
   tls {
