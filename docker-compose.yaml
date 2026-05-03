@@ -70,10 +70,15 @@ services:
     image: ghcr.io/sparrow-codes/sparrow-frontend:next
     restart: unless-stopped
     depends_on: [backend]
+    user: "0:0"
+    environment:
+      TAILSCALE_DOMAIN: ${tailscaleDomain}
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./config.json:/usr/share/nginx/html/config.json:ro
+      - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
     networks: [sparrow]
 
 networks:
