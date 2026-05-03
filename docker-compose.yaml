@@ -72,7 +72,7 @@ services:
     depends_on: [backend]
     user: "0:0"
     environment:
-      TAILSCALE_DOMAIN: ${tailscaleDomain}
+      TAILSCALE_DOMAIN: ${tailscaleDomain:?tailscaleDomain must be set}
     ports:
       - "80:80"
       - "443:443"
