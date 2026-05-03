@@ -49,6 +49,8 @@ services:
     restart: unless-stopped
     depends_on: [postgres, mosquitto, zigbee2mqtt]
     env_file: .env
+    ports:
+      - "3000:3000"
     environment:
       mode: ${mode}
       dbHost: postgres
