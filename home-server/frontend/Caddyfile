@@ -5,9 +5,9 @@
 
                     root * /usr/share/caddy
 
-                    handle_path /api/* {
-                                       reverse_proxy backend:3000
-                                       }
+                    handle /api/* {
+                                  reverse_proxy backend:3000
+                                  }
 
                     handle {
                            try_files {path} /index.html
