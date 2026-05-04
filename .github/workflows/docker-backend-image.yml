@@ -16,6 +16,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Compute version + short sha
         id: meta
         run: |
