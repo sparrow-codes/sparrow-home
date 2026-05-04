@@ -1,29 +1,30 @@
 {$TAILSCALE_DOMAIN} {
-    tls {
-        get_certificate tailscale
-    }
+                    tls {
+                        get_certificate tailscale
+                        }
 
-    root * /usr/share/caddy
-    file_server
+                    root * /usr/share/caddy
 
-    reverse_proxy /api /api/* backend:3000
+                    handle_path /api/* {
+                                       reverse_proxy backend:3000
+                                       }
 
-    @spa not path /api /api/*
-    handle @spa {
-        try_files {path} /index.html
-    }
+                    handle {
+                           try_files {path} /index.html
+                                            file_server
+                           }
 
-    @no-cache {
-        path /config.json /index.html
-    }
-    header @no-cache Cache-Control "no-store, no-cache, must-revalidate"
+                    @no-cache {
+                              path /config.json /index.html
+                              }
+                    header @no-cache Cache-Control "no-store, no-cache, must-revalidate"
 
-    @static {
-        path_regexp static \.(?:js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$
-    }
-    header @static Cache-Control "public, max-age=604800, immutable"
+                    @static {
+                            path_regexp static \.(?:js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$
+                            }
+                    header @static Cache-Control "public, max-age=604800, immutable"
 
-    log {
-        output stdout
-    }
+                    log {
+                        output stdout
+                        }
 }
