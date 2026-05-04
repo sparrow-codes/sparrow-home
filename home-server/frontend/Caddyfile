@@ -6,9 +6,9 @@
     root * /usr/share/caddy
     file_server
 
-    reverse_proxy /api/* backend:3000
+    reverse_proxy /api /api/* backend:3000
 
-    @spa not path /api/*
+    @spa not path /api /api/*
     handle @spa {
         try_files {path} /index.html
     }
