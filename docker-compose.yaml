@@ -45,7 +45,7 @@ services:
     networks: [sparrow]
 
   backend:
-    image: ghcr.io/sparrow-codes/sparrow-backend:next
+    image: ghcr.io/sparrow-codes/sparrow-backend:current
     restart: unless-stopped
     depends_on: [postgres, mosquitto, zigbee2mqtt]
     env_file: .env
@@ -69,7 +69,7 @@ services:
     networks: [sparrow]
 
   frontend:
-    image: ghcr.io/sparrow-codes/sparrow-frontend:next
+    image: ghcr.io/sparrow-codes/sparrow-frontend:current
     restart: unless-stopped
     depends_on: [backend]
     user: "0:0"
