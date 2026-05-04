@@ -6,6 +6,13 @@
     root * /usr/share/caddy
     file_server
 
+    reverse_proxy /api /api/* backend:3000
+
+    @spa not path /api /api/*
+    handle @spa {
+        try_files {path} /index.html
+    }
+
     @no-cache {
         path /config.json /index.html
     }
@@ -15,10 +22,6 @@
         path_regexp static \.(?:js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$
     }
     header @static Cache-Control "public, max-age=604800, immutable"
-
-    reverse_proxy /api/* backend:3000
-
-    try_files {path} /index.html
 
     log {
         output stdout
