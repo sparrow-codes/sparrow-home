@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CONFIG=/app/data/configuration.yaml
-TEMPLATE=/app/template/configuration.yaml.template
+TEMPLATE=/app/template/configuration.template.yaml
 
 echo "Checking Zigbee2MQTT config..."
 
