@@ -60,7 +60,7 @@ storybook-static
 # Home Server files
 /home-server/data/
 /home-server/postgres-data/
-/home-server/zigbee2mqtt/
+/home-server/zigbee2mqtt/data
 /config.json
 /.env
 /home-server/postgres_data/

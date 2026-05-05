@@ -25,24 +25,23 @@ services:
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:latest
     restart: unless-stopped
-    depends_on: [mosquitto]
-    env_file: .env
-    ports:
-      - "8081:8080"
+    depends_on:
+      - mosquitto
     environment:
       TZ: ${zigbeeTimeZone}
-      ZIGBEE2MQTT_MQTT_SERVER: mqtt://mosquitto:1883
-      ZIGBEE2MQTT_SERIAL_ADAPTER: ${zigbeeSerialAdapter}
-      ZIGBEE2MQTT_SERIAL_PORT: ${zigbeeSerialPort}
-      ZIGBEE2MQTT_FRONTEND: "false"
-      ZIGBEE2MQTT_PERMIT_JOIN: "false"
-      ZIGBEE2MQTT_ADVANCED_NETWORK_KEY: GENERATE
+      ZIGBEE_SERIAL_PORT: ${zigbeeSerialAdapter}
+      ZIGBEE_ADAPTER: ${zigbeeAdapter}
+
     volumes:
       - ./home-server/zigbee2mqtt/data:/app/data
+      - ./home-server/zigbee2mqtt/template:/app/template:ro
+      - ./home-server/zigbee2mqtt/scripts:/app/scripts:ro
+      - /run/udev:/run/udev:ro
+
     devices:
-      - "${zigbeeSerialPort}:${zigbeeSerialPort}"
-    user: "0:0"
-    networks: [sparrow]
+      - ${zigbeeSerialAdapter}:${zigbeeSerialAdapter}
+
+    command: [ "/bin/sh", "/app/scripts/generate-config.sh" ]
 
   backend:
     image: ghcr.io/sparrow-codes/sparrow-backend:current

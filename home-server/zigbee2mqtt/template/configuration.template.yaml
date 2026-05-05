@@ -1,0 +1,25 @@
+homeassistant: false
+
+frontend:
+  port: 8080
+
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://mosquitto:1883
+  keepalive: 60
+
+serial:
+  port: ${ZIGBEE_SERIAL_PORT}
+  adapter: ${ZIGBEE_ADAPTER}
+
+advanced:
+  log_level: info
+  channel: 11
+  network_key: GENERATE
+  pan_id: GENERATE
+  ext_pan_id: GENERATE
+
+permit_join: false
+
+availability:
+  enabled: true
