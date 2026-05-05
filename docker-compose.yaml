@@ -42,6 +42,7 @@ services:
       - ${zigbeeSerialAdapter}:${zigbeeSerialAdapter}
 
     command: [ "/bin/sh", "/app/scripts/generate-config.sh" ]
+    networks: [sparrow]
 
   backend:
     image: ghcr.io/sparrow-codes/sparrow-backend:current
