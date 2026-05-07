@@ -1,4 +1,5 @@
-import { Expose } from '../../../model/device-joined';
+import { Expose } from '@sparrow-server/shared';
+
 import { DeviceAction, Exposed } from '../../../model/device-profile';
 import { has } from '../has-access/has-access';
 

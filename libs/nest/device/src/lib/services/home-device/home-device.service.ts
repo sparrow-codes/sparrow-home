@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { ActionJob, DeviceType, HomeDevice } from '@sparrow-server/entities';
 import { DeviceProfile, ZigbeeDeviceService, ZigbeeManageDeviceService } from '@sparrow-server/external-api';
@@ -11,13 +11,19 @@ import { DeviceDetailsMapper } from '../../mappers/device-details-mapper';
 import { HomeDeviceDetailsDto } from '../../models/home-device-details-dto';
 
 @Injectable()
-export class HomeDeviceService {
+export class HomeDeviceService implements OnModuleInit {
   public constructor(
     @InjectRepository(HomeDevice) private readonly _homeDeviceRepository: Repository<HomeDevice>,
     @InjectDataSource() private dataSource: DataSource,
     private readonly _zigbeeManageDeviceService: ZigbeeManageDeviceService,
     private readonly _zigbeeDeviceService: ZigbeeDeviceService
   ) {}
+
+  public async onModuleInit(): Promise<void> {
+    this._zigbeeDeviceService.storeJoinedDevices(
+      (await this._homeDeviceRepository.find()).map((homeDevice) => homeDevice.zigbeeDeviceData)
+    );
+  }
 
   public async setDeviceSettings(id: number, request: SetDeviceSettingsRequest): Promise<void> {
     const device: HomeDevice | null = await this._homeDeviceRepository.findOneBy({ id });
@@ -76,15 +82,16 @@ export class HomeDeviceService {
   public addDevice(type: DeviceType, name: string): Observable<number | null> {
     return this._zigbeeManageDeviceService.joinDeviceAndSetId().pipe(
       first(),
-      switchMap((zigbeeDeviceId) => {
-        if (!zigbeeDeviceId) {
+      switchMap((deviceJoined) => {
+        if (!deviceJoined) {
           return of(null);
         }
 
         const device: HomeDevice = new HomeDevice();
         device.deviceType = type;
-        device.zigbeeDeviceId = zigbeeDeviceId;
+        device.zigbeeDeviceId = deviceJoined.friendly_name;
         device.deviceName = name;
+        device.zigbeeDeviceData = deviceJoined;
 
         return from(this._homeDeviceRepository.save(device)).pipe(map((device) => device.id));
       })

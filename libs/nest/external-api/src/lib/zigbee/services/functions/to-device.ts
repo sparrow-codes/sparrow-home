@@ -1,4 +1,5 @@
-import { DeviceJoined } from '../../model/device-joined';
+import { DeviceJoined } from '@sparrow-server/shared';
+
 import { DeviceProfile } from '../../model/device-profile';
 import { has } from './has-access/has-access';
 import { mapExposesToActions } from './to-actions/to-actions';

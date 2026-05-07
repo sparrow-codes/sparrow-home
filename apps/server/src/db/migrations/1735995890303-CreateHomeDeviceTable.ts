@@ -8,6 +8,7 @@ export class CreateHomeDeviceTable1735995890303 implements MigrationInterface {
       { name: 'zigbeeDeviceId', type: 'varchar', isUnique: true },
       { name: 'deviceType', type: 'int' },
       { name: 'deviceName', type: 'varchar', length: '100' },
+      { name: 'zigbeeDeviceData', type: 'jsonb' },
       { name: 'lastChanged', type: 'timestamp', isNullable: true },
       { name: 'mainActionKey', type: 'varchar', isNullable: true },
       { name: 'mainParamKey', type: 'varchar', isNullable: true },

@@ -1,4 +1,5 @@
-import { Expose } from '../../model/device-joined';
+import { Expose } from '@sparrow-server/shared';
+
 import { ReadonlyField } from '../../model/device-profile';
 import { has } from './has-access/has-access';
 
@@ -10,7 +11,6 @@ export function mapExposesToReadonly(exposes: Expose[]): ReadonlyField[] {
     const appearsInState = has(access, 1);
     const supportsGet = has(access, 4);
 
-    // kontenery / zagnieżdżenia
     if (Array.isArray(ex.features) && ex.features.length) {
       ex.features.forEach((f) =>
         visit(

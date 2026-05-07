@@ -1,9 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { DeviceJoined } from '@sparrow-server/shared';
 import { MqttClient } from 'mqtt';
 import { catchError, combineLatest, first, from, map, Observable, Subject, tap, timeout } from 'rxjs';
 
 import { MqttConnectorService } from './connector/mqtt-connector.service';
 import { BridgeEventMessage } from './model/bridge-event.message';
+import { ZigbeeDeviceService } from './services/zigbee-device.service';
 
 @Injectable()
 export class ZigbeeManageDeviceService {
@@ -15,12 +17,15 @@ export class ZigbeeManageDeviceService {
 
   private readonly client: MqttClient;
 
-  public constructor(private readonly mqttService: MqttConnectorService) {
+  public constructor(
+    private readonly mqttService: MqttConnectorService,
+    private readonly _deviceService: ZigbeeDeviceService
+  ) {
     this.client = this.mqttService.client;
     this.client.setMaxListeners(25);
   }
 
-  public joinDeviceAndSetId(): Observable<string | null> {
+  public joinDeviceAndSetId(): Observable<DeviceJoined | null> {
     const subscription: (_topic: string, message: Buffer) => void = this._handleEventMessage();
 
     this.client.subscribe(ZigbeeManageDeviceService._BRIDGE_EVENT_URL);
@@ -37,7 +42,7 @@ export class ZigbeeManageDeviceService {
       ),
     ]).pipe(
       timeout(ZigbeeManageDeviceService._PARING_MODE_RUNTIME * 1000),
-      map(([, response]) => response.data.friendly_name),
+      map(([, response]) => response.data),
       catchError(() => {
         Logger.log('Timeout - no device was added');
 
@@ -57,6 +62,7 @@ export class ZigbeeManageDeviceService {
       const bridgeEventMessage: BridgeEventMessage = JSON.parse(message.toString());
       if (bridgeEventMessage.type === 'device_interview' && bridgeEventMessage.data.status === 'successful') {
         this._bridgeEventMessage$.next(bridgeEventMessage);
+        this._deviceService.storeJoinedDevices([bridgeEventMessage.data]);
         this.client.unsubscribe(ZigbeeManageDeviceService._BRIDGE_EVENT_URL);
         Logger.log('Successfully joined device!');
 

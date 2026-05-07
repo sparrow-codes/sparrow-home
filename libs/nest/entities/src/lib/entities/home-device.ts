@@ -1,3 +1,4 @@
+import { DeviceJoined } from '@sparrow-server/shared';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { DeviceType } from '../enum/device-type';
@@ -12,6 +13,9 @@ export class HomeDevice {
 
   @Column({ enum: DeviceType })
   public deviceType!: number;
+
+  @Column({ type: 'jsonb' })
+  public zigbeeDeviceData!: DeviceJoined;
 
   @Column({ length: 100 })
   public deviceName!: string;
