@@ -7,6 +7,7 @@ services:
       POSTGRES_DB: ${dbName}
       POSTGRES_USER: ${dbUserName}
       POSTGRES_PASSWORD: ${dbPassword}
+      TZ: ${timeZone}
     ports:
       - "5432:5432"
     volumes:
@@ -20,6 +21,8 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     ports:
       - "1883:1883"
+    environment:
+      TZ: ${timeZone}
     networks: [sparrow]
 
   zigbee2mqtt:
@@ -28,7 +31,7 @@ services:
     depends_on:
       - mosquitto
     environment:
-      TZ: ${zigbeeTimeZone}
+      TZ: ${timeZone}
       ZIGBEE_SERIAL_PORT: ${zigbeeSerialAdapter}
       ZIGBEE_ADAPTER: ${zigbeeAdapter}
 
@@ -64,6 +67,7 @@ services:
       pushPublicKey: ${pushPublicKey}
       pushPrivateKey: ${pushPrivateKey}
       pushAdminEmail: ${pushAdminEmail}
+      TZ: ${timeZone}
     volumes:
       - ./home-server/backend/data:/app/data
     networks: [sparrow]
@@ -75,6 +79,7 @@ services:
     user: "0:0"
     environment:
       TAILSCALE_DOMAIN: ${tailscaleDomain:?tailscaleDomain must be set}
+      TZ: ${timeZone}
     ports:
       - "80:80"
       - "443:443"
