@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DeviceJoined } from '@sparrow-server/shared';
 import { MqttClient } from 'mqtt';
-import { catchError, combineLatest, first, from, map, Observable, Subject, tap, timeout } from 'rxjs';
+import { catchError, combineLatest, finalize, first, from, map, Observable, Subject, tap, timeout } from 'rxjs';
 
 import { MqttConnectorService } from './connector/mqtt-connector.service';
 import { BridgeEventMessage } from './model/bridge-event.message';
@@ -53,7 +53,7 @@ export class ZigbeeManageDeviceService {
           )
         ).pipe(map(() => null));
       }),
-      tap(() => this.client.unsubscribe(ZigbeeManageDeviceService._BRIDGE_EVENT_URL))
+      finalize(() => this.client.unsubscribe(ZigbeeManageDeviceService._BRIDGE_EVENT_URL))
     );
   }
 
@@ -63,7 +63,6 @@ export class ZigbeeManageDeviceService {
       if (bridgeEventMessage.type === 'device_interview' && bridgeEventMessage.data.status === 'successful') {
         this._bridgeEventMessage$.next(bridgeEventMessage);
         this._deviceService.storeJoinedDevices([bridgeEventMessage.data]);
-        this.client.unsubscribe(ZigbeeManageDeviceService._BRIDGE_EVENT_URL);
         Logger.log('Successfully joined device!');
 
         this.client.publish(

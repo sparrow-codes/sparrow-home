@@ -88,8 +88,6 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
 
       deviceProfile.state = this._cachedState.get(deviceProfile.deviceIdentity.friendlyName) ?? {};
       this._devices.set(device.friendly_name, deviceProfile);
-
-      console.log(deviceProfile);
     });
   }
 
