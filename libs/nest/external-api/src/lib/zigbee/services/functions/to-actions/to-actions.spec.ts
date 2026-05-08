@@ -1,4 +1,5 @@
-import { Expose } from '../../../model/device-joined';
+import { Expose } from '@sparrow-server/shared';
+
 import { DeviceAction } from '../../../model/device-profile';
 import { mapExposesToActions } from './to-actions';
 

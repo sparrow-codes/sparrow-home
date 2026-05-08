@@ -1,10 +1,10 @@
 import { Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
 import { MqttClient } from '@nestjs/microservices/external/mqtt-client.interface';
+import { DeviceJoined } from '@sparrow-server/shared';
 import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 
 import { DeviceProfile } from '../model';
-import { DeviceJoined } from '../model/device-joined';
 import { DeviceState } from '../model/device-state';
 import { DeviceStateService } from './device-state/device-state.service';
 import { toDevice } from './functions/to-device';
@@ -23,7 +23,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
   private static readonly _BRIDGE_EVENT_URL: string = 'zigbee2mqtt/bridge/event';
   private static readonly _BRIDGE_DEVICES_URL: string = 'zigbee2mqtt/bridge/devices';
   private static readonly _REMOVE_DEVICE_URL: string = 'zigbee2mqtt/bridge/request/device/remove';
-  private static readonly _BASE = 'zigbee2mqtt';
+  private static readonly _BASE: string = 'zigbee2mqtt';
 
   public readonly devices: ReadonlyMap<string, DeviceProfile> = this._devices;
   public readonly deviceEvent$: Observable<DeviceProfile> = this._deviceEvent.asObservable().pipe(debounceTime(1000));
@@ -46,16 +46,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
     });
 
     this._client.on('message', (topic: string, payload: BufferSource) => {
-      if (topic === ZigbeeDeviceService._BRIDGE_DEVICES_URL) {
-        const joinedDevices: DeviceJoined[] = JSON.parse(payload.toString());
-
-        joinedDevices.forEach((device: DeviceJoined) => {
-          const deviceProfile: DeviceProfile = toDevice(device);
-
-          deviceProfile.state = this._cachedState.get(deviceProfile.deviceIdentity.friendlyName) ?? {};
-          this._devices.set(device.friendly_name, deviceProfile);
-        });
-      } else {
+      if (topic !== ZigbeeDeviceService._BRIDGE_DEVICES_URL) {
         const result: RegExpExecArray | null = new RegExp(
           `^${this._escapeChars(ZigbeeDeviceService._BASE)}/([^/]+)$`
         ).exec(topic);
@@ -89,6 +80,15 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
 
     this._client.publish(ZigbeeDeviceService._REMOVE_DEVICE_URL, JSON.stringify({ id: deviceId }));
     this._devices.delete(deviceId);
+  }
+
+  public storeJoinedDevices(joinedDevices: DeviceJoined[]): void {
+    joinedDevices.forEach((device: DeviceJoined) => {
+      const deviceProfile: DeviceProfile = toDevice(device);
+
+      deviceProfile.state = this._cachedState.get(deviceProfile.deviceIdentity.friendlyName) ?? {};
+      this._devices.set(device.friendly_name, deviceProfile);
+    });
   }
 
   private _updateDeviceState(deviceProfile: DeviceProfile, payload: Record<string, unknown>): void {

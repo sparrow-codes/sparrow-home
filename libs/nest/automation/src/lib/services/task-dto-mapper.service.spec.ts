@@ -66,6 +66,10 @@ describe('TaskDtoMapperService', () => {
       id: 0,
       lastChanged: new Date(),
       zigbeeDeviceId: deviceID,
+      zigbeeDeviceData: {
+        friendly_name: '',
+        ieee_address: '',
+      },
     };
   }
 
