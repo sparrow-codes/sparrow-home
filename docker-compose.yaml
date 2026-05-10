@@ -32,7 +32,7 @@ services:
       - mosquitto
     environment:
       TZ: ${timeZone}
-      ZIGBEE_SERIAL_PORT: ${zigbeeSerialAdapter}
+      ZIGBEE_SERIAL_PORT: ${zigbeeAdapter}
       ZIGBEE_ADAPTER: ${zigbeeAdapter}
 
     volumes:
@@ -42,7 +42,7 @@ services:
       - /run/udev:/run/udev:ro
 
     devices:
-      - ${zigbeeSerialAdapter}:${zigbeeSerialAdapter}
+      - ${zigbeeAdapter}:${zigbeeAdapter}
 
     command: [ "/bin/sh", "/app/scripts/generate-config.sh" ]
     networks: [sparrow]
@@ -84,9 +84,11 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./config.json:/usr/share/caddy/config.json:ro
+      - ./home-server/frontend/data/config.json:/usr/share/caddy/config.json:ro
+      - ./home-server/frontend/scripts:scripts:ro
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
     networks: [sparrow]
+    command: [ "/bin/sh", "/app/scripts/generate-config.sh" ]
 
 networks:
   sparrow:
