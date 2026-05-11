@@ -89,7 +89,12 @@ services:
       - ./home-server/frontend/scripts:/scripts:ro
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
     networks: [sparrow]
-    command: [ "/bin/sh", "/scripts/generate-config.sh" ]
+    command:
+      - /bin/sh
+      - -c
+      - |
+        /scripts/generate-config.sh &&
+        exec caddy run --config /etc/caddy/Caddyfile
 
 networks:
   sparrow:
