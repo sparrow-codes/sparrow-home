@@ -64,3 +64,4 @@ storybook-static
 /config.json
 /.env
 /home-server/postgres_data/
+/home-server/frontend/data/
