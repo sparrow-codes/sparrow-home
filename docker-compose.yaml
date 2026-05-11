@@ -80,15 +80,16 @@ services:
     environment:
       TAILSCALE_DOMAIN: ${tailscaleDomain:?tailscaleDomain must be set}
       TZ: ${timeZone}
+      pushPublicKey: ${pushPublicKey}
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./home-server/frontend/data/config.json:/usr/share/caddy/config.json:ro
-      - ./home-server/frontend/scripts:scripts:ro
+      - ./home-server/frontend/scripts:/scripts:ro
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
     networks: [sparrow]
-    command: [ "/bin/sh", "/app/scripts/generate-config.sh" ]
+    command: [ "/bin/sh", "/scripts/generate-config.sh" ]
 
 networks:
   sparrow:
