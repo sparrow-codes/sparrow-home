@@ -94,7 +94,6 @@ services:
       - -c
       - |
         /scripts/generate-config.sh &&
-        exec caddy run --config /etc/caddy/Caddyfile
 
 networks:
   sparrow:
