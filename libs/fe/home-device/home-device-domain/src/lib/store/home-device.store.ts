@@ -166,12 +166,14 @@ export const HomeDeviceStore = signalStore(
       ),
       createDevice: rxMethod<{ deviceType: number; name: string }>(
         pipe(
-          tap(() => patchState(store, withRefreshing())),
+          tap(() => {
+            patchState(store, withRefreshing());
+          }),
           switchMap((data) =>
             store._createDevice(data).pipe(
               tapResponse({
                 next: (id) => {
-                  const isCreated: boolean = id !== null;
+                  const isCreated: boolean = id !== null && !isNaN(id);
 
                   messageService.add({
                     summary: isCreated

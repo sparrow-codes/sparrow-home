@@ -15,54 +15,51 @@ export class ViewTransitionDirectionService {
   private subStack: string[] = [];
 
   public init(): void {
-    this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe((e) => {
-      const url = e.urlAfterRedirects;
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((navigationEnd) => {
+        const url: string = navigationEnd.urlAfterRedirects;
 
-      const vt: Vt = this.deepestData(this.router.routerState.snapshot.root, 'vt') as Vt;
-      const base = this.getModuleBase(url);
+        const vt: Vt = this.deepestData(this.router.routerState.snapshot.root, 'vt') as Vt;
+        const base: string | null = this.getModuleBase(url);
 
-      const html = document.documentElement;
-      html.classList.remove('vt-auth', 'vt-sub-forward', 'vt-sub-back');
+        const html: HTMLElement = document.documentElement;
+        html.classList.remove('vt-auth', 'vt-sub-forward', 'vt-sub-back');
 
-      // 1) AUTH -> SHELL: jeśli poprzednio byliśmy w auth i teraz już nie
-      if (this.lastVt === 'auth' && vt !== 'auth') {
+        if (this.lastVt === 'auth' && vt !== 'auth') {
+          this.subStack = [];
+          html.classList.add('vt-auth');
+          this.lastVt = vt;
+          this.lastModuleBase = base;
+          return;
+        }
+
+        if (vt === 'sub') {
+          const prevIndex: number = this.subStack.lastIndexOf(url);
+          const isBack: boolean = prevIndex !== -1 && prevIndex < this.subStack.length - 1;
+
+          html.classList.add(isBack ? 'vt-sub-back' : 'vt-sub-forward');
+
+          if (isBack) this.subStack = this.subStack.slice(0, prevIndex + 1);
+          else this.subStack.push(url);
+
+          this.lastVt = vt;
+          this.lastModuleBase = base;
+          return;
+        }
+
+        if (this.lastVt === 'sub' && base && base === this.lastModuleBase) {
+          html.classList.add('vt-sub-back');
+          this.subStack = [];
+          this.lastVt = vt;
+          this.lastModuleBase = base;
+          return;
+        }
+
         this.subStack = [];
-        html.classList.add('vt-auth');
         this.lastVt = vt;
         this.lastModuleBase = base;
-        return;
-      }
-
-      // 2) SUB pages: push/pop w obrębie substacka
-      if (vt === 'sub') {
-        const prevIndex = this.subStack.lastIndexOf(url);
-        const isBack = prevIndex !== -1 && prevIndex < this.subStack.length - 1;
-
-        html.classList.add(isBack ? 'vt-sub-back' : 'vt-sub-forward');
-
-        if (isBack) this.subStack = this.subStack.slice(0, prevIndex + 1);
-        else this.subStack.push(url);
-
-        this.lastVt = vt;
-        this.lastModuleBase = base;
-        return;
-      }
-
-      // 3) SUB -> MODULE ROOT w TYM SAMYM module: wymuś POP slide
-      // Przykład: /devices/details/123 -> /devices
-      if (this.lastVt === 'sub' && base && base === this.lastModuleBase) {
-        html.classList.add('vt-sub-back');
-        this.subStack = [];
-        this.lastVt = vt;
-        this.lastModuleBase = base;
-        return;
-      }
-
-      // default: module switching = browser default fade (nie ustawiamy klas)
-      this.subStack = [];
-      this.lastVt = vt;
-      this.lastModuleBase = base;
-    });
+      });
   }
 
   private deepestData(snapshot: ActivatedRouteSnapshot, key: string): unknown {
@@ -75,11 +72,9 @@ export class ViewTransitionDirectionService {
     return value;
   }
 
-  // DOPASUJ do swojego układu: masz shell pod '', a moduły są childami:
-  // /main, /devices, /automation, /user-profile
   private getModuleBase(url: string): string | null {
-    const clean = url.split('?')[0].split('#')[0];
-    const seg = clean.split('/').filter(Boolean);
+    const clean: string = url.split('?')[0].split('#')[0];
+    const seg: string[] = clean.split('/').filter(Boolean);
     return seg[0] ?? null;
   }
 }
