@@ -1,3 +1,4 @@
+name: sparrow-home
 services:
   postgres:
     image: postgres:18
