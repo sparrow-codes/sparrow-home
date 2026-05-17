@@ -8,8 +8,6 @@ services:
       POSTGRES_USER: ${dbUserName}
       POSTGRES_PASSWORD: ${dbPassword}
       TZ: ${timeZone}
-    ports:
-      - "5432:5432"
     volumes:
       - ./home-server/postgres_data:/var/lib/postgresql
     networks: [sparrow]
