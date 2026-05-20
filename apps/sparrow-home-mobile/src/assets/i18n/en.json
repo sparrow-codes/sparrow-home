@@ -64,7 +64,7 @@
     "add_first_device": "Add first device",
     "you_can_add": "Add sensors, switches and more...",
     "remove_device": "Remove device",
-    "remove_device_confirmation_content": "Are you sure you want to remove the device named: <strong>{{deviceName}}</strong>? Associated actions in schedules will be automatically removed.",
+    "remove_device_confirmation_content": "Are you sure you want to remove the device named: <strong>{deviceName}</strong>? Associated actions in schedules will be automatically removed.",
     "device_delete_error": "Error occurred while removing the device!",
     "fetch_device_details_error": "Error while fetching device details!",
     "name_change_error": "Error changing device name!",
@@ -82,7 +82,7 @@
     "inactive": "Inactive",
     "go_to_devices_list": "Go to devices list",
     "manage_devices": "Manage devices",
-    "available_devices": "Available devices",
+    "available_devices": "{nrOfDevices, plural, =0 {0 Devices} one {# Device} other {# Devices}}",
     "all_closed": "All windows and doors are closed",
     "go_to_open_devices_aria": "Go to open devices list",
     "some_open": "Some windows or doors are open",
@@ -98,7 +98,8 @@
     "publish_event_success": "Action triggered successfully",
     "welcome": "Welcome to Sparrow Home",
     "add_your_first_device": "Add your first device to start monitoring and automating your home.",
-    "add_first_device": "Add first device"
+    "add_first_device": "Add first device",
+    "favorites": "Favorites"
   },
   "tasks": {
     "fetch_list_error": "Error fetching schedules list!",

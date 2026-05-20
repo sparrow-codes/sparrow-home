@@ -10,8 +10,7 @@
     [isHouseClosed]="isHouseClosed()"
   />
 
-  <sp-device-list-panel [haveInitialData]="haveInitialData()" [isLoading]="(isLoading$ | async) ?? false" />
-  <p-divider></p-divider>
+  <sp-device-list-panel [nrOfDevices]="nrOfDevices()" [haveInitialData]="haveInitialData()" [isLoading]="(isLoading$ | async) ?? false" />
 
   @if (isLoading$ | async) {
     <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
@@ -31,15 +30,24 @@
       @if (isAlarmAvailable()) {
         <sp-alarm-panel [isAlarmOn]="isAlarmOn()" (isAlarmOnChange)="setAlarm($event)" />
       }
-      @for (device of mainDevices(); track device.id) {
-        <sp-device-list-item
-          [refreshingDevices]="refreshingDevices()"
-          [isLoading]="(isRefreshing$ | async) ?? false"
-          [routing]="['../devices', 'details', device.id.toString()]"
-          [device]="device"
-          (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"
-        ></sp-device-list-item>
+
+      <div class="flex flex-col gap-2">
+        @if (mainDevices().length > 0) {
+          <span class="text-sm font-bold w-full text-gray-700">{{'main_panel.favorites' | translate}}</span>
+          <div class="m-[-1rem]"><p-divider></p-divider></div>
+        }
+
+        @for (device of mainDevices(); track device.id) {
+          <sp-device-list-item
+            [refreshingDevices]="refreshingDevices()"
+            [isLoading]="(isRefreshing$ | async) ?? false"
+            [routing]="['../devices', 'details', device.id.toString()]"
+            [device]="device"
+            (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"
+          ></sp-device-list-item>
+
       }
+      </div>
     }
   }
 </div>
