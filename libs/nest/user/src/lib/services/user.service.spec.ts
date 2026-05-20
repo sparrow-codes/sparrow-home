@@ -21,7 +21,7 @@ describe('UserService', () => {
       findOneBy: jest.fn(),
       findBy: jest.fn(),
       save: jest.fn(),
-      existsBy: jest.fn(),
+      existsBy: jest.fn().mockResolvedValue(false),
     };
 
     setupRepository = {
