@@ -82,7 +82,7 @@
     "inactive": "Inactive",
     "go_to_devices_list": "Go to devices list",
     "manage_devices": "Manage devices",
-    "available_devices": "{{nrOfDevices}} Devices",
+    "available_devices": "{nrOfDevices, plural, =0 {0 Devices} one {# Device} other {# Devices}}",
     "all_closed": "All windows and doors are closed",
     "go_to_open_devices_aria": "Go to open devices list",
     "some_open": "Some windows or doors are open",
