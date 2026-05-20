@@ -51,10 +51,6 @@ export class UserService {
   }
 
   public async createAdditionalUser(request: CreateNewUserRequest): Promise<void> {
-    if(!await this._isEmailUnique(request.email)) {
-      throw new UnauthorizedException('Email is not unique.');
-    }
-
     const owner: User = await this._getOwner();
 
     const user: User = new User();
@@ -100,10 +96,5 @@ export class UserService {
     }
 
     return user;
-  }
-
-  private async _isEmailUnique(email: string): Promise<boolean> {
-    const user: User | null = await this._userRepository.findOneBy({ email });
-    return user === null;
   }
 }
