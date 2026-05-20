@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Setup, User, UserRole } from '@sparrow-server/entities';
 import * as bcrypt from 'bcrypt';
@@ -51,6 +51,10 @@ export class UserService {
   }
 
   public async createAdditionalUser(request: CreateNewUserRequest): Promise<void> {
+    if (await this.isEmailUnique(request.email)) {
+      throw new ConflictException('Email is already in use. Please choose another one.');
+    }
+
     const owner: User = await this._getOwner();
 
     const user: User = new User();
@@ -87,6 +91,10 @@ export class UserService {
 
     user.isActive = isActive;
     await this._userRepository.save(user);
+  }
+
+  public async isEmailUnique(email: string): Promise<boolean> {
+    return this._userRepository.existsBy({ email });
   }
 
   private async _getOwner(): Promise<User> {

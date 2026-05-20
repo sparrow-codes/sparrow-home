@@ -16,6 +16,7 @@ type UserServiceMock = {
   setUserStatus: jest.Mock; // Controller calls setUserStatus (not activateUser)
   getListOfAdditionalUsers: jest.Mock;
   getUserDetails: jest.Mock;
+  isEmailUnique: jest.Mock;
 };
 
 type AuthServiceMock = {
@@ -29,6 +30,7 @@ const createUserServiceMock: () => UserServiceMock = (): UserServiceMock => ({
   setUserStatus: jest.fn(),
   getListOfAdditionalUsers: jest.fn(),
   getUserDetails: jest.fn(),
+  isEmailUnique: jest.fn(),
 });
 
 const createAuthServiceMock: () => AuthServiceMock = (): AuthServiceMock => ({

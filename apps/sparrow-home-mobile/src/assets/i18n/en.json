@@ -140,6 +140,7 @@
     "create_first_error": "Configuration failed",
     "create_additional_success": "User created successfully",
     "create_additional_error": "Error creating user",
+    "already_exists": "User with this email already exists!",
     "login_invalid_credentials": "Invalid email or password",
     "fetch_details_error": "Error fetching user details",
     "activate_success": "User status changed",
