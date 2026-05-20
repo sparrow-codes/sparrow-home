@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
@@ -88,7 +89,7 @@ export const userStore = signalStore(
           pipe(
             tap(() => patchState(store, withLoading())),
             switchMap((request) =>
-              userApiService.createAdditionalUser({ body: request }).pipe(
+              userApiService.createAdditionalUser$Response({ body: request }).pipe(
                 first(),
                 tapResponse({
                   next: () => {
@@ -98,11 +99,20 @@ export const userStore = signalStore(
                     });
                     router.navigate([RoutePath.LOGIN]);
                   },
-                  error: () =>
+                  error: (error: HttpErrorResponse) => {
+                    if (error.status === 409) {
+                      messageService.add({
+                        summary: _translate.instant('user.already_exists'),
+                        severity: 'error',
+                      });
+                      return;
+                    }
+
                     messageService.add({
                       summary: _translate.instant('user.create_additional_error'),
                       severity: 'error',
-                    }),
+                    });
+                  },
                   finalize: () => patchState(store, withoutLoading()),
                 })
               )
