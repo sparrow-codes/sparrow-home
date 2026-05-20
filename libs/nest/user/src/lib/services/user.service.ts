@@ -51,7 +51,7 @@ export class UserService {
   }
 
   public async createAdditionalUser(request: CreateNewUserRequest): Promise<void> {
-    if (await this.isEmailUnique(request.email)) {
+    if (await this._isEmailTaken(request.email)) {
       throw new ConflictException('Email is already in use. Please choose another one.');
     }
 
@@ -93,7 +93,7 @@ export class UserService {
     await this._userRepository.save(user);
   }
 
-  public async isEmailUnique(email: string): Promise<boolean> {
+  private async _isEmailTaken(email: string): Promise<boolean> {
     return this._userRepository.existsBy({ email });
   }
 
