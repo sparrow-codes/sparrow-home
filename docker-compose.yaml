@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:18
     restart: unless-stopped
-    env_file: ./server-data/./server-data/.env
+    env_file: ./server-data/.env
     environment:
       POSTGRES_DB: ${dbName}
       POSTGRES_USER: ${dbUserName}
