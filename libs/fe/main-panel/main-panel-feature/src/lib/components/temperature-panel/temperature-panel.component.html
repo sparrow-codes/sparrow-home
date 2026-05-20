@@ -6,7 +6,8 @@
     style="background-image: url('assets/living-room.png')"
   >
     @if (isHouseClosed() === true) {
-      <div class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-right">
+      <div class="absolute bottom-2 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-right flex items-center gap-2">
+        <ng-icon name="bootstrapShieldFillCheck" class="text-green-600"></ng-icon>
         <span class="text-sm font-medium text-gray-700">{{ 'main_panel.all_closed' | translate }}</span>
       </div>
     } @else if (isHouseClosed() === false) {

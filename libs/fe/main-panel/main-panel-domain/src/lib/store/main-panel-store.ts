@@ -1,6 +1,6 @@
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -30,7 +30,7 @@ interface MainPanelStoreState {
   isAlarmAvailable: boolean;
   areAllWindowsAndDoorsClosed: boolean | null;
   mainPageDevices: HomeDevice[];
-  noDevices: boolean | null;
+  nrOfDevices: number | null;
 }
 
 export type MainPanelStore = InstanceType<typeof mainPanelStore>;
@@ -44,10 +44,13 @@ export const mainPanelStore = signalStore(
     isAlarmAvailable: false,
     areAllWindowsAndDoorsClosed: null,
     mainPageDevices: [],
-    noDevices: null,
+    nrOfDevices: null,
   }),
   withFetching(),
   withRefreshingObjects<string>(),
+  withComputed((store) => ({
+    noDevices: computed(() => store.nrOfDevices() === 0)
+  })),
   withMethods(
     (
       store,
@@ -109,7 +112,7 @@ export const mainPanelStore = signalStore(
             next: (devices) => {
               patchState(store, {
                 mainPageDevices: devices.filter((device) => device.isOnMainPage).map(toHomeDevice),
-                noDevices: devices.length === 0,
+                nrOfDevices: devices.length,
               });
             },
           })

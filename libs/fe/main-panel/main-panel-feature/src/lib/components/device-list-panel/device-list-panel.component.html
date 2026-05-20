@@ -13,7 +13,7 @@
       </div>
       <div>
         <div class="font-semibold text-gray-700">{{ 'main_panel.manage_devices' | translate }}</div>
-        <div class="text-sm text-gray-500">{{ 'main_panel.available_devices' | translate }}</div>
+        <div class="text-sm text-gray-500">{{ 'main_panel.available_devices' | translate: { nrOfDevices: nrOfDevices() ?? 0 } }}</div>
       </div>
     </div>
 
