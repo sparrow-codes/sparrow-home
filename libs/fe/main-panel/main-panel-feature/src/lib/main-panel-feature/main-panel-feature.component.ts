@@ -45,6 +45,7 @@ export class MainPanelFeatureComponent implements OnInit {
   protected readonly isRefreshing$: Observable<boolean> = this._mainPanelStore.isRefreshing$;
   protected readonly haveInitialData: Signal<boolean> = this._mainPanelStore.haveInitialData;
   protected readonly refreshingDevices: Signal<Set<string>> = this._mainPanelStore.refreshingObjects;
+  protected readonly nrOfDevices: Signal<number | null> = this._mainPanelStore.nrOfDevices;
 
   public ngOnInit(): void {
     this._mainPanelStore.fetchInitData();

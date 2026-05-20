@@ -12,4 +12,5 @@ import { Skeleton } from 'primeng/skeleton';
 export class DeviceListPanelComponent {
   public readonly isLoading: InputSignal<boolean> = input<boolean>(false);
   public readonly haveInitialData: InputSignal<boolean> = input.required();
+  public readonly nrOfDevices: InputSignal<number | null> = input.required();
 }
