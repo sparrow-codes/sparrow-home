@@ -141,8 +141,8 @@
 </div>
 
 @if (deviceDetails(); as homeDevice) {
-<p-dialog [header]="'home.edit_device' | translate" [visible]="showEditDialog()" [modal]="true">
-  <div class="flex flex-col gap-4">
+<p-dialog [header]="'home.edit_device' | translate" [visible]="showEditDialog()" [modal]="true" [closable]="false">
+  <div class="flex flex-col gap-4 w-[80vw]">
     <input
       #nameInput
       pInputText
