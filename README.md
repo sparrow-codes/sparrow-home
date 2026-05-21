@@ -8,7 +8,7 @@ Sparrow Home is a self-hosted home automation system focused on privacy, local e
 
 <div style="display: flex; gap: 1rem">
 <img src="./.github/assets/main-dashboard-with-favorites.png" alt="main-dashboard-with-favorites" width="200px" /> 
-<img src="./.github/assets/device-list.png" alt="main-dashboard" width="200px" />
+<img src="./.github/assets/device-list.png" alt="device-list" width="200px" />
 <img src="./.github/assets/img.png" alt="main-dashboard" width="200px" />
 </div>
 
