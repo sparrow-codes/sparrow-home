@@ -84,5 +84,5 @@ Run backend:
 npx nx run server:serve:development
 ```
 
-You’re now having a fully functional Sparrow Home installation running locally. Go to [http://localhost:4200](http://localhost:4200) to see the application.
+You now have a fully functional Sparrow Home installation running locally. Go to [http://localhost:4200](http://localhost:4200) to see the application.
 
