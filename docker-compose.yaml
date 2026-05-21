@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${dbPassword}
       TZ: ${timeZone}
     volumes:
-      - ./home-server/postgres_data:/var/lib/postgresql
+      - ./server-data/postgres_data:/var/lib/postgresql
     networks: [sparrow]
 
   mosquitto:
@@ -33,8 +33,7 @@ services:
       ZIGBEE_ADAPTER: ${zigbeeAdapter}
 
     volumes:
-      - ./home-server/zigbee2mqtt/data:/app/data
-      - ./home-server/zigbee2mqtt/template:/app/template:ro
+      - ./server-data/zigbee2mqtt/data:/app/data
       - ./home-server/zigbee2mqtt/scripts:/app/scripts:ro
       - /run/udev:/run/udev:ro
 
@@ -64,7 +63,7 @@ services:
       pushAdminEmail: ${pushAdminEmail}
       TZ: ${timeZone}
     volumes:
-      - ./home-server/backend/data:/app/data
+      - ./server-data/backend/data:/app/data
     networks: [sparrow]
 
   frontend:
