@@ -126,6 +126,9 @@ npx nx run server:serve:development
 
 You now have a fully functional Sparrow Home installation running locally. Go to [http://localhost:4200](http://localhost:4200) to see the application.
 
+
+Contact: contact@sparrow-home.net
+
 ## License
 
 This project is licensed under the MIT License.
