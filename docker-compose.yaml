@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:18
     restart: unless-stopped
-    env_file: ./server-data/.env
+    env_file: .env
     environment:
       POSTGRES_DB: ${dbName}
       POSTGRES_USER: ${dbUserName}
@@ -47,7 +47,7 @@ services:
     image: ghcr.io/sparrow-codes/sparrow-backend:current
     restart: unless-stopped
     depends_on: [postgres, mosquitto, zigbee2mqtt]
-    env_file: ./server-data/.env
+    env_file: .env
     environment:
       mode: ${mode}
       dbHost: postgres
