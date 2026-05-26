@@ -12,7 +12,7 @@ import { toDevice } from './functions/to-device';
 export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
   private _cachedState: Map<string, DeviceState> = new Map();
 
-  private readonly _client;
+  private readonly _client: ReturnType<ClientMqtt['createClient']>;
   private readonly _devices: Map<string, DeviceProfile> = new Map<string, DeviceProfile>();
   private readonly _deviceEvent: Subject<DeviceProfile> = new Subject();
   private readonly _logger: Logger = new Logger(ZigbeeDeviceService.name);
