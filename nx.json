@@ -84,5 +84,6 @@
       }
     },
     "@nxext/capacitor/plugin"
-  ]
+  ],
+  "analytics": false
 }

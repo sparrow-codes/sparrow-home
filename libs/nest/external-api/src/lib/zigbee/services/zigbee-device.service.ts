@@ -1,6 +1,5 @@
 import { Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
-import { MqttClient } from '@nestjs/microservices/external/mqtt-client.interface';
 import { DeviceJoined } from '@sparrow-server/shared';
 import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 
@@ -13,7 +12,7 @@ import { toDevice } from './functions/to-device';
 export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
   private _cachedState: Map<string, DeviceState> = new Map();
 
-  private readonly _client: MqttClient;
+  private readonly _client;
   private readonly _devices: Map<string, DeviceProfile> = new Map<string, DeviceProfile>();
   private readonly _deviceEvent: Subject<DeviceProfile> = new Subject();
   private readonly _logger: Logger = new Logger(ZigbeeDeviceService.name);
@@ -30,7 +29,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
 
   public constructor(
     @Inject('ZIGBEE') private readonly _zigbeeClient: ClientMqtt,
-    private readonly _deviceStateService: DeviceStateService
+    private readonly _deviceStateService: DeviceStateService,
   ) {
     this._client = this._zigbeeClient.createClient();
   }
@@ -48,7 +47,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
     this._client.on('message', (topic: string, payload: BufferSource) => {
       if (topic !== ZigbeeDeviceService._BRIDGE_DEVICES_URL) {
         const result: RegExpExecArray | null = new RegExp(
-          `^${this._escapeChars(ZigbeeDeviceService._BASE)}/([^/]+)$`
+          `^${this._escapeChars(ZigbeeDeviceService._BASE)}/([^/]+)$`,
         ).exec(topic);
         const friendlyName: string = result ? result[1] : '';
 
