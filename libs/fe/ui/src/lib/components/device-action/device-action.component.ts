@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -27,17 +26,7 @@ import { AbstractControlValueAccessor } from '../abstract-control-value-accessor
 
 @Component({
   selector: 'sp-device-action',
-  imports: [
-    CommonModule,
-    ToggleButtonModule,
-    Select,
-    FloatLabel,
-    Slider,
-    FormsModule,
-    Button,
-    HumanizePipe,
-    SelectButton,
-  ],
+  imports: [ToggleButtonModule, Select, FloatLabel, Slider, FormsModule, Button, HumanizePipe, SelectButton],
   templateUrl: './device-action.component.html',
   providers: [
     {

@@ -1,6 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   PreloadAllModules,
   provideRouter,
@@ -33,7 +32,6 @@ export const appConfig: ApplicationConfig = {
       useValue: 'SH',
     },
     provideZonelessChangeDetection(),
-    provideAnimationsAsync(),
     provideTranslateService({
       fallbackLang: 'en',
       lang: 'en',

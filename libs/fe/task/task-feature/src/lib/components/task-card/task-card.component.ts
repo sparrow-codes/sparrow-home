@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -20,7 +20,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-task-card',
-  imports: [CommonModule, RouterLink, ToggleSwitch, FormsModule, TranslatePipe, Tag, AnimatedCheckCircleComponent],
+  imports: [RouterLink, ToggleSwitch, FormsModule, TranslatePipe, Tag, AnimatedCheckCircleComponent],
   templateUrl: './task-card.component.html',
 })
 export class TaskCardComponent {

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -32,7 +31,6 @@ import { ActionForm } from './form-service/model/action-form';
 @Component({
   selector: 'sp-action-form',
   imports: [
-    CommonModule,
     Select,
     ReactiveFormsModule,
     DeviceActionComponent,

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 
 @Component({
   selector: 'sp-device-list-item',
-  imports: [CommonModule, RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, Tag],
+  imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, Tag],
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {
