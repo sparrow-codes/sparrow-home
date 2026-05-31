@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
 import { bootstrapBattery, bootstrapBatteryFull, bootstrapBatteryHalf } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -6,7 +6,7 @@ import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'sp-battery-status',
-  imports: [CommonModule, NgIcon, Tag],
+  imports: [NgIcon, Tag],
   providers: [provideIcons({ bootstrapBatteryFull, bootstrapBatteryHalf, bootstrapBattery })],
   templateUrl: './battery-status.component.html',
 })

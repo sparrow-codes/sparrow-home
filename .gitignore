@@ -60,3 +60,7 @@ storybook-static
 # Home Server files
 /server-data/
 /.env
+
+.claude/worktrees
+.nx/polygraph
+.nx/self-healing

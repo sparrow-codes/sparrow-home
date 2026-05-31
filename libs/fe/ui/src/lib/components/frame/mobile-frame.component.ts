@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -11,7 +11,7 @@ import { NavigationItem } from '../../models/navigation-item';
 
 @Component({
   selector: 'sp-mobile-frame',
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './mobile-frame.component.html',
 })
 export class MobileFrameComponent {

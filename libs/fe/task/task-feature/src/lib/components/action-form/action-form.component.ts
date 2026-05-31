@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -32,7 +32,6 @@ import { ActionForm } from './form-service/model/action-form';
 @Component({
   selector: 'sp-action-form',
   imports: [
-    CommonModule,
     Select,
     ReactiveFormsModule,
     DeviceActionComponent,
@@ -40,8 +39,8 @@ import { ActionForm } from './form-service/model/action-form';
     FloatLabel,
     Button,
     DaysOfWeekControl,
-    TranslatePipe,
-  ],
+    TranslatePipe
+],
   templateUrl: './action-form.component.html',
   providers: [ActionFormService],
 })

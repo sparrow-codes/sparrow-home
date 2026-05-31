@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   DestroyRef,
@@ -26,7 +26,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 
 @Component({
   selector: 'sp-create-user-form',
-  imports: [CommonModule, ReactiveFormsModule, Button, Password, FloatLabel, InputText, TranslatePipe],
+  imports: [ReactiveFormsModule, Button, Password, FloatLabel, InputText, TranslatePipe],
   templateUrl: './create-user-form.component.html',
   providers: [CreateUserFormService],
 })

@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, input, InputSignal } from '@angular/core';
 
 @Component({
   selector: 'sp-signal-strength',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './signal-strength.component.html',
 })
 export class SignalStrengthComponent {
