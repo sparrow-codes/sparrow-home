@@ -20,11 +20,11 @@
         {{ 'main_panel.some_open' | translate }}
       </a>
     } @if (temperature()) {
-    <div class="absolute top-4 right-4 bg-white/50 backdrop-blur px-4 py-2 rounded-lg text-right">
+    <div class="absolute top-4 right-4 bg-white/50 backdrop-blur px-4 py-2 rounded-lg text-right text-surface-700">
       <div class="text-3xl font-semibold leading-none">
         {{ temperature() + ' °C' }}
       </div>
-      <div class="text-sm font-medium text-gray-600">{{ 'main_panel.temperature_home' | translate }}</div>
+      <div class="text-sm font-medium text-surface-700">{{ 'main_panel.temperature_home' | translate }}</div>
     </div>
   }
   </div>

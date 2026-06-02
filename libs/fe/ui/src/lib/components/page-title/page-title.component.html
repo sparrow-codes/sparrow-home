@@ -1,17 +1,15 @@
-<div class="h-[30px] text-md uppercase whitespace-nowrap text-gray-800 flex gap-2 items-center">
-  <div class="w-[1rem]">
+<div class="h-[30px] text-xl whitespace-nowrap dark:text-surface-0 text-gray-800 flex gap-2 items-center font-semibold">
     @if (routerLink(); as link) { @if (!navigationDisabled()) {
     <a [routerLink]="link" class="no-underline text-[1rem] text-gray-500">
       <i class="pi pi-chevron-left"></i>
     </a>
     } }
-  </div>
 
   <ng-content></ng-content>
 </div>
 
 <div class="h-[10px]">
   @if (showProgressBar()) {
-    <p-progressbar class="animate-fadein" mode="indeterminate" [style]="{ height: '2px' }"></p-progressbar>
+    <p-progress-bar class="animate-fadein" mode="indeterminate" [style]="{ height: '2px' }"></p-progress-bar>
   }
 </div>

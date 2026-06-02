@@ -12,6 +12,8 @@ import { Skeleton } from 'primeng/skeleton';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Observable } from 'rxjs';
 
+import { ThemeMode } from '../../component/theme-mode/theme-mode';
+
 @Component({
   selector: 'sp-user-details',
   imports: [
@@ -25,6 +27,7 @@ import { Observable } from 'rxjs';
     TranslatePipe,
     Skeleton,
     PageTitleComponent,
+    ThemeMode,
   ],
   templateUrl: './user-details.component.html',
 })
@@ -35,6 +38,7 @@ export class UserDetailsComponent implements OnInit {
   protected readonly additionalUsers: Signal<User[] | null> = this._dataService.additionalUsers;
   protected readonly isLoading$: Observable<boolean> = this._dataService.isLoading$;
   protected readonly isRefreshing$: Observable<boolean> = this._dataService.isRefreshing$;
+  protected readonly isDarkMode: Signal<boolean> = this._dataService.isDarkMode;
 
   public ngOnInit(): void {
     this._dataService.fetchUserDetails();
@@ -48,5 +52,9 @@ export class UserDetailsComponent implements OnInit {
     if (userId !== undefined) {
       this._dataService.activateUser(userId, active);
     }
+  }
+
+  protected toggleThemeMode(): void {
+    this._dataService.toggleThemeMode();
   }
 }
