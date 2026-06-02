@@ -82,9 +82,19 @@ describe('TaskService', () => {
   });
 
   it('should delete task and clear its schedule', async () => {
-    await service.deleteTask(123);
-    expect(cronFactory.clearScheduledTask).toHaveBeenCalledWith(123);
-    expect(repository.delete).toHaveBeenCalledWith({ id: 123 });
+    repository.findOneBy.mockResolvedValue({ id: 1, actionJobs: [{ id: 456 }] } as Task);
+
+    await service.deleteTask(1);
+    expect(cronFactory.clearScheduledTask).toHaveBeenCalledWith(456);
+    expect(repository.delete).toHaveBeenCalledWith({ id: 1 });
+  });
+
+  it('should throw not found exception when deleting non-existing task', async () => {
+    repository.findOneBy.mockResolvedValue(null);
+
+    await expect(service.deleteTask(1)).rejects.toThrow(NotFoundException);
+    expect(repository.delete).not.toHaveBeenCalled();
+    expect(cronFactory.clearScheduledTask).not.toHaveBeenCalled();
   });
 
   it('should activate task if status is set to true', async () => {

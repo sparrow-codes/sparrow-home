@@ -72,7 +72,14 @@ export class TaskService implements OnModuleInit {
   }
 
   public async deleteTask(id: number): Promise<void> {
-    this._taskCronFactory.clearScheduledTask(id);
+    const task: Task | null = await this._taskRepository.findOneBy({ id });
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${id} not found`);
+    }
+
+    this.stopCronTask(task);
+
     await this._taskRepository.delete({ id });
   }
 
