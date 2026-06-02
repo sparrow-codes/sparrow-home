@@ -12,7 +12,7 @@ import { Skeleton } from 'primeng/skeleton';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Observable } from 'rxjs';
 
-import { ThemeMode } from '../../component/theme-mode/theme-mode';
+import { ThemeModeComponent } from '../../component/theme-mode/theme-mode.component';
 
 @Component({
   selector: 'sp-user-details',
@@ -27,7 +27,7 @@ import { ThemeMode } from '../../component/theme-mode/theme-mode';
     TranslatePipe,
     Skeleton,
     PageTitleComponent,
-    ThemeMode,
+    ThemeModeComponent,
   ],
   templateUrl: './user-details.component.html',
 })

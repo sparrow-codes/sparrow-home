@@ -9,10 +9,10 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 @Component({
   selector: 'sp-theme-mode',
   imports: [Card, ToggleSwitch, NgIcon, FormsModule, TranslatePipe],
-  templateUrl: './theme-mode.html',
+  templateUrl: './theme-mode.component.html',
   providers: [provideIcons({ bootstrapMoon, bootstrapSun })],
 })
-export class ThemeMode {
+export class ThemeModeComponent {
   public readonly isDarkMode: InputSignal<boolean> = input.required();
   public readonly toggleDarkMode: OutputEmitterRef<void> = output();
 }
