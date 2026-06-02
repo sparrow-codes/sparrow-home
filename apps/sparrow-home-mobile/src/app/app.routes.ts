@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { authGuard, configurationNotReadyGuard, configurationReadyGuard, RoutePath } from '@sparrow-home/core';
 import { MobileFrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
+import { PrimeIcons } from 'primeng/api';
 
 export const appRoutes: Route[] = [
   {
@@ -32,6 +33,23 @@ export const appRoutes: Route[] = [
     data: {
       loginPath: RoutePath.LOGIN,
       profilePath: RoutePath.USER_PROFILE,
+      navigationItems: [
+        {
+          label: 'ui.navigation.main',
+          icon: PrimeIcons.HOME,
+          routerLink: RoutePath.MAIN,
+        },
+        {
+          label: 'ui.navigation.automation',
+          icon: PrimeIcons.PINTEREST,
+          routerLink: RoutePath.AUTOMATION,
+        },
+        {
+          label: 'ui.navigation.settings',
+          icon: PrimeIcons.COG,
+          routerLink: RoutePath.USER_PROFILE,
+        },
+      ],
     },
     canActivate: [configurationReadyGuard, authGuard],
     children: [

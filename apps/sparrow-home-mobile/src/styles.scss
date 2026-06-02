@@ -5,7 +5,13 @@
 
 :root {
   background-color: #f5f5f5;
+  --app-theme-color: #f5f5f5;
   --safe-bottom: env(safe-area-inset-bottom);
+}
+
+:root.dark {
+  background-color: #080C15;
+  --app-theme-color: #080C15;
 }
 
 body,
@@ -28,6 +34,11 @@ p-card {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   --p-card-body-padding: 1rem 0.75rem
+}
+
+:root.dark p-card {
+  --tw-shadow: 0 10px 24px -14px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(148 163 184 / 0.18);
+  --p-card-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 p-chip {

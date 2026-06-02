@@ -1,8 +1,8 @@
-
 import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceAction, DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
+import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 
 import { deviceTypeDictionary } from '../../dictionary';
@@ -11,7 +11,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 
 @Component({
   selector: 'sp-device-list-item',
-  imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, Tag],
+  imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, Tag, Card],
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {
