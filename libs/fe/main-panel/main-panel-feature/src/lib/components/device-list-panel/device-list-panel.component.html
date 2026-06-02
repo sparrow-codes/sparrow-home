@@ -6,15 +6,15 @@
       class="animate-fadein flex items-center justify-between w-full cursor-pointer hover:bg-transparent transition no-underline text-inherit"
       [routerLink]="['../', 'devices']"
       [queryParams]="{ deviceType: '' }"
-      aria-label="{{ 'main_panel.go_to_devices_list' | translate }}"
+      [attr.aria-label]="'main_panel.go_to_devices_list' | translate"
     >
       <div class="flex items-center gap-3">
-        <div class="w-[50px] h-[50px] bg-gray-700 rounded-md flex items-center justify-center text-surface-0">
-          <i class="pi pi-objects-column" style="font-size: 28px"></i>
+        <div class="p-2 bg-gray-700 rounded-md flex items-center justify-center text-surface-0">
+          <i class="pi pi-objects-column" style="font-size: 32px"></i>
         </div>
-        <div>
+        <div class="flex flex-col gap-1">
           <div class="font-semibold">{{ 'main_panel.manage_devices' | translate }}</div>
-          <div class="text-sm opacity-80">{{ 'main_panel.available_devices' | translate: { nrOfDevices: nrOfDevices() ?? 0 } }}</div>
+          <div class="text-sm">{{ 'main_panel.available_devices' | translate: { nrOfDevices: nrOfDevices() ?? 0 } }}</div>
         </div>
       </div>
 

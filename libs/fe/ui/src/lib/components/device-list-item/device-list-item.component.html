@@ -11,7 +11,7 @@
         @if (showTag()) {
           <p-tag>{{ label() | translate | humanize }}</p-tag>
         } @else {
-          <div class="text-gray-500">{{ label() | translate | humanize }}</div>
+          <div class="text-gray-700 dark:text-surface-200 text-sm">{{ label() | translate | humanize }}</div>
         }
       </div>
     </div>
