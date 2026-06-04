@@ -18,8 +18,8 @@ export function withDevices(): Pick<HomeDeviceState, 'noDevices'> {
   return { noDevices: false };
 }
 
-export function withDevicePaired(paired: boolean | null): Pick<HomeDeviceState, 'devicePaired'> {
-  return { devicePaired: paired };
+export function withDevicePaired(paired: boolean | null): Pick<HomeDeviceState, '_devicePaired'> {
+  return { _devicePaired: paired };
 }
 
 export function withDeviceDetails(deviceDetails: HomeDevice | null): Pick<HomeDeviceState, 'deviceDetails'> {
