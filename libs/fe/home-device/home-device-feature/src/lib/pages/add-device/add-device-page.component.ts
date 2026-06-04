@@ -44,8 +44,8 @@ export class AddDevicePageComponent implements OnInit {
   protected readonly deviceJoined$: Observable<boolean | null> = this._facadeService.devicePaired$;
 
   public ngOnInit(): void {
-    this._facadeService.isRefreshing$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((joined) => {
-      if (!joined) {
+    this._facadeService.isRefreshing$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((isRefreshing) => {
+      if (!isRefreshing) {
         this.formGroup.enable();
       }
     });
