@@ -5,5 +5,5 @@ export const homeDeviceDefaultState: HomeDeviceState = {
   noDevices: null,
   deviceTypeFilter: null,
   searchQuery: '',
-  devicePaired: null,
+  _devicePaired: null,
 };

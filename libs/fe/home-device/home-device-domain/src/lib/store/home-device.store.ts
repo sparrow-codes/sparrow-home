@@ -1,4 +1,5 @@
 import { computed, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
@@ -38,7 +39,7 @@ export const HomeDeviceStore = signalStore(
   { providedIn: 'root', protectedState: true },
   withState<HomeDeviceState>(homeDeviceDefaultState),
   withEntities<HomeDevice>(),
-  withProps(() => ({
+  withProps((store) => ({
     _homeDeviceSort: (device1: HomeDevice, device2: HomeDevice): number => {
       {
         if (device1.name > device2.name) {
@@ -52,6 +53,7 @@ export const HomeDeviceStore = signalStore(
         return 0;
       }
     },
+    deviceJoined$: toObservable(store._devicePaired),
   })),
   withFetching(),
   withRefreshingObjects<string>(),
@@ -188,13 +190,17 @@ export const HomeDeviceStore = signalStore(
                     patchState(store, addEntity({ type: data.deviceType, id, name: data.name } as HomeDevice));
                   }
                 },
-                error: () =>
+                error: () => {
                   messageService.add({
                     summary: translateService.instant('home.device_pairing_failed'),
                     severity: 'error',
-                  }),
+                  });
+                  patchState(store, withDevicePaired(false));
+                },
               }),
-              finalize(() => patchState(store, withoutRefreshing()))
+              finalize(() => {
+                patchState(store, withoutRefreshing());
+              })
             )
           )
         )

@@ -3,7 +3,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { ActionJob, DeviceType, HomeDevice } from '@sparrow-server/entities';
 import { DeviceProfile, ZigbeeDeviceService, ZigbeeManageDeviceService } from '@sparrow-server/external-api';
 import { first, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryDeepPartialEntity, Repository } from 'typeorm';
 
 import { GetAllDeviceFilters } from '../../controllers/models/get-all-device-filters';
 import { SetDeviceSettingsRequest } from '../../controllers/models/set-device-settings-request';
@@ -87,13 +87,29 @@ export class HomeDeviceService implements OnModuleInit {
           return of(null);
         }
 
-        const device: HomeDevice = new HomeDevice();
-        device.deviceType = type;
-        device.zigbeeDeviceId = deviceJoined.friendly_name;
-        device.deviceName = name;
-        device.zigbeeDeviceData = deviceJoined;
-
-        return from(this._homeDeviceRepository.save(device)).pipe(map((device) => device.id));
+        return from(
+          this.dataSource
+            .createQueryBuilder()
+            .insert()
+            .into(HomeDevice)
+            .values({
+              deviceType: type,
+              zigbeeDeviceId: deviceJoined.friendly_name,
+              deviceName: name,
+              zigbeeDeviceData: deviceJoined,
+            } as QueryDeepPartialEntity<HomeDevice>)
+            .orUpdate(['deviceType', 'deviceName', 'zigbeeDeviceData'], ['zigbeeDeviceId'])
+            .execute()
+        ).pipe(
+          switchMap(() =>
+            from(
+              this._homeDeviceRepository.findOneBy({
+                zigbeeDeviceId: deviceJoined.friendly_name,
+              })
+            )
+          ),
+          map((savedDevice) => savedDevice?.id ?? null)
+        );
       })
     );
   }
