@@ -100,16 +100,7 @@ export class HomeDeviceService implements OnModuleInit {
             } as QueryDeepPartialEntity<HomeDevice>)
             .orUpdate(['deviceType', 'deviceName', 'zigbeeDeviceData'], ['zigbeeDeviceId'])
             .execute()
-        ).pipe(
-          switchMap(() =>
-            from(
-              this._homeDeviceRepository.findOneBy({
-                zigbeeDeviceId: deviceJoined.friendly_name,
-              })
-            )
-          ),
-          map((savedDevice) => savedDevice?.id ?? null)
-        );
+        ).pipe(map((value) => value.identifiers[0]?.['id'] ?? null));
       })
     );
   }

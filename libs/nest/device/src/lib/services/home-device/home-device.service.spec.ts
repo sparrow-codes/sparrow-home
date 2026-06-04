@@ -10,11 +10,7 @@ import { HomeDeviceService } from './home-device.service';
 describe('HomeDeviceService', () => {
   let service: HomeDeviceService;
 
-  const repositoryMock: {
-    findOneBy: jest.Mock;
-  } = {
-    findOneBy: jest.fn(),
-  };
+  const repositoryMock: Record<string, never> = {};
 
   const queryBuilderMock = {
     insert: jest.fn(),
@@ -84,38 +80,29 @@ describe('HomeDeviceService', () => {
       expect(dataSourceMock.createQueryBuilder).not.toHaveBeenCalled();
     });
 
-    it('performs insert-or-update with query builder and returns id', async () => {
+    it('performs insert-or-update with query builder and returns id from identifiers', async () => {
       const joinedDevice: DeviceJoined = { friendly_name: 'kitchen_switch' } as DeviceJoined;
-      const existingDevice: HomeDevice = new HomeDevice();
-      existingDevice.id = 77;
-      existingDevice.zigbeeDeviceId = 'kitchen_switch';
 
       zigbeeManageDeviceServiceMock.joinDeviceAndSetId.mockReturnValue(of(joinedDevice));
-      repositoryMock.findOneBy.mockResolvedValue(existingDevice);
+      queryBuilderMock.execute.mockResolvedValue({ identifiers: [{ id: 77 }] });
 
-      const result: number | null = await firstValueFrom(
-        service.addDevice(DeviceType.OPEN_DOOR_SENSOR, 'Door Sensor')
-      );
+      const result: number | null = await firstValueFrom(service.addDevice(DeviceType.OPEN_DOOR_SENSOR, 'Door Sensor'));
 
       expect(dataSourceMock.createQueryBuilder).toHaveBeenCalled();
       expect(queryBuilderMock.insert).toHaveBeenCalled();
       expect(queryBuilderMock.into).toHaveBeenCalledWith(HomeDevice);
-      expect(queryBuilderMock.values).toHaveBeenCalledWith(
-        {
-          zigbeeDeviceId: 'kitchen_switch',
-          deviceType: DeviceType.OPEN_DOOR_SENSOR,
-          deviceName: 'Door Sensor',
-          zigbeeDeviceData: joinedDevice,
-        }
-      );
+      expect(queryBuilderMock.values).toHaveBeenCalledWith({
+        zigbeeDeviceId: 'kitchen_switch',
+        deviceType: DeviceType.OPEN_DOOR_SENSOR,
+        deviceName: 'Door Sensor',
+        zigbeeDeviceData: joinedDevice,
+      });
       expect(queryBuilderMock.orUpdate).toHaveBeenCalledWith(
         ['deviceType', 'deviceName', 'zigbeeDeviceData'],
         ['zigbeeDeviceId']
       );
       expect(queryBuilderMock.execute).toHaveBeenCalled();
 
-      // Verify we fetch the device after upsert to return its ID
-      expect(repositoryMock.findOneBy).toHaveBeenCalledWith({ zigbeeDeviceId: 'kitchen_switch' });
       expect(result).toBe(77);
     });
   });
