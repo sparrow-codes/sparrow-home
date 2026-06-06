@@ -1,6 +1,7 @@
 import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NgIcon } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { filter, map } from 'rxjs';
 
@@ -8,7 +9,7 @@ import { NavigationItem } from '../../models/navigation-item';
 
 @Component({
   selector: 'sp-mobile-frame',
-  imports: [RouterOutlet, RouterLink, TranslatePipe],
+  imports: [RouterOutlet, RouterLink, TranslatePipe, NgIcon, RouterLinkActive],
   templateUrl: './mobile-frame.component.html',
 })
 export class MobileFrameComponent {

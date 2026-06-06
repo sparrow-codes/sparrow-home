@@ -1,7 +1,8 @@
 import { Route } from '@angular/router';
+import { bootstrapColumnsGap, bootstrapGear, bootstrapHouse, bootstrapPlayCircle } from '@ng-icons/bootstrap-icons';
+import { provideIcons } from '@ng-icons/core';
 import { authGuard, configurationNotReadyGuard, configurationReadyGuard, RoutePath } from '@sparrow-home/core';
 import { MobileFrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
-import { PrimeIcons } from 'primeng/api';
 
 export const appRoutes: Route[] = [
   {
@@ -30,23 +31,29 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: MobileFrameComponent,
+    providers: [provideIcons({ bootstrapHouse, bootstrapColumnsGap, bootstrapGear, bootstrapPlayCircle })],
     data: {
       loginPath: RoutePath.LOGIN,
       profilePath: RoutePath.USER_PROFILE,
       navigationItems: [
         {
           label: 'ui.navigation.main',
-          icon: PrimeIcons.HOME,
+          icon: 'bootstrapHouse',
           routerLink: RoutePath.MAIN,
         },
         {
+          label: 'ui.navigation.devices',
+          icon: 'bootstrapColumnsGap',
+          routerLink: RoutePath.DEVICES,
+        },
+        {
           label: 'ui.navigation.automation',
-          icon: PrimeIcons.PINTEREST,
+          icon: 'bootstrapPlayCircle',
           routerLink: RoutePath.AUTOMATION,
         },
         {
           label: 'ui.navigation.settings',
-          icon: PrimeIcons.COG,
+          icon: 'bootstrapGear',
           routerLink: RoutePath.USER_PROFILE,
         },
       ],

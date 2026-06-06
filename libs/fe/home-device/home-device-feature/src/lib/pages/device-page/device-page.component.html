@@ -1,7 +1,7 @@
 @let isLoading = (isLoading$ | async) ?? false;
 
 <div class="w-full flex flex-col h-full">
-  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{
+  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false">{{
     'home.available_devices' | translate
   }}</sp-page-title>
 
