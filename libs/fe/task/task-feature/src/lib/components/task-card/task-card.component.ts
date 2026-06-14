@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -15,12 +14,13 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask } from '@sparrow-home/task-domain';
 import { AnimatedCheckCircleComponent } from '@sparrow-home/ui';
+import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-task-card',
-  imports: [CommonModule, RouterLink, ToggleSwitch, FormsModule, TranslatePipe, Tag, AnimatedCheckCircleComponent],
+  imports: [RouterLink, ToggleSwitch, FormsModule, TranslatePipe, Tag, AnimatedCheckCircleComponent, Card],
   templateUrl: './task-card.component.html',
 })
 export class TaskCardComponent {

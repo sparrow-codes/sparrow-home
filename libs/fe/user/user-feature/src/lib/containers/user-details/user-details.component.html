@@ -48,6 +48,8 @@
   </p-card>
 
   <p-divider></p-divider>
+  <sp-theme-mode [isDarkMode]="isDarkMode()" (toggleDarkMode)="toggleThemeMode()"></sp-theme-mode>
+  <p-divider></p-divider>
 
   <p-button
     [label]="'user.logout' | translate"
@@ -55,7 +57,7 @@
     variant="outlined"
     fluid="true"
     size="large"
-    severity="danger"
+    severity="secondary"
     (onClick)="handleLogout()"
   ></p-button>
 }

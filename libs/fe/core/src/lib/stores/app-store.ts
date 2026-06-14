@@ -1,10 +1,10 @@
-import { DOCUMENT } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { DOCUMENT, inject } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { SetupApiService } from '@sparrow-home/api';
+import { withThemeMode } from '@sparrow-home/ui';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, first, map, Observable, of, switchMap } from 'rxjs';
@@ -28,6 +28,7 @@ export const appStore = signalStore(
     isConfigurationReady: null,
     configuration: null,
   }),
+  withThemeMode(),
   withMethods((store, apiService = inject(SetupApiService), messageService = inject(MessageService)) => ({
     saveAppConfig: (appConfig: AppConfig): void => {
       patchState(store, { appConfig });

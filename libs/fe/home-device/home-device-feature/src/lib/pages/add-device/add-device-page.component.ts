@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, Injector, OnInit, Signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -35,26 +36,24 @@ export class AddDevicePageComponent implements OnInit {
   private readonly _formService: CreateDeviceFormService = inject(CreateDeviceFormService);
   private readonly _translateService: TranslateService = inject(TranslateService);
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
-  private readonly _injector: Injector = inject(Injector);
+  private readonly _destroyRef: DestroyRef = inject(DestroyRef);
 
   protected readonly formGroup: FormGroup<CreateDeviceForm> = this._formService.form;
   protected readonly dropdownOptions: { value: number; label: string }[] = this.prepareDropdownOptions();
   protected readonly joinInProgress$: Observable<boolean> = this._facadeService.isRefreshing$;
-  protected readonly deviceJoined: Signal<boolean | null> = this._facadeService.devicePaired;
+  protected readonly deviceJoined$: Observable<boolean | null> = this._facadeService.devicePaired$;
 
   public ngOnInit(): void {
-    effect(
-      () => {
-        if (this.deviceJoined() !== null) {
-          this.formGroup.enable();
-        }
-      },
-      { injector: this._injector }
-    );
+    this._facadeService.isRefreshing$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((isRefreshing) => {
+      if (!isRefreshing) {
+        this.formGroup.enable();
+      }
+    });
   }
 
   protected onJoin(): void {
     this.formGroup.markAllAsTouched();
+
     if (this.formGroup.valid) {
       this.formGroup.disable();
       this._facadeService.createDevice(this.formGroup.value.deviceType as number, this.formGroup.value.name as string);

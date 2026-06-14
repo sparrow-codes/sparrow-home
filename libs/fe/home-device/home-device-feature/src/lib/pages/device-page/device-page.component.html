@@ -1,7 +1,7 @@
 @let isLoading = (isLoading$ | async) ?? false;
 
 <div class="w-full flex flex-col h-full">
-  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{
+  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false">{{
     'home.available_devices' | translate
   }}</sp-page-title>
 
@@ -65,7 +65,7 @@
             [buttonRouterLink]="['add']"
             [content]="'home.you_can_add' | translate"
           >
-            <ng-icon class="text-gray-600" [size]="'8rem'" name="bootstrapHouseGear"></ng-icon>
+            <ng-icon class="text-gray-600 dark:text-surface-0" [size]="'8rem'" name="bootstrapHouseGear"></ng-icon>
           </sp-onboarding>
         }
       }

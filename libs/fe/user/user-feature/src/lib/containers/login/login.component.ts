@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { APP_TITLE } from '@sparrow-home/core';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { first, Observable } from 'rxjs';
 
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   protected createNewUserLink: string = '';
   protected readonly dataService: UserDataFacadeService = inject(UserDataFacadeService);
   protected readonly isLoading$: Observable<boolean> = this.dataService.isLoading$;
+  protected readonly appTitle: string = inject(APP_TITLE);
 
   public ngOnInit(): void {
     this.dataService.logout();

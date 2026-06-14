@@ -1,5 +1,6 @@
 import { inject, Injectable, Signal } from '@angular/core';
 import { CreateNewUserRequestApiModel, LoginRequestApiModel } from '@sparrow-home/api';
+import { AppStore, appStore } from '@sparrow-home/core';
 import { Observable } from 'rxjs';
 
 import { User } from '../model';
@@ -10,6 +11,7 @@ import { UserStore, userStore } from '../store/user-store';
 })
 export class UserDataFacadeService {
   private readonly _userStore: UserStore = inject(userStore);
+  private readonly _appStore: AppStore = inject(appStore);
 
   public get user(): Signal<User | null> {
     return this._userStore.user;
@@ -25,6 +27,10 @@ export class UserDataFacadeService {
 
   public get isRefreshing$(): Observable<boolean> {
     return this._userStore.isRefreshing$;
+  }
+
+  public get isDarkMode(): Signal<boolean> {
+    return this._appStore.isDarkModeOn;
   }
 
   public createFirstUser(request: CreateNewUserRequestApiModel): void {
@@ -49,5 +55,9 @@ export class UserDataFacadeService {
 
   public fetchUserDetails(): void {
     this._userStore.fetchUserDetails();
+  }
+
+  public toggleThemeMode(): void {
+    this._appStore.toggleThemeMode();
   }
 }

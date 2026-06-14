@@ -26,10 +26,11 @@
       "sat": "Sat",
       "sun": "Sun"
     },
-    "go_to_device_details": "Go to device details {{deviceName}}",
+    "go_to_device_details": "Go to device details {deviceName}",
     "page_not_found": "Page not found!",
     "navigation": {
       "main": "Main",
+      "devices": "Devices",
       "automation": "Automation",
       "settings": "Settings"
     },
@@ -52,8 +53,8 @@
     "pairing_in_progress": "Pairing in progress...",
     "device_details": "Device details",
     "main": "Main",
-    "set_as_main_action": "Set {{actionKey}} as main action",
-    "set_as_main_param": "Set {{paramKey}} as main parameter",
+    "set_as_main_action": "Set {actionKey} as main action",
+    "set_as_main_param": "Set {paramKey} as main parameter",
     "present_on_main_page": "Show on dashboard",
     "edit_device": "Edit device",
     "available_devices": "Available devices",
@@ -77,6 +78,7 @@
     "show-quick-action": "Displays as a quick control on device cards"
   },
   "main_panel": {
+    "title": "Dashboard",
     "alarm_home": "Alarm at home",
     "active": "Active",
     "inactive": "Inactive",
@@ -125,9 +127,9 @@
     "delete": "Delete",
     "new_task": "New schedule",
     "title": "Automation",
-    "count": "Schedules: {{count}}",
+    "count": "Schedules: {count}",
     "delete_task": "Delete schedule",
-    "are_you_sure_delete_task": "Are you sure you want to delete schedule <strong>{{taskName}}?</strong>",
+    "are_you_sure_delete_task": "Are you sure you want to delete schedule <strong>{taskName}?</strong>",
     "no_tasks_yet": "No schedules yet",
     "create_first_task": "Create your first schedule to automate your home.",
     "create_first_task_content": "Schedules run at specific times or on repeating intervals.",
@@ -162,12 +164,14 @@
     "create_new_user_to_start": "Create new user to start",
     "additional_users_list": "Additional users",
     "logout": "Log out",
-    "settings": "Settings"
+    "settings": "Settings",
+    "dark_mode": "Dark mode",
+    "switch_between_light_and_dark_mode": "Switch between light and dark mode"
   },
   "validations": {
     "required": "This field is required",
-    "min_length": "Minimum length is {{count}} characters",
-    "max_length": "Maximum length is {{count}} characters",
+    "min_length": "Minimum length is {count} characters",
+    "max_length": "Maximum length is {count} characters",
     "invalid": "Invalid value"
   }
 }

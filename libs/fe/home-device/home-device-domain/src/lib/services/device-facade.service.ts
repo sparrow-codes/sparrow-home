@@ -31,8 +31,8 @@ export class DeviceFacadeService {
     return this._store.noDevices;
   }
 
-  public get devicePaired(): Signal<boolean | null> {
-    return this._store.devicePaired;
+  public get devicePaired$(): Observable<boolean | null> {
+    return this._store.deviceJoined$;
   }
 
   public get isLoading$(): Observable<boolean> {

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { bootstrapShieldFillCheck } from '@ng-icons/bootstrap-icons';
@@ -9,7 +9,7 @@ import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'sp-temperature-panel',
-  imports: [CommonModule, RouterLink, TranslatePipe, Skeleton, NgIcon],
+  imports: [RouterLink, TranslatePipe, Skeleton, NgIcon],
   templateUrl: './temperature-panel.component.html',
   providers: [provideIcons({ bootstrapShieldFillCheck })],
 })

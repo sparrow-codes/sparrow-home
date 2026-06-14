@@ -47,6 +47,8 @@ export class TaskCronFactory {
 
     if (this._schedulerRegistry.doesExist('cron', jobId)) {
       this._schedulerRegistry.deleteCronJob(jobId);
+
+      this.logger.log(`Cron job deleted ${jobId}`);
     }
 
     this.logger.log(`Cleared scheduled job ${actionJobId}`);

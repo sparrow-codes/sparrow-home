@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -9,7 +9,7 @@ import { ConfirmationDialogData } from './model/confirmation-dialog-data';
 
 @Component({
   selector: 'sp-confirmation-dialog',
-  imports: [CommonModule, ButtonDirective, TranslatePipe],
+  imports: [ButtonDirective, TranslatePipe],
   templateUrl: './confirmation-dialog.component.html',
 })
 export class ConfirmationDialogComponent {

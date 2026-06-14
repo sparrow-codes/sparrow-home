@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { LoginForm } from './form-service/model/login-form';
 
 @Component({
   selector: 'sp-login-form',
-  imports: [CommonModule, ReactiveFormsModule, InputText, Password, FloatLabel, Button, TranslatePipe],
+  imports: [ReactiveFormsModule, InputText, Password, FloatLabel, Button, TranslatePipe],
   templateUrl: './login-form.component.html',
   providers: [LoginFormService],
 })

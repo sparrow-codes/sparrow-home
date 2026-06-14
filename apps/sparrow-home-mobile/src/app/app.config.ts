@@ -1,6 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   PreloadAllModules,
   provideRouter,
@@ -33,13 +32,12 @@ export const appConfig: ApplicationConfig = {
       useValue: 'SH',
     },
     provideZonelessChangeDetection(),
-    provideAnimationsAsync(),
     provideTranslateService({
       fallbackLang: 'en',
       lang: 'en',
       compiler: {
         provide: TranslateCompiler,
-        useClass: TranslateMessageFormatCompiler
+        useClass: TranslateMessageFormatCompiler,
       },
       loader: provideTranslateHttpLoader({
         prefix: '/assets/i18n/',
@@ -51,7 +49,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Noir,
         options: {
-          darkModeSelector: false,
+          darkModeSelector: '.dark',
           floatLabel: 'in',
         },
       },

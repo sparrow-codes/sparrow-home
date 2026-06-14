@@ -24,7 +24,6 @@ export class CreateDeviceFormService {
       }),
       name: this._fb.control<string>('', {
         validators: [Validators.required, Validators.maxLength(100)],
-        updateOn: 'blur',
       }),
     });
   }
