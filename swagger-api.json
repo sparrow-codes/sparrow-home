@@ -111,6 +111,35 @@
         "tags": ["Setup"]
       }
     },
+    "/api/setup/set-vacation-mode": {
+      "put": {
+        "operationId": "setVacationMode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SetVacationModeRequest" } } }
+        },
+        "responses": { "200": { "description": "" } },
+        "security": [{ "bearer": [] }],
+        "summary": "",
+        "tags": ["Setup"]
+      }
+    },
+    "/api/setup/vacation-mode": {
+      "get": {
+        "operationId": "getVacationMode",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetVacationModeResponse" } } }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "summary": "",
+        "tags": ["Setup"]
+      }
+    },
     "/api/home-device/all": {
       "post": {
         "operationId": "getAllDevices",
@@ -437,6 +466,16 @@
         "type": "object",
         "properties": { "token": { "type": "string", "nullable": false } },
         "required": ["token"]
+      },
+      "SetVacationModeRequest": {
+        "type": "object",
+        "properties": { "isVacationMode": { "type": "boolean" } },
+        "required": ["isVacationMode"]
+      },
+      "GetVacationModeResponse": {
+        "type": "object",
+        "properties": { "isVacationMode": { "type": "boolean" } },
+        "required": ["isVacationMode"]
       },
       "GetAllDeviceFilters": {
         "type": "object",
