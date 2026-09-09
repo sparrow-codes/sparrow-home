@@ -31,7 +31,7 @@ export class TaskCronFactory {
         const nextJobTime = new CronJob(
           getCronTime(actionJob.executionTime, actionJob.daysOfWeek ?? task.daysOfWeek),
           async () => {
-            const setup: Setup | null = await this._setupRepository.findOne({ order: { id: 'ASC' } });
+            const setup: Setup | null = (await this._setupRepository.find())[0] ?? null;
             if (setup?.isVacationMode && !actionJob.runOnVacation) {
               this.logger.log(`Skipping job ${jobId} for task: ${task.name} due to vacation mode`);
               return;
