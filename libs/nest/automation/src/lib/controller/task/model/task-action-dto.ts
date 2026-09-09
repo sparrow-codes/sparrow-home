@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DeviceActionDto } from '@sparrow-server/shared';
+import { IsBoolean } from 'class-validator';
 
 export class TaskActionDto {
   @ApiProperty()
@@ -19,4 +20,8 @@ export class TaskActionDto {
 
   @ApiProperty({ type: DeviceActionDto, nullable: false })
   public action!: DeviceActionDto;
+
+  @ApiProperty({ nullable: false, required: true, default: false, type: Boolean })
+  @IsBoolean()
+  public runOnVacation: boolean = false;
 }

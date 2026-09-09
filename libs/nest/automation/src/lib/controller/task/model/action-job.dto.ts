@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsNotEmpty } from 'class-validator';
 
 export class ActionJobDto {
   @ApiProperty({ nullable: false, required: true })
@@ -17,4 +17,9 @@ export class ActionJobDto {
   @ApiProperty({ nullable: false, required: true })
   @IsNotEmpty()
   public executionTime!: Date;
+
+  @ApiProperty({ nullable: false, required: true, default: false, type: Boolean })
+  @IsNotEmpty()
+  @IsBoolean()
+  public runOnVacation: boolean = false;
 }

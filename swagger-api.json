@@ -599,9 +599,10 @@
           "assignedDeviceId": { "type": "string", "nullable": false },
           "payload": { "type": "object", "nullable": false },
           "daysOfTheWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
-          "executionTime": { "format": "date-time", "type": "string", "nullable": false }
+          "executionTime": { "format": "date-time", "type": "string", "nullable": false },
+          "runOnVacation": { "type": "boolean", "nullable": false, "default": false }
         },
-        "required": ["assignedDeviceId", "payload", "daysOfTheWeek", "executionTime"]
+        "required": ["assignedDeviceId", "payload", "daysOfTheWeek", "executionTime", "runOnVacation"]
       },
       "CreateTaskRequest": {
         "type": "object",
@@ -629,9 +630,18 @@
           "deviceDescription": { "type": "string" },
           "executionTime": { "format": "date-time", "type": "string" },
           "daysOfTheWeek": { "nullable": true, "type": "array", "items": { "type": "number" } },
-          "action": { "nullable": false, "allOf": [{ "$ref": "#/components/schemas/DeviceActionDto" }] }
+          "action": { "nullable": false, "allOf": [{ "$ref": "#/components/schemas/DeviceActionDto" }] },
+          "runOnVacation": { "type": "boolean", "nullable": false, "default": false }
         },
-        "required": ["zigbeeDeviceId", "deviceName", "deviceDescription", "executionTime", "daysOfTheWeek", "action"]
+        "required": [
+          "zigbeeDeviceId",
+          "deviceName",
+          "deviceDescription",
+          "executionTime",
+          "daysOfTheWeek",
+          "action",
+          "runOnVacation"
+        ]
       },
       "TaskDto": {
         "type": "object",

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TaskActionDto } from './task-action-dto';
+import { IsBoolean } from 'class-validator';
 
 export class TaskDto {
   @ApiProperty()

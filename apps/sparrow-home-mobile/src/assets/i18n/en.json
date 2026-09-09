@@ -146,7 +146,8 @@
     "create_first_task_content": "Schedules run at specific times or on repeating intervals.",
     "create_first_task_button": "Create first schedule",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "run_on_vacation": "Run during Vacation Mode"
   },
   "user": {
     "fetch_additional_users_error": "Error fetching additional users list",

@@ -7,4 +7,5 @@ export interface TaskAction {
   executionTime: Date;
   daysOfWeek: number[] | null;
   action: DeviceAction;
+  runOnVacation: boolean;
 }

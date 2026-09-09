@@ -22,6 +22,7 @@ import { DeviceAction } from '@sparrow-home/utils';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
+import { Divider } from 'primeng/divider';
 import { Drawer } from 'primeng/drawer';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
@@ -29,6 +30,7 @@ import { Panel } from 'primeng/panel';
 import { Tag } from 'primeng/tag';
 
 import { ActionFormComponent } from '../action-form/action-form.component';
+import { VacationModeOption } from '../vacation-mode-option/vacation-mode-option';
 import { ScheduleForm } from './form-service/model/schedule-form';
 import { ScheduleFormService } from './form-service/schedule-form.service';
 
@@ -53,6 +55,8 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     AccordionContent,
     DaysOfWeekControl,
     TranslatePipe,
+    Divider,
+    VacationModeOption,
   ],
   templateUrl: './schedule-settings.component.html',
   providers: [ScheduleFormService],
@@ -107,6 +111,13 @@ export class ScheduleSettingsComponent implements OnInit {
       });
       this.formGroup.markAsPristine();
     }
+  }
+
+  protected updateActions(index: number, action: TaskAction): void {
+    this.actions.update((actions) => {
+      actions[index] = action;
+      return [...actions];
+    });
   }
 
   protected onEditActionData(action?: TaskAction): void {

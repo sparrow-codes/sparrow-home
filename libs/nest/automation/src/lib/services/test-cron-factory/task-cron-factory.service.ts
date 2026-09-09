@@ -2,8 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { getCronTime } from '@sparrow-server/shared';
-import { Task } from '@sparrow-server/entities';
+import { Setup, Task } from '@sparrow-server/entities';
 import { ZigbeeDeviceService } from '@sparrow-server/external-api';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TaskCronFactory {
@@ -13,7 +15,8 @@ export class TaskCronFactory {
 
   public constructor(
     private readonly _schedulerRegistry: SchedulerRegistry,
-    private readonly _zigbeeDeviceService: ZigbeeDeviceService
+    private readonly _zigbeeDeviceService: ZigbeeDeviceService,
+    @InjectRepository(Setup) private readonly _setupRepository: Repository<Setup>
   ) {}
 
   public scheduleTask(task: Task): void {
@@ -27,7 +30,15 @@ export class TaskCronFactory {
 
         const nextJobTime = new CronJob(
           getCronTime(actionJob.executionTime, actionJob.daysOfWeek ?? task.daysOfWeek),
-          () => {
+          async () => {
+            const setup: Setup = (await this._setupRepository.find())[0];
+
+            if(setup.isVacationMode && !actionJob.runOnVacation) {
+              this.logger.log(`Skipping job ${jobId} for task: ${task.name} due to vacation mode`);
+              return;
+            }
+
+
             this.logger.log(`Starting job ${jobId} for task: ${task.name}`);
             this._zigbeeDeviceService.publishEvent(actionJob.assignedDeviceId, JSON.stringify(actionJob.payload));
           }
