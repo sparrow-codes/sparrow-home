@@ -1,0 +1,54 @@
+@let isRefreshing = (isRefreshing$ | async) ?? false;
+@let isVacationModeActive = isVacationMode();
+
+<sp-page-title [showProgressBar]="isRefreshing" [routerLink]="['../']">
+  {{ 'main_panel.vacation_mode' | translate }}
+</sp-page-title>
+
+<div
+  class="animate-fadein relative w-full h-[150px] xl:h-[350px] md:h-[250px] rounded-xl overflow-hidden shadow-sm bg-cover bg-center"
+  style="background-image: url('assets/vacation-view.png')"
+>
+  <div class="absolute bottom-4 bg-black/50 backdrop-blur px-4 py-2 rounded-r text-right">
+    <span class="text-md font-medium text-white">{{ 'main_panel.vacation_mode_caption' | translate }}</span>
+  </div>
+</div>
+
+<p-card class="mt-2">
+  <div class="flex justify-between items-center">
+    <div class="flex flex-col gap-2">
+      <span class="text-xl">{{ 'main_panel.vacation_mode' | translate }}</span>
+      @if (isVacationModeActive) {
+          <p-tag severity="success">{{ 'main_panel.active' | translate }}</p-tag>
+        } @else {
+          <p-tag severity="secondary">{{ 'main_panel.inactive' | translate }}</p-tag>
+        }
+    </div>
+    <p-toggle-switch [ngModel]="isVacationModeActive" (onChange)="updateVacationMode($event.checked)" />
+  </div>
+</p-card>
+
+<p-divider></p-divider>
+<span class="text-sm font-bold">{{ 'main_panel.quick_actions' | translate }}</span>
+
+<p-card class="mt-2">
+  <a
+    class="animate-fadein flex items-center justify-between w-full cursor-pointer hover:bg-transparent transition no-underline text-inherit"
+    [routerLink]="['../../', 'automation']"
+    [attr.aria-label]="'main_panel.go_to_automation' | translate"
+  >
+    <div class="flex items-center gap-3">
+      <div class="p-2 bg-gray-700 rounded-md flex items-center justify-center text-surface-0">
+        <ng-icon name="bootstrapPlayCircle" size="2rem"></ng-icon>
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="font-semibold">{{ 'main_panel.automation' | translate }}</div>
+        <div class="text-sm">{{ 'main_panel.vacation_mode_automation_description' | translate }}</div>
+      </div>
+    </div>
+
+    <i class="pi pi-chevron-right text-gray-400"></i>
+  </a>
+</p-card>
+
+<span class="mt-4 text-left p-6 block">{{ 'main_panel.vacation_mode_description' | translate }}</span>

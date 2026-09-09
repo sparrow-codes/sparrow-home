@@ -25,6 +25,7 @@ import { toAutomaticTask } from './functions/to-automatic-task/to-automatic-task
 
 export type TasksSignalStore = InstanceType<typeof tasksSignalStore>;
 
+// eslint-disable-next-line @typescript-eslint/typedef
 export const tasksSignalStore = signalStore(
   withState<TaskSignalStoreState>({
     availableDevices: [],

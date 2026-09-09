@@ -2,8 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TaskCronFactory } from './task-cron-factory.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { ZigbeeDeviceService } from '@sparrow-server/external-api';
-import { Task } from '@sparrow-server/entities';
+import { Setup, Task } from '@sparrow-server/entities';
 import { CronJob } from 'cron';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 jest.mock('cron', () => {
   return {
@@ -15,6 +16,7 @@ describe('TaskCronFactory', () => {
   let factory: TaskCronFactory;
   let schedulerRegistry: jest.Mocked<SchedulerRegistry>;
   let zigbeeService: jest.Mocked<ZigbeeDeviceService>;
+  let setupRepository: { find: jest.Mock };
 
   beforeEach(async () => {
     (CronJob as unknown as jest.Mock).mockClear();
@@ -29,11 +31,16 @@ describe('TaskCronFactory', () => {
       publishEvent: jest.fn(),
     } as any;
 
+    setupRepository = {
+      find: jest.fn().mockResolvedValue([{ isVacationMode: false }]),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TaskCronFactory,
         { provide: SchedulerRegistry, useValue: schedulerRegistry },
         { provide: ZigbeeDeviceService, useValue: zigbeeService },
+        { provide: getRepositoryToken(Setup), useValue: setupRepository },
       ],
     }).compile();
 
@@ -60,12 +67,38 @@ describe('TaskCronFactory', () => {
     expect(schedulerRegistry.addCronJob).toHaveBeenCalledTimes(0);
   });
 
-  it('should activate power plug device', () => {
+  it('should activate power plug device when vacation mode is inactive', async () => {
     const task: Task = prepareTask();
 
     factory.scheduleTask(task);
     const job = (CronJob as unknown as jest.Mock).mock.calls[0][1];
-    job();
+    await job();
+    expect(zigbeeService.publishEvent).toHaveBeenCalledWith(
+      task.actionJobs[0].assignedDeviceId,
+      JSON.stringify(task.actionJobs[0].payload)
+    );
+  });
+
+  it('should skip jobs during vacation mode when runOnVacation is false', async () => {
+    setupRepository.find.mockResolvedValue([{ isVacationMode: true }]);
+    const task: Task = prepareTask();
+    task.actionJobs[0].runOnVacation = false;
+
+    factory.scheduleTask(task);
+    const job = (CronJob as unknown as jest.Mock).mock.calls[0][1];
+    await job();
+
+    expect(zigbeeService.publishEvent).not.toHaveBeenCalled();
+  });
+
+  it('should activate power plug device during vacation mode when runOnVacation is true', async () => {
+    setupRepository.find.mockResolvedValue([{ isVacationMode: true }]);
+    const task: Task = prepareTask();
+
+    factory.scheduleTask(task);
+    const job = (CronJob as unknown as jest.Mock).mock.calls[0][1];
+    await job();
+
     expect(zigbeeService.publishEvent).toHaveBeenCalledWith(
       task.actionJobs[0].assignedDeviceId,
       JSON.stringify(task.actionJobs[0].payload)
@@ -83,6 +116,7 @@ describe('TaskCronFactory', () => {
           id: 1,
           task: new Task(),
           daysOfWeek: null,
+          runOnVacation: true,
         },
       ],
       isActive: false,

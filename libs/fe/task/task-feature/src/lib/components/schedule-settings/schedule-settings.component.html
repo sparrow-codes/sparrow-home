@@ -12,7 +12,10 @@
           <p-accordion-panel [value]="0">
             <p-accordion-header>{{ 'tasks.advanced' | translate }}</p-accordion-header>
             <p-accordion-content>
-              <sp-days-of-week-control [formControl]="formGroup.controls.daysOfWeek" [notDefinedLabel]="'tasks.all' | translate"></sp-days-of-week-control>
+              <sp-days-of-week-control
+                [formControl]="formGroup.controls.daysOfWeek"
+                [notDefinedLabel]="'tasks.all' | translate"
+              ></sp-days-of-week-control>
             </p-accordion-content>
           </p-accordion-panel>
 
@@ -41,7 +44,7 @@
                               <i class="pi pi-clock"></i>
                               {{ item.executionTime | date : 'HH:mm' }}
                               @if (item.daysOfWeek?.length) {
-                                <i class="pi pi-calendar"></i>
+                              <i class="pi pi-calendar"></i>
                               }
                             </div>
                           </p-tag>
@@ -51,6 +54,8 @@
                           [action]="item.action"
                           (callAction)="onActionChange(index, $event)"
                         ></sp-device-action>
+                        <sp-vacation-mode-option class="mt-2" [taskAction]="item" (taskActionChange)="updateActions(index, $event)"></sp-vacation-mode-option>
+                        <p-divider></p-divider>
                         <div class="flex gap-2">
                           <p-button
                             [buttonProps]="{ styleClass: 'h-[30px]' }"
@@ -74,7 +79,7 @@
               </p-data-view>
 
               @if (sortedActions().length === 0) {
-                <div class="text-gray-500 text-sm w-full text-center">{{ 'tasks.no_actions' | translate }}</div>
+              <div class="text-gray-500 text-sm w-full text-center">{{ 'tasks.no_actions' | translate }}</div>
               }
             </p-accordion-content>
           </p-accordion-panel>
@@ -103,6 +108,10 @@
 
 <p-drawer [fullScreen]="true" header="{{ 'common.edit' | translate }}" [(visible)]="showEditAction" styleClass="w-full">
   @if (showEditAction) {
-  <sp-action-form [isLoading]="isLoading()" [taskAction]="actionToEdit" (taskActionChange)="onEditActionData($event)"></sp-action-form>
+  <sp-action-form
+    [isLoading]="isLoading()"
+    [taskAction]="actionToEdit"
+    (taskActionChange)="onEditActionData($event)"
+  ></sp-action-form>
   }
 </p-drawer>

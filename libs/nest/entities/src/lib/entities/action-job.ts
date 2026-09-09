@@ -19,6 +19,9 @@ export class ActionJob {
   @Column({ name: 'execution_time' })
   public executionTime!: Date;
 
+  @Column({ name: 'run_on_vacation', default: false })
+  public runOnVacation: boolean = false;
+
   @ManyToOne(() => Task, (task) => task.actionJobs, { orphanedRowAction: 'delete' })
   public task!: Task;
 }

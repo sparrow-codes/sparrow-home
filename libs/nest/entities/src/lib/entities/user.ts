@@ -2,7 +2,6 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 
 import { UserRole } from '../enum/user-role';
 import { PushSubscriptionClient } from './push-subscription-client';
-import { Setup } from './setup';
 
 @Entity()
 export class User {
@@ -26,10 +25,6 @@ export class User {
 
   @Column()
   public isActive: boolean = false;
-
-  @OneToOne(() => Setup, { onDelete: 'CASCADE', eager: true })
-  @JoinColumn()
-  public setup!: Setup;
 
   @OneToOne(() => PushSubscriptionClient, { onDelete: 'CASCADE', eager: true, nullable: true })
   @JoinColumn()

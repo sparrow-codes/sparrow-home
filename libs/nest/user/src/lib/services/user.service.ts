@@ -29,7 +29,7 @@ export class UserService {
     user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
     user.userRole = UserRole.OWNER;
     user.isActive = true;
-    user.setup = await this._setupRepository.save(new Setup());
+    await this._setupRepository.save(new Setup());
 
     await this._userRepository.save(user);
   }
@@ -55,7 +55,7 @@ export class UserService {
       throw new ConflictException('Email is already in use. Please choose another one.');
     }
 
-    const owner: User = await this._getOwner();
+    await this._getOwner();
 
     const user: User = new User();
     user.firstName = request.firstName;
@@ -64,8 +64,6 @@ export class UserService {
     user.password = await bcrypt.hash(request.password, UserService.HASHING_ROUNDS);
     user.userRole = UserRole.ADDITIONAL;
     user.isActive = false;
-
-    user.setup = owner.setup;
 
     await this._userRepository.save(user);
   }

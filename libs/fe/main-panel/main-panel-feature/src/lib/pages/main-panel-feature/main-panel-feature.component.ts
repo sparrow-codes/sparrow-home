@@ -10,9 +10,10 @@ import { Divider } from 'primeng/divider';
 import { Skeleton } from 'primeng/skeleton';
 import { filter, Observable } from 'rxjs';
 
-import { AlarmPanelComponent } from '../components/alarm-panel/alarm-panel.component';
-import { DeviceListPanelComponent } from '../components/device-list-panel/device-list-panel.component';
-import { TemperaturePanelComponent } from '../components/temperature-panel/temperature-panel.component';
+import { AlarmPanelComponent } from '../../components/alarm-panel/alarm-panel.component';
+import { DeviceListPanelComponent } from '../../components/device-list-panel/device-list-panel.component';
+import { TemperaturePanelComponent } from '../../components/temperature-panel/temperature-panel.component';
+import { VacationModeButton } from "../../components/vacation-mode-button/vacation-mode-button";
 
 @Component({
   imports: [
@@ -26,7 +27,8 @@ import { TemperaturePanelComponent } from '../components/temperature-panel/tempe
     Divider,
     Skeleton,
     PageTitleComponent,
-  ],
+    VacationModeButton
+],
   templateUrl: './main-panel-feature.component.html',
 })
 export class MainPanelFeatureComponent implements OnInit {
@@ -45,6 +47,7 @@ export class MainPanelFeatureComponent implements OnInit {
   protected readonly haveInitialData: Signal<boolean> = this._mainPanelStore.haveInitialData;
   protected readonly refreshingDevices: Signal<Set<string>> = this._mainPanelStore.refreshingObjects;
   protected readonly nrOfDevices: Signal<number | null> = this._mainPanelStore.nrOfDevices;
+  protected readonly isVacationMode: Signal<boolean> = this._mainPanelStore.isVacationMode;
 
   public ngOnInit(): void {
     this._mainPanelStore.fetchInitData();

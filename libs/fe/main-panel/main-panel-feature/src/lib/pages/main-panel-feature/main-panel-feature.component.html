@@ -1,12 +1,22 @@
 @let isRefreshing = (isRefreshing$ | async) ?? false;
+@let isLoading = (isLoading$ | async) ?? false;
 
 <sp-page-title [showProgressBar]="isRefreshing">
-  {{'main_panel.title' | translate }}
+  <div class="flex justify-between w-full items-center">
+    <span>{{'main_panel.title' | translate }}</span>
+    
+    @if (isLoading) {
+      <p-skeleton class="animate-fadein" height="50px" width="170px"></p-skeleton>
+    } @else {
+      <sp-vacation-mode-button [isVacationMode]="isVacationMode()"></sp-vacation-mode-button>
+    }
+  
+  </div>
 </sp-page-title>
 
-<div class="flex flex-col gap-2 w-full">
+<div class="flex flex-col gap-2 w-full mt-3">
   <sp-temperature-panel
-    [isLoading]="(isLoading$ | async) ?? false"
+    [isLoading]="isLoading"
     [temperature]="avgTemperature()"
     [isHouseClosed]="isHouseClosed()"
   />
@@ -14,10 +24,10 @@
   <sp-device-list-panel
     [nrOfDevices]="nrOfDevices()"
     [haveInitialData]="haveInitialData()"
-    [isLoading]="(isLoading$ | async) ?? false"
+    [isLoading]="isLoading"
   />
 
-  @if (isLoading$ | async) {
+  @if (isLoading) {
     <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
     <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
     <p-skeleton class="animate-fadein" height="82px" width="100%"></p-skeleton>
@@ -58,7 +68,7 @@
         @for (device of mainDevices(); track device.id) {
           <sp-device-list-item
             [refreshingDevices]="refreshingDevices()"
-            [isLoading]="(isRefreshing$ | async) ?? false"
+            [isLoading]="isRefreshing"
             [routing]="['../devices', 'details', device.id.toString()]"
             [device]="device"
             (deviceEvent)="handleDeviceEvent(device.homeDeviceId, $event)"
