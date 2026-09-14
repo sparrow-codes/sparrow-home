@@ -17,7 +17,7 @@ export function initializeApp(): Observable<AppConfig> {
   return http.get<AppConfig>(`./${configFileName}`).pipe(
     tapResponse({
       next: (config: AppConfig) => {
-        translateService.use(config.lang ?? 'en');
+        translateService.use('en');
         dataService.saveAppConfig(config);
       },
       error: () => {
