@@ -113,9 +113,11 @@ export class ScheduleSettingsComponent implements OnInit {
     }
   }
 
-  protected updateActions(index: number, action: TaskAction): void {
+  protected updateActions(action: TaskAction): void {
     this.actions.update((actions) => {
-      actions[index] = action;
+      const actionIndex: number = actions.indexOf(action);
+
+      actions[actionIndex] = action;
       return [...actions];
     });
   }
@@ -146,23 +148,31 @@ export class ScheduleSettingsComponent implements OnInit {
         zigbeeDeviceId: device?.homeDeviceId ?? '',
         deviceName: device?.name ?? '',
         deviceDescription: device?.description ?? '',
+        runOnVacation: false,
       },
     ]);
 
     this.showAddAction = false;
   }
 
-  protected onDeleteAction(index: number): void {
+  protected onDeleteAction(action: TaskAction): void {
     this.actions.update((actions) => {
-      actions.splice(index, 1);
+      const delectionIndex: number = this.actions().indexOf(action);
+
+      actions.splice(delectionIndex, 1);
       return [...actions];
     });
   }
 
-  protected onActionChange(index: number, payload: Record<string, unknown>): void {
+  protected onActionChange(action: TaskAction, payload: Record<string, unknown>): void {
     this.actions.update((actions) => {
-      const deviceAction: DeviceAction = actions[index].action;
-      actions[index] = { ...actions[index], action: { ...deviceAction, currentValue: payload[deviceAction.key] } };
+      const changeIndex: number = this.actions().indexOf(action);
+
+      const deviceAction: DeviceAction = actions[changeIndex].action;
+      actions[changeIndex] = {
+        ...actions[changeIndex],
+        action: { ...deviceAction, currentValue: payload[deviceAction.key] },
+      };
       return actions;
     });
   }

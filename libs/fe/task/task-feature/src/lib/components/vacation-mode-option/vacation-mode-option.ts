@@ -16,10 +16,9 @@ export class VacationModeOption {
   public readonly taskAction: ModelSignal<TaskAction> = model.required();
 
   protected updateModel(runOnVacation: boolean): void {
-    const currentAction: TaskAction = this.taskAction();
-    this.taskAction.set({
-      ...currentAction,
-      runOnVacation,
+    this.taskAction.update((action) => {
+      action.runOnVacation = runOnVacation;
+      return action;
     });
   }
 }
