@@ -159,6 +159,11 @@ export class ScheduleSettingsComponent implements OnInit {
     this.actions.update((actions) => {
       const delectionIndex: number = this.actions().indexOf(action);
 
+      if (delectionIndex === -1) {
+        console.warn('Invalid task index - removal skipped.');
+        return actions;
+      }
+
       actions.splice(delectionIndex, 1);
       return [...actions];
     });

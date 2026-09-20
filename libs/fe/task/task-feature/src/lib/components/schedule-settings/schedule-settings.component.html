@@ -54,7 +54,7 @@
                           [action]="item.action"
                           (callAction)="onActionChange(item, $event)"
                         ></sp-device-action>
-                        <sp-vacation-mode-option class="mt-2" [taskAction]="item" (taskActionChange)="updateActions(item)"></sp-vacation-mode-option>
+                        <sp-vacation-mode-option class="mt-2" [taskAction]="item" (taskActionChange)="updateActions($event)"></sp-vacation-mode-option>
                         <p-divider></p-divider>
                         <div class="flex gap-2">
                           <p-button
