@@ -18,7 +18,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
 import { DaysOfWeekControl, DeviceActionComponent } from '@sparrow-home/ui';
-import { DeviceAction } from '@sparrow-home/utils';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
@@ -113,15 +112,6 @@ export class ScheduleSettingsComponent implements OnInit {
     }
   }
 
-  protected updateActions(action: TaskAction): void {
-    this.actions.update((actions) => {
-      const actionIndex: number = actions.indexOf(action);
-
-      actions[actionIndex] = action;
-      return [...actions];
-    });
-  }
-
   protected onEditActionData(action?: TaskAction): void {
     if (!action || !this.actionToEdit) return;
 
@@ -131,6 +121,7 @@ export class ScheduleSettingsComponent implements OnInit {
       actions[index] = { ...this.actionToEdit, ...action };
       return [...actions];
     });
+
     this.showEditAction = false;
   }
 
@@ -170,16 +161,7 @@ export class ScheduleSettingsComponent implements OnInit {
   }
 
   protected onActionChange(action: TaskAction, payload: Record<string, unknown>): void {
-    this.actions.update((actions) => {
-      const changeIndex: number = this.actions().indexOf(action);
-
-      const deviceAction: DeviceAction = actions[changeIndex].action;
-      actions[changeIndex] = {
-        ...actions[changeIndex],
-        action: { ...deviceAction, currentValue: payload[deviceAction.key] },
-      };
-      return actions;
-    });
+    action.action = { ...action.action, currentValue: payload[action.action.key] };
   }
 
   protected showAddActionForm(): void {
