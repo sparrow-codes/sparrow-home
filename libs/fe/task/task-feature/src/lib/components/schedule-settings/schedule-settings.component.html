@@ -52,16 +52,16 @@
                         </div>
                         <sp-device-action
                           [action]="item.action"
-                          (callAction)="onActionChange(index, $event)"
+                          (callAction)="onActionChange(item, $event)"
                         ></sp-device-action>
-                        <sp-vacation-mode-option class="mt-2" [taskAction]="item" (taskActionChange)="updateActions(index, $event)"></sp-vacation-mode-option>
+                        <sp-vacation-mode-option class="mt-2" [taskAction]="item"></sp-vacation-mode-option>
                         <p-divider></p-divider>
                         <div class="flex gap-2">
                           <p-button
                             [buttonProps]="{ styleClass: 'h-[30px]' }"
                             icon="pi pi-trash"
                             severity="secondary"
-                            (onClick)="onDeleteAction(index)"
+                            (onClick)="onDeleteAction(item)"
                           ></p-button>
                           <p-button
                             [buttonProps]="{ styleClass: 'h-[30px]' }"

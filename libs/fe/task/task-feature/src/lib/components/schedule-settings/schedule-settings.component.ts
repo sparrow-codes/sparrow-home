@@ -18,7 +18,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
 import { DaysOfWeekControl, DeviceActionComponent } from '@sparrow-home/ui';
-import { DeviceAction } from '@sparrow-home/utils';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
@@ -113,13 +112,6 @@ export class ScheduleSettingsComponent implements OnInit {
     }
   }
 
-  protected updateActions(index: number, action: TaskAction): void {
-    this.actions.update((actions) => {
-      actions[index] = action;
-      return [...actions];
-    });
-  }
-
   protected onEditActionData(action?: TaskAction): void {
     if (!action || !this.actionToEdit) return;
 
@@ -129,6 +121,7 @@ export class ScheduleSettingsComponent implements OnInit {
       actions[index] = { ...this.actionToEdit, ...action };
       return [...actions];
     });
+
     this.showEditAction = false;
   }
 
@@ -146,25 +139,29 @@ export class ScheduleSettingsComponent implements OnInit {
         zigbeeDeviceId: device?.homeDeviceId ?? '',
         deviceName: device?.name ?? '',
         deviceDescription: device?.description ?? '',
+        runOnVacation: false,
       },
     ]);
 
     this.showAddAction = false;
   }
 
-  protected onDeleteAction(index: number): void {
+  protected onDeleteAction(action: TaskAction): void {
     this.actions.update((actions) => {
-      actions.splice(index, 1);
+      const delectionIndex: number = this.actions().indexOf(action);
+
+      if (delectionIndex === -1) {
+        console.warn('Invalid task index - removal skipped.');
+        return actions;
+      }
+
+      actions.splice(delectionIndex, 1);
       return [...actions];
     });
   }
 
-  protected onActionChange(index: number, payload: Record<string, unknown>): void {
-    this.actions.update((actions) => {
-      const deviceAction: DeviceAction = actions[index].action;
-      actions[index] = { ...actions[index], action: { ...deviceAction, currentValue: payload[deviceAction.key] } };
-      return actions;
-    });
+  protected onActionChange(action: TaskAction, payload: Record<string, unknown>): void {
+    action.action = { ...action.action, currentValue: payload[action.action.key] };
   }
 
   protected showAddActionForm(): void {
