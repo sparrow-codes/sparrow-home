@@ -1,6 +1,6 @@
-<div class="h-[30px] text-xl whitespace-nowrap dark:text-surface-0 text-gray-800 flex gap-2 items-center font-semibold">
+<div class="min-h-[30px] text-xl whitespace-nowrap dark:text-surface-0 text-gray-800 flex gap-2 items-center font-semibold">
     @if (routerLink(); as link) { @if (!navigationDisabled()) {
-    <a [routerLink]="link" class="no-underline text-[1rem] text-gray-500">
+    <a [routerLink]="link" class="no-underline text-gray-500">
       <i class="pi pi-chevron-left"></i>
     </a>
     } }

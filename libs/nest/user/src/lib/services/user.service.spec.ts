@@ -44,14 +44,10 @@ describe('UserService', () => {
   });
 
   describe('createAdditionalUser', () => {
-    it('should create additional user with owner setup and hashed password', async () => {
-      const ownerSetup: Setup = new Setup();
-      ownerSetup.id = 10;
-
+    it('should create additional user with hashed password', async () => {
       const owner: User = new User();
       owner.id = 1;
       owner.userRole = UserRole.OWNER;
-      owner.setup = ownerSetup;
       owner.email = 'test@test.com';
 
       const request: CreateNewUserRequest = {
@@ -80,7 +76,7 @@ describe('UserService', () => {
       expect(await bcrypt.compare(request.password, savedUser.password)).toBe(true);
       expect(savedUser.userRole).toBe(UserRole.ADDITIONAL);
       expect(savedUser.isActive).toBe(false);
-      expect(savedUser.setup).toBe(ownerSetup);
+      expect(savedUser).not.toHaveProperty('setup');
     });
 
     it('should throw NotFoundException when owner does not exist', async () => {
@@ -101,13 +97,9 @@ describe('UserService', () => {
     });
 
     it('should throw when email is already taken', async () => {
-      const ownerSetup: Setup = new Setup();
-      ownerSetup.id = 11;
-
       const owner: User = new User();
       owner.id = 2;
       owner.userRole = UserRole.OWNER;
-      owner.setup = ownerSetup;
       owner.email = 'eve@example.com';
 
       const request: CreateNewUserRequest = {

@@ -8,5 +8,6 @@ export function toActionJobDto(taskAction: TaskAction): ActionJobDtoApiModel {
     executionTime: taskAction.executionTime.toISOString(),
     daysOfTheWeek: taskAction.daysOfWeek,
     payload: { [taskAction.action.key]: taskAction.action.currentValue },
+    runOnVacation: taskAction.runOnVacation,
   };
 }

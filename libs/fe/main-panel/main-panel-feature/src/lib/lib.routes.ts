@@ -1,8 +1,9 @@
 import { Route } from '@angular/router';
-import { MessageService } from 'primeng/api';
 
-import { MainPanelFeatureComponent } from './main-panel-feature/main-panel-feature.component';
+import { MainPanelFeatureComponent } from './pages/main-panel-feature/main-panel-feature.component';
+import { VacationModePage } from './pages/vacation-mode-page/vacation-mode-page';
 
 export const mainPanelFeatureRoutes: Route[] = [
-  { path: '', component: MainPanelFeatureComponent, providers: [MessageService] },
+  { path: '', component: MainPanelFeatureComponent },
+  { path: 'vacation-mode', component: VacationModePage, data: { vt: 'sub' } },
 ];

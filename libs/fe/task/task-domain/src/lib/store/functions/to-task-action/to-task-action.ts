@@ -11,5 +11,6 @@ export function toTaskAction(action: TaskActionDtoApiModel): TaskAction {
     deviceName: action.deviceName,
     action: toDeviceAction(action.action),
     daysOfWeek: action.daysOfTheWeek,
+    runOnVacation: action.runOnVacation,
   };
 }

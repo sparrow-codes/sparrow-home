@@ -93,7 +93,7 @@ export class AlarmService implements OnModuleInit, OnModuleDestroy {
       await this._setSirensMode(true);
       await this._pushNotificationService.notify({
         title: 'Alarm!',
-        body: `Otwarto: ${sensor.deviceName}`,
+        body: `Opened: ${sensor.deviceName}`,
       });
     }
   }

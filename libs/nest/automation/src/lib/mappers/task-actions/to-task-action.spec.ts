@@ -57,6 +57,7 @@ describe('toTaskAction', () => {
       payload,
       daysOfWeek: [1, 2],
       task: null as never,
+      runOnVacation: false,
     };
   }
 

@@ -17,7 +17,7 @@ export class MobilePushNotificationService {
   private readonly _httpService: HttpClient = inject(HttpClient);
 
   public subscribeToNotifications(): void {
-    const webPushPublicKey: string | undefined = this._rootDataService.applicationConfig()?.webPushPublicKey;
+    const webPushPublicKey: string | undefined = this._rootDataService.applicationConfig()?.pushPublicKey;
 
     if (webPushPublicKey) {
       this._swPush.subscription

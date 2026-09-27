@@ -54,6 +54,7 @@ describe('TaskDtoMapperService', () => {
       expect(dto.actions[0].deviceName).toBe(mockedDevice.deviceName);
       expect(dto.actions[0].deviceDescription).toBe('description');
       expect(dto.actions[0].daysOfTheWeek).toStrictEqual([1, 2]);
+      expect(dto.actions[0].runOnVacation).toBe(false);
     });
   });
 
@@ -91,6 +92,7 @@ describe('TaskDtoMapperService', () => {
       payload,
       daysOfWeek: [1, 2],
       task: null as never,
+      runOnVacation: false,
     };
   }
 

@@ -29,6 +29,8 @@ import { CreatePushSubscription1744656092803 } from '../db/migrations/1744656092
 import { CreateTaskTable1690000000000 } from '../db/migrations/1754335949380-CreateTaskTable';
 import { CreateActionJobTable1762532633640 } from '../db/migrations/1762532633640-CreateActionJobTable';
 import { CreateDeviceLastState1768117412317 } from '../db/migrations/1768117412317-CreateDeviceLastState';
+import { AddVacationModeToSetupTable1788805307000 } from '../db/migrations/1788805307000-AddVacationModeToSetupTable';
+import { AddRunOnVacationToActionJob1788805307001 } from '../db/migrations/1788805307001-AddRunOnVacationToActionJob';
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { CreateDeviceLastState1768117412317 } from '../db/migrations/17681174123
           CreateTaskTable1690000000000,
           CreateActionJobTable1762532633640,
           CreateDeviceLastState1768117412317,
+          AddVacationModeToSetupTable1788805307000,
+          AddRunOnVacationToActionJob1788805307001,
         ],
       }),
     }),

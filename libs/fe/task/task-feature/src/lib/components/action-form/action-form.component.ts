@@ -38,8 +38,8 @@ import { ActionForm } from './form-service/model/action-form';
     FloatLabel,
     Button,
     DaysOfWeekControl,
-    TranslatePipe,
-  ],
+    TranslatePipe
+],
   templateUrl: './action-form.component.html',
   providers: [ActionFormService],
 })

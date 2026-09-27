@@ -66,6 +66,7 @@ export class TaskService implements OnModuleInit {
         entity.payload = actionDto.payload;
         entity.task = task;
         entity.daysOfWeek = actionDto.daysOfTheWeek ? actionDto.daysOfTheWeek : null;
+        entity.runOnVacation = actionDto.runOnVacation ?? false;
 
         return entity;
       }) ?? [];

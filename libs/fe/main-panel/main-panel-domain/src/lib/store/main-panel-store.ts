@@ -1,6 +1,6 @@
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -23,6 +23,8 @@ import {
 import { MessageService } from 'primeng/api';
 import { finalize, first, forkJoin, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
+import { withVacationMode } from '../features/vacation-mode';
+
 interface MainPanelStoreState {
   haveInitialData: boolean;
   avgTemperature: number | null;
@@ -35,6 +37,7 @@ interface MainPanelStoreState {
 
 export type MainPanelStore = InstanceType<typeof mainPanelStore>;
 
+// eslint-disable-next-line @typescript-eslint/typedef
 export const mainPanelStore = signalStore(
   { providedIn: 'root' },
   withState<MainPanelStoreState>({
@@ -46,21 +49,26 @@ export const mainPanelStore = signalStore(
     mainPageDevices: [],
     nrOfDevices: null,
   }),
+  withVacationMode(),
   withFetching(),
   withRefreshingObjects<string>(),
   withComputed((store) => ({
-    noDevices: computed(() => store.nrOfDevices() === 0)
+    noDevices: computed(() => store.nrOfDevices() === 0),
   })),
-  withMethods(
+  withProps(
     (
       store,
       homeDeviceApiService = inject(HomeDeviceApiService),
       alarmApiService = inject(AlarmApiService),
       messageService = inject(MessageService),
       translateService = inject(TranslateService)
-    ) => {
-      function getAvgTemperature(): Observable<number> {
-        return homeDeviceApiService.getHomeAvgTemperature().pipe(
+    ) => ({
+      _homeDeviceApiService: homeDeviceApiService,
+      _alarmApiService: alarmApiService,
+      _messageService: messageService,
+      _translateService: translateService,
+      _getAvgTemperature: (): Observable<number> =>
+        homeDeviceApiService.getHomeAvgTemperature().pipe(
           map((res) => res.avgTemperature),
           tapResponse({
             next: (temperature) => patchState(store, { avgTemperature: temperature }),
@@ -70,11 +78,9 @@ export const mainPanelStore = signalStore(
                 severity: 'error',
               }),
           })
-        );
-      }
-
-      function getAlarmStatus(): Observable<GetAlarmModeResponseApiModel> {
-        return alarmApiService.getAlarmMode().pipe(
+        ),
+      _getAlarmStatus: (): Observable<GetAlarmModeResponseApiModel> =>
+        alarmApiService.getAlarmMode().pipe(
           tapResponse({
             next: (response) =>
               patchState(store, { isAlarmOn: response.isActive, isAlarmAvailable: response.isAvailable }),
@@ -84,11 +90,9 @@ export const mainPanelStore = signalStore(
                 severity: 'error',
               }),
           })
-        );
-      }
-
-      function getWindowsAndDoorStatus(): Observable<GetAllDoorAndWindowsStatusApiModel> {
-        return homeDeviceApiService.areAllDoorsAndWindowsClosed().pipe(
+        ),
+      _getWindowsAndDoorStatus: (): Observable<GetAllDoorAndWindowsStatusApiModel> =>
+        homeDeviceApiService.areAllDoorsAndWindowsClosed().pipe(
           tapResponse({
             next: (response) =>
               patchState(store, { areAllWindowsAndDoorsClosed: response.areAllDoorsAndWindowsClosed }),
@@ -98,11 +102,9 @@ export const mainPanelStore = signalStore(
                 severity: 'error',
               }),
           })
-        );
-      }
-
-      function getMainDevices(): Observable<HomeDeviceDetailsDtoApiModel[]> {
-        return homeDeviceApiService.getAllDevices({ body: { deviceType: undefined } }).pipe(
+        ),
+      _getMainDevices: (): Observable<HomeDeviceDetailsDtoApiModel[]> =>
+        homeDeviceApiService.getAllDevices({ body: { deviceType: undefined } }).pipe(
           tapResponse({
             error: () =>
               messageService.add({
@@ -116,76 +118,81 @@ export const mainPanelStore = signalStore(
               });
             },
           })
-        );
-      }
-
-      return {
-        fetchInitData: rxMethod<void>(
-          pipe(
-            tap(() => {
-              patchState(store, store.haveInitialData() ? withRefreshing() : withLoading());
-            }),
-            switchMap(() =>
-              forkJoin([getAvgTemperature(), getAlarmStatus(), getWindowsAndDoorStatus(), getMainDevices()]).pipe(
-                finalize(() => patchState(store, withoutLoading(), withoutRefreshing(), { haveInitialData: true }))
-              )
-            )
-          )
         ),
-        setAlarm: rxMethod<boolean>(
-          pipe(
-            tap(() => patchState(store, withRefreshing())),
-            switchMap((isAlarmOn) =>
-              alarmApiService.setAlarmMode({ body: { isActive: isAlarmOn } }).pipe(
-                first(),
-                tapResponse({
-                  next: () => {
-                    if (isAlarmOn) {
-                      messageService.add({
-                        summary: translateService.instant('main_panel.alarm_activated'),
-                        severity: 'contrast',
-                      });
-                    } else {
-                      messageService.add({
-                        summary: translateService.instant('main_panel.alarm_deactivated'),
-                        severity: 'contrast',
-                      });
-                    }
-                  },
-                  error: () =>
-                    messageService.add({
-                      summary: translateService.instant('main_panel.set_alarm_error'),
-                      severity: 'error',
-                    }),
+    })
+  ),
+  withMethods((store) => ({
+    fetchInitData: rxMethod<void>(
+      pipe(
+        tap(() => {
+          patchState(store, store.haveInitialData() ? withRefreshing() : withLoading());
+        }),
+        switchMap(() =>
+          forkJoin([
+            store._getAvgTemperature(),
+            store._getAlarmStatus(),
+            store._getWindowsAndDoorStatus(),
+            store._getMainDevices(),
+            store._getVacationMode(),
+          ]).pipe(finalize(() => patchState(store, withoutLoading(), withoutRefreshing(), { haveInitialData: true })))
+        )
+      )
+    ),
+    setAlarm: rxMethod<boolean>(
+      pipe(
+        tap(() => patchState(store, withRefreshing())),
+        switchMap((isAlarmOn) =>
+          store._alarmApiService.setAlarmMode({ body: { isActive: isAlarmOn } }).pipe(
+            first(),
+            tapResponse({
+              next: () =>
+                store._messageService.add({
+                  summary: store._translateService.instant(
+                    isAlarmOn ? 'main_panel.alarm_activated' : 'main_panel.alarm_deactivated'
+                  ),
+                  severity: 'contrast',
                 }),
-                switchMap(() => getAlarmStatus().pipe(finalize(() => patchState(store, withoutRefreshing()))))
-              )
-            )
+              error: () =>
+                store._messageService.add({
+                  summary: store._translateService.instant('main_panel.set_alarm_error'),
+                  severity: 'error',
+                }),
+            }),
+            switchMap(() => store._getAlarmStatus().pipe(finalize(() => patchState(store, withoutRefreshing()))))
           )
-        ),
-        publishEvent: rxMethod<{ id: string; payload: Record<string, unknown> }>(
-          pipe(
-            tap(() => patchState(store, withRefreshing())),
-            switchMap((request) =>
-              homeDeviceApiService
-                .publishZigbeeEvent({
-                  body: { deviceId: request.id, payload: request.payload },
-                })
-                .pipe(
-                  tapResponse({
-                    error: () =>
-                      messageService.add({
-                        summary: translateService.instant('main_panel.publish_event_error'),
-                        severity: 'error',
-                      }),
-                    next: () => store._refreshObject(request.id),
+        )
+      )
+    ),
+    publishEvent: rxMethod<{ id: string; payload: Record<string, unknown> }>(
+      pipe(
+        tap(() => patchState(store, withRefreshing())),
+        switchMap((request) =>
+          store._homeDeviceApiService
+            .publishZigbeeEvent({ body: { deviceId: request.id, payload: request.payload } })
+            .pipe(
+              tapResponse({
+                error: () =>
+                  store._messageService.add({
+                    summary: store._translateService.instant('main_panel.publish_event_error'),
+                    severity: 'error',
                   }),
-                  finalize(() => patchState(store, withoutRefreshing()))
-                )
+                next: () => store._refreshObject(request.id),
+              }),
+              finalize(() => patchState(store, withoutRefreshing()))
             )
+        )
+      )
+    ),
+    setVacationMode: rxMethod<boolean>(
+      pipe(
+        tap(() => patchState(store, withRefreshing())),
+        switchMap((isVacationMode) =>
+          store._setVacationMode(isVacationMode).pipe(
+            switchMap(() => store._getVacationMode()),
+            finalize(() => patchState(store, withoutRefreshing()))
           )
-        ),
-      };
-    }
-  )
+        )
+      )
+    ),
+  }))
 );

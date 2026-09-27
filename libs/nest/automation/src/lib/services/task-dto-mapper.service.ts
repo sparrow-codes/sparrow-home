@@ -38,6 +38,7 @@ export class TaskDtoMapperService {
       deviceName: homeDevice?.deviceName ?? '',
       deviceDescription: deviceProfile?.deviceDefinition.description ?? '',
       daysOfTheWeek: action.daysOfWeek?.length ? action.daysOfWeek : null,
+      runOnVacation: action.runOnVacation
     };
   }
 }

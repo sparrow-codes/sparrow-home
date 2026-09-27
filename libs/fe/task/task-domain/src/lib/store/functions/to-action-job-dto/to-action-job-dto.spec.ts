@@ -8,6 +8,7 @@ describe('toActionJobDto', () => {
     deviceDescription: 'description',
     executionTime: new Date(),
     daysOfWeek: null,
+    runOnVacation: false,
     action: {
       key: 'switch',
       type: 'number',
@@ -32,5 +33,9 @@ describe('toActionJobDto', () => {
 
   it('should map days of the week', () => {
     expect(toActionJobDto(task).daysOfTheWeek).toBe(task.daysOfWeek);
+  });
+
+  it('should map runOnVacation', () => {
+    expect(toActionJobDto(task).runOnVacation).toBe(task.runOnVacation);
   });
 });
