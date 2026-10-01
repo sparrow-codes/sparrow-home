@@ -106,10 +106,22 @@ mqttUrl=mqtt://localhost:1883
 
 ## Start the application locally
 
-For convenience, a `docker-compose.yaml` file is provided to start the application locally.
+For convenience, a ready-to-use script is provided to start the application locally.
+```text
+npm run start:dev
+```
+
+This script generates API services for frontend application, runs docker compose, and performs nx run commands.
+
+If you wish to run the application manually, you can run the following commands in separate terminal windows:
+
 
 ```text
-docker compose -f ./docker-local/docker-compose.yaml -p docker up -d
+npm run generate-fe-api
+```
+
+```text
+npm run start:local:env
 ```
 
 Run frontend:

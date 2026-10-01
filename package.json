@@ -13,6 +13,7 @@
     "test:all": "npx nx run-many -t test",
     "generate-fe-api": "ng-openapi-gen -c ng-openapi-config.json",
     "start:local:env": "docker compose -f docker-local/docker-compose.yaml -p docker up -d",
+    "start:dev": "npm run generate-fe-api && npm run start:local:env && (npx nx run server:serve:development & npx nx run sparrow-home-mobile:serve:development & wait)",
     "run-dev-http-mobile": "http-server dist/apps/sparrow-home-mobile/browser -S -C cert.pem -o",
     "lint:all": "npx nx run-many -t eslint:lint"
   },
