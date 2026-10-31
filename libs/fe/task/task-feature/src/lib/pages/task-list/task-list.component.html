@@ -1,42 +1,59 @@
-<div class="w-full flex flex-col h-full">
-  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false">{{ 'tasks.title' | translate }}</sp-page-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title [title]="'tasks.title' | translate"></sp-page-title>
 
-  @if (noSchedules() === false) {
-    <div class="flex w-full justify-end">
-      <p-button icon="pi pi-plus" [label]="'tasks.new_task' | translate" size="large" severity="primary"
-                [routerLink]="['new']"></p-button>
-    </div>
-  }
+    <ion-buttons slot="end">
+      <ion-button
+        class="m-0 h-11 w-11 shrink-0"
+        aria-label="{{ 'tasks.new_task' | translate }}"
+        fill="solid"
+        shape="round"
+        color="primary"
+        [routerLink]="['new']"
+        style="--padding-start: 0; --padding-end: 0"
+      >
+        <ion-icon slot="icon-only" name="add-outline" class="text-2xl" />
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-  <span class="h-[45px]">
+<ion-content class="ion-padding">
+
+  <div class="w-full flex flex-col h-full">
+
+    <span class="h-[45px]">
     @if (noSchedules() === false) {
       {{ 'tasks.count' | translate:{ count: tasks().length } }}
     }
   </span>
 
 
-  <div class="flex flex-col gap-2">
-    <p-divider></p-divider>
-    @if (isLoading$ | async) {
-      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
-      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
-      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
-      <p-skeleton class="animate-fadein" height="80px"></p-skeleton>
-    } @else {
-      @defer () {
-        @for (task of tasks(); track task.id) {
-          <sp-task-card [refreshingObjects]="refreshingObjects()" class="animate-fadein" [task]="task" (isActive)="activateTask(task.id, $event)"></sp-task-card>
+    <div class="flex flex-col gap-2">
+      <sp-divider></sp-divider>
+      @if (isLoading$ | async) {
+        <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
+        <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
+        <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
+        <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
+      }
+        @defer () {
+          @for (task of tasks(); track task.id) {
+            <sp-task-card [refreshingObjects]="refreshingObjects()" class="animate-fadein" [task]="task"
+                          (isActive)="activateTask(task.id, $event)"></sp-task-card>
+          }
         }
-      }
 
-      @if (noSchedules() === true) {
-        <sp-onboarding [title]="'tasks.no_tasks_yet' | translate" [description]="'tasks.create_first_task' | translate"
-                       [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
-                       [content]="'tasks.create_first_task_content' | translate">
-          <ng-icon class="text-gray-600 dark:text-surface-0" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
-        </sp-onboarding>
-      }
-    }
+        @if (noSchedules() === true) {
+          <sp-onboarding [title]="'tasks.no_tasks_yet' | translate"
+                         [description]="'tasks.create_first_task' | translate"
+                         [buttonLabel]="'tasks.create_first_task_button' | translate" [buttonRouterLink]="['new']"
+                         [content]="'tasks.create_first_task_content' | translate">
+            <ng-icon class="text-gray-600 dark:text-surface-0" [size]="'8rem'" name="bootstrapClockHistory"></ng-icon>
+          </sp-onboarding>
+        }
 
+
+    </div>
   </div>
-</div>
+</ion-content>

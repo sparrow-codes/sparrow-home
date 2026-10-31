@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { AuthenticationApiService } from '@sparrow-home/api';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 import { first, map, Observable, switchMap, tap } from 'rxjs';
 
-import { MobilePushNotificationService } from './index';
+import { MobilePushNotificationService } from './mobile-push-notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { MobilePushNotificationService } from './index';
 export class AuthService {
   private _token: string | null = null;
   private readonly authService: AuthenticationApiService = inject(AuthenticationApiService);
-  private readonly _pushNotificationService: MobilePushNotificationService = inject(MobilePushNotificationService);
+  private readonly _injector: Injector = inject(Injector);
 
   private static readonly TOKEN_KEY: string = 'SP_ACCESS_TOKEN';
 
@@ -40,7 +40,8 @@ export class AuthService {
         first(),
         tap((response) => {
           this._token = response.token;
-          this._pushNotificationService.subscribeToNotifications();
+          // resolved lazily to avoid a circular dependency (push service -> HttpClient -> auth interceptor -> AuthService)
+          this._injector.get(MobilePushNotificationService).subscribeToNotifications();
         }),
         switchMap((response) => SecureStoragePlugin.set({ key: AuthService.TOKEN_KEY, value: response.token })),
         map(() => void 0)

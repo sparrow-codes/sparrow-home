@@ -44,6 +44,7 @@
     }
   },
   "home": {
+    "subtitle": "Find and connect new devices",
     "add_new_device": "Add new device",
     "device_name": "Device name",
     "device_type": "Device type",
@@ -65,15 +66,17 @@
     "add_first_device": "Add first device",
     "you_can_add": "Add sensors, switches and more...",
     "remove_device": "Remove device",
-    "remove_device_confirmation_content": "Are you sure you want to remove the device named: <strong>{deviceName}</strong>? Associated actions in schedules will be automatically removed.",
+    "remove_device_confirmation_content": "Are you sure you want to remove the device named: <strong>{deviceName}</strong>? </br></br> Associated actions in schedules will be automatically removed.",
     "device_delete_error": "Error occurred while removing the device!",
     "fetch_device_details_error": "Error while fetching device details!",
     "name_change_error": "Error changing device name!",
     "update_fields_error": "Error updating device fields",
     "fetch_devices_error": "Error fetching devices list",
     "error_sending_event": "Error sending event",
-    "quick-action": "Quick action",
+    "quick-action": "Action",
+    "quick-param": "Parameter",
     "quick-param-preview": "Quick parameter preview",
+    "quick-action-preview": "Quick action preview",
     "show-quick-param": "Displays a quick parameter view on device cards",
     "show-quick-action": "Displays as a quick control on device cards"
   },

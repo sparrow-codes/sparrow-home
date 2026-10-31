@@ -9,18 +9,15 @@ import {
   OutputEmitterRef,
   Signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { IonBadge, IonChip, IonIcon, IonItem, IonToggle } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask } from '@sparrow-home/task-domain';
 import { AnimatedCheckCircleComponent } from '@sparrow-home/ui';
-import { Card } from 'primeng/card';
-import { Tag } from 'primeng/tag';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-task-card',
-  imports: [RouterLink, ToggleSwitch, FormsModule, TranslatePipe, Tag, AnimatedCheckCircleComponent, Card],
+  imports: [RouterLink, TranslatePipe, AnimatedCheckCircleComponent, IonItem, IonToggle, IonChip, IonIcon, IonBadge],
   templateUrl: './task-card.component.html',
 })
 export class TaskCardComponent {

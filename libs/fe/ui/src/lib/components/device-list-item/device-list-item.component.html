@@ -1,17 +1,16 @@
-<p-card>
-  <a
-    class="animate-fadein flex items-center justify-between  rounded-xl shadow-sm w-full cursor-pointer hover:opacity-80 transition no-underline"
-    [routerLink]="routing() ?? ['details', device().id]"
-    [attr.aria-label]="'ui.go_to_device_details' | translate : { deviceName: device().name }"
+<ion-item lines="none" [button]="true" [routerLink]="routing() ?? ['details', device().id]"
+          [attr.aria-label]="'ui.go_to_device_details' | translate : { deviceName: device().name }">
+  <div
+    class="flex items-center justify-between w-full cursor-pointer hover:opacity-80 transition ion-padding-vertical"
   >
     <div class="flex items-center gap-3">
       <sp-device-type [animationInProgress]="showFinishAnimation()" [fullLabel]="false" [deviceType]="device().type" />
       <div class="block">
-        <div class="font-semibold text-surface-700 dark:text-surface-0 mb-2">{{ device().name }}</div>
-        @if (showTag()) {
-          <p-tag>{{ label() | translate | humanize }}</p-tag>
+        <div class="font-semibold text-surface-700 dark:text-surface-0">{{ device().name }}</div>
+        @if (label()) {
+          <ion-badge color="light" class="mt-2">{{ label() | translate | humanize }}</ion-badge>
         } @else {
-          <div class="text-gray-700 dark:text-surface-200 text-sm">{{ label() | translate | humanize }}</div>
+          <div class="text-gray-700 dark:text-surface-200 text-sm mt-2">{{ deviceTypeLabel() | translate | humanize }}</div>
         }
       </div>
     </div>
@@ -24,6 +23,7 @@
         [action]="mainAction"
       ></sp-device-action>
     }
-  </a>
-</p-card>
+
+  </div>
+</ion-item>
 

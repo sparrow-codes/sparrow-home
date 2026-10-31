@@ -1,14 +1,14 @@
-
 import { Component, model, ModelSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { IonBadge, IonItem, IonToggle } from '@ionic/angular';
+import { bootstrapBell } from '@ng-icons/bootstrap-icons';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Card } from 'primeng/card';
-import { Tag } from 'primeng/tag';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-alarm-panel',
-  imports: [FormsModule, Tag, ToggleSwitch, Card, TranslatePipe],
+  imports: [FormsModule, TranslatePipe, IonItem, IonBadge, NgIcon, IonToggle],
+  providers: [provideIcons({ bootstrapBell })],
   templateUrl: './alarm-panel.component.html',
 })
 export class AlarmPanelComponent {

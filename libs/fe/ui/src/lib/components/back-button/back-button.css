@@ -1,0 +1,16 @@
+:host {
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: #f4f6f8;
+    --color: var(--ion-color-dark);
+    --ion-toolbar-color: white;
+    --border-width: 3px;
+    --background-activated: #e4e7ed;
+    --background-focused: #e4e7ed;
+
+    ion-icon {
+      color: var(--ion-color-dark);
+    }
+  }
+}

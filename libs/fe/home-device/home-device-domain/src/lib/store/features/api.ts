@@ -9,9 +9,8 @@ import {
   HomeDeviceApiService,
   HomeDeviceDetailsDtoApiModel,
 } from '@sparrow-home/api';
-import { RoutePath } from '@sparrow-home/core';
+import { RoutePath, ToastService } from '@sparrow-home/core';
 import { toHomeDevice } from '@sparrow-home/utils';
-import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 
 import { DeviceSettings } from '../../model';
@@ -26,7 +25,7 @@ export function withApi() {
         store,
         apiService = inject(HomeDeviceApiService),
         router = inject(Router),
-        messageService = inject(MessageService),
+        messageService = inject(ToastService),
         translateService = inject(TranslateService)
       ) => ({
         _fetchDevices: (): Observable<HomeDeviceDetailsDtoApiModel[]> =>

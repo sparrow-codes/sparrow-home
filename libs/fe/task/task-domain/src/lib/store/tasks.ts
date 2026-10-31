@@ -15,7 +15,7 @@ import {
   withRefreshing,
   withRefreshingObjects,
 } from '@sparrow-home/utils';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '@sparrow-home/core';
 import { finalize, map, pipe, switchMap, tap } from 'rxjs';
 
 import { AutomaticTask } from '../model';
@@ -39,7 +39,7 @@ export const tasksSignalStore = signalStore(
     (
       store,
       _taskApiService = inject(TasksApiService),
-      _messageService = inject(MessageService),
+      _messageService = inject(ToastService),
       _homeDeviceApiService = inject(HomeDeviceApiService),
       _translate = inject(TranslateService)
     ) => ({

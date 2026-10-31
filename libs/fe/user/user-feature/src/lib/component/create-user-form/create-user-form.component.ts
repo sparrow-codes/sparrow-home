@@ -1,4 +1,3 @@
-
 import {
   Component,
   DestroyRef,
@@ -13,12 +12,18 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonInput,
+  IonInputPasswordToggle,
+  IonItem,
+  IonItemGroup,
+  IonLabel,
+  IonList,
+  IonSpinner,
+} from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
-import { Button } from 'primeng/button';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputText } from 'primeng/inputtext';
-import { Password } from 'primeng/password';
 
 import { CreateUserFormService } from './form-service/create-user-form.service';
 import { CreateUserFormName } from './form-service/enum/create-user-form.name';
@@ -26,7 +31,18 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 
 @Component({
   selector: 'sp-create-user-form',
-  imports: [ReactiveFormsModule, Button, Password, FloatLabel, InputText, TranslatePipe],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    IonButton,
+    IonSpinner,
+    IonInput,
+    IonInputPasswordToggle,
+    IonItemGroup,
+    IonItem,
+    IonLabel,
+    IonList,
+  ],
   templateUrl: './create-user-form.component.html',
   providers: [CreateUserFormService],
 })

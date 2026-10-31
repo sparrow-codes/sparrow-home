@@ -3,7 +3,7 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature, withProps, withState } from '@ngrx/signals';
 import { TranslateService } from '@ngx-translate/core';
 import { GetVacationModeResponseApiModel, SetupApiService } from '@sparrow-home/api';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '@sparrow-home/core';
 import { Observable } from 'rxjs';
 
 export function withVacationMode() {
@@ -15,7 +15,7 @@ export function withVacationMode() {
       (
         store,
         setupApiService = inject(SetupApiService),
-        messageService = inject(MessageService),
+        messageService = inject(ToastService),
         translateService = inject(TranslateService)
       ) => ({
         _setVacationMode(isVacationMode: boolean): Observable<void> {

@@ -1,0 +1,6 @@
+:root {
+  ion-action-sheet {
+    --width: 90%;
+    --max-width: 500px;
+  }
+}

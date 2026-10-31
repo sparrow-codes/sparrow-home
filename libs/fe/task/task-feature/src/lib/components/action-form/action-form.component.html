@@ -1,55 +1,58 @@
 <form [formGroup]="form">
-  <div class="flex flex-col gap-4 mb-8">
-    <p-float-label variant="on" class="mt-2">
-      <p-select
-        inputId="device"
+  <div class="flex flex-col gap-2 mb-8">
+    <div class="mt-2">
+      <ion-label class="mb-2 block">{{ 'tasks.device' | translate }}</ion-label>
+      <ion-select
+        mode="md"
+        fill="outline"
+        shape="round"
+        interface="action-sheet"
+        labelPlacement="end"
+        placeholder="{{ 'tasks.device' | translate }}"
+        [interfaceOptions]="{ mode: 'ios' }"
         [formControl]="form.controls.device"
-        [options]="devices()"
-        optionLabel="name"
-        optionValue="id"
-        [fluid]="true"
-        size="large"
-      ></p-select>
-      <label for="device">{{ 'tasks.device' | translate }}</label>
-    </p-float-label>
-
-    <p-float-label variant="on">
-      <p-select
-        inputId="action"
-        [formControl]="form.controls.action"
-        [fluid]="true"
-        [options]="actionOptions()"
-        optionLabel="key"
-        optionValue="value"
-        size="large"
-      ></p-select>
-      <label for="action">{{ 'tasks.action' | translate }}</label>
-    </p-float-label>
-
-    <div class="min-h-[50px]">
-      @if (selectedAction(); as action) {
-        <sp-device-action class="animate-fadein" [action]="action" [formControl]="form.controls.payload"></sp-device-action>
-      }
+      >
+        @for (device of devices(); track device.id) {
+          <ion-select-option [value]="device.id">{{ device.name }}</ion-select-option>
+        }
+      </ion-select>
     </div>
 
-    <p-float-label variant="on">
-      <p-datePicker
-        inputId="time"
-        [timeOnly]="true"
-        hourFormat="24"
-        [showClear]="true"
-        [formControl]="form.controls.time"
-        size="large"
-        showIcon="true"
-        iconDisplay="input"
-      ></p-datePicker>
-      <label for="time">{{ 'tasks.time' | translate }}</label>
-    </p-float-label>
+    <div>
+      <ion-label class="mb-2 block">{{ 'tasks.action' | translate }}</ion-label>
+      <ion-select
+        mode="md"
+        fill="outline"
+        shape="round"
+        interface="action-sheet"
+        labelPlacement="end"
+        [placeholder]="'tasks.action' | translate "
+        [interfaceOptions]="{ mode: 'ios' }"
+        [formControl]="form.controls.action"
+      >
+        @for (option of actionOptions(); track option.value) {
+          <ion-select-option [value]="option.value">{{ option.key }}</ion-select-option>
+        }
+      </ion-select>
+    </div>
+
+    <div class="min-h-[50px] mt-4">
+      @if (selectedAction(); as action) {
+        <sp-device-action [action]="action" [formControl]="form.controls.payload"></sp-device-action>
+      }
+    </div>
+    <ion-label class="mb-2 block">{{ 'tasks.time' | translate }}</ion-label>
+    <ion-datetime [value]="formatTime(form.controls.time.value)" (ionChange)="onTimeChange($event.detail.value)"
+                  presentation="time"></ion-datetime>
   </div>
 
-    <sp-days-of-week-control [formControl]="form.controls.daysOfWeek" [notDefinedLabel]="'tasks.default' | translate"></sp-days-of-week-control>
+  <sp-divider></sp-divider>
+
+  <sp-days-of-week-control [formControl]="form.controls.daysOfWeek"
+                           [notDefinedLabel]="'tasks.default' | translate"></sp-days-of-week-control>
+  <sp-divider></sp-divider>
+  <ion-button expand="full" shape="round" color="primary" class="mt-4" [disabled]="form.invalid"
+              (click)="save()">{{ 'common.save' | translate }}
+  </ion-button>
 </form>
 
-<div class="w-full flex justify-end mt-4">
-  <p-button severity="primary" size="large" [disabled]="form.invalid" (onClick)="save()">{{ 'common.save' | translate }}</p-button>
-</div>

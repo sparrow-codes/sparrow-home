@@ -20,7 +20,7 @@ import {
   withRefreshing,
   withRefreshingObjects,
 } from '@sparrow-home/utils';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '@sparrow-home/core';
 import { finalize, first, forkJoin, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { withVacationMode } from '../features/vacation-mode';
@@ -60,7 +60,7 @@ export const mainPanelStore = signalStore(
       store,
       homeDeviceApiService = inject(HomeDeviceApiService),
       alarmApiService = inject(AlarmApiService),
-      messageService = inject(MessageService),
+      messageService = inject(ToastService),
       translateService = inject(TranslateService)
     ) => ({
       _homeDeviceApiService: homeDeviceApiService,

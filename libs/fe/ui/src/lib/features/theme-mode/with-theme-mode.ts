@@ -11,16 +11,10 @@ export function withThemeMode() {
         const rootElement: HTMLElement = document.documentElement;
 
         if (isDarkModeOn) {
-          rootElement.classList.add('dark');
+          document.documentElement.classList.toggle('ion-palette-dark', true);
         } else {
-          rootElement.classList.remove('dark');
+          document.documentElement.classList.toggle('ion-palette-dark', false);
         }
-
-        const themeColorFromCss: string = getComputedStyle(rootElement).getPropertyValue('--app-theme-color').trim();
-        const themeColor: string = themeColorFromCss || (isDarkModeOn ? '#080C15' : '#F5F5F5');
-
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
-        document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', isDarkModeOn ? 'dark' : 'light');
       },
     })),
     withMethods((store) => ({

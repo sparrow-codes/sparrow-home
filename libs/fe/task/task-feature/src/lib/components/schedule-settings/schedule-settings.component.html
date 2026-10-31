@@ -2,116 +2,147 @@
   <div class="flex-grow">
     @if (formGroup) {
     <form [formGroup]="formGroup" class="flex-grow">
-      <div class="flex flex-col gap-4">
-        <p-float-label variant="on">
-          <input pInputText id="name" type="text" pSize="large" formControlName="name" fluid="true" />
-          <label for="name">{{ 'common.name' | translate }}</label>
-        </p-float-label>
+      <div class="flex flex-col gap-2">
+        <ion-label>{{ 'common.name' | translate }}</ion-label>
+        <ion-input [placeholder]="'common.name' | translate" formControlName="name" mode="md" shape="round" fill="outline"></ion-input>
 
-        <p-accordion [value]="1">
-          <p-accordion-panel [value]="0">
-            <p-accordion-header>{{ 'tasks.advanced' | translate }}</p-accordion-header>
-            <p-accordion-content>
-              <sp-days-of-week-control
-                [formControl]="formGroup.controls.daysOfWeek"
-                [notDefinedLabel]="'tasks.all' | translate"
-              ></sp-days-of-week-control>
-            </p-accordion-content>
-          </p-accordion-panel>
+        <ion-card class="m-0">
+        <ion-card-content>
+          <ion-accordion-group value="0">
+            <ion-accordion value="1" class="bg-white">
+              <ion-item lines="none" slot="header">
+                <ion-label>{{ 'tasks.advanced' | translate }}</ion-label>
+              </ion-item>
 
-          <p-accordion-panel [value]="1">
-            <p-accordion-header>{{ 'tasks.actions' | translate }}</p-accordion-header>
-            <p-accordion-content>
-              <div class="mb-2">
-                <p-button
-                  [buttonProps]="{ styleClass: 'h-[30px]' }"
-                  [outlined]="true"
-                  icon="pi pi-plus"
-                  (onClick)="showAddActionForm()"
-                ></p-button>
+              <div slot="content" class="ion-padding">
+                <sp-days-of-week-control
+                  [formControl]="formGroup.controls.daysOfWeek"
+                  [notDefinedLabel]="'tasks.all' | translate"
+                ></sp-days-of-week-control>
               </div>
+            </ion-accordion>
+            <sp-divider></sp-divider>
+            <ion-accordion value="0" class="bg-white">
+              <ion-item lines="none" slot="header" >
+                <ion-label>{{ 'tasks.actions' | translate }}</ion-label>
+              </ion-item>
+              <div slot="content" class="bg-white">
+                <div class="mt-2 mb-2 w-full text-right">
+                  <ion-button
+                    class="m-0 h-11 w-11 shrink-0 mb-2"
+                    fill="outline"
+                    shape="round"
+                    (click)="showAddActionForm()"
+                    color="secondary"
+                    style="--padding-start: 0; --padding-end: 0"
+                  >
+                    <ion-icon slot="icon-only" name="add-outline" class="text-2xl" />
+                  </ion-button>
+                </div>
 
-              <p-data-view [value]="sortedActions()" emptyMessage=" ">
-                <ng-template #list let-items>
-                  @for (item of items; track index; let index = $index) {
+                @for (item of sortedActions(); track item) {
 
-                  <div class="mb-2 animate-fadein">
-                    <p-panel [showHeader]="false">
-                      <div class="flex flex-col gap-2 mt-[18px]">
-                        <div class="flex justify-between items-center w-full">
-                          <p-tag [severity]="'secondary'">
-                            <div class="flex gap-2">
-                              <i class="pi pi-clock"></i>
-                              {{ item.executionTime | date : 'HH:mm' }}
-                              @if (item.daysOfWeek?.length) {
-                              <i class="pi pi-calendar"></i>
-                              }
-                            </div>
-                          </p-tag>
-                          <span class="font-semibold">{{ item.deviceName }}</span>
+                    <div class="p-4 border border-gray-200 border-solid rounded-md mb-2">
+
+                        <div class="flex flex-col">
+                          <div class="flex justify-between items-center w-full">
+                            <span class="font-semibold">{{ item.deviceName }}</span>
+                            <ion-chip color="primary">
+                              <div class="flex gap-2 items-center">
+                                <ion-icon name="time-outline" />
+                                {{ item.executionTime | date : 'HH:mm' }}
+                                @if (item.daysOfWeek?.length) {
+                                  <ion-icon name="calendar-outline" />
+                                }
+                              </div>
+                            </ion-chip>
+                          </div>
+                          <sp-divider></sp-divider>
+                          <sp-device-action
+                            class="mt-2"
+                            [action]="item.action"
+                            (callAction)="onActionChange(item, $event)"
+                          ></sp-device-action>
+                          <sp-vacation-mode-option class="mt-4" [taskAction]="item"></sp-vacation-mode-option>
+                          <sp-divider></sp-divider>
+                          <div class="flex gap-2 justify-end">
+                            <ion-button class="m-0 h-11 w-11 shrink-0" shape="round" size="small" color="medium"
+                                        style="--padding-start: 0; --padding-end: 0" (click)="onDeleteAction(item)">
+                              <ion-icon slot="icon-only" name="trash-outline" />
+                            </ion-button>
+                            <ion-button class="m-0 h-11 w-11 shrink-0" fill="outline" shape="round" size="small"
+                                        color="medium" style="--padding-start: 0; --padding-end: 0"
+                                        (click)="showEditActionForm(item)">
+                              <ion-icon slot="icon-only" name="pencil-outline" />
+                            </ion-button>
+                          </div>
                         </div>
-                        <sp-device-action
-                          [action]="item.action"
-                          (callAction)="onActionChange(item, $event)"
-                        ></sp-device-action>
-                        <sp-vacation-mode-option class="mt-2" [taskAction]="item"></sp-vacation-mode-option>
-                        <p-divider></p-divider>
-                        <div class="flex gap-2">
-                          <p-button
-                            [buttonProps]="{ styleClass: 'h-[30px]' }"
-                            icon="pi pi-trash"
-                            severity="secondary"
-                            (onClick)="onDeleteAction(item)"
-                          ></p-button>
-                          <p-button
-                            [buttonProps]="{ styleClass: 'h-[30px]' }"
-                            icon="pi pi-pencil"
-                            outlined="true"
-                            (onClick)="showEditActionForm(item)"
-                          ></p-button>
-                        </div>
-                      </div>
-                    </p-panel>
-                  </div>
+                    </div>
 
-                  }
-                </ng-template>
-              </p-data-view>
+                }
 
-              @if (sortedActions().length === 0) {
-              <div class="text-gray-500 text-sm w-full text-center">{{ 'tasks.no_actions' | translate }}</div>
-              }
-            </p-accordion-content>
-          </p-accordion-panel>
-        </p-accordion>
+                @if (sortedActions().length === 0) {
+                  <div class="text-gray-500 text-sm w-full text-center">{{ 'tasks.no_actions' | translate }}</div>
+                }
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-card-content>
+        </ion-card>
       </div>
     </form>
     }
   </div>
   <div class="flex flex-row sm:flex-row justify-end gap-4 mb-2">
-    <p-button
-      [disabled]="formGroup?.invalid || isLoading()"
-      [label]="'common.save' | translate"
-      icon="pi pi-check"
-      (onClick)="onSubmitPreferences()"
-      severity="primary"
-      size="large"
-    ></p-button>
+    <ion-button [disabled]="formGroup?.invalid || isLoading()" color="primary" (click)="onSubmitPreferences()">
+      <ion-icon name="checkmark-outline" slot="start" />
+      {{ 'common.save' | translate }}
+    </ion-button>
   </div>
 </div>
 
-<p-drawer [fullScreen]="true" header="{{ 'common.add' | translate }}" [(visible)]="showAddAction" styleClass="w-full">
-  @if (showAddAction) {
-  <sp-action-form [isLoading]="isLoading()" (taskActionChange)="onAddActionData($event)"></sp-action-form>
-  }
-</p-drawer>
+<ion-modal [isOpen]="showAddAction" (didDismiss)="closeAddActionForm()">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>{{ 'common.add' | translate }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeAddActionForm()">
+            <ion-icon slot="icon-only" name="close-outline" />
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      @if (showAddAction) {
+        <sp-action-form [isLoading]="isLoading()" (taskActionChange)="onAddActionData($event)"></sp-action-form>
+      }
+    </ion-content>
 
-<p-drawer [fullScreen]="true" header="{{ 'common.edit' | translate }}" [(visible)]="showEditAction" styleClass="w-full">
-  @if (showEditAction) {
-  <sp-action-form
-    [isLoading]="isLoading()"
-    [taskAction]="actionToEdit"
-    (taskActionChange)="onEditActionData($event)"
-  ></sp-action-form>
-  }
-</p-drawer>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="showEditAction" (didDismiss)="closeEditActionForm()">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>{{ 'common.edit' | translate }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeEditActionForm()">
+            <ion-icon slot="icon-only" name="close-outline" />
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      @if (showEditAction) {
+        <sp-action-form
+          [isLoading]="isLoading()"
+          [taskAction]="actionToEdit"
+          (taskActionChange)="onEditActionData($event)"
+        ></sp-action-form>
+      }
+    </ion-content>
+  </ng-template>
+
+</ion-modal>

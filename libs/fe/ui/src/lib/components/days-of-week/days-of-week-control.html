@@ -1,57 +1,97 @@
-<div class="inline-block">
-  <i class="pi pi-calendar mr-2"></i>
+<div class="flex gap-1 items-start">
+  <ion-icon name="calendar-outline" class="mr-2 align-middle"></ion-icon>
   <span>{{ 'ui.days_of_week_label' | translate }}</span>
 </div>
-<p-divider></p-divider>
-<div class="flex flex-col gap-4 mt-2">
-  <div class="flex items-center">
-    <p-radio-button name="daysOfTheWeek" [formControl]="areAllDays" [value]="true"  inputId="all" />
-    <label for="all" class="ml-2">{{ 'ui.all_days' | translate }}</label>
-  </div>
+<ion-item-divider class="my-3 min-h-0"></ion-item-divider>
 
-  <div class="flex items-center">
-    <p-radio-button name="daysOfTheWeek" [formControl]="areAllDays" [value]="false" inputId="custom" />
-    <label for="custom" class="ml-2">{{ 'ui.define' | translate }}</label>
-  </div>
-</div>
+<ion-radio-group [formControl]="areAllDays" class="flex flex-col gap-4 mt-2">
+  <ion-radio mode="md" [value]="true" [disabled]="disabled()" labelPlacement="end" justify="start">
+    {{ 'ui.all_days' | translate }}
+  </ion-radio>
+  <ion-radio mode="md" [value]="false" [disabled]="disabled()" labelPlacement="end" justify="start">
+    {{ 'ui.define' | translate }}
+  </ion-radio>
+</ion-radio-group>
 
 @if (value()) {
-  <p-divider></p-divider>
+<ion-item-divider class="my-3 min-h-0"></ion-item-divider>
 
-  <div class="grid grid-cols-4 mt-2 gap-4">
-    <div class="inline-block">
-      <p-check-box [value]="1" inputId="mon" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="mon">{{ 'ui.days.mon' | translate }}</label>
-    </div>
+<div class="grid grid-cols-4 mt-2 gap-4">
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(1)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(1, $event.detail.checked)"
+  >
+    {{ 'ui.days.mon' | translate }}
+  </ion-checkbox>
 
-    <div class="inline-block">
-      <p-check-box [value]="2" inputId="tue" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="tue">{{ 'ui.days.tue' | translate }}</label>
-    </div>
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(2)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(2, $event.detail.checked)"
+  >
+    {{ 'ui.days.tue' | translate }}
+  </ion-checkbox>
 
-    <div class="inline-block">
-      <p-check-box [value]="3" inputId="wed" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="wed">{{ 'ui.days.wed' | translate }}</label>
-    </div>
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(3)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(3, $event.detail.checked)"
+  >
+    {{ 'ui.days.wed' | translate }}
+  </ion-checkbox>
 
-    <div class="inline-block">
-      <p-check-box [value]="4" inputId="thu" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="thu">{{ 'ui.days.thu' | translate }}</label>
-    </div>
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(4)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(4, $event.detail.checked)"
+  >
+    {{ 'ui.days.thu' | translate }}
+  </ion-checkbox>
 
-    <div class="inline-block">
-      <p-check-box [value]="5" inputId="fri" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="fri">{{ 'ui.days.fri' | translate }}</label>
-    </div>
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(5)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(5, $event.detail.checked)"
+  >
+    {{ 'ui.days.fri' | translate }}
+  </ion-checkbox>
 
-    <div class="inline-block">
-      <p-check-box [value]="6" inputId="sat" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="sat">{{ 'ui.days.sat' | translate }}</label>
-    </div>
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(6)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(6, $event.detail.checked)"
+  >
+    {{ 'ui.days.sat' | translate }}
+  </ion-checkbox>
 
-    <div class="inline-block">
-      <p-check-box [value]="0" inputId="sun" [formControl]="daysOfWeek"></p-check-box>
-      <label class="ml-2" for="sun">{{ 'ui.days.sun' | translate }}</label>
-    </div>
-  </div>
+  <ion-checkbox
+    mode="md"
+    [checked]="isDaySelected(0)"
+    [disabled]="disabled()"
+    labelPlacement="end"
+    justify="start"
+    (ionChange)="setDaySelected(0, $event.detail.checked)"
+  >
+    {{ 'ui.days.sun' | translate }}
+  </ion-checkbox>
+</div>
 }

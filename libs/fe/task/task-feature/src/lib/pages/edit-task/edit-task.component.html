@@ -1,35 +1,34 @@
-<sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false"
-               [routerLink]="['../']">{{ 'tasks.edit_task' | translate }}
-</sp-page-title>
+@let isRefreshing = (isRefreshing$ | async) ?? false;
 
-@if ((isLoading$ | async)) {
-  <div class="flex flex-col gap-4">
-    <p-skeleton class="animate-fadein" height="43px"></p-skeleton>
-    <p-skeleton class="animate-fadein" height="300px"></p-skeleton>
-  </div>
-}
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title [showBackButton]="true" [title]="'tasks.edit_task' | translate"></sp-page-title>
+  </ion-toolbar>
+</ion-header>
 
-@if (task(); as task) {
-  <div class="flex flex-col gap-2">
-    <sp-schedule-settings
-      [task]="task"
-      [devices]="devices()"
-      [isLoading]="(isRefreshing$ | async) ?? false"
-      (taskChange)="onUpdateTask($event)"
-    ></sp-schedule-settings>
+<ion-content class="ion-padding">
+  @if ((isLoading$ | async)) {
+    <div class="flex flex-col">
+      <ion-skeleton-text [animated]="true" class="w-[60px] h-[25px]"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" class="w-full h-[43px]"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" class="w-full h-[300px]"></ion-skeleton-text>
+    </div>
+  } @else {
+    @if (task(); as task) {
+      <div class="flex flex-col gap-2">
+        <sp-schedule-settings
+          [task]="task"
+          [devices]="devices()"
+          [isLoading]="isRefreshing"
+          (taskChange)="onUpdateTask($event)"
+        ></sp-schedule-settings>
 
-    <p-divider></p-divider>
+        <sp-divider></sp-divider>
 
-    <p-button
-      [label]="'tasks.delete' | translate"
-      [outlined]="true"
-      [fluid]="true"
-      [disabled]="(isRefreshing$ | async) ?? false"
-      icon="pi pi-trash"
-      (onClick)="deleteTask()"
-      severity="danger"
-      size="large"
-    ></p-button>
-
-  </div>
-}
+        <ion-button color="danger" fill="outline" (click)="deleteTask()" [disabled]="isRefreshing">
+          {{ 'tasks.delete' | translate }}
+        </ion-button>
+      </div>
+    }
+  }
+</ion-content>

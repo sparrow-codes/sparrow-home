@@ -1,64 +1,52 @@
-<form [formGroup]="formGroup" class="w-full flex flex-col gap-6">
-  <p-floatlabel variant="on">
-    <input pInputText id="firstName" fluid="true" pSize="large" type="text" [formControlName]="formName.FIRST_NAME" />
-    <label for="firstName">{{ 'user.first_name' | translate }}*</label>
-  </p-floatlabel>
+<form [formGroup]="formGroup" (ngSubmit)="onSave()">
+  <div class="flex flex-col gap-2">
+    <ion-label>{{ 'user.first_name' | translate }}*</ion-label>
+    <ion-input mode="md" class="mb-1" [placeholder]="'user.first_name' | translate"
+               [formControlName]="formName.FIRST_NAME" fill="outline" shape="round"></ion-input>
 
-  <p-floatlabel variant="on">
-    <input pInputText id="lastName" fluid="true" pSize="large" type="text" [formControlName]="formName.LAST_NAME" />
-    <label for="lastName">{{ 'user.last_name' | translate }}</label>
-  </p-floatlabel>
+    <ion-label>{{ 'user.last_name' | translate }}*</ion-label>
+    <ion-input mode="md" [placeholder]="'user.last_name' | translate" class="mb-1"
+               [formControlName]="formName.LAST_NAME" fill="outline" shape="round"></ion-input>
 
-  <p-floatlabel variant="on">
-    <input pInputText id="email" fluid="true" pSize="large" type="email" [formControlName]="formName.EMAIL" />
-    <label for="email">{{ 'user.email' | translate }}*</label>
-  </p-floatlabel>
+    <ion-label>{{ 'user.email' | translate }}*</ion-label>
+    <ion-input mode="md" [placeholder]="'user.email' | translate" class="mb-1" [formControlName]="formName.EMAIL"
+               type="email" fill="outline" shape="round"></ion-input>
 
-  <p-floatlabel variant="on">
-    <p-password
-      id="password"
-      fluid="true"
-      size="large"
-      [feedback]="true"
-      [toggleMask]="true"
-      [formControlName]="formName.PASSWORD"
-      [promptLabel]="'user.password_prompt' | translate"
-      [weakLabel]="'user.password_weak' | translate"
-      [mediumLabel]="'user.password_medium' | translate"
-      [strongLabel]="'user.password_strong' | translate"
-    ></p-password>
-    <label for="password">{{ 'user.password' | translate }}*</label>
-  </p-floatlabel>
+    <ion-label>{{ 'user.password' | translate }}*</ion-label>
+    <ion-input mode="md"
+               [formControlName]="formName.PASSWORD"
+               fill="outline"
+               shape="round"
+               class="mb-1"
+               [placeholder]="'user.password' | translate"
+               type="password"
+    >
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
 
-  <p-floatlabel variant="on">
-    <p-password
-      id="repeatPassword"
-      fluid="true"
-      size="large"
-      [feedback]="false"
-      [toggleMask]="true"
-      [formControlName]="formName.REPEAT_PASSWORD"
-    ></p-password>
-    <label for="repeatPassword">{{ 'user.repeat_password' | translate }}*</label>
-  </p-floatlabel>
+    <ion-label>{{ 'user.repeat_password' | translate }}*</ion-label>
+    <ion-input mode="md"
+               [formControlName]="formName.REPEAT_PASSWORD"
+               fill="outline"
+               shape="round"
+               [placeholder]="'user.repeat_password' | translate"
+               type="password"
+    >
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
+  </div>
 
   <div class="min-h-[30px] flex items-center">
     @if (showMismatchPasswordError()) {
-    <span class="text-red-500 text-sm">{{ 'user.passwords_mismatch' | translate }}</span>
+      <span class="text-red-500 text-sm">{{ 'user.passwords_mismatch' | translate }}</span>
     }
   </div>
 
-  <p-button
-    [style]="{ height: '43px' }"
-    fluid="true"
-    size="large"
-    [disabled]="formGroup.invalid || isLoading()"
-    (onClick)="onSave()"
-  >
+  <ion-button [disabled]="formGroup.invalid || isLoading()" type="submit" expand="block">
     @if (!isLoading()) {
-    {{ 'user.create_account' | translate }}
+      {{ 'user.create_account' | translate }}
     } @else {
-    <i class="pi pi-spinner pi-spin"></i>
-    }
-  </p-button>
+      <ion-spinner name="circular"></ion-spinner>
+    }</ion-button
+  >
 </form>

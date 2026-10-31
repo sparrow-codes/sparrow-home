@@ -1,27 +1,25 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
 import {
-  PreloadAllModules,
-  provideRouter,
-  withComponentInputBinding,
-  withPreloading,
-  withViewTransitions,
-} from '@angular/router';
+  ApplicationConfig,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
+import { PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideIonicAngular } from '@ionic/angular';
 import { provideTranslateService, TranslateCompiler } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { APP_TITLE, authInterceptor, initializeApp, SHORT_APP_TITLE } from '@sparrow-home/core';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
-import { MessageService } from 'primeng/api';
-import { providePrimeNG } from 'primeng/config';
-import { DialogService } from 'primeng/dynamicdialog';
 
-import { Noir } from '../theme/noir';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(appRoutes, withPreloading(PreloadAllModules), withComponentInputBinding(), withViewTransitions()),
+    provideBrowserGlobalErrorListeners(),
+    provideIonicAngular({ mode: 'ios' }),
+    provideRouter(appRoutes, withPreloading(PreloadAllModules), withComponentInputBinding()),
     provideAppInitializer(initializeApp),
     {
       provide: APP_TITLE,
@@ -44,21 +42,9 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json',
       }),
     }),
-    providePrimeNG({
-      ripple: true,
-      theme: {
-        preset: Noir,
-        options: {
-          darkModeSelector: '.dark',
-          floatLabel: 'in',
-        },
-      },
-    }),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: true,
     }),
-    MessageService,
-    DialogService,
   ],
 };

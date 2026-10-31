@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSkeletonText, IonToolbar } from '@ionic/angular';
 import { bootstrapClockHistory } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
-import { OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
-import { Button } from 'primeng/button';
-import { Divider } from 'primeng/divider';
-import { Skeleton } from 'primeng/skeleton';
+import { Divider, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { Observable } from 'rxjs';
 
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
@@ -19,13 +17,19 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
     CommonModule,
     PageTitleComponent,
     TaskCardComponent,
-    Button,
     RouterLink,
     TranslatePipe,
     NgIcon,
     OnboardingComponent,
-    Skeleton,
     Divider,
+    IonContent,
+    IonHeader,
+    IonButtons,
+    IonToolbar,
+    IonButton,
+    IonIcon,
+    Divider,
+    IonSkeletonText,
   ],
   templateUrl: './task-list.component.html',
   providers: [provideIcons({ bootstrapClockHistory })],

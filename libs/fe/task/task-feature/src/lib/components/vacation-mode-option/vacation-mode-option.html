@@ -2,8 +2,8 @@
 
 <div class="flex justify-between items-center">
   <div class="flex gap-2">
-    <ng-icon name="bootstrapAirplaneFill" [class.text-blue-500]="runOnVacation" class="rotate-45"></ng-icon>
+    <ng-icon name="bootstrapAirplaneFill" [class.text-blue-500]="runOnVacation" class="rotate-45 mt-[1px]"></ng-icon>
     <span class="text-sm">{{ 'tasks.run_on_vacation' | translate }}</span>
   </div>
-  <p-toggle-switch [ngModel]="runOnVacation" (onChange)="updateModel($event.checked)"></p-toggle-switch>
+  <ion-toggle [ngModel]="runOnVacation" (ngModelChange)="updateModel($event)"></ion-toggle>
 </div>

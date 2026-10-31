@@ -1,0 +1,16 @@
+:root {
+    --ion-card-background: white;
+
+  ion-card {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+
+  ion-card-header {
+    --background: #eeeef2;
+    border-bottom: 1px solid #e4e7ed;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}

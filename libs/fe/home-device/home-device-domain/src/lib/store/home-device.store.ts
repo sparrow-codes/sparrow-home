@@ -6,7 +6,7 @@ import { patchState, signalStore, withComputed, withMethods, withProps, withStat
 import { addEntity, removeEntity, setAllEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { RoutePath } from '@sparrow-home/core';
+import { RoutePath, ToastService } from '@sparrow-home/core';
 import {
   HomeDevice,
   toHomeDevice,
@@ -17,7 +17,6 @@ import {
   withRefreshing,
   withRefreshingObjects,
 } from '@sparrow-home/utils';
-import { MessageService } from 'primeng/api';
 import { finalize, pipe, switchMap, tap } from 'rxjs';
 
 import { DeviceSettings } from '../model';
@@ -66,7 +65,7 @@ export const HomeDeviceStore = signalStore(
   withMethods(
     (
       store,
-      messageService = inject(MessageService),
+      messageService = inject(ToastService),
       translateService = inject(TranslateService),
       router = inject(Router)
     ) => ({

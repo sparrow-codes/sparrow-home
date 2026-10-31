@@ -1,5 +1,3 @@
-import PrimeUI from 'tailwindcss-primeui';
-
 const { createGlobPatternsForDependencies } = require('@nx/angular/tailwind');
 const { join } = require('path');
 
@@ -10,5 +8,4 @@ module.exports = {
     extend: {},
   },
   darkMode: 'class',
-  plugins: [PrimeUI],
 };

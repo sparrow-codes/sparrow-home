@@ -1,21 +1,12 @@
-<div class="flex flex-col p-4 max-w-xl m-auto">
-  <p-card>
-    <div class="flex flex-row justify-between items-center mb-6">
-      <p-button
-        (onClick)="navigateToLogin()"
-        icon="pi pi-arrow-left"
-        iconPos="left"
-        [link]="true"
-        size="small"
-        class="ml-[-8px]"
-        [label]="'common.back' | translate"
-      >
-      </p-button>
-      <span class="text-md block font-semibold">{{ 'user.create_account' | translate }}</span>
-    </div>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title [showBackButton]="true" [title]="'user.create_account' | translate"></sp-page-title>
+  </ion-toolbar>
+</ion-header>
 
-    <sp-create-user-form [isLoading]="(isLoading$ | async) ?? false" (formSave)="dataService.createAdditionalUser($event)"></sp-create-user-form>
+<ion-content class="ion-padding">
+  <sp-create-user-form [isLoading]="(isLoading$ | async) ?? false"
+                       (formSave)="dataService.createAdditionalUser($event)"></sp-create-user-form>
+</ion-content>
 
-    <span class="text-xs text-gray-500 mt-4 block">{{ 'user.required_fields' | translate }}</span>
-  </p-card>
-</div>
+

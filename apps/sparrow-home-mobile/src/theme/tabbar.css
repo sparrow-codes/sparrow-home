@@ -1,0 +1,6 @@
+:root {
+  ion-tab-bar {
+    --background: white;
+    height: 60px;
+  }
+}

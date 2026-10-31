@@ -1,30 +1,41 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, InputSignal, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonContent,
+  IonHeader,
+  IonLabel,
+  IonList,
+  IonProgressBar,
+  IonSelect,
+  IonSelectOption,
+  IonSkeletonText,
+  IonToggle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular';
+import { bootstrapInfoCircle, bootstrapPencil, bootstrapTrash, bootstrapXCircleFill } from '@ng-icons/bootstrap-icons';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import {
   BatteryStatusComponent,
   ConfirmationDialogComponent,
-  ConfirmationDialogData,
   DeviceActionComponent,
   DeviceTypeComponent,
+  Divider,
   PageTitleComponent,
 } from '@sparrow-home/ui';
-import { DeviceType, HomeDevice, humanize } from '@sparrow-home/utils';
-import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
-import { Checkbox } from 'primeng/checkbox';
-import { Dialog } from 'primeng/dialog';
-import { Divider } from 'primeng/divider';
-import { DialogService } from 'primeng/dynamicdialog';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
-import { Skeleton } from 'primeng/skeleton';
-import { filter, Observable, take } from 'rxjs';
+import { DeviceType, HomeDevice, humanize, HumanizePipe } from '@sparrow-home/utils';
+import { Observable } from 'rxjs';
 
-import { DeviceParamComponent } from '../../components/device-param/device-param.component';
+import { EditDeviceDialog } from '../../components/edit-device-dialog/edit-device-dialog';
 import { SignalStrengthComponent } from '../../components/signal-strength/signal-strength.component';
 
 @Component({
@@ -34,21 +45,32 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     PageTitleComponent,
     DeviceTypeComponent,
     SignalStrengthComponent,
-    BatteryStatusComponent,
     FormsModule,
-    Button,
-    Divider,
-    Card,
-    Dialog,
-    InputText,
-    DeviceParamComponent,
     DeviceActionComponent,
-    Checkbox,
     TranslatePipe,
-    Skeleton,
-    FloatLabel,
-    Select,
+    IonCard,
+    IonCardContent,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonButton,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonList,
+    HumanizePipe,
+    IonLabel,
+    IonToggle,
+    IonSelect,
+    IonSelectOption,
+    IonButtons,
+    TranslatePipe,
+    Divider,
+    BatteryStatusComponent,
+    NgIcon,
+    IonSkeletonText,
+    IonProgressBar,
   ],
+  providers: [provideIcons({ bootstrapInfoCircle, bootstrapPencil, bootstrapTrash, bootstrapXCircleFill })],
   templateUrl: './device-details.component.html',
 })
 export class DeviceDetailsComponent implements OnInit {
@@ -56,11 +78,10 @@ export class DeviceDetailsComponent implements OnInit {
 
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
   private readonly _translateService: TranslateService = inject(TranslateService);
-  private readonly _dialogService: DialogService = inject(DialogService);
+  private readonly _modalController: ModalController = inject(ModalController);
 
   protected readonly isLoading$: Observable<boolean> = this._facadeService.isLoading$;
   protected readonly isRefreshing$: Observable<boolean> = this._facadeService.isRefreshing$;
-  protected readonly showEditDialog: WritableSignal<boolean> = signal(false);
   protected readonly deviceDetails: Signal<HomeDevice | null> = this._facadeService.homeDeviceDetails;
   protected readonly params: Signal<[string, string][]> = computed(() =>
     Object.entries(this.deviceDetails()?.params ?? {})
@@ -88,26 +109,44 @@ export class DeviceDetailsComponent implements OnInit {
     }
   }
 
-  protected onDeviceDelete(id: number, name: string): void {
-    this._dialogService
-      .open(ConfirmationDialogComponent, {
-        modal: true,
-        header: this._translateService.instant('home.remove_device'),
-        width: '90vw',
-        data: {
-          content: this._translateService.instant('home.remove_device_confirmation_content', { deviceName: name }),
-        } as ConfirmationDialogData,
-      })
-      ?.onClose.pipe(
-        take(1),
-        filter((result) => !!result)
-      )
-      .subscribe(() => this._facadeService.deleteDevice(id));
+  protected async onDeviceDelete(id: number, name: string): Promise<void> {
+    const modal: HTMLIonModalElement = await this._modalController.create({
+      component: ConfirmationDialogComponent,
+
+      componentProps: {
+        content: this._translateService.instant('home.remove_device_confirmation_content', { deviceName: name }),
+      },
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        this._facadeService.deleteDevice(id);
+      }
+
+      modal.remove();
+    });
   }
 
-  protected onDeviceNameChange(id: number, value: string): void {
-    this._facadeService.changeDeviceName(id, value);
-    this.showEditDialog.set(false);
+  protected async onDeviceNameChange(id: number, value: string): Promise<void> {
+    const modal: HTMLIonModalElement = await this._modalController.create({
+      component: EditDeviceDialog,
+      cssClass: '.small-modal',
+      componentProps: {
+        deviceName: value,
+      },
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        this._facadeService.changeDeviceName(id, result.data);
+      }
+
+      modal.remove();
+    });
   }
 
   protected publishZigbeeEvent(deviceId: string, payload: Record<string, unknown>): void {

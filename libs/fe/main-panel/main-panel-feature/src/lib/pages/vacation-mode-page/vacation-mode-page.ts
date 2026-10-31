@@ -2,15 +2,12 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { IonBadge, IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonToggle, IonToolbar } from '@ionic/angular';
 import { bootstrapChevronRight, bootstrapPlayCircle } from '@ng-icons/bootstrap-icons';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MainPanelStore, mainPanelStore } from '@sparrow-home/main-panel-domain';
-import { PageTitleComponent } from '@sparrow-home/ui';
-import { Card } from 'primeng/card';
-import { Divider } from 'primeng/divider';
-import { Tag } from 'primeng/tag';
-import { ToggleSwitch } from 'primeng/toggleswitch';
+import { Divider, PageTitleComponent } from '@sparrow-home/ui';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -19,13 +16,19 @@ import { Observable } from 'rxjs';
     PageTitleComponent,
     TranslatePipe,
     AsyncPipe,
-    Card,
     NgIconComponent,
     Divider,
-    ToggleSwitch,
+    IonToggle,
     RouterLink,
-    Tag,
+    IonBadge,
+    IonIcon,
     FormsModule,
+    IonContent,
+    IonCard,
+    IonCardContent,
+    IonHeader,
+    IonToolbar,
+    Divider,
   ],
   providers: [provideIcons({ bootstrapChevronRight, bootstrapPlayCircle })],
   templateUrl: './vacation-mode-page.html',

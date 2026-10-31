@@ -1,7 +1,11 @@
-<div class="flex flex-col h-full">
-  <sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false" [routerLink]="['../']">{{'tasks.new_task' | translate}}</sp-page-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title [title]="'tasks.new_task' | translate" [showBackButton]="true"></sp-page-title>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content class="ion-padding">
   <sp-schedule-settings [task]="null" [devices]="devices()" [isLoading]="(isRefreshing$ | async) ?? false"
                         (taskChange)="onCreateTask($event)"></sp-schedule-settings>
-</div>
+</ion-content>
 

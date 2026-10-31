@@ -1,57 +1,53 @@
-@switch (action().type) { @case ('boolean') {
-<div class="w-full flex justify-between items-center">
-  @if (!short()) {
-    <div class="text-sm">{{ action().key | humanize }}</div>
+@switch (action().type) {
+  @case ('boolean') {
+    <div class="grid grid-cols-2 gap-2 items-center">
+      @if (!short()) {
+        <ion-label slot="start">{{ action().key | humanize }}</ion-label>
+      }
+
+      <ion-segment [class.col-span-2]="short()"
+        [ngModel]="action().currentValue || action().enumValues[0]"
+        (ngModelChange)="setValue($event)"
+      >
+        @for (option of selectButtonOptions(); track option.value) {
+          <ion-segment-button [value]="option.value" [class.segment-active]="option.value === action().currentValue">
+            <ion-label>{{ option.key }}</ion-label>
+          </ion-segment-button>
+        }
+      </ion-segment>
+    </div>
+
   }
-  <p-selectbutton
-    [options]="selectButtonOptions()"
-    [ngModel]="action().currentValue || action().enumValues[0]"
-    (onChange)="setValue($event.value)"
-    [disabled]="disabled()"
-    [allowEmpty]="false"
-    optionLabel="key"
-    optionValue="value"
-  />
-</div>
-} @case ('enum') { @if (options().length > 1) {
-<p-float-label [variant]="'on'">
-  <p-select
-    size="large"
-    [ngModel]="action().currentValue ?? null"
-    [disabled]="disabled()"
-    [fluid]="true"
-    [options]="options()"
-    optionLabel="key"
-    optionValue="value"
-    ariaLabel="enum"
-    (onChange)="setValue($event.value)"
-  ></p-select>
-  <label for="enum">{{ action().key | humanize }}</label>
-</p-float-label>
-} @if (options().length === 1) {
-<div class="flex justify-end">
-  <p-button
-    size="large"
-    [disabled]="disabled()"
-    fluid
-    class="w-[80px]"
-    variant="outlined"
-    (onClick)="setValue(options()[0].value)"
-  >
-    {{ action().key | humanize }}
-  </p-button>
-</div>
-} } @case ('number') {
-<div class="flex flex-col gap-2">
-  <p-slider
-    [disabled]="disabled()"
-    [ngModel]="Number(action().currentValue)"
-    #slider
-    [min]="action().range?.min ?? 0"
-    [max]="action().range?.max ?? 10"
-    (onChange)="stateValue.next($event.value)"
-    size="large"
-  ></p-slider>
-  <div class="w-full text-right">{{ action().key | humanize }} {{ slider.value }} {{ action().unit }}</div>
-</div>
-} }
+  @case ('enum') {
+    @if (options().length > 1) {
+        <ion-label class="mb-2">{{ action().key | humanize }}</ion-label>
+        <ion-select mode="md" [interfaceOptions]="{mode: 'ios'}" fill="outline" shape="round" [ngModel]="action().currentValue ?? null" justify="end" interface="action-sheet"
+                    (ngModelChange)="setValue($event)">
+          @for (option of options(); track option.value) {
+            <ion-select-option [value]="option.value">
+              {{ option.key }}
+            </ion-select-option>
+          }
+        </ion-select>
+    }
+    @if (options().length === 1) {
+        <ion-button slot="end" fill="outline" (click)="setValue(options()[0].value)"
+        >{{ action().key | humanize }}
+        </ion-button>
+    }
+  }
+  @case ('number') {
+    <div class="flex flex-col gap-2">
+      <ion-range
+        [disabled]="disabled()"
+        [ngModel]="Number(action().currentValue)"
+        #slider
+        [min]="action().range?.min ?? 0"
+        [max]="action().range?.max ?? 10"
+        [pin]="true"
+        (ionChange)="stateValue.next($any($event).detail.value)"
+      ></ion-range>
+      <div class="w-full text-right">{{ action().key | humanize }} {{ slider.value }} {{ action().unit }}</div>
+    </div>
+  }
+}

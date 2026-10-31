@@ -1,8 +1,13 @@
-<div [innerHTML]="content"></div>
+<div class="ion-padding">
+  <div [innerHTML]="content"></div>
 
-<div class="flex justify-end mt-2">
-  <div class="flex gap-4">
-    <button pButton severity="secondary" (click)="dialogRef.close()">{{ 'common.cancel' | translate }}</button>
-    <button pButton severity="primary" (click)="onConfirm()">{{ 'common.remove' | translate }}</button>
+  <sp-divider></sp-divider>
+
+  <div class="flex justify-end mt-2">
+    <div class="flex gap-4">
+      <ion-button fill="outline" (click)="onCancel()">{{ 'common.cancel' | translate }}</ion-button>
+      <ion-button (click)="onConfirm()">{{ 'common.remove' | translate }}</ion-button>
+    </div>
   </div>
+
 </div>

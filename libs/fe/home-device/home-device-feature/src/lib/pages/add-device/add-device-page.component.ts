@@ -3,14 +3,21 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+  IonSpinner,
+  IonToolbar,
+} from '@ionic/angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { deviceTypeDictionary, PageTitleComponent } from '@sparrow-home/ui';
-import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
 import { Observable } from 'rxjs';
 
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
@@ -20,14 +27,19 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
   imports: [
     CommonModule,
     PageTitleComponent,
-    Card,
     ReactiveFormsModule,
-    InputText,
-    Button,
-    FloatLabel,
-    Select,
     RouterLink,
     TranslatePipe,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    IonLabel,
+    IonButton,
+    IonSpinner,
+    IonIcon,
   ],
   templateUrl: './add-device-page.component.html',
   providers: [CreateDeviceFormService],

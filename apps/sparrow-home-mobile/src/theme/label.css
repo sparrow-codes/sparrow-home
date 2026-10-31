@@ -1,0 +1,7 @@
+:root {
+  ion-label {
+    color: #292929 !important;
+    font-weight: 600;
+    font-size: 0.875rem !important;
+  }
+}
