@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
 
 import { RoutePath } from '../enum';
-import { AuthService } from '../services';
+import { AppStore, appStore } from '../stores/app-store';
 
 export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEvent<unknown>> => {
-  const authService: AuthService = inject(AuthService);
-  const authToken: string | null = authService.token;
+  const store: AppStore = inject(appStore);
+  const authToken: string | null = store.token();
   const router: Router = inject(Router);
 
   if (!authToken) {
@@ -17,7 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEv
 
   const request: HttpRequest<unknown> = req.clone({
     setHeaders: {
-      Authorization: 'Bearer ' + (authService.token ?? ''),
+      Authorization: 'Bearer ' + authToken,
     },
   });
   return handleRequest(request);

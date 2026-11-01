@@ -7,17 +7,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div
-    class="animate-fadein relative w-full h-[150px] xl:h-[350px] md:h-[250px] rounded-xl overflow-hidden shadow-sm bg-cover bg-center"
+<ion-content>
+  <div class="ion-padding-horizontal">
+    <div
+    class="relative w-full h-[150px] xl:h-[350px] md:h-[250px] rounded-xl overflow-hidden shadow-sm bg-cover bg-center"
     style="background-image: url('assets/vacation-view.png')"
   >
     <div class="absolute bottom-4 bg-black/50 backdrop-blur px-4 py-2 rounded-r text-right">
       <span class="text-md font-medium text-white">{{ 'main_panel.vacation_mode_caption' | translate }}</span>
     </div>
   </div>
+  </div>
+  
 
-  <ion-card class="mt-2">
+  <ion-card class="mt-4 text-sp-text">
     <ion-card-content>
       <div class="flex justify-between items-center">
         <div class="flex flex-col gap-2">
@@ -34,30 +37,24 @@
   </ion-card>
 
   <sp-divider></sp-divider>
-  <span class="text-sm font-bold">{{ 'main_panel.quick_actions' | translate }}</span>
+  <span class="text-sm font-bold ml-4">{{ 'main_panel.quick_actions' | translate }}</span>
 
-  <ion-card class="mt-2">
-    <ion-card-content>
-    <a
-      class="animate-fadein flex items-center justify-between w-full cursor-pointer hover:bg-transparent transition no-underline text-inherit"
-      [routerLink]="['../../', 'automation']"
-      [attr.aria-label]="'main_panel.go_to_automation' | translate"
-    >
-      <div class="flex items-center gap-3">
-        <div class="p-2 bg-sp-primary-700 rounded-md flex items-center justify-center">
-          <ng-icon name="bootstrapPlayCircle" size="2rem"></ng-icon>
-        </div>
-        <div class="flex flex-col gap-1">
-          <div class="font-semibold">{{ 'main_panel.automation' | translate }}</div>
-          <div class="text-sm">{{ 'main_panel.vacation_mode_automation_description' | translate }}</div>
+  <div class="ion-padding-horizontal">
+    <ion-item class="mt-2" [button]="true" [routerLink]="['../../', 'automation']" lines="none" [attr.aria-label]="'main_panel.go_to_automation' | translate">
+      <div class="animate-fadein flex items-center w-full ion-padding-vertical">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-sp-primary-700 text-white rounded-md flex items-center justify-center">
+            <ng-icon name="bootstrapPlayCircle" size="24px"></ng-icon>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="font-semibold">{{ 'main_panel.automation' | translate }}</div>
+            <div class="text-sm">{{ 'main_panel.vacation_mode_automation_description' | translate }}</div>
+          </div>
         </div>
       </div>
+    </ion-item>
+  </div>
 
-      <ion-icon name="chevron-forward-outline" class="text-sp-text-muted"></ion-icon>
-    </a>
-    </ion-card-content>
-  </ion-card>
-
-  <span class="mt-4 text-left p-6 block">{{ 'main_panel.vacation_mode_description' | translate }}</span>
+  <span class="mt-4 text-left p-6 block text-sp-text">{{ 'main_panel.vacation_mode_description' | translate }}</span>
 </ion-content>
 

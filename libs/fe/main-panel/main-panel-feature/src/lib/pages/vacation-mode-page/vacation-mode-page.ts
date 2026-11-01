@@ -8,7 +8,7 @@ import {
   IonCardContent,
   IonContent,
   IonHeader,
-  IonIcon,
+  IonItem,
   IonToggle,
   IonToolbar,
 } from '@ionic/angular';
@@ -30,7 +30,7 @@ import { Observable } from 'rxjs';
     IonToggle,
     RouterLink,
     IonBadge,
-    IonIcon,
+    IonItem,
     FormsModule,
     IonContent,
     IonCard,

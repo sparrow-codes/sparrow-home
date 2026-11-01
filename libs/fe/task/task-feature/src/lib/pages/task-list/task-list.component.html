@@ -1,6 +1,8 @@
+@let isRefreshing = (isRefreshing$ | async) ?? false;
+
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <sp-page-title [title]="'tasks.title' | translate"></sp-page-title>
+    <sp-page-title [title]="'tasks.title' | translate" [subtitle]="'tasks.subtitle' | translate"></sp-page-title>
 
     <ion-buttons slot="end">
       <ion-button
@@ -16,21 +18,59 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <div class="h-[4px]">
+    @if (isRefreshing) {
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </div>
 </ion-header>
 
 <ion-content class="ion-padding">
 
   <div class="w-full flex flex-col h-full">
 
-    <span class="h-[45px]">
     @if (noSchedules() === false) {
-      {{ 'tasks.count' | translate:{ count: tasks().length } }}
+      <ion-card class="mx-0 mt-0 mb-2">
+        <ion-card-content>
+          <div class="grid grid-cols-3 items-center">
+            @for (stat of stats(); track stat.labelKey; let isFirst = $first; let isLast = $last) {
+              <div
+                class="flex items-center gap-2 px-2 border-y-0"
+                [class.border-x]="!isFirst && !isLast"
+                [class.border-solid]="!isFirst && !isLast"
+                [class.border-sp-border]="!isFirst && !isLast"
+              >
+                <div class="p-2 flex items-center rounded-full bg-sp-surface-sunken">
+                  <ion-icon [name]="stat.icon" color="secondary" class="text-xl"></ion-icon>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="text-sm text-sp-text-muted truncate">{{ stat.labelKey | translate }}</span>
+                  <span class="text-sp-text" style="font-weight: 600">{{ stat.value }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </ion-card-content>
+      </ion-card>
     }
-  </span>
 
+
+    @if (noSchedules() === false) {
+      <ion-input
+        class="my-4"
+        mode="md"
+        fill="outline"
+        shape="round"
+        [placeholder]="'tasks.search' | translate"
+        [debounce]="300"
+        (ionInput)="searchTerm.set($any($event.target).value ?? '')"
+      >
+        <ion-icon slot="start" name="search-outline" aria-hidden="true"></ion-icon>
+      </ion-input>
+    }
 
     <div class="flex flex-col gap-2">
-      <sp-divider></sp-divider>
       @if (isLoading$ | async) {
         <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
         <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
@@ -38,10 +78,14 @@
         <ion-skeleton-text class="animate-fadein" height="80px"></ion-skeleton-text>
       }
         @defer () {
-          @for (task of tasks(); track task.id) {
+          @for (task of filteredTasks(); track task.id) {
             <sp-task-card [refreshingObjects]="refreshingObjects()" class="animate-fadein" [task]="task"
                           (isActive)="activateTask(task.id, $event)"></sp-task-card>
           }
+        }
+
+        @if (noSchedules() === false && filteredTasks().length === 0) {
+          <div class="text-sp-text-muted text-sm w-full text-center py-4">{{ 'tasks.no_search_results' | translate }}</div>
         }
 
         @if (noSchedules() === true) {

@@ -24,5 +24,11 @@
       [newUserLink]="createNewUserLink"
       (login)="dataService.login($event)"
     ></sp-login-form>
+
+    <div class="flex justify-center items-center h-8 mt-4">
+      @if ((isLoading$ | async) ?? false) {
+        <ion-spinner name="circular" color="secondary"></ion-spinner>
+      }
+    </div>
   </div>
 </ion-content>

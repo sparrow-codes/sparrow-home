@@ -12,6 +12,7 @@ import { catchError, filter, first, map, Observable, of, switchMap } from 'rxjs'
 import { AppConfig, Configuration } from '../models';
 import { VisibilityService } from '../services/';
 import { ToastService } from '../services/toast.service';
+import { withAuthentication } from './features';
 
 export type CoreState = {
   appConfig: AppConfig | null;
@@ -29,6 +30,7 @@ export const appStore = signalStore(
     configuration: null,
   }),
   withThemeMode(),
+  withAuthentication(),
   withMethods((store, apiService = inject(SetupApiService), messageService = inject(ToastService)) => ({
     saveAppConfig: (appConfig: AppConfig): void => {
       patchState(store, { appConfig });

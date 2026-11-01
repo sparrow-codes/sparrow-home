@@ -53,8 +53,15 @@
 :root {
   ion-datetime {
     --background: var(--sp-surface-raised);
-    --background-rgb: var(--ion-color-light-rgb);
+    --background-rgb: 255,255,255;
     --title-color: var(--sp-text);
     border-radius: var(--sp-radius-md);
   }
+}
+
+/* background-rgb feeds the time wheel fade and must match --background */
+:root.ion-palette-dark ion-datetime {
+  --background-rgb: 31,41,55;
+  --wheel-highlight-background: rgba(var(--ion-color-secondary-rgb), 0.2);
+  --wheel-fade-background-rgb: 31,41,55;
 }

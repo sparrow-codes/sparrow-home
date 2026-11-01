@@ -6,6 +6,10 @@
     -webkit-box-shadow: none;
   }
 
+  ion-card-content {
+    color: var(--sp-text);
+  }
+
   ion-card-header {
     --background: var(--sp-surface-sunken);
     border-bottom: 1px solid var(--sp-border);

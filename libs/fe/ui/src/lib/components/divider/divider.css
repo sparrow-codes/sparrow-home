@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.sp-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--sp-border) 20%,
+    var(--sp-border) 80%,
+    transparent
+  );
+}

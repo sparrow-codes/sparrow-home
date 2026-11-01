@@ -9,7 +9,7 @@ export const configurationReadyGuard: CanActivateFn = (): Observable<boolean | U
   const dataFacadeService: DataFacadeService = inject(DataFacadeService);
   const router: Router = inject(Router);
 
-  if (dataFacadeService.configurationReady() || true) {
+  if (dataFacadeService.configurationReady() || dataFacadeService.isUserLoggedIn) {
     return true;
   }
 

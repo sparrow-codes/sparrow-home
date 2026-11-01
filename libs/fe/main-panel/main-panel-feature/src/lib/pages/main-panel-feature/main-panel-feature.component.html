@@ -1,9 +1,10 @@
-@let isRefreshing = (isRefreshing$ | async) ?? false; @let isLoading = (isLoading$ | async) ?? false;
+@let isRefreshing = (isRefreshing$ | async) ?? false; 
+@let isLoading = (isLoading$ | async) ?? false;
 
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <sp-page-title
-      [title]="nrOfDevices() ? ('main_panel.title' | translate) : ('main_panel.welcome' | translate)"
+      [title]="nrOfDevices() || isLoading ? ('main_panel.title' | translate) : ('main_panel.welcome' | translate)"
     ></sp-page-title>
     <ion-buttons slot="end">
       <sp-vacation-mode-button [isVacationMode]="isVacationMode()"></sp-vacation-mode-button>

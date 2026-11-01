@@ -6,13 +6,18 @@
 
 <ion-content>
 @if ((isLoading$ | async)) {
-  <ion-skeleton-text [animated]="true" class="animate-fadein h-[300px]"></ion-skeleton-text>
+  <div class="ion-padding">
+    <ion-skeleton-text [animated]="true" class="h-[200px]"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-[80px]"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-[80px]"></ion-skeleton-text>
+  </div>
+  
 } @else if (user(); as user) {
 
   <ion-card>
     <ion-card-content>
       <div class="w-full">
-        <div class="flex flex-col items-center text-center gap-4 py-6">
+        <div class="flex flex-col items-center text-center gap-4">
           <ion-avatar class="w-20 h-20 flex items-center justify-center bg-sp-surface-sunken text-sp-text text-3xl font-semibold uppercase">
             {{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}
           </ion-avatar>
@@ -26,30 +31,33 @@
 
           <span class="text-sp-text-muted text-sm">{{ user.email }}</span>
         </div>
-
-        @if (additionalUsers()?.length) {
-          <div class="flex flex-col gap-2 mb-6">
-            <span class="font-semibold text-sm">{{ 'user.additional_users_list' | translate }}</span>
-
-            @for (user of additionalUsers(); track user.id) {
-              <div class="flex justify-between items-center border-b border-sp-border py-2 text-sm">
-        <span>
-          {{ user.firstName }}
-          @if (user.lastName) {
-            {{ ' ' + user.lastName }}
-          }
-        </span>
-                <ion-toggle
-                  [ngModel]="user.isActive"
-                  (ionChange)="handleUserActivatedToggle($event.detail.checked, user.id)"
-                ></ion-toggle>
-              </div>
-            }
-          </div>
-        }
       </div>
     </ion-card-content>
   </ion-card>
+
+  @if (additionalUsers()?.length) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>{{ 'user.additional_users_list' | translate }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        @for (additional of additionalUsers(); track additional.id) {
+          <div class="flex justify-between items-center border-b border-sp-border last:border-b-0 py-2 text-sm">
+            <span>
+              {{ additional.firstName }}
+              @if (additional.lastName) {
+                {{ ' ' + additional.lastName }}
+              }
+            </span>
+            <ion-toggle
+              [ngModel]="additional.isActive"
+              (ionChange)="handleUserActivatedToggle($event.detail.checked, additional.id)"
+            ></ion-toggle>
+          </div>
+        }
+      </ion-card-content>
+    </ion-card>
+  }
 
   <sp-theme-mode [isDarkMode]="isDarkMode()" (toggleDarkMode)="toggleThemeMode()"></sp-theme-mode>
 

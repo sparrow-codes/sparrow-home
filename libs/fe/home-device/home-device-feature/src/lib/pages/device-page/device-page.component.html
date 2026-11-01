@@ -31,14 +31,16 @@
         placeholder="Search for device..."
         [debounce]="300"
         [formControl]="searchControl"
-      />
+      >
+        <ion-icon slot="start" name="search-outline" aria-hidden="true"></ion-icon>
+      </ion-input>
     </div>
 
   }
 
-  <div class="relative mt-2">
+  <div class="h-[4px] mt-2">
     @if (refreshing) {
-      <ion-progress-bar class="absolute" type="indeterminate"></ion-progress-bar>
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
     }
   </div>
 </ion-header>

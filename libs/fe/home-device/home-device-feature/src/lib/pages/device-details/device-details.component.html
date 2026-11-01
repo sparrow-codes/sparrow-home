@@ -23,15 +23,15 @@
       }
     </ion-buttons>
   </ion-toolbar>
+
+  <div class="h-[4px]">
+    @if (refreshing) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </div>
 </ion-header>
 
 <ion-content>
-  <div class="relative">
-    @if (refreshing) {
-    <ion-progress-bar class="absolute" type="indeterminate"></ion-progress-bar>
-    }
-  </div>
-
   @if (isLoading$ | async) {
   <div class="ion-padding">
     <ion-skeleton-text [animated]="true" class="h-[300px] mb-4"></ion-skeleton-text>
@@ -127,8 +127,8 @@
           <ng-icon name="bootstrapXCircleFill"></ng-icon>
         </ion-button>
       </div>
-      <div class="flex gap-2 justify-between text-sm text-sp-text-muted mt-4 bg-sp-surface-sunken rounded">
-        <ng-icon name="bootstrapInfoCircle" class="text-sm"></ng-icon>
+      <div class="flex gap-2 p-2 items-start text-sm text-sp-text-muted mt-4 bg-sp-surface-sunken rounded">
+        <ng-icon name="bootstrapInfoCircle" size="1rem" class="min-w-[1rem] mt-0.5"></ng-icon>
         <span>{{ 'home.show-quick-param' | translate }}</span>
       </div>
       } @if (mainActions().length) {
@@ -163,13 +163,11 @@
           <ng-icon name="bootstrapXCircleFill"></ng-icon>
         </ion-button>
       </div>
-      <div class="flex gap-2 justify-between text-sm text-sp-text-muted mt-4 bg-sp-surface-sunken">
-        <ng-icon name="bootstrapInfoCircle" class="text-sm"></ng-icon>
+      <div class="flex gap-2 p-2 items-start text-sm text-sp-text-muted mt-4 bg-sp-surface-sunken rounded">
+        <ng-icon name="bootstrapInfoCircle" size="1rem" class="min-w-[1rem] mt-0.5"></ng-icon>
         <span>{{ 'home.show-quick-action' | translate }}</span>
       </div>
       }
-
-      <sp-divider></sp-divider>
 
       <div class="flex justify-between items-center mt-4">
         <ion-label>Id:</ion-label>

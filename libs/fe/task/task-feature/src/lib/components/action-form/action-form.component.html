@@ -46,13 +46,13 @@
                   presentation="time"></ion-datetime>
   </div>
 
-  <sp-divider></sp-divider>
-
   <sp-days-of-week-control [formControl]="form.controls.daysOfWeek"
                            [notDefinedLabel]="'tasks.default' | translate"></sp-days-of-week-control>
   <sp-divider></sp-divider>
-  <ion-button expand="full" shape="round" color="primary" class="mt-4" [disabled]="form.invalid"
-              (click)="save()">{{ 'common.save' | translate }}
+  <ion-button expand="block" color="primary" class="mt-4" [disabled]="form.invalid"
+              (click)="save()">
+    <ion-icon slot="start" name="save-outline" />
+    {{ 'common.save' | translate }}
   </ion-button>
 </form>
 

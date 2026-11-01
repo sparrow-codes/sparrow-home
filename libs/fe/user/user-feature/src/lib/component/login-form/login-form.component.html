@@ -10,15 +10,10 @@
              [placeholder]="'user.password' | translate" type="password" mode="md" fill="outline">
     <ion-input-password-toggle slot="end"></ion-input-password-toggle>
   </ion-input>
-  <ion-button [disabled]="isLoading()" type="submit">
-    @if (!isLoading()) {
-      {{ 'user.login' | translate }}
-    } @else {
-      <ion-spinner name="circular"></ion-spinner>
-    }
+  <ion-button type="submit" color="secondary" expand="block" class="mt-2" [disabled]="isLoading()">
+    <ion-icon name="log-in-outline" slot="start" />
+    {{ 'user.login' | translate }}
   </ion-button>
-
-
   <a class="text-center text-primary mt-2" [routerLink]="['../', newUserLink()]">
     {{ 'user.create_account' | translate }}
   </a>

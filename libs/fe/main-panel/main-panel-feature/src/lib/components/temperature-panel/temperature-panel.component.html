@@ -21,7 +21,7 @@
       </a>
     } @if (temperature()) {
     <div class="absolute top-4 right-4 bg-[color-mix(in_srgb,var(--sp-surface-raised)_50%,transparent)] backdrop-blur px-4 py-2 rounded-lg text-right text-sp-text-muted">
-      <div class="text-3xl font-semibold leading-none">
+      <div class="text-3xl font-semibold leading-none text-sp-text">
         {{ temperature() + ' °C' }}
       </div>
       <div class="text-sm font-medium text-sp-text">{{ 'main_panel.temperature_home' | translate }}</div>
