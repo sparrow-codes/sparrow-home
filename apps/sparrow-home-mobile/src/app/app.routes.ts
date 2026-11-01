@@ -12,9 +12,7 @@ import {
 } from '@ng-icons/bootstrap-icons';
 import { provideIcons } from '@ng-icons/core';
 import { authGuard, configurationNotReadyGuard, configurationReadyGuard, RoutePath } from '@sparrow-home/core';
-import { MobileFrameComponent, PageNotFoundComponent } from '@sparrow-home/ui';
-
-import { NavigationItem } from '../../../../libs/fe/ui/src/lib/models/navigation-item';
+import { MobileFrameComponent, NavigationItem, PageNotFoundComponent } from '@sparrow-home/ui';
 
 export const appRoutes: Route[] = [
   {
