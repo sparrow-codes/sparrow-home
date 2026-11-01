@@ -35,7 +35,7 @@
       [buttonRouterLink]="'/devices/add'"
     >
       <svg
-        class="w-[100px] text-black text-primary dark:text-white"
+        class="w-[100px] text-sp-primary-700 dark:text-white"
         viewBox="0 0 205.85602 194.01489"
         id="svg1"
         xml:space="preserve"
@@ -58,7 +58,7 @@
     <div class="flex flex-col gap-2">
       @if (mainDevices().length > 0) {
       <span class="text-sm w-full opacity-80">{{ 'main_panel.favorites' | translate }}</span>
-      <sp-divider></sp-divider>
+      <sp-divider class="mx-[-1rem]"></sp-divider>
       } @for (device of mainDevices(); track device.id) {
       <sp-device-list-item
         [refreshingDevices]="refreshingDevices()"

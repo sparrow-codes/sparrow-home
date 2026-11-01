@@ -10,8 +10,8 @@ import { withThemeMode } from '@sparrow-home/ui';
 import { catchError, filter, first, map, Observable, of, switchMap } from 'rxjs';
 
 import { AppConfig, Configuration } from '../models';
-import { ToastService } from '../services/toast.service';
 import { VisibilityService } from '../services/';
+import { ToastService } from '../services/toast.service';
 
 export type CoreState = {
   appConfig: AppConfig | null;

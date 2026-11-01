@@ -7,9 +7,9 @@ import {
   IonContent,
   IonHeader,
   IonSkeletonText,
-  ModalController,
   IonTitle,
   IonToolbar,
+  ModalController,
 } from '@ionic/angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';

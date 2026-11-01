@@ -10,6 +10,7 @@ import {
   HomeDeviceApiService,
   HomeDeviceDetailsDtoApiModel,
 } from '@sparrow-home/api';
+import { ToastService } from '@sparrow-home/core';
 import {
   HomeDevice,
   toHomeDevice,
@@ -20,7 +21,6 @@ import {
   withRefreshing,
   withRefreshingObjects,
 } from '@sparrow-home/utils';
-import { ToastService } from '@sparrow-home/core';
 import { finalize, first, forkJoin, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { withVacationMode } from '../features/vacation-mode';

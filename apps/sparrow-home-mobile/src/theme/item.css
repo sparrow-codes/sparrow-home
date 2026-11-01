@@ -1,7 +1,7 @@
 :root {
-  --ion-item-background: white;
+  --ion-item-background: var(--sp-surface-raised);
 
   ion-item {
-    --border-radius: 10px;
+    --border-radius: var(--sp-radius-md);
   }
 }

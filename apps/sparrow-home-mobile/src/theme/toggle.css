@@ -1,0 +1,8 @@
+:root.ion-palette-dark {
+  ion-toggle {
+    --track-background: #6b7280;
+    --track-background-checked: var(--ion-color-secondary);
+    --handle-background: #f9fafb;
+    --handle-background-checked: var(--sp-text-inverse);
+  }
+}

@@ -27,7 +27,7 @@ export class ToastService {
       header: detail ? summary : undefined,
       message: detail ?? summary,
       color: SEVERITY_COLOR[severity],
-      position: 'top',
+      position: 'bottom',
       duration: life,
     });
     await toast.present();

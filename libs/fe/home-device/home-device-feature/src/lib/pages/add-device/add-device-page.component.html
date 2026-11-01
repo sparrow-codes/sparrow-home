@@ -31,20 +31,20 @@
         <div class="h-[40px]">
           @if (deviceJoined === true && !joinInProgress) {
             <div class="flex gap-2 items-center justify-center w-full">
-              <ion-icon name="checkmark-circle-outline" class="text-green-600"></ion-icon>
-              <span class="text-green-600">{{ 'home.connection_established' | translate }}</span>
+              <ion-icon name="checkmark-circle-outline" class="text-[var(--ion-color-success)]"></ion-icon>
+              <span class="text-[var(--ion-color-success)]">{{ 'home.connection_established' | translate }}</span>
             </div>
           }
           @if (deviceJoined === false && !joinInProgress) {
             <div class="flex gap-2 items-center justify-center w-full">
-              <ion-icon name="ban-outline" class="text-red-500"></ion-icon>
-              <span class="text-red-500">{{ 'home.device_pairing_failed' | translate }}</span>
+              <ion-icon name="ban-outline" class="text-[var(--ion-color-danger)]"></ion-icon>
+              <span class="text-[var(--ion-color-danger)]">{{ 'home.device_pairing_failed' | translate }}</span>
             </div>
           }
           @if (joinInProgress) {
             <div class="flex gap-2 items-center justify-center w-full">
               <ion-spinner color="primary" name="crescent"></ion-spinner>
-              <span class="text-red-gray-700">{{ 'home.pairing_in_progress' | translate }}</span>
+              <span class="text-sp-text-muted">{{ 'home.pairing_in_progress' | translate }}</span>
             </div>
           }
         </div>

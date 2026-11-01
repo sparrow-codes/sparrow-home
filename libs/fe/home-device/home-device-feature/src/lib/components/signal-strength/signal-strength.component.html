@@ -2,9 +2,9 @@
   <ion-icon name="wifi-outline"></ion-icon>
   <span
     class="font-semibold w-[40px] text-end whitespace-nowrap"
-    [class.text-green-500]="signalStrength() > 60"
-    [class.text-yellow-500]="signalStrength() <= 60 && signalStrength() > 10"
-    [class.text-red-500]="signalStrength() <= 10"
+    [class.text-[var(--ion-color-success)]]="signalStrength() > 60"
+    [class.text-[var(--ion-color-warning)]]="signalStrength() <= 60 && signalStrength() > 10"
+    [class.text-[var(--ion-color-danger)]]="signalStrength() <= 10"
     >{{ signalStrength() }}%</span
   >
 </div>

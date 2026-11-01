@@ -22,7 +22,17 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="apple-touch-startup-image" href="apple-touch-icon-precomposed.png" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <meta name="theme-color" content="#F5F5F5" />
+    <meta name="theme-color" content="#f3f4f6" />
+    <script>
+      (function () {
+        var stored = localStorage.getItem('isDarkMode');
+        var isDark = stored !== null ? stored === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (isDark) {
+          document.documentElement.classList.add('ion-palette-dark');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#10151c');
+        }
+      })();
+    </script>
   </head>
 
   <script type="module" src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.esm.js"></script>

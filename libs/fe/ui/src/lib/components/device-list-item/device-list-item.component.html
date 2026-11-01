@@ -6,11 +6,11 @@
     <div class="flex items-center gap-3">
       <sp-device-type [animationInProgress]="showFinishAnimation()" [fullLabel]="false" [deviceType]="device().type" />
       <div class="block">
-        <div class="font-semibold text-surface-700 dark:text-surface-0">{{ device().name }}</div>
+        <div class="font-semibold text-sp-text">{{ device().name }}</div>
         @if (label()) {
           <ion-badge color="light" class="mt-2">{{ label() | translate | humanize }}</ion-badge>
         } @else {
-          <div class="text-gray-700 dark:text-surface-200 text-sm mt-2">{{ deviceTypeLabel() | translate | humanize }}</div>
+          <div class="text-sp-text-muted text-sm mt-2">{{ deviceTypeLabel() | translate | humanize }}</div>
         }
       </div>
     </div>

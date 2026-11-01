@@ -1,5 +1,12 @@
 :root {
   ion-button {
-    min-height: 42px !important;
+    min-height: var(--sp-control-min-height) !important;
+  }
+}
+
+:root.ion-palette-dark {
+  ion-button[color='primary']:not([fill='outline']):not([fill='clear']) {
+    --background: var(--ion-color-primary);
+    --color: var(--sp-text-inverse);
   }
 }

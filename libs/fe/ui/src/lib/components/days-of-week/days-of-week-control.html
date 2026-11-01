@@ -1,8 +1,9 @@
-<div class="flex gap-1 items-start">
+<div class="flex gap-1 items-center">
   <ion-icon name="calendar-outline" class="mr-2 align-middle"></ion-icon>
-  <span>{{ 'ui.days_of_week_label' | translate }}</span>
+  <span class="text-sp-text">{{ 'ui.days_of_week_label' | translate }}</span>
 </div>
-<ion-item-divider class="my-3 min-h-0"></ion-item-divider>
+
+<sp-divider></sp-divider>
 
 <ion-radio-group [formControl]="areAllDays" class="flex flex-col gap-4 mt-2">
   <ion-radio mode="md" [value]="true" [disabled]="disabled()" labelPlacement="end" justify="start">
@@ -14,9 +15,8 @@
 </ion-radio-group>
 
 @if (value()) {
-<ion-item-divider class="my-3 min-h-0"></ion-item-divider>
 
-<div class="grid grid-cols-4 mt-2 gap-4">
+<div class="grid grid-cols-3 mt-2 gap-4">
   <ion-checkbox
     mode="md"
     [checked]="isDaySelected(1)"

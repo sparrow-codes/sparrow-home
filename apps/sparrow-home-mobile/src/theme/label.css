@@ -1,6 +1,6 @@
 :root {
   ion-label {
-    color: #292929 !important;
+    color: var(--sp-text) !important;
     font-weight: 600;
     font-size: 0.875rem !important;
   }

@@ -3,18 +3,18 @@ import { patchState, signalStoreFeature, withHooks, withMethods, withProps, with
 
 import { getUserMode, setUserMode } from './functions/get-user-mode';
 
+const LIGHT_THEME_COLOR: string = '#f3f4f6';
+const DARK_THEME_COLOR: string = '#10151c';
+
 export function withThemeMode() {
   return signalStoreFeature(
     withState<{ isDarkModeOn: boolean }>({ isDarkModeOn: false }),
     withProps((_store, document = inject(DOCUMENT)) => ({
       _applyThemeMode: (isDarkModeOn: boolean): void => {
-        const rootElement: HTMLElement = document.documentElement;
-
-        if (isDarkModeOn) {
-          document.documentElement.classList.toggle('ion-palette-dark', true);
-        } else {
-          document.documentElement.classList.toggle('ion-palette-dark', false);
-        }
+        document.documentElement.classList.toggle('ion-palette-dark', isDarkModeOn);
+        document
+          .querySelector('meta[name="theme-color"]')
+          ?.setAttribute('content', isDarkModeOn ? DARK_THEME_COLOR : LIGHT_THEME_COLOR);
       },
     })),
     withMethods((store) => ({

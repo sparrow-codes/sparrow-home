@@ -9,86 +9,202 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 /*@import '@ionic/angular/css/palettes/dark.system.css';*/
 
+@import "tokens.css";
 @import "toolbar.css";
 @import "tabbar.css";
 @import "card.css";
 @import "item.css";
 @import "label.css";
 @import "segment.css";
-@import "input.css";
 @import "button.css";
 @import "action-sheet.css";
-@import "select.css";
+@import "field.css";
+@import "toggle.css";
 @import "skeleton.css";
 @import "modal.css";
 @import "badge.css";
 
 :root {
-  --ion-background-color: #f5f7fa;
-  --ion-text-color: #2f2f2f;
+  --ion-background-color: var(--sp-surface);
+  --ion-text-color: var(--sp-text);
 
-
-  --ion-color-primary: #0b3b70;
-  --ion-color-primary-rgb: 11,59,112;
+  /* rgb triplets cannot be derived via color-mix; keep in sync with tokens.css */
+  --ion-color-primary: var(--sp-primary-base);
+  --ion-color-primary-rgb: 55,65,81;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255,255,255;
-  --ion-color-primary-shade: #0a3463;
-  --ion-color-primary-tint: #234f7e;
+  --ion-color-primary-shade: color-mix(in srgb, var(--sp-primary-base) 90%, black);
+  --ion-color-primary-tint: color-mix(in srgb, var(--sp-primary-base) 90%, white);
 
-  --ion-color-secondary: #5c0700;
-  --ion-color-secondary-rgb: 92,7,0;
+  --ion-color-secondary: var(--sp-accent-base);
+  --ion-color-secondary-rgb: 15,118,110;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255,255,255;
-  --ion-color-secondary-shade: #510600;
-  --ion-color-secondary-tint: #6c201a;
+  --ion-color-secondary-shade: color-mix(in srgb, var(--sp-accent-base) 90%, black);
+  --ion-color-secondary-tint: color-mix(in srgb, var(--sp-accent-base) 90%, white);
 
-  --ion-color-tertiary: #e32400;
-  --ion-color-tertiary-rgb: 227,36,0;
+  --ion-color-tertiary: var(--sp-tertiary-base);
+  --ion-color-tertiary-rgb: 3,105,161;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255,255,255;
-  --ion-color-tertiary-shade: #c82000;
-  --ion-color-tertiary-tint: #e63a1a;
+  --ion-color-tertiary-shade: color-mix(in srgb, var(--sp-tertiary-base) 90%, black);
+  --ion-color-tertiary-tint: color-mix(in srgb, var(--sp-tertiary-base) 90%, white);
 
-  --ion-color-success: #669c35;
-  --ion-color-success-rgb: 102,156,53;
-  --ion-color-success-contrast: #000000;
-  --ion-color-success-contrast-rgb: 0,0,0;
-  --ion-color-success-shade: #5a892f;
-  --ion-color-success-tint: #75a649;
+  --ion-color-success: var(--sp-success-base);
+  --ion-color-success-rgb: 21,128,61;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255,255,255;
+  --ion-color-success-shade: color-mix(in srgb, var(--sp-success-base) 90%, black);
+  --ion-color-success-tint: color-mix(in srgb, var(--sp-success-base) 90%, white);
 
-  --ion-color-warning: #ffc409;
-  --ion-color-warning-rgb: 255,196,9;
-  --ion-color-warning-contrast: #000000;
-  --ion-color-warning-contrast-rgb: 0,0,0;
-  --ion-color-warning-shade: #e0ac08;
-  --ion-color-warning-tint: #ffca22;
+  --ion-color-warning: var(--sp-warning-base);
+  --ion-color-warning-rgb: 180,83,9;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255,255,255;
+  --ion-color-warning-shade: color-mix(in srgb, var(--sp-warning-base) 90%, black);
+  --ion-color-warning-tint: color-mix(in srgb, var(--sp-warning-base) 90%, white);
 
-  --ion-color-danger: #c5000f;
-  --ion-color-danger-rgb: 197,0,15;
+  --ion-color-danger: var(--sp-danger-base);
+  --ion-color-danger-rgb: 185,28,28;
   --ion-color-danger-contrast: #ffffff;
   --ion-color-danger-contrast-rgb: 255,255,255;
-  --ion-color-danger-shade: #ad000d;
-  --ion-color-danger-tint: #cb1a27;
+  --ion-color-danger-shade: color-mix(in srgb, var(--sp-danger-base) 90%, black);
+  --ion-color-danger-tint: color-mix(in srgb, var(--sp-danger-base) 90%, white);
 
-  --ion-color-light: #F4F6F8;
-  --ion-color-light-rgb: 246,248,252;
+  --ion-color-light: #f4f6f8;
+  --ion-color-light-rgb: 244,246,248;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0,0,0;
-  --ion-color-light-shade: #d8dade;
-  --ion-color-light-tint: #f7f9fc;
+  --ion-color-light-shade: color-mix(in srgb, #f4f6f8 90%, black);
+  --ion-color-light-tint: color-mix(in srgb, #f4f6f8 90%, white);
 
   --ion-color-medium: #5f5f5f;
   --ion-color-medium-rgb: 95,95,95;
   --ion-color-medium-contrast: #ffffff;
   --ion-color-medium-contrast-rgb: 255,255,255;
-  --ion-color-medium-shade: #545454;
-  --ion-color-medium-tint: #6f6f6f;
+  --ion-color-medium-shade: color-mix(in srgb, #5f5f5f 90%, black);
+  --ion-color-medium-tint: color-mix(in srgb, #5f5f5f 90%, white);
 
   --ion-color-dark: #2f2f2f;
   --ion-color-dark-rgb: 47,47,47;
   --ion-color-dark-contrast: #ffffff;
   --ion-color-dark-contrast-rgb: 255,255,255;
-  --ion-color-dark-shade: #292929;
-  --ion-color-dark-tint: #444444;
+  --ion-color-dark-shade: color-mix(in srgb, #2f2f2f 90%, black);
+  --ion-color-dark-tint: color-mix(in srgb, #2f2f2f 90%, white);
+}
 
+:root.ion-palette-dark {
+  --ion-background-color: var(--sp-surface);
+  --ion-background-color-rgb: 16,21,28;
+  --ion-text-color: var(--sp-text);
+  --ion-text-color-rgb: 249,250,251;
+
+  /* rgb triplets cannot be derived via color-mix; keep in sync with the colors */
+  --ion-color-primary: #e5e7eb;
+  --ion-color-primary-rgb: 229,231,235;
+  --ion-color-primary-contrast: #1f2937;
+  --ion-color-primary-contrast-rgb: 31,41,55;
+  --ion-color-primary-shade: color-mix(in srgb, #e5e7eb 90%, black);
+  --ion-color-primary-tint: color-mix(in srgb, #e5e7eb 90%, white);
+
+  --ion-color-secondary: #2dd4bf;
+  --ion-color-secondary-rgb: 45,212,191;
+  --ion-color-secondary-contrast: #1f2937;
+  --ion-color-secondary-contrast-rgb: 31,41,55;
+  --ion-color-secondary-shade: color-mix(in srgb, #2dd4bf 90%, black);
+  --ion-color-secondary-tint: color-mix(in srgb, #2dd4bf 90%, white);
+
+  --ion-color-tertiary: #38bdf8;
+  --ion-color-tertiary-rgb: 56,189,248;
+  --ion-color-tertiary-contrast: #1f2937;
+  --ion-color-tertiary-contrast-rgb: 31,41,55;
+  --ion-color-tertiary-shade: color-mix(in srgb, #38bdf8 90%, black);
+  --ion-color-tertiary-tint: color-mix(in srgb, #38bdf8 90%, white);
+
+  --ion-color-success: #4ade80;
+  --ion-color-success-rgb: 74,222,128;
+  --ion-color-success-contrast: #1f2937;
+  --ion-color-success-contrast-rgb: 31,41,55;
+  --ion-color-success-shade: color-mix(in srgb, #4ade80 90%, black);
+  --ion-color-success-tint: color-mix(in srgb, #4ade80 90%, white);
+
+  --ion-color-warning: #fbbf24;
+  --ion-color-warning-rgb: 251,191,36;
+  --ion-color-warning-contrast: #1f2937;
+  --ion-color-warning-contrast-rgb: 31,41,55;
+  --ion-color-warning-shade: color-mix(in srgb, #fbbf24 90%, black);
+  --ion-color-warning-tint: color-mix(in srgb, #fbbf24 90%, white);
+
+  --ion-color-danger: #fca5a5;
+  --ion-color-danger-rgb: 252,165,165;
+  --ion-color-danger-contrast: #1f2937;
+  --ion-color-danger-contrast-rgb: 31,41,55;
+  --ion-color-danger-shade: color-mix(in srgb, #fca5a5 90%, black);
+  --ion-color-danger-tint: color-mix(in srgb, #fca5a5 90%, white);
+
+  --ion-color-light: #374151;
+  --ion-color-light-rgb: 55,65,81;
+  --ion-color-light-contrast: #ffffff;
+  --ion-color-light-contrast-rgb: 255,255,255;
+  --ion-color-light-shade: color-mix(in srgb, #374151 90%, black);
+  --ion-color-light-tint: color-mix(in srgb, #374151 90%, white);
+
+  --ion-color-medium: #9ca3af;
+  --ion-color-medium-rgb: 156,163,175;
+  --ion-color-medium-contrast: #1f2937;
+  --ion-color-medium-contrast-rgb: 31,41,55;
+  --ion-color-medium-shade: color-mix(in srgb, #9ca3af 90%, black);
+  --ion-color-medium-tint: color-mix(in srgb, #9ca3af 90%, white);
+
+  --ion-color-dark: #f3f4f6;
+  --ion-color-dark-rgb: 243,244,246;
+  --ion-color-dark-contrast: #1f2937;
+  --ion-color-dark-contrast-rgb: 31,41,55;
+  --ion-color-dark-shade: color-mix(in srgb, #f3f4f6 90%, black);
+  --ion-color-dark-tint: color-mix(in srgb, #f3f4f6 90%, white);
+
+  --ion-toolbar-background: var(--sp-surface);
+  --ion-tab-bar-background: var(--sp-surface);
+  --ion-item-background: var(--sp-surface-raised);
+  --ion-card-background: var(--sp-surface-raised);
+
+  --ion-background-color-step-50: color-mix(in srgb, var(--sp-text) 5%, var(--sp-surface));
+  --ion-background-color-step-100: color-mix(in srgb, var(--sp-text) 10%, var(--sp-surface));
+  --ion-background-color-step-150: color-mix(in srgb, var(--sp-text) 15%, var(--sp-surface));
+  --ion-background-color-step-200: color-mix(in srgb, var(--sp-text) 20%, var(--sp-surface));
+  --ion-background-color-step-250: color-mix(in srgb, var(--sp-text) 25%, var(--sp-surface));
+  --ion-background-color-step-300: color-mix(in srgb, var(--sp-text) 30%, var(--sp-surface));
+  --ion-background-color-step-350: color-mix(in srgb, var(--sp-text) 35%, var(--sp-surface));
+  --ion-background-color-step-400: color-mix(in srgb, var(--sp-text) 40%, var(--sp-surface));
+  --ion-background-color-step-450: color-mix(in srgb, var(--sp-text) 45%, var(--sp-surface));
+  --ion-background-color-step-500: color-mix(in srgb, var(--sp-text) 50%, var(--sp-surface));
+  --ion-background-color-step-550: color-mix(in srgb, var(--sp-text) 55%, var(--sp-surface));
+  --ion-background-color-step-600: color-mix(in srgb, var(--sp-text) 60%, var(--sp-surface));
+  --ion-background-color-step-650: color-mix(in srgb, var(--sp-text) 65%, var(--sp-surface));
+  --ion-background-color-step-700: color-mix(in srgb, var(--sp-text) 70%, var(--sp-surface));
+  --ion-background-color-step-750: color-mix(in srgb, var(--sp-text) 75%, var(--sp-surface));
+  --ion-background-color-step-800: color-mix(in srgb, var(--sp-text) 80%, var(--sp-surface));
+  --ion-background-color-step-850: color-mix(in srgb, var(--sp-text) 85%, var(--sp-surface));
+  --ion-background-color-step-900: color-mix(in srgb, var(--sp-text) 90%, var(--sp-surface));
+  --ion-background-color-step-950: color-mix(in srgb, var(--sp-text) 95%, var(--sp-surface));
+  --ion-text-color-step-50: color-mix(in srgb, var(--sp-surface) 5%, var(--sp-text));
+  --ion-text-color-step-100: color-mix(in srgb, var(--sp-surface) 10%, var(--sp-text));
+  --ion-text-color-step-150: color-mix(in srgb, var(--sp-surface) 15%, var(--sp-text));
+  --ion-text-color-step-200: color-mix(in srgb, var(--sp-surface) 20%, var(--sp-text));
+  --ion-text-color-step-250: color-mix(in srgb, var(--sp-surface) 25%, var(--sp-text));
+  --ion-text-color-step-300: color-mix(in srgb, var(--sp-surface) 30%, var(--sp-text));
+  --ion-text-color-step-350: color-mix(in srgb, var(--sp-surface) 35%, var(--sp-text));
+  --ion-text-color-step-400: color-mix(in srgb, var(--sp-surface) 40%, var(--sp-text));
+  --ion-text-color-step-450: color-mix(in srgb, var(--sp-surface) 45%, var(--sp-text));
+  --ion-text-color-step-500: color-mix(in srgb, var(--sp-surface) 50%, var(--sp-text));
+  --ion-text-color-step-550: color-mix(in srgb, var(--sp-surface) 55%, var(--sp-text));
+  --ion-text-color-step-600: color-mix(in srgb, var(--sp-surface) 60%, var(--sp-text));
+  --ion-text-color-step-650: color-mix(in srgb, var(--sp-surface) 65%, var(--sp-text));
+  --ion-text-color-step-700: color-mix(in srgb, var(--sp-surface) 70%, var(--sp-text));
+  --ion-text-color-step-750: color-mix(in srgb, var(--sp-surface) 75%, var(--sp-text));
+  --ion-text-color-step-800: color-mix(in srgb, var(--sp-surface) 80%, var(--sp-text));
+  --ion-text-color-step-850: color-mix(in srgb, var(--sp-surface) 85%, var(--sp-text));
+  --ion-text-color-step-900: color-mix(in srgb, var(--sp-surface) 90%, var(--sp-text));
+  --ion-text-color-step-950: color-mix(in srgb, var(--sp-surface) 95%, var(--sp-text));
+  --ion-color-step-300: var(--sp-placeholder);
 }

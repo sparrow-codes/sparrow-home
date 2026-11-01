@@ -1,9 +1,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root.dark {
-  background-color: #080C15;
-  --app-theme-color: #080C15;
+html {
+  background-color: var(--sp-surface);
 }
 
 body,

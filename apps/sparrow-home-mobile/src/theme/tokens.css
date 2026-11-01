@@ -1,0 +1,98 @@
+/**
+ * Design tokens (single source of truth).
+ * Change --sp-primary-base / --sp-accent-base to re-theme the scales.
+ * Contrast (WCAG AA) verified: text-muted on surface 4.5+, text on surface 9+,
+ * white on primary/accent/semantic fills 4.5+.
+ */
+:root {
+  --sp-primary-base: #374151;
+  --sp-accent-base: #0f766e;
+  --sp-tertiary-base: #0369a1;
+  --sp-success-base: #15803d;
+  --sp-warning-base: #b45309;
+  --sp-danger-base: #b91c1c;
+
+  /* Primary (slate) scale; 700 is the base */
+  --sp-primary-50: color-mix(in srgb, var(--sp-primary-base) 6%, white);
+  --sp-primary-100: color-mix(in srgb, var(--sp-primary-base) 12%, white);
+  --sp-primary-200: color-mix(in srgb, var(--sp-primary-base) 22%, white);
+  --sp-primary-300: color-mix(in srgb, var(--sp-primary-base) 35%, white);
+  --sp-primary-400: color-mix(in srgb, var(--sp-primary-base) 58%, white);
+  --sp-primary-500: color-mix(in srgb, var(--sp-primary-base) 75%, white);
+  --sp-primary-600: color-mix(in srgb, var(--sp-primary-base) 88%, white);
+  --sp-primary-700: var(--sp-primary-base);
+  --sp-primary-800: color-mix(in srgb, var(--sp-primary-base) 70%, black);
+  --sp-primary-900: color-mix(in srgb, var(--sp-primary-base) 45%, black);
+  --sp-primary-950: color-mix(in srgb, var(--sp-primary-base) 25%, black);
+
+  /* Accent (teal) scale */
+  --sp-accent-50: color-mix(in srgb, var(--sp-accent-base) 8%, white);
+  --sp-accent-100: color-mix(in srgb, var(--sp-accent-base) 15%, white);
+  --sp-accent-200: color-mix(in srgb, var(--sp-accent-base) 28%, white);
+  --sp-accent-300: color-mix(in srgb, var(--sp-accent-base) 45%, white);
+  --sp-accent-400: color-mix(in srgb, var(--sp-accent-base) 65%, white);
+  --sp-accent-500: color-mix(in srgb, var(--sp-accent-base) 85%, white);
+  --sp-accent-600: var(--sp-accent-base);
+  --sp-accent-700: color-mix(in srgb, var(--sp-accent-base) 85%, black);
+  --sp-accent-800: color-mix(in srgb, var(--sp-accent-base) 70%, black);
+  --sp-accent-900: color-mix(in srgb, var(--sp-accent-base) 50%, black);
+  --sp-accent-950: color-mix(in srgb, var(--sp-accent-base) 30%, black);
+
+  /* Semantic surfaces, borders, text */
+  --sp-surface: #f3f4f6;
+  --sp-surface-raised: #ffffff;
+  --sp-surface-sunken: var(--sp-primary-100);
+  --sp-border: var(--sp-primary-200);
+  --sp-border-strong: var(--sp-primary-400);
+  --sp-text: var(--sp-primary-800);
+  --sp-text-muted: var(--sp-primary-500);
+  --sp-text-inverse: #ffffff;
+  --sp-placeholder: var(--sp-primary-500);
+  --sp-focus-ring: var(--sp-accent-600);
+  --sp-overlay: color-mix(in srgb, var(--sp-primary-950) 50%, transparent);
+  --sp-theme-color-dark: var(--sp-primary-950);
+
+  /* Device types (white label text, AA) */
+  --sp-device-plugin: #2b7bb9;
+  --sp-device-temperature: var(--sp-warning-base);
+  --sp-device-door: var(--sp-success-base);
+  --sp-device-siren: var(--sp-danger-base);
+  --sp-device-pilot: var(--sp-primary-500);
+  --sp-device-other: var(--sp-primary-700);
+
+  /* Shape, elevation, sizing */
+  --sp-radius-sm: 6px;
+  --sp-radius-md: 10px;
+  --sp-radius-lg: 16px;
+  --sp-shadow-sm: 0 1px 2px color-mix(in srgb, var(--sp-primary-950) 10%, transparent);
+  --sp-shadow-md: 0 4px 12px color-mix(in srgb, var(--sp-primary-950) 12%, transparent);
+  --sp-shadow-lg: 0 12px 32px color-mix(in srgb, var(--sp-primary-950) 16%, transparent);
+  --sp-control-min-height: 42px;
+}
+
+/* Dark theme: overrides semantic tokens only; toggled by withThemeMode via the ion-palette-dark class */
+:root.ion-palette-dark {
+  color-scheme: dark;
+
+  --sp-surface: #10151c;
+  --sp-surface-raised: #1f2937;
+  --sp-surface-sunken: #111827;
+  --sp-border: var(--sp-primary-500);
+  --sp-border-strong: var(--sp-primary-400);
+  --sp-text: #f9fafb;
+  --sp-text-muted: #d1d5db;
+  --sp-placeholder: #d1d5db;
+  --sp-text-inverse: #1f2937;
+  --sp-focus-ring: #2dd4bf;
+  --sp-overlay: color-mix(in srgb, #000000 65%, transparent);
+  --sp-theme-color-dark: #10151c;
+
+  --sp-accent-100: color-mix(in srgb, var(--sp-accent-base) 35%, #1f2937);
+
+  --sp-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --sp-shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
+  --sp-shadow-lg: 0 12px 32px rgb(0 0 0 / 50%);
+
+  --sp-device-pilot: #6b7280;
+  --sp-device-other: var(--sp-primary-base);
+}

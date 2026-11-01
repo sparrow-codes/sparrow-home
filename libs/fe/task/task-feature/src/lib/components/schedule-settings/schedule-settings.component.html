@@ -9,7 +9,7 @@
         <ion-card class="m-0">
         <ion-card-content>
           <ion-accordion-group value="0">
-            <ion-accordion value="1" class="bg-white">
+            <ion-accordion value="1" class="bg-sp-surface-raised">
               <ion-item lines="none" slot="header">
                 <ion-label>{{ 'tasks.advanced' | translate }}</ion-label>
               </ion-item>
@@ -22,11 +22,11 @@
               </div>
             </ion-accordion>
             <sp-divider></sp-divider>
-            <ion-accordion value="0" class="bg-white">
+            <ion-accordion value="0" class="bg-sp-surface-raised">
               <ion-item lines="none" slot="header" >
                 <ion-label>{{ 'tasks.actions' | translate }}</ion-label>
               </ion-item>
-              <div slot="content" class="bg-white">
+              <div slot="content" class="bg-sp-surface-raised">
                 <div class="mt-2 mb-2 w-full text-right">
                   <ion-button
                     class="m-0 h-11 w-11 shrink-0 mb-2"
@@ -42,7 +42,7 @@
 
                 @for (item of sortedActions(); track item) {
 
-                    <div class="p-4 border border-gray-200 border-solid rounded-md mb-2">
+                    <div class="p-4 border border-sp-border border-solid rounded-md mb-2">
 
                         <div class="flex flex-col">
                           <div class="flex justify-between items-center w-full">
@@ -82,7 +82,7 @@
                 }
 
                 @if (sortedActions().length === 0) {
-                  <div class="text-gray-500 text-sm w-full text-center">{{ 'tasks.no_actions' | translate }}</div>
+                  <div class="text-sp-text-muted text-sm w-full text-center">{{ 'tasks.no_actions' | translate }}</div>
                 }
               </div>
             </ion-accordion>
@@ -93,12 +93,10 @@
     </form>
     }
   </div>
-  <div class="flex flex-row sm:flex-row justify-end gap-4 mb-2">
-    <ion-button [disabled]="formGroup?.invalid || isLoading()" color="primary" (click)="onSubmitPreferences()">
+    <ion-button [disabled]="formGroup?.invalid || isLoading()" color="primary" (click)="onSubmitPreferences()" expand="block" class="mt-2">
       <ion-icon name="checkmark-outline" slot="start" />
       {{ 'common.save' | translate }}
     </ion-button>
-  </div>
 </div>
 
 <ion-modal [isOpen]="showAddAction" (didDismiss)="closeAddActionForm()">

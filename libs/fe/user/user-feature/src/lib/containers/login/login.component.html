@@ -1,7 +1,8 @@
 <ion-content class="ion-padding" [fullscreen]="true">
-    <div class="flex items-center justify-between mb-10 ion-padding-top">
+  <div class="pt-[15vh]">
+    <div class="flex items-center gap-6 mb-10 ion-padding-top">
       <svg
-        class="w-[70px] text-[#0b3b70] dark:text-white"
+        class="w-[70px] text-sp-primary-700 dark:text-white"
         viewBox="0 0 205.85602 194.01489"
         id="svg1"
         xml:space="preserve"
@@ -23,4 +24,5 @@
       [newUserLink]="createNewUserLink"
       (login)="dataService.login($event)"
     ></sp-login-form>
+  </div>
 </ion-content>

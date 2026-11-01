@@ -5,10 +5,11 @@ import { IonCheckbox, IonIcon, IonItemDivider, IonRadio, IonRadioGroup } from '@
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AbstractControlValueAccessor } from '../abstract-control-value-accessor';
+import { Divider } from '../divider/divider';
 
 @Component({
   selector: 'sp-days-of-week-control',
-  imports: [IonCheckbox, IonIcon, IonItemDivider, IonRadio, IonRadioGroup, ReactiveFormsModule, TranslatePipe],
+  imports: [IonCheckbox, IonIcon, IonItemDivider, IonRadio, IonRadioGroup, ReactiveFormsModule, TranslatePipe, Divider],
   templateUrl: './days-of-week-control.html',
   providers: [
     {
