@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular';
+import { IonContent, IonHeader, IonToolbar } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { PageTitleComponent } from '@sparrow-home/ui';
@@ -17,10 +17,7 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
     TranslatePipe,
     IonContent,
     IonHeader,
-    IonTitle,
     IonToolbar,
-    IonButtons,
-    IonBackButton,
   ],
   templateUrl: './new-task.component.html',
 })

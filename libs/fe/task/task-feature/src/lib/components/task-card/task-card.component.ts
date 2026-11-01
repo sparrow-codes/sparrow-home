@@ -10,14 +10,14 @@ import {
   Signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonBadge, IonChip, IonIcon, IonItem, IonToggle } from '@ionic/angular';
+import { IonBadge, IonIcon, IonItem, IonToggle } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask } from '@sparrow-home/task-domain';
 import { AnimatedCheckCircleComponent } from '@sparrow-home/ui';
 
 @Component({
   selector: 'sp-task-card',
-  imports: [RouterLink, TranslatePipe, AnimatedCheckCircleComponent, IonItem, IonToggle, IonChip, IonIcon, IonBadge],
+  imports: [RouterLink, TranslatePipe, AnimatedCheckCircleComponent, IonItem, IonToggle, IonIcon, IonBadge],
   templateUrl: './task-card.component.html',
 })
 export class TaskCardComponent {

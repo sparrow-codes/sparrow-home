@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { IonContent } from '@ionic/angular';
 import { APP_TITLE } from '@sparrow-home/core';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
 import { first, Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { first, Observable } from 'rxjs';
 import { LoginFormComponent } from '../../component/login-form/login-form.component';
 
 @Component({
-  imports: [CommonModule, LoginFormComponent, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent],
+  imports: [CommonModule, LoginFormComponent, IonContent],
   styleUrls: ['./login.component.css'],
   templateUrl: './login.component.html',
 })

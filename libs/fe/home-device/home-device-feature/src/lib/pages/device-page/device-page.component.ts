@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, InputSignal, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -11,7 +11,6 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonItem,
   IonLabel,
   IonProgressBar,
   IonSkeletonText,
@@ -47,7 +46,6 @@ import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
     IonLabel,
     IonSkeletonText,
     IonInput,
-    IonItem,
     IonProgressBar,
   ],
   templateUrl: './device-page.component.html',

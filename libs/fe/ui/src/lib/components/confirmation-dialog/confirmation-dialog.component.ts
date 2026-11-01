@@ -1,4 +1,4 @@
-import { Component, inject, input, InputSignal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonButton, ModalController } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 

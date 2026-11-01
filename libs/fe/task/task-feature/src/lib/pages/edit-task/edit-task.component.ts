@@ -1,16 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonSkeletonText,
-  IonTitle,
-  IonToolbar,
-  ModalController,
-} from '@ionic/angular';
+import { IonButton, IonContent, IonHeader, IonSkeletonText, IonToolbar, ModalController } from '@ionic/angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { ConfirmationDialogComponent, Divider, PageTitleComponent } from '@sparrow-home/ui';
@@ -28,9 +18,6 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
     TranslatePipe,
     IonContent,
     IonHeader,
-    IonTitle,
-    IonButtons,
-    IonBackButton,
     IonToolbar,
     Divider,
     Divider,

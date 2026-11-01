@@ -1,6 +1,6 @@
 import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonBadge, IonCard, IonCardContent, IonItem } from '@ionic/angular';
+import { IonBadge, IonItem } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceAction, DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
 
@@ -10,17 +10,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 
 @Component({
   selector: 'sp-device-list-item',
-  imports: [
-    RouterLink,
-    DeviceTypeComponent,
-    DeviceActionComponent,
-    TranslatePipe,
-    HumanizePipe,
-    IonCard,
-    IonCardContent,
-    IonItem,
-    IonBadge,
-  ],
+  imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, IonItem, IonBadge],
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {

@@ -15,7 +15,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   IonButton,
-  IonItem,
   IonLabel,
   IonRange,
   IonSegment,
@@ -37,7 +36,6 @@ import { AbstractControlValueAccessor } from '../abstract-control-value-accessor
     IonSegment,
     IonSegmentButton,
     IonLabel,
-    IonItem,
     IonSelect,
     IonSelectOption,
     IonButton,

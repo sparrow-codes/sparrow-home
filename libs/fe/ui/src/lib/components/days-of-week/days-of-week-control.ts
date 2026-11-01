@@ -1,7 +1,7 @@
 import { Component, DestroyRef, effect, forwardRef, inject, Injector, input, InputSignal, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { IonCheckbox, IonIcon, IonItemDivider, IonRadio, IonRadioGroup } from '@ionic/angular';
+import { IonCheckbox, IonIcon, IonRadio, IonRadioGroup } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AbstractControlValueAccessor } from '../abstract-control-value-accessor';
@@ -9,7 +9,7 @@ import { Divider } from '../divider/divider';
 
 @Component({
   selector: 'sp-days-of-week-control',
-  imports: [IonCheckbox, IonIcon, IonItemDivider, IonRadio, IonRadioGroup, ReactiveFormsModule, TranslatePipe, Divider],
+  imports: [IonCheckbox, IonIcon, IonRadio, IonRadioGroup, ReactiveFormsModule, TranslatePipe, Divider],
   templateUrl: './days-of-week-control.html',
   providers: [
     {

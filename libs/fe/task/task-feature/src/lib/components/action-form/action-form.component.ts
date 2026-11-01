@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IonButton, IonDatetime, IonInput, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular';
+import { IonButton, IonDatetime, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AvailableDevice, TaskAction, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
 import { DaysOfWeekControl, DeviceActionComponent, Divider } from '@sparrow-home/ui';
@@ -33,7 +33,6 @@ import { ActionForm } from './form-service/model/action-form';
     DaysOfWeekControl,
     TranslatePipe,
     IonButton,
-    IonInput,
     IonLabel,
     IonSelect,
     IonSelectOption,

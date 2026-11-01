@@ -12,16 +12,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  IonButton,
-  IonInput,
-  IonInputPasswordToggle,
-  IonItem,
-  IonItemGroup,
-  IonLabel,
-  IonList,
-  IonSpinner,
-} from '@ionic/angular';
+import { IonButton, IonInput, IonInputPasswordToggle, IonLabel, IonSpinner } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CreateNewUserRequestApiModel } from '@sparrow-home/api';
 
@@ -31,18 +22,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
 
 @Component({
   selector: 'sp-create-user-form',
-  imports: [
-    ReactiveFormsModule,
-    TranslatePipe,
-    IonButton,
-    IonSpinner,
-    IonInput,
-    IonInputPasswordToggle,
-    IonItemGroup,
-    IonItem,
-    IonLabel,
-    IonList,
-  ],
+  imports: [ReactiveFormsModule, TranslatePipe, IonButton, IonSpinner, IonInput, IonInputPasswordToggle, IonLabel],
   templateUrl: './create-user-form.component.html',
   providers: [CreateUserFormService],
 })

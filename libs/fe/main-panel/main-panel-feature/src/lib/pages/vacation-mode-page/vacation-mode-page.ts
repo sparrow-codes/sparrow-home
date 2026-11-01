@@ -2,7 +2,16 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { IonBadge, IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonToggle, IonToolbar } from '@ionic/angular';
+import {
+  IonBadge,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonToggle,
+  IonToolbar,
+} from '@ionic/angular';
 import { bootstrapChevronRight, bootstrapPlayCircle } from '@ng-icons/bootstrap-icons';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';

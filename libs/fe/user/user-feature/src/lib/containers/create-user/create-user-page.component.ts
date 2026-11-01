@@ -1,14 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonContent,
-  IonHeader,
-  IonToolbar,
-} from '@ionic/angular';
+import { IonContent, IonHeader, IonToolbar } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { APP_TITLE } from '@sparrow-home/core';
 import { PageTitleComponent } from '@sparrow-home/ui';
@@ -21,10 +13,6 @@ import { CreateUserFormComponent } from '../../component/create-user-form/create
     CommonModule,
     CreateUserFormComponent,
     TranslatePipe,
-    IonCard,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardContent,
     IonContent,
     IonHeader,
     IonToolbar,

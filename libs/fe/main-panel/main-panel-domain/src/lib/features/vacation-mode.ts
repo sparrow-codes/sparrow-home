@@ -38,18 +38,17 @@ export function withVacationMode() {
         },
         _getVacationMode(): Observable<GetVacationModeResponseApiModel> {
           return setupApiService.getVacationMode().pipe(
-              tapResponse({
-                next: (response) => patchState(store, { isVacationMode: response.isVacationMode }),
-                error: () =>
-                  messageService.add({
-                    summary: translateService.instant('main_panel.fetch_vacation_mode_error'),
-                    severity: 'error',
-                  }),
-              })
-            );
+            tapResponse({
+              next: (response) => patchState(store, { isVacationMode: response.isVacationMode }),
+              error: () =>
+                messageService.add({
+                  summary: translateService.instant('main_panel.fetch_vacation_mode_error'),
+                  severity: 'error',
+                }),
+            })
+          );
         },
       })
     )
-    
   );
 }

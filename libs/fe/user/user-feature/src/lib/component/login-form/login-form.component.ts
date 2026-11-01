@@ -1,17 +1,7 @@
 import { Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonInput,
-  IonInputPasswordToggle,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonSpinner,
-} from '@ionic/angular';
+import { IonButton, IonInput, IonInputPasswordToggle, IonLabel, IonSpinner } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoginRequestApiModel } from '@sparrow-home/api';
 

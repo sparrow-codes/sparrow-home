@@ -1,7 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonAvatar, IonButton, IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonSkeletonText, IonToggle, IonToolbar } from '@ionic/angular';
+import {
+  IonAvatar,
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonSkeletonText,
+  IonToggle,
+  IonToolbar,
+} from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PageTitleComponent } from '@sparrow-home/ui';
 import { User, UserDataFacadeService } from '@sparrow-home/user-domain';
