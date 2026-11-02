@@ -5,6 +5,7 @@
     <sp-page-title
       [title]="'home.device_details' | translate"
       [showBackButton]="true"
+      [backButtonDefaultHref]="'/devices'"
       [subtitle]="deviceDetails()?.name ?? ''"
     ></sp-page-title>
     <ion-buttons slot="end">

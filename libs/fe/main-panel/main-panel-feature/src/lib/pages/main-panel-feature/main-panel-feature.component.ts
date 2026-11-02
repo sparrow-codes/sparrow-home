@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, Signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   IonButtons,
@@ -44,7 +44,7 @@ import { VacationModeButton } from '../../components/vacation-mode-button/vacati
   ],
   templateUrl: './main-panel-feature.component.html',
 })
-export class MainPanelFeatureComponent implements ViewWillEnter {
+export class MainPanelFeatureComponent implements OnInit, ViewWillEnter {
   private readonly _mainPanelStore: MainPanelStore = inject(mainPanelStore);
   private readonly _visibilityService: VisibilityService = inject(VisibilityService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
@@ -62,15 +62,17 @@ export class MainPanelFeatureComponent implements ViewWillEnter {
   protected readonly nrOfDevices: Signal<number | null> = this._mainPanelStore.nrOfDevices;
   protected readonly isVacationMode: Signal<boolean> = this._mainPanelStore.isVacationMode;
 
-  public ionViewWillEnter(): void {
-    this._mainPanelStore.fetchInitData();
-
+  public ngOnInit(): void {
     this._visibilityService.isVisible
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         filter((isVisible) => isVisible)
       )
       .subscribe(() => this._mainPanelStore.fetchInitData());
+  }
+
+  public ionViewWillEnter(): void {
+    this._mainPanelStore.fetchInitData();
   }
 
   protected setAlarm(isAlarmOn: boolean): void {

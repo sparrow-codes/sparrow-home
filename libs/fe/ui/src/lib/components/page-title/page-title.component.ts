@@ -12,4 +12,5 @@ export class PageTitleComponent {
   public readonly subtitle: InputSignal<string> = input('');
   public readonly showBackButton: InputSignal<boolean> = input(false);
   public readonly backButtonDisabled: InputSignal<boolean> = input(false);
+  public readonly backButtonDefaultHref: InputSignal<string> = input('/');
 }

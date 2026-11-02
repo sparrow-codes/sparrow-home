@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonButton,
@@ -13,6 +13,7 @@ import {
   IonProgressBar,
   IonSkeletonText,
   IonToolbar,
+  ViewWillEnter,
 } from '@ionic/angular';
 import { bootstrapClockHistory } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -54,7 +55,7 @@ interface TaskStat {
   templateUrl: './task-list.component.html',
   providers: [provideIcons({ bootstrapClockHistory })],
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements ViewWillEnter {
   private readonly _store: TasksSignalStore = inject(tasksSignalStore);
 
   protected readonly tasks: Signal<AutomaticTask[]> = this._store.entities;
@@ -87,7 +88,7 @@ export class TaskListComponent implements OnInit {
   protected readonly isRefreshing$: Observable<boolean> = this._store.isRefreshing$;
   protected readonly refreshingObjects: Signal<Set<number>> = this._store.refreshingObjects;
 
-  public ngOnInit(): void {
+  public ionViewWillEnter(): void {
     this._store.fetchTasks();
   }
 

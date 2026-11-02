@@ -1,6 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <sp-page-title [title]="'tasks.new_task' | translate" [subtitle]="'tasks.new_task_subtitle' | translate" [showBackButton]="true"></sp-page-title>
+    <sp-page-title [title]="'tasks.new_task' | translate" [subtitle]="'tasks.new_task_subtitle' | translate" [showBackButton]="true"
+                   [backButtonDefaultHref]="'/automation'"></sp-page-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,4 +9,3 @@
   <sp-schedule-settings [task]="null" [devices]="devices()" [isLoading]="(isRefreshing$ | async) ?? false"
                         (taskChange)="onCreateTask($event)"></sp-schedule-settings>
 </ion-content>
-

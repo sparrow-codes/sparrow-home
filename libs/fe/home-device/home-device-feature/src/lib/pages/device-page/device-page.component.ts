@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, input, InputSignal, Signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -51,7 +51,7 @@ import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
   templateUrl: './device-page.component.html',
   providers: [provideIcons({ bootstrapHouseGear })],
 })
-export class DevicePageComponent implements ViewWillEnter {
+export class DevicePageComponent implements OnInit, ViewWillEnter {
   public readonly deviceType: InputSignal<string> = input('');
 
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
@@ -68,14 +68,16 @@ export class DevicePageComponent implements ViewWillEnter {
   protected readonly isRefreshing$: Observable<boolean> = this._facadeService.isRefreshing$;
   protected readonly refreshingDevices: Signal<Set<string>> = this._facadeService.refreshingObjects;
 
+  public ngOnInit(): void {
+    this._handleSearchEvent();
+  }
+
   public ionViewWillEnter(): void {
     if (this.deviceType()) {
       this._facadeService.setDeviceTypeFilter(+this.deviceType());
     }
 
     this._facadeService.fetchDevices();
-
-    this._handleSearchEvent();
   }
 
   protected onRemoveFilter(): void {

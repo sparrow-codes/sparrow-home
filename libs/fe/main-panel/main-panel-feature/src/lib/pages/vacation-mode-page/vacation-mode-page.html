@@ -3,7 +3,8 @@
 
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <sp-page-title [title]="'main_panel.vacation_mode' | translate" [showBackButton]="true"></sp-page-title>
+    <sp-page-title [title]="'main_panel.vacation_mode' | translate" [showBackButton]="true"
+                   [backButtonDefaultHref]="'/main'"></sp-page-title>
   </ion-toolbar>
 </ion-header>
 
@@ -57,4 +58,3 @@
 
   <span class="mt-4 text-left p-6 block text-sp-text">{{ 'main_panel.vacation_mode_description' | translate }}</span>
 </ion-content>
-

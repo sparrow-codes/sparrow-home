@@ -42,8 +42,12 @@
       }
     </div>
     <ion-label class="mb-2 block">{{ 'tasks.time' | translate }}</ion-label>
-    <ion-datetime [value]="formatTime(form.controls.time.value)" (ionChange)="onTimeChange($event.detail.value)"
-                  presentation="time"></ion-datetime>
+    <ion-datetime
+      [value]="formatTime(form.controls.time.value)"
+      [disabled]="form.controls.time.disabled"
+      (ionChange)="onTimeChange($event.detail.value)"
+      presentation="time"
+    ></ion-datetime>
   </div>
 
   <sp-days-of-week-control [formControl]="form.controls.daysOfWeek"
@@ -55,4 +59,3 @@
     {{ 'common.save' | translate }}
   </ion-button>
 </form>
-

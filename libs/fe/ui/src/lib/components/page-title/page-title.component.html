@@ -1,6 +1,9 @@
 <div class="flex items-center gap-3 px-4 py-3">
   @if (showBackButton()) {
-    <sp-back-button [disabled]="backButtonDisabled()"></sp-back-button>
+    <sp-back-button
+      [disabled]="backButtonDisabled()"
+      [defaultHref]="backButtonDefaultHref()"
+    ></sp-back-button>
   }
 
   <div class="min-w-0 flex-1 h-12 flex flex-col justify-center">
