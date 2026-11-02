@@ -105,6 +105,10 @@ export const appRoutes: Route[] = [
         redirectTo: RoutePath.MAIN,
         pathMatch: 'full',
       },
+      {
+        path: '**',
+        redirectTo: RoutePath.NOT_FOUND,
+      },
     ],
   },
 ];
