@@ -117,11 +117,12 @@ export class ActionFormComponent implements OnInit {
   protected onTimeChange(value: string | string[] | null | undefined): void {
     if (typeof value !== 'string') return;
 
-    const [hoursString, minutesString] = value.split(':');
-    const hours: number = Number(hoursString);
-    const minutes: number = Number(minutesString);
+    const timeParts: RegExpMatchArray | null = value.match(/(?:T|^)(\d{2}):(\d{2})/);
+    if (!timeParts) return;
 
-    if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return;
+    const hours: number = Number(timeParts[1]);
+    const minutes: number = Number(timeParts[2]);
+    if (hours > 23 || minutes > 59) return;
 
     const base: Date = this.form.controls.time.value ?? new Date();
     const nextValue: Date = new Date(base);
