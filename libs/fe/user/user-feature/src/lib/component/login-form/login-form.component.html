@@ -1,43 +1,22 @@
-<form [formGroup]="loginForm" (ngSubmit)="onLoginClick()" class="flex flex-col gap-6">
-  <p-floatlabel variant="on">
-    <input id="email" type="email" pInputText pSize="large" formControlName="email" fluid="true" />
-    <label for="email">{{ 'user.email' | translate }}</label>
-  </p-floatlabel>
+<form [formGroup]="loginForm" (ngSubmit)="onLoginClick()" class="flex flex-col gap-2">
 
-  <p-floatlabel variant="on">
-    <p-password
-      id="password"
-      size="large"
-      inputId="password"
-      formControlName="password"
-      fluid="true"
-      [feedback]="false"
-      [toggleMask]="true"
-    ></p-password>
-    <label for="password">{{ 'user.password' | translate }}</label>
-  </p-floatlabel>
 
-  <p-button
-    type="submit"
-    fluid="true"
-    size="large"
-    [style]="{ height: '43px' }"
-    [disabled]="loginForm.invalid || isLoading()"
-  >
-    @if (!isLoading()) {
+  <ion-label>{{ 'user.email' | translate }}</ion-label>
+  <ion-input class="mb-1" shape="round" mode="md" formControlName="email" fill="outline"
+             [placeholder]="'user.email' | translate"></ion-input>
+
+  <ion-label>{{'user.password' | translate }}</ion-label>
+  <ion-input class="mb-1" shape="round" formControlName="password"
+             [placeholder]="'user.password' | translate" type="password" mode="md" fill="outline">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+  <ion-button type="submit" color="secondary" expand="block" class="mt-2" [disabled]="isLoading()">
+    <ion-icon name="log-in-outline" slot="start" />
     {{ 'user.login' | translate }}
-    } @else {
-    <i class="pi pi-spinner pi-spin"></i>
-    }
-  </p-button>
-
-  <p-button
-    [disabled]="isLoading()"
-    (onClick)="newUserNavigation.emit()"
-    type="button"
-    [link]="true"
-    class="p-button-link w-full text-center"
-  >
+  </ion-button>
+  <a class="text-center text-primary mt-2" [routerLink]="['../', newUserLink()]">
     {{ 'user.create_account' | translate }}
-  </p-button>
+  </a>
+
+
 </form>

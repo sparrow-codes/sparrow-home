@@ -1,12 +1,11 @@
-
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
+import { IonBadge } from '@ionic/angular';
 import { bootstrapBattery, bootstrapBatteryFull, bootstrapBatteryHalf } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'sp-battery-status',
-  imports: [NgIcon, Tag],
+  imports: [NgIcon, IonBadge],
   providers: [provideIcons({ bootstrapBatteryFull, bootstrapBatteryHalf, bootstrapBattery })],
   templateUrl: './battery-status.component.html',
 })
@@ -29,5 +28,23 @@ export class BatteryStatusComponent {
     }
 
     return 'bootstrapBattery';
+  });
+
+  protected readonly batteryColor: Signal<string> = computed(() => {
+    const batteryStatus: number | null = this.batteryStatus();
+
+    if (batteryStatus === null) {
+      return '';
+    }
+
+    if (batteryStatus > 50) {
+      return 'success';
+    }
+
+    if (batteryStatus <= 50 && batteryStatus > 20) {
+      return 'warning';
+    }
+
+    return 'danger';
   });
 }

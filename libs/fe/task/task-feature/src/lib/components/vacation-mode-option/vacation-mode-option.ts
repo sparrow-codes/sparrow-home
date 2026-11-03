@@ -1,14 +1,14 @@
 import { Component, model, ModelSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { IonToggle } from '@ionic/angular';
 import { bootstrapAirplaneFill } from '@ng-icons/bootstrap-icons';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TaskAction } from '@sparrow-home/task-domain';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'sp-vacation-mode-option',
-  imports: [NgIconComponent, ToggleSwitch, FormsModule, TranslatePipe],
+  imports: [NgIconComponent, FormsModule, TranslatePipe, IonToggle],
   templateUrl: './vacation-mode-option.html',
   providers: [provideIcons({ bootstrapAirplaneFill })],
 })

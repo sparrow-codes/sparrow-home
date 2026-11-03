@@ -15,18 +15,27 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  IonAccordion,
+  IonAccordionGroup,
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonChip,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonModal,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TaskAction } from '@sparrow-home/task-domain';
-import { DaysOfWeekControl, DeviceActionComponent } from '@sparrow-home/ui';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
-import { Button } from 'primeng/button';
-import { DataView } from 'primeng/dataview';
-import { Divider } from 'primeng/divider';
-import { Drawer } from 'primeng/drawer';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputText } from 'primeng/inputtext';
-import { Panel } from 'primeng/panel';
-import { Tag } from 'primeng/tag';
+import { DaysOfWeekControl, DeviceActionComponent, Divider } from '@sparrow-home/ui';
 
 import { ActionFormComponent } from '../action-form/action-form.component';
 import { VacationModeOption } from '../vacation-mode-option/vacation-mode-option';
@@ -39,25 +48,31 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    Button,
-    FloatLabel,
-    InputText,
-    DataView,
-    Tag,
     DeviceActionComponent,
-    Panel,
-    Drawer,
     ActionFormComponent,
-    Accordion,
-    AccordionPanel,
-    AccordionHeader,
-    AccordionContent,
     DaysOfWeekControl,
     TranslatePipe,
-    Divider,
     VacationModeOption,
+    IonLabel,
+    IonInput,
+    IonAccordionGroup,
+    IonAccordion,
+    IonItem,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardContent,
+    IonChip,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    Divider,
+    IonContent,
   ],
   templateUrl: './schedule-settings.component.html',
+  styleUrls: ['schedule-settings.component.scss'],
   providers: [ScheduleFormService],
 })
 export class ScheduleSettingsComponent implements OnInit {
@@ -171,5 +186,13 @@ export class ScheduleSettingsComponent implements OnInit {
   protected showEditActionForm(action: TaskAction): void {
     this.actionToEdit = action;
     this.showEditAction = true;
+  }
+
+  protected closeAddActionForm(): void {
+    this.showAddAction = false;
+  }
+
+  protected closeEditActionForm(): void {
+    this.showEditAction = false;
   }
 }

@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-4 ion-padding">
+  <h3>{{ 'home.edit_device' | translate }}</h3>
+
+  <ion-label>{{ 'common.name' | translate }}</ion-label>
+  <ion-input class="mb-1" mode="md" fill="outline" shape="round" [placeholder]="'common.name' | translate"
+             [ngModel]="deviceName" (ngModelChange)="newName = $event"></ion-input>
+
+  <sp-divider></sp-divider>
+
+  <div class="flex justify-end gap-2">
+    <ion-button (click)="closeDialog()" color="error" fill="outline">
+      {{ 'common.cancel' | translate }}
+    </ion-button>
+    <ion-button (click)="nameChanged()" color="primary">
+      {{ 'common.save' | translate }}
+    </ion-button>
+  </div>
+</div>

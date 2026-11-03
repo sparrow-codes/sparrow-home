@@ -1,16 +1,15 @@
 import { Component, DestroyRef, effect, forwardRef, inject, Injector, input, InputSignal, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { IonCheckbox, IonIcon, IonRadio, IonRadioGroup } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Checkbox } from 'primeng/checkbox';
-import { Divider } from 'primeng/divider';
-import { RadioButton } from 'primeng/radiobutton';
 
 import { AbstractControlValueAccessor } from '../abstract-control-value-accessor';
+import { Divider } from '../divider/divider';
 
 @Component({
   selector: 'sp-days-of-week-control',
-  imports: [Checkbox, Divider, RadioButton, FormsModule, ReactiveFormsModule, TranslatePipe],
+  imports: [IonCheckbox, IonIcon, IonRadio, IonRadioGroup, ReactiveFormsModule, TranslatePipe, Divider],
   templateUrl: './days-of-week-control.html',
   providers: [
     {
@@ -62,5 +61,21 @@ export class DaysOfWeekControl extends AbstractControlValueAccessor<number[] | n
         this.updateValue(value);
       }
     });
+  }
+
+  protected isDaySelected(day: number): boolean {
+    return this.daysOfWeek.value.includes(day);
+  }
+
+  protected setDaySelected(day: number, checked: boolean): void {
+    const current: number[] = this.daysOfWeek.value;
+    const next: number[] = checked
+      ? current.includes(day)
+        ? current
+        : [...current, day]
+      : current.filter((selectedDay: number) => selectedDay !== day);
+
+    this.daysOfWeek.patchValue(next);
+    this.onTouch?.();
   }
 }

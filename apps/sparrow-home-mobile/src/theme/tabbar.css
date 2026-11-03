@@ -1,0 +1,12 @@
+:root {
+  ion-tab-bar {
+    --background: var(--sp-surface-raised);
+    height: 60px;
+  }
+}
+
+:root.ion-palette-dark {
+  ion-tab-bar {
+    --border: 1px solid var(--sp-border);
+  }
+}

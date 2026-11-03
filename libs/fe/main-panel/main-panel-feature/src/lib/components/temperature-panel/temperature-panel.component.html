@@ -1,18 +1,18 @@
 @if (isLoading()) {
-  <p-skeleton class="animate-fadein" height="150px"></p-skeleton>
+  <ion-skeleton-text [animated]="true" class="h-[150px]"></ion-skeleton-text>
 } @else {
   <div
     class="animate-fadein relative w-full h-[150px] xl:h-[350px] md:h-[250px] rounded-xl overflow-hidden shadow-sm bg-cover bg-center"
     style="background-image: url('assets/living-room.png')"
   >
     @if (isHouseClosed() === true) {
-      <div class="absolute bottom-2 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-right flex items-center gap-2">
-        <ng-icon name="bootstrapShieldFillCheck" class="text-green-600"></ng-icon>
-        <span class="text-sm font-medium text-gray-700">{{ 'main_panel.all_closed' | translate }}</span>
+      <div class="absolute bottom-2 bg-[color-mix(in_srgb,var(--sp-surface-raised)_80%,transparent)] backdrop-blur px-4 py-2 rounded-r text-right flex items-center gap-2">
+        <ng-icon name="bootstrapShieldFillCheck" class="text-[var(--ion-color-success)]"></ng-icon>
+        <span class="text-sm font-medium text-sp-text">{{ 'main_panel.all_closed' | translate }}</span>
       </div>
     } @else if (isHouseClosed() === false) {
       <a
-        class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-2 rounded-r text-sm font-medium text-gray-700 hover:bg-white/90 transition no-underline"
+        class="absolute bottom-4 bg-[color-mix(in_srgb,var(--sp-surface-raised)_80%,transparent)] backdrop-blur px-4 py-2 rounded-r text-sm font-medium text-sp-text-muted hover:bg-[color-mix(in_srgb,var(--sp-surface-raised)_90%,transparent)] transition no-underline"
         [routerLink]="['../', 'devices']"
         [queryParams]="{ deviceType: DeviceType.OPEN_DOOR_SENSOR }"
         aria-label="{{ 'main_panel.go_to_open_devices_aria' | translate }}"
@@ -20,11 +20,11 @@
         {{ 'main_panel.some_open' | translate }}
       </a>
     } @if (temperature()) {
-    <div class="absolute top-4 right-4 bg-white/50 backdrop-blur px-4 py-2 rounded-lg text-right text-surface-700">
-      <div class="text-3xl font-semibold leading-none">
+    <div class="absolute top-4 right-4 bg-[color-mix(in_srgb,var(--sp-surface-raised)_50%,transparent)] backdrop-blur px-4 py-2 rounded-lg text-right text-sp-text-muted">
+      <div class="text-3xl font-semibold leading-none text-sp-text">
         {{ temperature() + ' °C' }}
       </div>
-      <div class="text-sm font-medium text-surface-700">{{ 'main_panel.temperature_home' | translate }}</div>
+      <div class="text-sm font-medium text-sp-text">{{ 'main_panel.temperature_home' | translate }}</div>
     </div>
   }
   </div>

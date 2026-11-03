@@ -1,169 +1,195 @@
-<sp-page-title [routerLink]="['/devices']" [showProgressBar]="(isRefreshing$ | async) ?? false"
-  >{{ 'home.device_details' | translate }}
-</sp-page-title>
+@let refreshing = (isRefreshing$ | async) ?? false; @let device = deviceDetails();
 
-<div class="w-full flex justify-center mt-2">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title
+      [title]="'home.device_details' | translate"
+      [showBackButton]="true"
+      [backButtonDefaultHref]="'/devices'"
+      [subtitle]="deviceDetails()?.name ?? ''"
+    ></sp-page-title>
+    <ion-buttons slot="end">
+      @if (device) {
+      <ion-button
+        class="m-0 h-11 w-11 shrink-0"
+        fill="solid"
+        shape="round"
+        color="primary"
+        (click)="onDeviceNameChange(device.id, device.name)"
+        [ariaLabel]="'common.edit' | translate"
+        style="--padding-start: 0; --padding-end: 0"
+      >
+        <ng-icon name="bootstrapPencil"></ng-icon>
+      </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div class="h-[4px]">
+    @if (refreshing) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </div>
+</ion-header>
+
+<ion-content>
   @if (isLoading$ | async) {
-  <p-skeleton class="animate-fadein" height="300px"></p-skeleton>
-  } @else if (deviceDetails(); as homeDevice) {
+  <div class="ion-padding">
+    <ion-skeleton-text [animated]="true" class="h-[300px] mb-4"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-[300px] mb-4"></ion-skeleton-text>
+  </div>
 
-  <p-card class="w-full">
-    <ng-template #header>
-      <div class="p-[20px] pb-0 flex justify-between items-center">
-        {{ homeDevice.name }}
+  } @else if (device) {
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ device.description }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs opacity-80">{{ device.vendor }}</span>
+        @if (device.battery !== null) {
+        <sp-battery-status [batteryStatus]="device.battery"></sp-battery-status>
+        }
+      </div>
 
-        @if (homeDevice.battery !== null) {
-        <div class="flex justify-end">
-          <sp-battery-status [batteryStatus]="homeDevice.battery"></sp-battery-status>
+      <div class="flex justify-between items-center">
+        <sp-device-type [deviceType]="device.type"></sp-device-type>
+        @if (device.signalStrength !== undefined) {
+        <div class="w-full flex justify-end">
+          <sp-signal-strength [signalStrength]="device.signalStrength"></sp-signal-strength>
         </div>
         }
       </div>
-    </ng-template>
-    <div class="flex flex-col gap-1 mb-2">
-      <span class="text-sm opacity-80">{{ homeDevice.description }}</span>
-      <span class="text-xs opacity-80">{{ homeDevice.vendor }}</span>
-    </div>
 
-    <div class="flex justify-between">
-      <sp-device-type [deviceType]="homeDevice.type"></sp-device-type>
-      @if (homeDevice.signalStrength !== undefined) {
-      <div class="w-full flex justify-end">
-        <sp-signal-strength [signalStrength]="homeDevice.signalStrength"></sp-signal-strength>
+      @if (device.actions?.length) {
+      <sp-divider></sp-divider>
+      <ion-list>
+        @for (action of device.actions; track action.key) { @if (action.type !== 'unknown') {
+        <sp-device-action [action]="action" (callAction)="publishZigbeeEvent(device.homeDeviceId, $event)">
+        </sp-device-action>
+        } }
+      </ion-list>
+      } @if (params().length) {
+      <sp-divider></sp-divider>
+
+      @for (param of params(); track param[0]) { @let value = param[1]; @if (value !== undefined && value !== null &&
+      value !== '') {
+      <div class="flex justify-between items-center">
+        <ion-label slot="start" class="font-semibold">{{ param[0] | humanize }}</ion-label>
+        <ion-label slot="end">{{ value | humanize }}</ion-label>
+      </div>
+      } } }
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'settings' | translate }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="flex justify-between items-center">
+        <ion-label id="present-on-main-page">{{ 'home.present_on_main_page' | translate }}</ion-label>
+        <ion-toggle
+          aria-labelledby="present-on-main-page"
+          [ngModel]="isOnMainPage()"
+          (ngModelChange)="setIsOnMainPage($event)"
+        ></ion-toggle>
+      </div>
+
+      @if (mainParams().length) {
+
+      <sp-divider></sp-divider>
+      <ion-label>{{ 'home.quick-param-preview' | translate }}</ion-label>
+      <div class="flex items-center mt-2">
+        <ion-select
+          class="flex-1"
+          mode="md"
+          fill="outline"
+          shape="round"
+          [interfaceOptions]="{ mode: 'ios' }"
+          [placeholder]="'home.quick-param' | translate"
+          [ngModel]="mainParamKey()"
+          slot="end"
+          interface="action-sheet"
+          (ngModelChange)="setMainParam($event)"
+        >
+          @for (option of mainParams(); track option.value) {
+          <ion-select-option [value]="option.value">
+            {{ option.label }}
+          </ion-select-option>
+          }
+        </ion-select>
+        <ion-button
+          color="secondary"
+          fill="clear"
+          (click)="setMainParam(null)"
+          aria-label="{{ 'common.remove' | translate }}"
+        >
+          <ng-icon name="bootstrapXCircleFill"></ng-icon>
+        </ion-button>
+      </div>
+      <div class="flex gap-2 p-2 items-start text-sm text-sp-text-muted mt-4 bg-sp-surface-sunken rounded">
+        <ng-icon name="bootstrapInfoCircle" size="1rem" class="min-w-[1rem] mt-0.5"></ng-icon>
+        <span>{{ 'home.show-quick-param' | translate }}</span>
+      </div>
+      } @if (mainActions().length) {
+      <sp-divider></sp-divider>
+
+      <ion-label>{{ 'home.quick-action-preview' | translate }}</ion-label>
+      <div class="flex mt-2 items-center">
+        <ion-select
+          class="flex-1"
+          interface="action-sheet"
+          mode="md"
+          shape="round"
+          fill="outline"
+          [interfaceOptions]="{ mode: 'ios' }"
+          [placeholder]="'home.quick-action' | translate"
+          [ngModel]="mainActionKey()"
+          (ngModelChange)="setMainAction($event)"
+          slot="end"
+        >
+          @for (option of mainActions(); track option.value) {
+          <ion-select-option [value]="option.value">
+            {{ option.label }}
+          </ion-select-option>
+          }
+        </ion-select>
+        <ion-button
+          color="secondary"
+          fill="clear"
+          (click)="setMainAction(null)"
+          aria-label="{{ 'common.remove' | translate }}"
+        >
+          <ng-icon name="bootstrapXCircleFill"></ng-icon>
+        </ion-button>
+      </div>
+      <div class="flex gap-2 p-2 items-start text-sm text-sp-text-muted mt-4 bg-sp-surface-sunken rounded">
+        <ng-icon name="bootstrapInfoCircle" size="1rem" class="min-w-[1rem] mt-0.5"></ng-icon>
+        <span>{{ 'home.show-quick-action' | translate }}</span>
       </div>
       }
-    </div>
 
-    @if (deviceDetails()?.actions?.length) {
-    <p-divider></p-divider>
-
-    <div class="flex gap-2 w-full justify-end mb-3">
-      <span class="text-xs font-semibold text-gray-500">{{ 'home.main' | translate }}</span>
-    </div>
-    <div class="flex flex-col gap-4">
-      @for (action of homeDevice.actions; track action.key) { @if (action.type !== 'unknown') {
-      <sp-device-action [action]="action" (callAction)="publishZigbeeEvent(homeDevice.homeDeviceId, $event)">
-      </sp-device-action>
-      } }
-    </div>
-    } @if (params().length) {
-    <p-divider></p-divider>
-
-    @for (param of params(); track param[0]) {
-    <sp-device-param [deviceParam]="param"></sp-device-param>
-    } }
-
-    <p-divider></p-divider>
-    <div class="flex justify-between items-center mt-4">
-      <span>{{ 'home.present_on_main_page' | translate }}</span>
-      <p-checkbox
-        [size]="'large'"
-        [ngModel]="isOnMainPage()"
-        (ngModelChange)="setIsOnMainPage($event)"
-        [binary]="true"
-      ></p-checkbox>
-    </div>
-
-    @if (mainActions().length) {
-    <p-divider></p-divider>
-    <p-float-label [variant]="'on'" class="mt-4">
-      <p-select
-        [fluid]="true"
-        inputId="main-action"
-        [options]="mainActions()"
-        optionLabel="label"
-        optionValue="value"
-        size="large"
-        [showClear]="true"
-        [ngModel]="mainActionKey()"
-        (ngModelChange)="setMainAction($event)"
-      ></p-select>
-      <label for="main-action">{{ 'home.quick-action' | translate }}</label>
-    </p-float-label>
-    <div class="flex gap-2 justify-between text-sm text-gray-500 mt-4">
-      <i class="pi pi-info-circle text-sm"></i>
-      <span>{{ 'home.show-quick-action' | translate }}</span>
-    </div>
-    } @if (mainParams().length) {
-    <p-divider></p-divider>
-    <p-float-label [variant]="'on'" class="mt-4">
-      <p-select
-        [fluid]="true"
-        inputId="main-param"
-        [options]="mainParams()"
-        optionLabel="label"
-        optionValue="value"
-        size="large"
-        [showClear]="true"
-        [ngModel]="mainParamKey()"
-        (ngModelChange)="setMainParam($event)"
-      ></p-select>
-      <label for="main-param">{{ 'home.quick-param-preview' | translate }}</label>
-    </p-float-label>
-    <div class="flex gap-2 justify-between text-sm text-gray-500 mt-4">
-      <i class="pi pi-info-circle text-sm"></i>
-      <span>{{ 'home.show-quick-param' | translate }}</span>
-    </div>
-    }
-
-    <p-divider></p-divider>
-    <div class="flex justify-between items-center mt-4">
-      <span>Id:</span>
-      <div class="flex gap-2 items-center">
-        <span>{{ homeDevice.homeDeviceId }}</span>
+      <div class="flex justify-between items-center mt-4">
+        <ion-label>Id:</ion-label>
+        <div class="flex gap-2 items-center">
+          <span>{{ device.homeDeviceId }}</span>
+        </div>
       </div>
-    </div>
-
-    <!-- Usuń -->
-  </p-card>
+    </ion-card-content>
+  </ion-card>
   }
-</div>
 
-<div class="flex justify-end gap-2 mt-6">
-  @if (isLoading$ | async) {
-  <p-skeleton class="animate-fadein" width="120px" height="40px"></p-skeleton>
-  <p-skeleton class="animate-fadein" width="120px" height="40px"></p-skeleton>
-  } @else if (deviceDetails(); as homeDevice) {
-  <p-button
-    icon="pi pi-trash"
-    class="animate-fadein"
-    [outlined]="true"
-    [label]="'common.remove' | translate"
-    (onClick)="onDeviceDelete(homeDevice.id, homeDevice.name)"
-  />
-
-  <p-button
-    class="animate-fadein"
-    icon="pi pi-pencil"
-    [label]="'common.edit' | translate"
-    (onClick)="showEditDialog.set(true)"
-  />
-  }
-</div>
-
-@if (deviceDetails(); as homeDevice) {
-<p-dialog [header]="'home.edit_device' | translate" [visible]="showEditDialog()" [modal]="true" [closable]="false">
-  <div class="flex flex-col gap-4 w-[80vw]">
-    <input
-      #nameInput
-      pInputText
-      [fluid]="true"
-      [placeholder]="('common.name' | translate) + '...'"
-      [value]="deviceDetails()?.name"
-    />
-
-    <div class="flex justify-end gap-2">
-      <p-button
-        [label]="'common.cancel' | translate"
-        [outlined]="true"
-        severity="secondary"
-        (onClick)="showEditDialog.set(false)"
-      />
-      <p-button
-        icon="pi pi-check"
-        [label]="'common.save' | translate"
-        (onClick)="onDeviceNameChange(homeDevice.id, nameInput.value)"
-      />
-    </div>
+  <div class="ion-padding">
+    @if (isLoading$ | async) {
+    <ion-skeleton-text [animated]="true" class="h-11"></ion-skeleton-text>
+    } @else if (deviceDetails(); as homeDevice) {
+    <ion-button expand="block" (click)="onDeviceDelete(homeDevice.id, homeDevice.name)" color="danger" fill="outline">
+      <ng-icon name="bootstrapTrash" class="mr-2"></ng-icon>
+      <span>
+        {{ 'common.remove' | translate }}
+      </span>
+    </ion-button>
+    }
   </div>
-</p-dialog>
-}
+</ion-content>

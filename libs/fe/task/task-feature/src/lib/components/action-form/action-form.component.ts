@@ -16,14 +16,11 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { IonButton, IonDatetime, IonIcon, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AvailableDevice, TaskAction, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
-import { DaysOfWeekControl, DeviceActionComponent } from '@sparrow-home/ui';
+import { DaysOfWeekControl, DeviceActionComponent, Divider } from '@sparrow-home/ui';
 import { DeviceAction, humanize } from '@sparrow-home/utils';
-import { Button } from 'primeng/button';
-import { DatePicker } from 'primeng/datepicker';
-import { FloatLabel } from 'primeng/floatlabel';
-import { Select } from 'primeng/select';
 
 import { ActionFormService } from './form-service/action-form.service';
 import { ActionForm } from './form-service/model/action-form';
@@ -31,15 +28,18 @@ import { ActionForm } from './form-service/model/action-form';
 @Component({
   selector: 'sp-action-form',
   imports: [
-    Select,
     ReactiveFormsModule,
     DeviceActionComponent,
-    DatePicker,
-    FloatLabel,
-    Button,
     DaysOfWeekControl,
-    TranslatePipe
-],
+    TranslatePipe,
+    IonButton,
+    IonIcon,
+    IonLabel,
+    IonSelect,
+    IonSelectOption,
+    Divider,
+    IonDatetime,
+  ],
   templateUrl: './action-form.component.html',
   providers: [ActionFormService],
 })
@@ -107,6 +107,27 @@ export class ActionFormComponent implements OnInit {
         action: { ...deviceAction, currentValue: payload[deviceAction?.key] },
       } as TaskAction);
     }
+  }
+
+  protected formatTime(date: Date | null): string {
+    if (!date) return '';
+    return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  }
+
+  protected onTimeChange(value: string | string[] | null | undefined): void {
+    if (typeof value !== 'string') return;
+
+    const timeParts: RegExpMatchArray | null = value.match(/(?:T|^)(\d{2}):(\d{2})/);
+    if (!timeParts) return;
+
+    const hours: number = Number(timeParts[1]);
+    const minutes: number = Number(timeParts[2]);
+    if (hours > 23 || minutes > 59) return;
+
+    const base: Date = this.form.controls.time.value ?? new Date();
+    const nextValue: Date = new Date(base);
+    nextValue.setHours(hours, minutes, 0, 0);
+    this.form.controls.time.setValue(nextValue);
   }
 
   private _handleFormEvents(): void {

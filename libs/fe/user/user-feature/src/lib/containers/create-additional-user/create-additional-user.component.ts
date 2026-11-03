@@ -1,32 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { IonContent, IonHeader, IonToolbar } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PageTitleComponent } from '@sparrow-home/ui';
 import { UserDataFacadeService } from '@sparrow-home/user-domain';
-import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { Observable } from 'rxjs';
 
 import { CreateUserFormComponent } from '../../component/create-user-form/create-user-form.component';
 
 @Component({
   selector: 'sp-create-additional-user',
-  imports: [CommonModule, CreateUserFormComponent, Button, Card, TranslatePipe],
+  imports: [
+    CommonModule,
+    CreateUserFormComponent,
+    TranslatePipe,
+    IonHeader,
+    IonToolbar,
+    IonContent,
+    PageTitleComponent,
+  ],
   templateUrl: './create-additional-user.component.html',
 })
-export class CreateAdditionalUserComponent implements OnInit {
-  private readonly _router: Router = inject(Router);
-  protected loginPath: string = '';
+export class CreateAdditionalUserComponent {
   protected readonly dataService: UserDataFacadeService = inject(UserDataFacadeService);
   protected readonly isLoading$: Observable<boolean> = this.dataService.isLoading$;
-
-  private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
-
-  public ngOnInit(): void {
-    this.loginPath = this._activatedRoute.snapshot.data['loginPath'];
-  }
-
-  protected navigateToLogin(): void {
-    this._router.navigate([this.loginPath]);
-  }
 }

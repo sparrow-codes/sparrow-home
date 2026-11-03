@@ -1,0 +1,20 @@
+:root {
+  ion-segment-button {
+    font-weight: 600;
+
+    --indicator-color: var(--sp-accent-50);
+    --color-checked: var(--ion-color-secondary);
+  }
+
+  /* label.css forces a text color; let the segment button state color through */
+  ion-segment-button ion-label {
+    color: inherit !important;
+  }
+}
+
+:root.ion-palette-dark {
+  ion-segment-button {
+    --indicator-color: var(--ion-color-secondary);
+    --color-checked: var(--ion-color-secondary-contrast);
+  }
+}

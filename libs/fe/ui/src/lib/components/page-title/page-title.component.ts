@@ -1,14 +1,16 @@
 import { Component, input, InputSignal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ProgressBar } from 'primeng/progressbar';
+
+import { BackButton } from '../back-button/back-button';
 
 @Component({
   selector: 'sp-page-title',
   templateUrl: './page-title.component.html',
-  imports: [RouterLink, ProgressBar],
+  imports: [BackButton],
 })
 export class PageTitleComponent {
-  public readonly routerLink: InputSignal<string[] | undefined> = input();
-  public readonly navigationDisabled: InputSignal<boolean> = input(false);
-  public readonly showProgressBar: InputSignal<boolean> = input(false);
+  public readonly title: InputSignal<string> = input('');
+  public readonly subtitle: InputSignal<string> = input('');
+  public readonly showBackButton: InputSignal<boolean> = input(false);
+  public readonly backButtonDisabled: InputSignal<boolean> = input(false);
+  public readonly backButtonDefaultHref: InputSignal<string> = input('/');
 }

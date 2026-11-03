@@ -1,0 +1,14 @@
+:root {
+  ion-modal {
+    --width: 90vw;
+    --min-width: 250px;
+    --max-width: 500px;
+    --height: fit-content;
+    --border-radius: var(--sp-radius-sm);
+  }
+
+  ion-modal::part(backdrop) {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}

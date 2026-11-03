@@ -1,68 +1,63 @@
 @let joinInProgress = (joinInProgress$ | async) ?? false;
 @let deviceJoined = deviceJoined$ | async;
 
-<sp-page-title [navigationDisabled]="joinInProgress" [routerLink]="['../']">{{ 'home.add_new_device' | translate }}
-</sp-page-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title
+      [title]="'home.add_new_device' | translate"
+      [showBackButton]="true"
+      [backButtonDefaultHref]="'/devices'"
+      [backButtonDisabled]="joinInProgress"
+    ></sp-page-title>
+  </ion-toolbar>
+</ion-header>
 
-<p-card>
-  <form [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-6 pt-2">
-    <p-float-label variant="on">
-      <input
-        id="deviceName"
-        type="text"
-        pInputText
-        pSize="large"
-        [formControl]="formGroup.controls.name"
-        [disabled]="joinInProgress"
-        fluid="true"
-      />
-      <label for="deviceName">{{'home.device_name' | translate}}</label>
-    </p-float-label>
+<ion-content class="ion-padding">
+      <form [formGroup]="formGroup" (ngSubmit)="onJoin()" class="flex flex-col gap-2">
+          <ion-label>{{'home.device_name' | translate}}</ion-label>
+          <ion-input class="mb-1" mode="md" fill="outline" shape="round" [placeholder]="'home.device_name' | translate" [formControl]="formGroup.controls.name"
+                     [disabled]="joinInProgress">
+          </ion-input>
 
-    <p-floatlabel class="w-full" variant="on">
-      <p-select
-        [formControl]="formGroup.controls.deviceType"
-        inputId="in_label"
-        [options]="dropdownOptions"
-        optionLabel="label"
-        [size]="'large'"
-        optionValue="value"
-        [fluid]="true"
-      />
-      <label for="in_label">{{'home.device_type' | translate}}</label>
-    </p-floatlabel>
+          <ion-label>{{'home.device_type' | translate}}</ion-label>
+          <ion-select  [interfaceOptions]="{mode: 'ios'}" mode="md" fill="outline" shape="round" [formControl]="formGroup.controls.deviceType" [placeholder]="'home.device_type' | translate" interface="action-sheet">
+            @for(option of dropdownOptions; track option.value) {
+              <ion-select-option [value]="option.value">
+                {{ option.label }}
+              </ion-select-option>
+            }
+          </ion-select>
 
-    <div class="h-[40px]">
-      @if (deviceJoined === true && !joinInProgress) {
-        <div class="flex gap-2 items-center justify-center w-full">
-          <i class="pi pi-check-circle text-green-600"></i>
-          <span class="text-green-600">{{'home.connection_established' | translate}}</span>
+
+        <div class="h-[40px]">
+          @if (deviceJoined === true && !joinInProgress) {
+            <div class="flex gap-2 items-center justify-center w-full">
+              <ion-icon name="checkmark-circle-outline" class="text-[var(--ion-color-success)]"></ion-icon>
+              <span class="text-[var(--ion-color-success)]">{{ 'home.connection_established' | translate }}</span>
+            </div>
+          }
+          @if (deviceJoined === false && !joinInProgress) {
+            <div class="flex gap-2 items-center justify-center w-full">
+              <ion-icon name="ban-outline" class="text-[var(--ion-color-danger)]"></ion-icon>
+              <span class="text-[var(--ion-color-danger)]">{{ 'home.device_pairing_failed' | translate }}</span>
+            </div>
+          }
+          @if (joinInProgress) {
+            <div class="flex gap-2 items-center justify-center w-full">
+              <ion-spinner color="primary" name="crescent"></ion-spinner>
+              <span class="text-sp-text-muted">{{ 'home.pairing_in_progress' | translate }}</span>
+            </div>
+          }
         </div>
-      }
-      @if (deviceJoined === false && !joinInProgress) {
-        <div class="flex gap-2 items-center justify-center w-full">
-          <i class="pi pi-ban text-red-500"></i>
-          <span class="text-red-500">{{'home.device_pairing_failed' | translate}}</span>
-        </div>
-      }
-      @if (joinInProgress) {
-        <div class="flex gap-2 items-center justify-center w-full">
-          <span class="text-red-gray-700">{{'home.pairing_in_progress' | translate}}</span>
-        </div>
-      }
-    </div>
 
-    @if (deviceJoined === true) {
-      <p-button type="button" label="Ok" size="large" fluid="true" [routerLink]="['../']"></p-button>
-    } @else {
-      <p-button
-        type="submit"
-        [disabled]="formGroup.invalid || joinInProgress"
-        [label]="'common.connect' | translate"
-        [loading]="joinInProgress"
-        size="large"
-        fluid="true"
-      ></p-button>
-    }
-  </form>
-</p-card>
+        @if (deviceJoined === true) {
+          <ion-button [routerLink]="['../']" expand="block">
+            {{'common.ok' | translate }}
+          </ion-button>
+        } @else {
+          <ion-button [disabled]="formGroup.invalid || joinInProgress" (click)="onJoin()" expand="block">
+            {{'common.connect' | translate }}
+          </ion-button>
+        }
+      </form>
+</ion-content>

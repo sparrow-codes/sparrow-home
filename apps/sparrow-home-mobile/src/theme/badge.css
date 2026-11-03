@@ -1,0 +1,8 @@
+:root {
+  ion-badge {
+    --padding-top: 6px;
+    --padding-end: 8px;
+    --padding-bottom: 6px;
+    --padding-start: 8px;
+  }
+}

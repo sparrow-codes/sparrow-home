@@ -6,7 +6,7 @@ import {
   TaskDtoApiModel,
   TasksApiService,
 } from '@sparrow-home/api';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '@sparrow-home/core';
 import { of, throwError } from 'rxjs';
 
 import { AutomaticTask } from '../model/automatic-task';
@@ -37,8 +37,7 @@ describe('tasksSignalStore', () => {
       providers: [
         rootStore,
         { provide: TasksApiService, useValue: mockTaskApiService },
-        { provide: MessageService, useValue: mockMessageService },
-        { provide: MessageService, useValue: mockMessageService },
+        { provide: ToastService, useValue: mockMessageService },
         { provide: HomeDeviceApiService, useValue: mockHomeDeviceApiService },
         { provide: TranslateService, useValue: { instant: jest.fn((key: string) => key) } },
       ],

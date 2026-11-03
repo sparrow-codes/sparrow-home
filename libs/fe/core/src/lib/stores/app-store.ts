@@ -1,17 +1,18 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { DOCUMENT, inject } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { AlertController } from '@ionic/angular';
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { TranslateService } from '@ngx-translate/core';
 import { SetupApiService } from '@sparrow-home/api';
 import { withThemeMode } from '@sparrow-home/ui';
-import { MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import { catchError, filter, first, map, Observable, of, switchMap } from 'rxjs';
 
-import { NewVersionDialogComponent } from '../components/new-version-dialog/new-version-dialog.component';
 import { AppConfig, Configuration } from '../models';
 import { VisibilityService } from '../services/';
+import { ToastService } from '../services/toast.service';
+import { withAuthentication } from './features';
 
 export type CoreState = {
   appConfig: AppConfig | null;
@@ -29,7 +30,8 @@ export const appStore = signalStore(
     configuration: null,
   }),
   withThemeMode(),
-  withMethods((store, apiService = inject(SetupApiService), messageService = inject(MessageService)) => ({
+  withAuthentication(),
+  withMethods((store, apiService = inject(SetupApiService), messageService = inject(ToastService)) => ({
     saveAppConfig: (appConfig: AppConfig): void => {
       patchState(store, { appConfig });
     },
@@ -54,7 +56,8 @@ export const appStore = signalStore(
     (
       _store,
       swUpdate: SwUpdate = inject(SwUpdate),
-      dialog: DialogService = inject(DialogService),
+      alertController: AlertController = inject(AlertController),
+      translateService: TranslateService = inject(TranslateService),
       visibilityService = inject(VisibilityService),
       document: Document = inject(DOCUMENT)
     ) => ({
@@ -65,13 +68,16 @@ export const appStore = signalStore(
           .pipe(
             filter((eventType) => eventType.type === 'VERSION_READY'),
             first(),
-            switchMap(
-              () =>
-                dialog.open(NewVersionDialogComponent, {
-                  closable: false,
-                  modal: true,
-                })!.onClose
-            )
+            switchMap(async () => {
+              const alert = await alertController.create({
+                message: translateService.instant('ui.new_version_available'),
+                backdropDismiss: false,
+                buttons: [translateService.instant('common.ok')],
+              });
+
+              await alert.present();
+              await alert.onDidDismiss();
+            })
           )
           .subscribe(() => document.location.reload());
       },

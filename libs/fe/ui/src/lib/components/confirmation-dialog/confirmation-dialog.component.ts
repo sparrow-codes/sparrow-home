@@ -1,25 +1,24 @@
-
 import { Component, inject } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { IonButton, ModalController } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonDirective } from 'primeng/button';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { ConfirmationDialogData } from './model/confirmation-dialog-data';
+import { Divider } from '../divider/divider';
 
 @Component({
   selector: 'sp-confirmation-dialog',
-  imports: [ButtonDirective, TranslatePipe],
+  imports: [TranslatePipe, IonButton, Divider],
   templateUrl: './confirmation-dialog.component.html',
 })
 export class ConfirmationDialogComponent {
-  private readonly _domSanitizer: DomSanitizer = inject(DomSanitizer);
+  public readonly content: string = '';
 
-  protected readonly data: ConfirmationDialogData = inject(DynamicDialogConfig).data;
-  protected readonly dialogRef: DynamicDialogRef = inject(DynamicDialogRef);
-  protected readonly content: SafeHtml = this._domSanitizer.bypassSecurityTrustHtml(this.data.content);
+  private readonly _modalController: ModalController = inject(ModalController);
 
-  protected onConfirm(): void {
-    this.dialogRef.close(true);
+  protected async onConfirm(): Promise<void> {
+    await this._modalController.dismiss(true);
+  }
+
+  protected async onCancel(): Promise<void> {
+    await this._modalController.dismiss(false);
   }
 }

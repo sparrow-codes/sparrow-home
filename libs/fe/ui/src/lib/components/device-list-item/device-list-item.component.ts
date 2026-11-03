@@ -1,9 +1,8 @@
 import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { IonBadge, IonItem } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceAction, DeviceType, HomeDevice, HumanizePipe } from '@sparrow-home/utils';
-import { Card } from 'primeng/card';
-import { Tag } from 'primeng/tag';
 
 import { deviceTypeDictionary } from '../../dictionary';
 import { DeviceActionComponent } from '../device-action/device-action.component';
@@ -11,7 +10,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 
 @Component({
   selector: 'sp-device-list-item',
-  imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, Tag, Card],
+  imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, IonItem, IonBadge],
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {
@@ -20,6 +19,10 @@ export class DeviceListItemComponent {
   public readonly routing: InputSignal<string[] | undefined> = input();
   public readonly isLoading: InputSignal<boolean> = input(false);
   public readonly refreshingDevices: InputSignal<Set<string>> = input.required();
+
+  protected readonly deviceTypeLabel: Signal<string | undefined> = computed(() =>
+    deviceTypeDictionary.get(this.device().type)
+  );
 
   protected readonly showFinishAnimation: Signal<boolean> = computed(() => {
     return this.refreshingDevices().has(this.device().homeDeviceId);
@@ -45,9 +48,8 @@ export class DeviceListItemComponent {
       }
     }
 
-    return deviceTypeDictionary.get(this.device().type);
+    return;
   });
-  protected showTag: Signal<boolean> = computed(() => !!this.device().mainParamKey);
 
   protected onDeviceEvent(event: Record<string, unknown>): void {
     this.deviceEvent.emit(event);

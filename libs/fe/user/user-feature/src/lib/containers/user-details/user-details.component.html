@@ -1,63 +1,72 @@
-<sp-page-title [showProgressBar]="(isRefreshing$ | async) ?? false">{{ 'user.settings' | translate }}</sp-page-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <sp-page-title [title]="'user.settings' | translate"></sp-page-title>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content>
 @if ((isLoading$ | async)) {
-  <p-skeleton class="animate-fadein" height="300px"></p-skeleton>
+  <div class="ion-padding">
+    <ion-skeleton-text [animated]="true" class="h-[200px]"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-[80px]"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" class="h-[80px]"></ion-skeleton-text>
+  </div>
+  
 } @else if (user(); as user) {
 
-  <p-card>
-    <div class="w-full">
-      <div class="flex flex-col items-center text-center gap-4 py-6">
-        <p-avatar
-          size="xlarge"
-          label="{{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}"
-          shape="circle"
-        ></p-avatar>
+  <ion-card>
+    <ion-card-content>
+      <div class="w-full">
+        <div class="flex flex-col items-center text-center gap-4">
+          <ion-avatar class="w-20 h-20 flex items-center justify-center bg-sp-surface-sunken text-sp-text text-3xl font-semibold uppercase">
+            {{ user.firstName?.charAt(0) + (user.lastName?.charAt(0) ?? '') }}
+          </ion-avatar>
 
-        <div class="text-xl font-semibold uppercase tracking-wide">
-          <span>{{ user.firstName }}</span>
-          @if (user.lastName) {
-            <span class="ml-1">{{ user.lastName }}</span>
-          }
+          <div class="text-xl font-semibold uppercase tracking-wide">
+            <span>{{ user.firstName }}</span>
+            @if (user.lastName) {
+              <span class="ml-1">{{ user.lastName }}</span>
+            }
+          </div>
+
+          <span class="text-sp-text-muted text-sm">{{ user.email }}</span>
         </div>
-
-        <span class="text-gray-500 text-sm">{{ user.email }}</span>
       </div>
+    </ion-card-content>
+  </ion-card>
 
-      @if (additionalUsers()?.length) {
-        <p-divider></p-divider>
-        <div class="flex flex-col gap-2 mb-6">
-          <span class="font-semibold text-sm">{{ 'user.additional_users_list' | translate }}</span>
+  @if (additionalUsers()?.length) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>{{ 'user.additional_users_list' | translate }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        @for (additional of additionalUsers(); track additional.id) {
+          <div class="flex justify-between items-center border-b border-sp-border last:border-b-0 py-2 text-sm">
+            <span>
+              {{ additional.firstName }}
+              @if (additional.lastName) {
+                {{ ' ' + additional.lastName }}
+              }
+            </span>
+            <ion-toggle
+              [ngModel]="additional.isActive"
+              (ionChange)="handleUserActivatedToggle($event.detail.checked, additional.id)"
+            ></ion-toggle>
+          </div>
+        }
+      </ion-card-content>
+    </ion-card>
+  }
 
-          @for (user of additionalUsers(); track user.id) {
-            <div class="flex justify-between items-center border-b border-light-gray py-2 text-sm">
-        <span>
-          {{ user.firstName }}
-          @if (user.lastName) {
-            {{ ' ' + user.lastName }}
-          }
-        </span>
-              <p-toggle-switch
-                [ngModel]="user.isActive"
-                (onChange)="handleUserActivatedToggle($event.checked, user.id)"
-              ></p-toggle-switch>
-            </div>
-          }
-        </div>
-      }
-    </div>
-  </p-card>
-
-  <p-divider></p-divider>
   <sp-theme-mode [isDarkMode]="isDarkMode()" (toggleDarkMode)="toggleThemeMode()"></sp-theme-mode>
-  <p-divider></p-divider>
 
-  <p-button
-    [label]="'user.logout' | translate"
-    icon="pi pi-sign-out"
-    variant="outlined"
-    fluid="true"
-    size="large"
-    severity="secondary"
-    (onClick)="handleLogout()"
-  ></p-button>
+  <ion-button (click)="handleLogout()" color="secondary" expand="block" fill="outline" class="ion-padding-horizontal">
+    <div class="flex gap-2">
+      <ion-icon name="log-out-outline"></ion-icon>
+      <span>{{ 'user.logout' | translate }}</span>
+    </div>
+
+  </ion-button>
 }
+</ion-content>

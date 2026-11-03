@@ -5,4 +5,5 @@ export * from './lib/interceptors';
 export * from './lib/models';
 export * from './lib/services';
 export * from './lib/stores/app-store';
+export * from './lib/stores/features';
 export * from './lib/tokens';

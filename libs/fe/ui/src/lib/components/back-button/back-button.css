@@ -1,0 +1,16 @@
+:host {
+  ion-back-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: var(--sp-surface-sunken);
+    --color: var(--ion-color-dark);
+    --border-radius: 50%;
+    --icon-font-size: 1.5rem;
+    --background-activated: var(--sp-border);
+    --background-focused: var(--sp-border);
+
+    &::part(native) {
+      border: 3px solid var(--sp-border);
+    }
+  }
+}

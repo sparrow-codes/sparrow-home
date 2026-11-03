@@ -1,12 +1,12 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { IonItem, IonSkeletonText } from '@ionic/angular';
+import { NgIcon } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Card } from 'primeng/card';
-import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'sp-device-list-panel',
-  imports: [RouterLink, TranslatePipe, Skeleton, Card],
+  imports: [RouterLink, TranslatePipe, IonSkeletonText, IonItem, NgIcon],
   templateUrl: './device-list-panel.component.html',
 })
 export class DeviceListPanelComponent {

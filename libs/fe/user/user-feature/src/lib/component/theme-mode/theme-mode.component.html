@@ -1,16 +1,21 @@
-<p-card>
-  <div class="w-full flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <div class="bg-gray-200 dark:bg-surface-600 rounded-full p-3 flex items-center">
-        <ng-icon [name]="'bootstrapSun'"></ng-icon>
+<ion-card>
+  <ion-card-header>
+    <ion-card-subtitle>{{ 'user.dark_mode' | translate }}</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <div class="w-full flex justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <div class="bg-sp-surface-sunken text-sp-text rounded-full p-3 flex items-center">
+          <ng-icon [name]="isDarkMode() ? 'bootstrapMoon' : 'bootstrapSun'"></ng-icon>
+        </div>
+
+        <div class="flex flex-col gap-1">
+<!--          <span class="font-semibold text-md">{{ 'user.dark_mode' | translate }}</span>-->
+          <span class="text-sm">{{ 'user.switch_between_light_and_dark_mode' | translate }}</span>
+        </div>
       </div>
 
-      <div class="flex flex-col gap-1">
-          <span class="font-semibold text-md">{{ 'user.dark_mode' | translate }}</span>
-        <span class="text-sm">{{'user.switch_between_light_and_dark_mode' | translate}}</span>
-      </div>
+      <ion-toggle [checked]="isDarkMode()" (ionChange)="toggleDarkMode.emit()"></ion-toggle>
     </div>
-
-    <p-toggle-switch [ngModel]="isDarkMode()" (onChange)="toggleDarkMode.emit()"></p-toggle-switch>
-  </div>
-</p-card>
+  </ion-card-content>
+</ion-card>

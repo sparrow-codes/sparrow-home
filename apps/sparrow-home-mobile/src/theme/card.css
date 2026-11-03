@@ -1,0 +1,20 @@
+:root {
+    --ion-card-background: var(--sp-surface-raised);
+
+  ion-card {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+
+  ion-card-content {
+    color: var(--sp-text);
+  }
+
+  ion-card-header {
+    --background: var(--sp-surface-sunken);
+    border-bottom: 1px solid var(--sp-border);
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}

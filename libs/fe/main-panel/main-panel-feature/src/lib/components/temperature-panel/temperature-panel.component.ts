@@ -1,15 +1,14 @@
-
 import { Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { IonSkeletonText } from '@ionic/angular';
 import { bootstrapShieldFillCheck } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceType } from '@sparrow-home/utils';
-import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'sp-temperature-panel',
-  imports: [RouterLink, TranslatePipe, Skeleton, NgIcon],
+  imports: [RouterLink, TranslatePipe, NgIcon, IonSkeletonText],
   templateUrl: './temperature-panel.component.html',
   providers: [provideIcons({ bootstrapShieldFillCheck })],
 })

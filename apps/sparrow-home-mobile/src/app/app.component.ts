@@ -1,18 +1,60 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ViewTransitionDirectionService } from '@sparrow-home/core';
-import { Toast } from 'primeng/toast';
+import { Component } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {
+  addOutline,
+  banOutline,
+  calendarOutline,
+  checkmarkCircleOutline,
+  checkmarkOutline,
+  chevronBackOutline,
+  closeCircle,
+  closeOutline,
+  flashOutline,
+  listOutline,
+  logInOutline,
+  logOutOutline,
+  pauseCircleOutline,
+  pencilOutline,
+  playCircleOutline,
+  playOutline,
+  saveOutline,
+  searchOutline,
+  timeOutline,
+  trashOutline,
+  wifiOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   standalone: true,
-  imports: [Toast, RouterOutlet],
+  imports: [IonApp, IonRouterOutlet],
 })
-export class AppComponent implements OnInit {
-  private readonly _viewTransitionService: ViewTransitionDirectionService = inject(ViewTransitionDirectionService);
-
-  public ngOnInit(): void {
-    this._viewTransitionService.init();
+export class AppComponent {
+  public constructor() {
+    addIcons({
+      addOutline,
+      banOutline,
+      calendarOutline,
+      checkmarkCircleOutline,
+      checkmarkOutline,
+      chevronBackOutline,
+      closeCircle,
+      closeOutline,
+      flashOutline,
+      listOutline,
+      logInOutline,
+      logOutOutline,
+      pauseCircleOutline,
+      pencilOutline,
+      playCircleOutline,
+      playOutline,
+      saveOutline,
+      searchOutline,
+      timeOutline,
+      trashOutline,
+      wifiOutline,
+    });
   }
 }

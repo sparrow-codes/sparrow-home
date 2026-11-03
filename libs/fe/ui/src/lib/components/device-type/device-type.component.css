@@ -1,10 +1,10 @@
 :host {
-  --plugin: #63afe1;
-  --temperature-sensor: #a84d08;
-  --door-sensor: #048444;
-  --siren: #840404;
-  --pilot: #989898;
-  --other: rgb(55, 65, 81, 1);
+  --plugin: var(--sp-device-plugin);
+  --temperature-sensor: var(--sp-device-temperature);
+  --door-sensor: var(--sp-device-door);
+  --siren: var(--sp-device-siren);
+  --pilot: var(--sp-device-pilot);
+  --other: var(--sp-device-other);
 
   .lsc-plug-in {
     background-color: var(--plugin);

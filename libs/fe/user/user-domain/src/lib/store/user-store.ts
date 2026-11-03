@@ -11,10 +11,9 @@ import {
   LoginRequestApiModel,
   UserApiService,
 } from '@sparrow-home/api';
-import { AuthService, RoutePath } from '@sparrow-home/core';
+import { AppStore, appStore, RoutePath, ToastService } from '@sparrow-home/core';
 import { withFetching, withLoading, withoutLoading, withoutRefreshing, withRefreshing } from '@sparrow-home/utils';
-import { MessageService } from 'primeng/api';
-import { filter, finalize, first, Observable, pipe, switchMap, tap } from 'rxjs';
+import { filter, finalize, first, from, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { UserRole } from '../enum/user-role';
 import { User } from '../model/user';
@@ -34,9 +33,9 @@ export const userStore = signalStore(
     (
       store,
       userApiService: UserApiService = inject(UserApiService),
-      authService: AuthService = inject(AuthService),
+      rootStore: AppStore = inject(appStore),
       router: Router = inject(Router),
-      messageService = inject(MessageService),
+      messageService = inject(ToastService),
       _translate = inject(TranslateService)
     ) => {
       function _getAdditionalUsers(): Observable<GetListOfAdditionalUsersResponseApiModel> {
@@ -123,7 +122,7 @@ export const userStore = signalStore(
           pipe(
             tap(() => patchState(store, withLoading())),
             switchMap((request) =>
-              authService.login(request.email, request.password).pipe(
+              from(rootStore.login(request.email, request.password)).pipe(
                 first(),
                 tapResponse({
                   next: () => router.navigate([RoutePath.MAIN]),
@@ -139,7 +138,7 @@ export const userStore = signalStore(
           )
         ),
         logout: (): void => {
-          authService.logout();
+          rootStore.logout();
           router.navigate([RoutePath.LOGIN]);
         },
         fetchUserDetails: rxMethod<void>(

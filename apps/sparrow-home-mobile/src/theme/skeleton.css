@@ -1,0 +1,5 @@
+:root {
+  ion-skeleton-text {
+    --border-radius: 0.5rem;
+  }
+}

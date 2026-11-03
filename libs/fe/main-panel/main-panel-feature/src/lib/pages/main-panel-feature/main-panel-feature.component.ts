@@ -1,19 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonProgressBar,
+  IonSkeletonText,
+  IonToolbar,
+  ViewWillEnter,
+} from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { VisibilityService } from '@sparrow-home/core';
 import { MainPanelStore, mainPanelStore } from '@sparrow-home/main-panel-domain';
-import { DeviceListItemComponent, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
+import { DeviceListItemComponent, Divider, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { HomeDevice } from '@sparrow-home/utils';
-import { Divider } from 'primeng/divider';
-import { Skeleton } from 'primeng/skeleton';
 import { filter, Observable } from 'rxjs';
 
 import { AlarmPanelComponent } from '../../components/alarm-panel/alarm-panel.component';
 import { DeviceListPanelComponent } from '../../components/device-list-panel/device-list-panel.component';
 import { TemperaturePanelComponent } from '../../components/temperature-panel/temperature-panel.component';
-import { VacationModeButton } from "../../components/vacation-mode-button/vacation-mode-button";
+import { VacationModeButton } from '../../components/vacation-mode-button/vacation-mode-button';
 
 @Component({
   imports: [
@@ -25,13 +32,19 @@ import { VacationModeButton } from "../../components/vacation-mode-button/vacati
     TranslatePipe,
     OnboardingComponent,
     Divider,
-    Skeleton,
     PageTitleComponent,
-    VacationModeButton
-],
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    Divider,
+    IonSkeletonText,
+    VacationModeButton,
+    IonButtons,
+    IonProgressBar,
+  ],
   templateUrl: './main-panel-feature.component.html',
 })
-export class MainPanelFeatureComponent implements OnInit {
+export class MainPanelFeatureComponent implements OnInit, ViewWillEnter {
   private readonly _mainPanelStore: MainPanelStore = inject(mainPanelStore);
   private readonly _visibilityService: VisibilityService = inject(VisibilityService);
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
@@ -50,14 +63,16 @@ export class MainPanelFeatureComponent implements OnInit {
   protected readonly isVacationMode: Signal<boolean> = this._mainPanelStore.isVacationMode;
 
   public ngOnInit(): void {
-    this._mainPanelStore.fetchInitData();
-
     this._visibilityService.isVisible
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         filter((isVisible) => isVisible)
       )
       .subscribe(() => this._mainPanelStore.fetchInitData());
+  }
+
+  public ionViewWillEnter(): void {
+    this._mainPanelStore.fetchInitData();
   }
 
   protected setAlarm(isAlarmOn: boolean): void {

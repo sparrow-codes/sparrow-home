@@ -1,33 +1,38 @@
-<p-card>
-  <a
-    class="animate-fadein flex items-center justify-between  rounded-xl shadow-sm w-full cursor-pointer hover:opacity-80 transition no-underline"
-    [routerLink]="['edit', task().id]"
-    [attr.aria-label]="('tasks.go_to_device_details' | translate) + task().id"
-  >
+<ion-item
+  lines="none"
+  [button]="true"
+  [routerLink]="['edit', task().id]"
+  [attr.aria-label]="('tasks.go_to_device_details' | translate) + task().id"
+>
+  <div class="flex items-center justify-between w-full cursor-pointer hover:opacity-80 transition ion-padding-vertical">
     <div class="flex items-center gap-3">
-      <div class="w-[50px] h-[50px] bg-gray-700 rounded-md flex items-center justify-center text-white">
+      <div class="w-[50px] h-[50px] bg-sp-primary-700 rounded-md flex items-center justify-center text-white">
         @if (showFinishAnimation()) {
-          <sp-animated-check-circle width="32px" height="32px"></sp-animated-check-circle>
+        <sp-animated-check-circle width="32px" height="32px"></sp-animated-check-circle>
         } @else {
-          <i class="pi pi-bolt animate-fadein" style="font-size: 32px"></i>
+        <ion-icon name="flash-outline" class="animate-fadein text-[32px]"></ion-icon>
         }
       </div>
-      <div class="block">
-        <div class="font-semibold text-surface-700 dark:text-surface-0 mb-2 max-w-[45vw] truncate">{{ task().name }}</div>
+      <div class="flex flex-col gap-2">
+        <div class="font-semibold text-sp-text">
+          {{ task().name }}
+        </div>
 
         @if (task().isActive) {
-          <p-tag severity="success">{{ 'tasks.active' | translate }}</p-tag>
+        <ion-badge color="success" class="w-[70px]">{{ 'tasks.active' | translate }}</ion-badge>
         } @else {
-          <p-tag severity="secondary">{{ 'tasks.inactive' | translate }}</p-tag>
+        <ion-badge color="medium" class="w-[70px]">{{ 'tasks.inactive' | translate }}</ion-badge>
         }
       </div>
     </div>
 
-    <p-toggle-switch
-      (click)="$event.stopPropagation(); $event.preventDefault()"
-      [ngModel]="task().isActive"
-      (onChange)="changeTaskStatus($event.checked)"
-    ></p-toggle-switch>
-  </a>
-</p-card>
+    <div>
+      <ion-toggle
+        (click)="$event.stopPropagation(); $event.preventDefault()"
+        [checked]="task().isActive"
+        (ionChange)="changeTaskStatus($event.detail.checked)"
+      ></ion-toggle>
+    </div>
 
+  </div>
+</ion-item>

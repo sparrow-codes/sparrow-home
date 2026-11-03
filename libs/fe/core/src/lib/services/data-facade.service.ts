@@ -18,6 +18,10 @@ export class DataFacadeService {
     return this._rootStore.appConfig;
   }
 
+  public get isUserLoggedIn(): boolean {
+    return this._rootStore.isAuthenticated();
+  }
+
   public isConfigurationReady(): Observable<boolean> {
     return this._rootStore.verifyConfigurationReady();
   }

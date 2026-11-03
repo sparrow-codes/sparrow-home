@@ -3,25 +3,32 @@ import { Component, DestroyRef, inject, input, InputSignal, OnInit, Signal } fro
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import {
+  IonButton,
+  IonButtons,
+  IonChip,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonLabel,
+  IonProgressBar,
+  IonSkeletonText,
+  IonToolbar,
+  ViewWillEnter,
+} from '@ionic/angular';
 import { bootstrapHouseGear } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
 import { DeviceListItemComponent, OnboardingComponent, PageTitleComponent } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice } from '@sparrow-home/utils';
-import { Button } from 'primeng/button';
-import { Chip } from 'primeng/chip';
-import { Divider } from 'primeng/divider';
-import { InputText } from 'primeng/inputtext';
-import { Skeleton } from 'primeng/skeleton';
 import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
 
 @Component({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    Button,
-    InputText,
     DeviceListItemComponent,
     FormsModule,
     PageTitleComponent,
@@ -29,14 +36,22 @@ import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
     TranslatePipe,
     NgIcon,
     OnboardingComponent,
-    Chip,
-    Skeleton,
-    Divider,
+    IonChip,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonLabel,
+    IonSkeletonText,
+    IonInput,
+    IonProgressBar,
   ],
   templateUrl: './device-page.component.html',
   providers: [provideIcons({ bootstrapHouseGear })],
 })
-export class DevicePageComponent implements OnInit {
+export class DevicePageComponent implements OnInit, ViewWillEnter {
   public readonly deviceType: InputSignal<string> = input('');
 
   private readonly _facadeService: DeviceFacadeService = inject(DeviceFacadeService);
@@ -54,13 +69,15 @@ export class DevicePageComponent implements OnInit {
   protected readonly refreshingDevices: Signal<Set<string>> = this._facadeService.refreshingObjects;
 
   public ngOnInit(): void {
+    this._handleSearchEvent();
+  }
+
+  public ionViewWillEnter(): void {
     if (this.deviceType()) {
       this._facadeService.setDeviceTypeFilter(+this.deviceType());
     }
 
     this._facadeService.fetchDevices();
-
-    this._handleSearchEvent();
   }
 
   protected onRemoveFilter(): void {

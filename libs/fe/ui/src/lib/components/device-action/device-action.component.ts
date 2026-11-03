@@ -13,20 +13,34 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  IonButton,
+  IonLabel,
+  IonRange,
+  IonSegment,
+  IonSegmentButton,
+  IonSelect,
+  IonSelectOption,
+  SegmentValue,
+} from '@ionic/angular';
 import { DeviceAction, humanize, HumanizePipe } from '@sparrow-home/utils';
-import { Button } from 'primeng/button';
-import { FloatLabel } from 'primeng/floatlabel';
-import { Select } from 'primeng/select';
-import { SelectButton } from 'primeng/selectbutton';
-import { Slider } from 'primeng/slider';
-import { ToggleButtonModule } from 'primeng/togglebutton';
 import { debounceTime, Subject } from 'rxjs';
 
 import { AbstractControlValueAccessor } from '../abstract-control-value-accessor';
 
 @Component({
   selector: 'sp-device-action',
-  imports: [ToggleButtonModule, Select, FloatLabel, Slider, FormsModule, Button, HumanizePipe, SelectButton],
+  imports: [
+    FormsModule,
+    HumanizePipe,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonSelect,
+    IonSelectOption,
+    IonButton,
+    IonRange,
+  ],
   templateUrl: './device-action.component.html',
   providers: [
     {
@@ -42,7 +56,7 @@ export class DeviceActionComponent extends AbstractControlValueAccessor<Record<s
   public readonly short: InputSignal<boolean> = input(false);
 
   protected readonly stateValue: Subject<unknown> = new Subject();
-  protected readonly selectButtonOptions: Signal<{ key: string; value: unknown }[]> = computed(() =>
+  protected readonly selectButtonOptions: Signal<{ key: string; value: SegmentValue }[]> = computed(() =>
     this.action().enumValues.map((value) => ({ key: humanize(value), value }))
   );
   protected readonly options: Signal<{ key: string; value: unknown }[]> = computed(() => {

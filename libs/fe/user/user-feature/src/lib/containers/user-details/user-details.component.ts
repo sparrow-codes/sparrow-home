@@ -1,15 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {
+  IonAvatar,
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonSkeletonText,
+  IonToggle,
+  IonToolbar,
+} from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PageTitleComponent } from '@sparrow-home/ui';
 import { User, UserDataFacadeService } from '@sparrow-home/user-domain';
-import { Avatar } from 'primeng/avatar';
-import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
-import { Divider } from 'primeng/divider';
-import { Skeleton } from 'primeng/skeleton';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Observable } from 'rxjs';
 
 import { ThemeModeComponent } from '../../component/theme-mode/theme-mode.component';
@@ -19,15 +28,22 @@ import { ThemeModeComponent } from '../../component/theme-mode/theme-mode.compon
   imports: [
     CommonModule,
     FormsModule,
-    Button,
-    Avatar,
-    Divider,
-    ToggleSwitch,
-    Card,
+    IonAvatar,
+    IonToggle,
     TranslatePipe,
-    Skeleton,
-    PageTitleComponent,
+    IonSkeletonText,
     ThemeModeComponent,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    PageTitleComponent,
+    IonCardSubtitle,
   ],
   templateUrl: './user-details.component.html',
 })
