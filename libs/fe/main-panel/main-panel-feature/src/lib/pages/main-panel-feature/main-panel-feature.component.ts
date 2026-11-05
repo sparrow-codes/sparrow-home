@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   IonButtons,
@@ -42,6 +42,7 @@ import { VacationModeButton } from '../../components/vacation-mode-button/vacati
     IonButtons,
     IonProgressBar,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './main-panel-feature.component.html',
 })
 export class MainPanelFeatureComponent implements OnInit, ViewWillEnter {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonAvatar,
@@ -45,6 +45,7 @@ import { ThemeModeComponent } from '../../component/theme-mode/theme-mode.compon
     PageTitleComponent,
     IonCardSubtitle,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './user-details.component.html',
 })
 export class UserDetailsComponent implements OnInit {

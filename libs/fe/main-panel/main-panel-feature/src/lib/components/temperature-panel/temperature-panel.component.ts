@@ -1,4 +1,4 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonSkeletonText } from '@ionic/angular';
 import { bootstrapShieldFillCheck } from '@ng-icons/bootstrap-icons';
@@ -10,6 +10,7 @@ import { DeviceType } from '@sparrow-home/utils';
   selector: 'sp-temperature-panel',
   imports: [RouterLink, TranslatePipe, NgIcon, IonSkeletonText],
   templateUrl: './temperature-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideIcons({ bootstrapShieldFillCheck })],
 })
 export class TemperaturePanelComponent {

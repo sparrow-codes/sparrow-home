@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonTabBar, IonTabButton, IonTabs } from '@ionic/angular';
 import { NgIcon } from '@ng-icons/core';
@@ -9,6 +9,7 @@ import { NavigationItem } from '../../models/navigation-item';
 @Component({
   selector: 'sp-mobile-frame',
   imports: [RouterLink, RouterLinkActive, TranslatePipe, NgIcon, IonTabs, IonTabBar, IonTabButton],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './mobile-frame.component.html',
 })
 export class MobileFrameComponent {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, computed, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -71,6 +71,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     IonProgressBar,
   ],
   providers: [provideIcons({ bootstrapInfoCircle, bootstrapPencil, bootstrapTrash, bootstrapXCircleFill })],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './device-details.component.html',
 })
 export class DeviceDetailsComponent implements OnInit {

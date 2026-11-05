@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, DestroyRef, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -49,6 +49,7 @@ import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
     IonProgressBar,
   ],
   templateUrl: './device-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideIcons({ bootstrapHouseGear })],
 })
 export class DevicePageComponent implements OnInit, ViewWillEnter {

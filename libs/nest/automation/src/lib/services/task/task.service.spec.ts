@@ -1,12 +1,13 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskService } from './task.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HomeDevice, Task } from '@sparrow-server/entities';
 import { Repository } from 'typeorm';
-import { TaskCronFactory } from '../test-cron-factory/task-cron-factory.service';
-import { NotFoundException } from '@nestjs/common';
-import { TaskDtoMapperService } from '../task-dto-mapper.service';
+
 import { TaskDto } from '../../controller/task/model/task-dto';
+import { TaskDtoMapperService } from '../task-dto-mapper.service';
+import { TaskCronFactory } from '../test-cron-factory/task-cron-factory.service';
+import { TaskService } from './task.service';
 
 describe('TaskService', () => {
   let service: TaskService;

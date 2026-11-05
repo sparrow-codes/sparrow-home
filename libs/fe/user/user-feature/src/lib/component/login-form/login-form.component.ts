@@ -1,4 +1,4 @@
-import { Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IonButton, IonIcon, IonInput, IonInputPasswordToggle, IonLabel } from '@ionic/angular';
@@ -21,6 +21,7 @@ import { LoginForm } from './form-service/model/login-form';
     IonLabel,
   ],
   templateUrl: './login-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [LoginFormService],
 })
 export class LoginFormComponent {

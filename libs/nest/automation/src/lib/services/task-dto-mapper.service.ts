@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ActionJob, HomeDevice, Task } from '@sparrow-server/entities';
-import { TaskDto } from '../controller/task/model/task-dto';
-import { toTaskBasicDataDto } from '../mappers/task-basic-data/to-task-basic-data-dto';
-import { DeviceProfile, ZigbeeDeviceService } from '@sparrow-server/external-api';
-import { TaskActionDto } from '../controller/task/model/task-action-dto';
-import { toTaskAction } from '../mappers/task-actions/to-task-action';
-import { DeviceActionDto } from '@sparrow-server/shared';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ActionJob, HomeDevice, Task } from '@sparrow-server/entities';
+import { DeviceProfile, ZigbeeDeviceService } from '@sparrow-server/external-api';
+import { DeviceActionDto } from '@sparrow-server/shared';
 import { Repository } from 'typeorm';
+
+import { TaskActionDto } from '../controller/task/model/task-action-dto';
+import { TaskDto } from '../controller/task/model/task-dto';
+import { toTaskAction } from '../mappers/task-actions/to-task-action';
+import { toTaskBasicDataDto } from '../mappers/task-basic-data/to-task-basic-data-dto';
 
 @Injectable()
 export class TaskDtoMapperService {

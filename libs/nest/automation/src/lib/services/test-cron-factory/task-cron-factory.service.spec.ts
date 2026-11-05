@@ -1,10 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TaskCronFactory } from './task-cron-factory.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { ZigbeeDeviceService } from '@sparrow-server/external-api';
-import { Setup, Task } from '@sparrow-server/entities';
-import { CronJob } from 'cron';
+import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Setup, Task } from '@sparrow-server/entities';
+import { ZigbeeDeviceService } from '@sparrow-server/external-api';
+import { CronJob } from 'cron';
+
+import { TaskCronFactory } from './task-cron-factory.service';
 
 jest.mock('cron', () => {
   return {

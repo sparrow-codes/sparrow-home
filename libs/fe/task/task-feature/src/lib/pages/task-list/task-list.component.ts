@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonButton,
@@ -53,6 +53,7 @@ interface TaskStat {
     IonSkeletonText,
   ],
   templateUrl: './task-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideIcons({ bootstrapClockHistory })],
 })
 export class TaskListComponent implements ViewWillEnter {

@@ -1,4 +1,4 @@
-import { Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonToggle } from '@ionic/angular';
 import { bootstrapMoon, bootstrapSun } from '@ng-icons/bootstrap-icons';
@@ -9,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'sp-theme-mode',
   imports: [NgIcon, FormsModule, TranslatePipe, IonCard, IonCardContent, IonToggle, IonCardHeader, IonCardSubtitle],
   templateUrl: './theme-mode.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideIcons({ bootstrapMoon, bootstrapSun })],
 })
 export class ThemeModeComponent {

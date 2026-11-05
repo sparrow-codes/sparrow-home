@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject, input, InputSignal, OnInit, Signal } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -30,6 +30,7 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
     IonIcon,
     IonSkeletonText,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './edit-task.component.html',
 })
 export class EditTaskComponent implements OnInit {

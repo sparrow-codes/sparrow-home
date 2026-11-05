@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+
 import { ActionJobDto } from './action-job.dto';
 
 export class UpdateTaskRequest {

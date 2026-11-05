@@ -1,6 +1,7 @@
-import { DeviceProfile } from '@sparrow-server/external-api';
 import { ActionJob } from '@sparrow-server/entities';
+import { DeviceProfile } from '@sparrow-server/external-api';
 import { DeviceActionDto } from '@sparrow-server/shared';
+
 import { toTaskAction } from './to-task-action';
 
 describe('toTaskAction', () => {

@@ -1,5 +1,6 @@
-import { toTaskBasicDataDto } from './to-task-basic-data-dto';
 import { Task } from '@sparrow-server/entities';
+
+import { toTaskBasicDataDto } from './to-task-basic-data-dto';
 
 describe('toTaskBasicDataDto', () => {
   it('should map basic data', () => {

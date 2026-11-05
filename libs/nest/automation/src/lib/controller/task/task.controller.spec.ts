@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskController } from './task.controller';
+import { AuthGuard } from '@sparrow-server/auth';
+
 import { TaskService } from '../../services/task/task.service';
 import { CreateTaskRequest } from './model/create-task-request';
-import { UpdateTaskRequest } from './model/update-task-request';
-import { AuthGuard } from '@sparrow-server/auth';
 import { TaskDto } from './model/task-dto';
+import { UpdateTaskRequest } from './model/update-task-request';
+import { TaskController } from './task.controller';
 
 describe('TaskController', () => {
   let controller: TaskController;

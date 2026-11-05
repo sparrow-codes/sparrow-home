@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -9,8 +10,7 @@ import {
   OnInit,
   output,
   OutputEmitterRef,
-  Signal,
-} from '@angular/core';
+  Signal} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
@@ -42,6 +42,7 @@ import { AbstractControlValueAccessor } from '../abstract-control-value-accessor
     IonRange,
   ],
   templateUrl: './device-action.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

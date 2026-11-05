@@ -1,10 +1,11 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal } from '@angular/core';
 import { IonBackButton } from '@ionic/angular';
 
 @Component({
   selector: 'sp-back-button',
   imports: [IonBackButton],
   templateUrl: './back-button.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-button.css',
 })
 export class BackButton {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject } from '@angular/core';
 import { IonButton, ModalController } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -7,6 +7,7 @@ import { Divider } from '../divider/divider';
 @Component({
   selector: 'sp-confirmation-dialog',
   imports: [TranslatePipe, IonButton, Divider],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './confirmation-dialog.component.html',
 })
 export class ConfirmationDialogComponent {

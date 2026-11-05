@@ -9,6 +9,7 @@
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/sparrow-home-mobile",
         "index": "apps/sparrow-home-mobile/src/index.html",
@@ -81,11 +82,11 @@
           "extractLicenses": false,
           "sourceMap": true
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "defaultConfiguration": "development",
       "options": {
         "proxyConfig": "apps/sparrow-home-mobile/src/proxy.conf.json"
       },
@@ -96,8 +97,7 @@
         "development": {
           "buildTarget": "sparrow-home-mobile:build:development"
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",

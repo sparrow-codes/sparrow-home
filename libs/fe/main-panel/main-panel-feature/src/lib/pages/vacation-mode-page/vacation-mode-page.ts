@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -40,6 +40,7 @@ import { Observable } from 'rxjs';
     Divider,
   ],
   providers: [provideIcons({ bootstrapChevronRight, bootstrapPlayCircle })],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './vacation-mode-page.html',
 })
 export class VacationModePage {

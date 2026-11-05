@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -12,8 +13,7 @@ import {
   OnInit,
   Signal,
   signal,
-  WritableSignal,
-} from '@angular/core';
+  WritableSignal} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonDatetime, IonIcon, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular';
@@ -41,6 +41,7 @@ import { ActionForm } from './form-service/model/action-form';
     IonDatetime,
   ],
   templateUrl: './action-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ActionFormService],
 })
 export class ActionFormComponent implements OnInit {
