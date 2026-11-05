@@ -1,4 +1,4 @@
-import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonBadge, IonItem } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -11,6 +11,7 @@ import { DeviceTypeComponent } from '../device-type/device-type.component';
 @Component({
   selector: 'sp-device-list-item',
   imports: [RouterLink, DeviceTypeComponent, DeviceActionComponent, TranslatePipe, HumanizePipe, IonItem, IonBadge],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './device-list-item.component.html',
 })
 export class DeviceListItemComponent {

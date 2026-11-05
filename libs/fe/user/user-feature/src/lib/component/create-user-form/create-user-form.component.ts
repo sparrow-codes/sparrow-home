@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   inject,
@@ -8,8 +9,7 @@ import {
   output,
   OutputEmitterRef,
   signal,
-  WritableSignal,
-} from '@angular/core';
+  WritableSignal} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonInput, IonInputPasswordToggle, IonLabel, IonSpinner } from '@ionic/angular';
@@ -24,6 +24,7 @@ import { CreateNewUserForm } from './form-service/model/create-new-user-form';
   selector: 'sp-create-user-form',
   imports: [ReactiveFormsModule, TranslatePipe, IonButton, IonSpinner, IonInput, IonInputPasswordToggle, IonLabel],
   templateUrl: './create-user-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [CreateUserFormService],
 })
 export class CreateUserFormComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy,Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -42,6 +42,7 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
     IonIcon,
   ],
   templateUrl: './add-device-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [CreateDeviceFormService],
 })
 export class AddDevicePageComponent implements OnInit {

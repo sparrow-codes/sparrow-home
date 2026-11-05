@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent, IonSpinner } from '@ionic/angular';
 import { APP_TITLE } from '@sparrow-home/core';
@@ -11,6 +11,7 @@ import { LoginFormComponent } from '../../component/login-form/login-form.compon
 @Component({
   imports: [CommonModule, LoginFormComponent, IonContent, IonSpinner],
   styleUrls: ['./login.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {

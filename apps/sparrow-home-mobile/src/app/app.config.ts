@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import {
   ApplicationConfig,
   provideAppInitializer,
@@ -43,7 +43,7 @@ export const appConfig: ApplicationConfig = {
         useHttpBackend: true,
       }),
     }),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: true,
     }),

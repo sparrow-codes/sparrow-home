@@ -1,4 +1,4 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonButton } from '@ionic/angular';
 import { bootstrapAirplaneFill, bootstrapChevronRight } from '@ng-icons/bootstrap-icons';
@@ -9,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'sp-vacation-mode-button',
   templateUrl: './vacation-mode-button.html',
   imports: [NgIconComponent, TranslatePipe, RouterLink, IonButton],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideIcons({ bootstrapAirplaneFill, bootstrapChevronRight })],
 })
 export class VacationModeButton {

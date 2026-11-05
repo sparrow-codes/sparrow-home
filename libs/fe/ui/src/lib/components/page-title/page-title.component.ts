@@ -1,10 +1,11 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal } from '@angular/core';
 
 import { BackButton } from '../back-button/back-button';
 
 @Component({
   selector: 'sp-page-title',
   templateUrl: './page-title.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BackButton],
 })
 export class PageTitleComponent {

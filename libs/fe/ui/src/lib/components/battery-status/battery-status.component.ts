@@ -1,4 +1,4 @@
-import { Component, computed, input, InputSignal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, computed, input, InputSignal, Signal } from '@angular/core';
 import { IonBadge } from '@ionic/angular';
 import { bootstrapBattery, bootstrapBatteryFull, bootstrapBatteryHalf } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -7,6 +7,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
   selector: 'sp-battery-status',
   imports: [NgIcon, IonBadge],
   providers: [provideIcons({ bootstrapBatteryFull, bootstrapBatteryHalf, bootstrapBattery })],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './battery-status.component.html',
 })
 export class BatteryStatusComponent {

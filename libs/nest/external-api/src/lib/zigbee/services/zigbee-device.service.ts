@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ClientMqtt } from '@nestjs/microservices';
-import { MqttClient } from '@nestjs/microservices/external/mqtt-client.interface';
 import { DeviceJoined } from '@sparrow-server/shared';
+import type { MqttClient } from 'mqtt';
 import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 
 import { DeviceProfile } from '../model';
@@ -45,7 +45,7 @@ export class ZigbeeDeviceService implements OnModuleInit, OnModuleDestroy {
       this._logger.log(`MQTT connected`);
     });
 
-    this._client.on('message', (topic: string, payload: BufferSource) => {
+    this._client.on('message', (topic: string, payload: Buffer) => {
       if (topic !== ZigbeeDeviceService._BRIDGE_DEVICES_URL) {
         const result: RegExpExecArray | null = new RegExp(
           `^${this._escapeChars(ZigbeeDeviceService._BASE)}/([^/]+)$`

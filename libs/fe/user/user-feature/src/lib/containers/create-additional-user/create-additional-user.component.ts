@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject } from '@angular/core';
 import { IonContent, IonHeader, IonToolbar } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PageTitleComponent } from '@sparrow-home/ui';
@@ -19,6 +19,7 @@ import { CreateUserFormComponent } from '../../component/create-user-form/create
     IonContent,
     PageTitleComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './create-additional-user.component.html',
 })
 export class CreateAdditionalUserComponent {

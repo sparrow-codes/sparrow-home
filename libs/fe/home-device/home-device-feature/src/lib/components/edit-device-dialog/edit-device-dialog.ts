@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonInput, IonLabel, ModalController } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { Divider } from '@sparrow-home/ui';
   selector: 'sp-edit-device-dialog',
   imports: [IonButton, Divider, IonLabel, TranslatePipe, FormsModule, IonInput],
   templateUrl: './edit-device-dialog.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-device-dialog.css',
 })
 export class EditDeviceDialog {

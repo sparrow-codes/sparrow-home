@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, InputSignal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, computed, input, InputSignal, Signal } from '@angular/core';
 import {
   bootstrapBellFill,
   bootstrapBuildingFillGear,
@@ -21,6 +21,7 @@ import { AnimatedCheckCircleComponent } from '../animated-check-circle/animated-
   imports: [CommonModule, NgIcon, TranslatePipe, AnimatedCheckCircleComponent],
   templateUrl: './device-type.component.html',
   styleUrl: './device-type.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     provideIcons({
       bootstrapPlugin,

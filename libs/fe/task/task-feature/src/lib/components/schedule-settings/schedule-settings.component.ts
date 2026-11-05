@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -12,8 +13,7 @@ import {
   output,
   OutputEmitterRef,
   Signal,
-  WritableSignal,
-} from '@angular/core';
+  WritableSignal} from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   IonAccordion,
@@ -73,6 +73,7 @@ import { ScheduleFormService } from './form-service/schedule-form.service';
   ],
   templateUrl: './schedule-settings.component.html',
   styleUrls: ['schedule-settings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ScheduleFormService],
 })
 export class ScheduleSettingsComponent implements OnInit {

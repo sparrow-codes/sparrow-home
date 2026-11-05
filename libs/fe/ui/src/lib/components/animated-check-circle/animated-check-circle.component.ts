@@ -1,10 +1,11 @@
 import { NgStyle } from '@angular/common';
-import { Component, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal } from '@angular/core';
 
 @Component({
   selector: 'sp-animated-check-circle',
   templateUrl: './animated-check-circle.component.html',
   styleUrl: './animated-check-circle.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgStyle],
 })
 export class AnimatedCheckCircleComponent {

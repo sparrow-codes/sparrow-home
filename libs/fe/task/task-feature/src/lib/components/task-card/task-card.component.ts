@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   input,
@@ -7,8 +8,7 @@ import {
   ModelSignal,
   output,
   OutputEmitterRef,
-  Signal,
-} from '@angular/core';
+  Signal} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonBadge, IonIcon, IonItem, IonToggle } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,6 +18,7 @@ import { AnimatedCheckCircleComponent } from '@sparrow-home/ui';
 @Component({
   selector: 'sp-task-card',
   imports: [RouterLink, TranslatePipe, AnimatedCheckCircleComponent, IonItem, IonToggle, IonIcon, IonBadge],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './task-card.component.html',
 })
 export class TaskCardComponent {

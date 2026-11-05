@@ -1,4 +1,4 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, input, InputSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonButton } from '@ionic/angular';
 
@@ -7,6 +7,7 @@ import { Divider } from '../divider/divider';
 @Component({
   selector: 'sp-onboarding',
   imports: [Divider, RouterLink, IonButton],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './onboarding.component.html',
 })
 export class OnboardingComponent {

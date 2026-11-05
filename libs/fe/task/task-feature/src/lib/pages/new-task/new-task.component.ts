@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, inject, OnInit, Signal } from '@angular/core';
 import { IonContent, IonHeader, IonToolbar } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutomaticTask, AvailableDevice, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
@@ -19,6 +19,7 @@ import { ScheduleSettingsComponent } from '../../components/schedule-settings/sc
     IonHeader,
     IonToolbar,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './new-task.component.html',
 })
 export class NewTaskComponent implements OnInit {

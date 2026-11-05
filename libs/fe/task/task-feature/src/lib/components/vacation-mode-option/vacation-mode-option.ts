@@ -1,4 +1,4 @@
-import { Component, model, ModelSignal } from '@angular/core';
+import { ChangeDetectionStrategy,Component, model, ModelSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonToggle } from '@ionic/angular';
 import { bootstrapAirplaneFill } from '@ng-icons/bootstrap-icons';
@@ -10,6 +10,7 @@ import { TaskAction } from '@sparrow-home/task-domain';
   selector: 'sp-vacation-mode-option',
   imports: [NgIconComponent, FormsModule, TranslatePipe, IonToggle],
   templateUrl: './vacation-mode-option.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideIcons({ bootstrapAirplaneFill })],
 })
 export class VacationModeOption {
