@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskDtoMapperService } from './task-dto-mapper.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { ActionJob, HomeDevice, Task } from '@sparrow-server/entities';
 import { DeviceProfile, ZigbeeDeviceService } from '@sparrow-server/external-api';
-import { getRepositoryToken } from '@nestjs/typeorm';
+
 import { TaskDto } from '../controller/task/model/task-dto';
+import { TaskDtoMapperService } from './task-dto-mapper.service';
 
 describe('TaskDtoMapperService', () => {
   let service: TaskDtoMapperService;

@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { CronJob } from 'cron';
-import { getCronTime } from '@sparrow-server/shared';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Setup, Task } from '@sparrow-server/entities';
 import { ZigbeeDeviceService } from '@sparrow-server/external-api';
+import { getCronTime } from '@sparrow-server/shared';
+import { CronJob } from 'cron';
 import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TaskCronFactory {

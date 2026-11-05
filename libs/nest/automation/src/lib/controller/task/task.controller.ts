@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@sparrow-server/auth';
+
 import { TaskService } from '../../services/task/task.service';
 import { CreateTaskRequest } from './model/create-task-request';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UpdateTaskRequest } from './model/update-task-request';
 import { TaskDto } from './model/task-dto';
+import { UpdateTaskRequest } from './model/update-task-request';
 
 @ApiTags('Tasks')
 @UseGuards(AuthGuard)

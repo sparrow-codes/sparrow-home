@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+
 import mqtt, { IClientOptions, MqttClient } from 'mqtt';
 
 type LightState = { state: 'ON' | 'OFF'; brightness?: number };
@@ -83,7 +84,9 @@ client.on('message', (topic, payloadBuf) => {
   let data: any = str;
   try {
     data = JSON.parse(str);
-  } catch {}
+  } catch {
+    data = str;
+  }
 
   if (dev.type === 'light' && action === 'set') {
     const state = dev.state as LightState;

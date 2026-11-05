@@ -1,12 +1,13 @@
 import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { ActionJob, Task } from '@sparrow-server/entities';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ActionJob, Task } from '@sparrow-server/entities';
+import { Repository } from 'typeorm';
+
 import { CreateTaskRequest } from '../../controller/task/model/create-task-request';
-import { UpdateTaskRequest } from '../../controller/task/model/update-task-request';
-import { TaskCronFactory } from '../test-cron-factory/task-cron-factory.service';
 import { TaskDto } from '../../controller/task/model/task-dto';
+import { UpdateTaskRequest } from '../../controller/task/model/update-task-request';
 import { TaskDtoMapperService } from '../task-dto-mapper.service';
+import { TaskCronFactory } from '../test-cron-factory/task-cron-factory.service';
 
 @Injectable()
 export class TaskService implements OnModuleInit {

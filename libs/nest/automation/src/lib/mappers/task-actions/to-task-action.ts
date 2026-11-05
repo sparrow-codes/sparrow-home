@@ -1,7 +1,7 @@
-import { DeviceActionDto } from '@sparrow-server/shared';
-import { DeviceAction, DeviceProfile } from '@sparrow-server/external-api';
-import { ActionJob } from '@sparrow-server/entities';
 import { Logger } from '@nestjs/common';
+import { ActionJob } from '@sparrow-server/entities';
+import { DeviceAction, DeviceProfile } from '@sparrow-server/external-api';
+import { DeviceActionDto } from '@sparrow-server/shared';
 
 interface ToTaskActionParams {
   profile: DeviceProfile;
