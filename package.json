@@ -7,7 +7,7 @@
     "url": "https://github.com/PiotrWrobel"
   },
   "scripts": {
-    "build:mobile": "npm run generate-fe-api && nx run sparrow-home-mobile:build:production",
+    "build:mobile": "nx run sparrow-home-mobile:build:production",
     "build:server": "nx run server:build",
     "build:app": "npm run build:mobile && npm run build:server",
     "test:all": "npx nx run-many -t test",

@@ -31,9 +31,7 @@ jobs:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - run: npx nx run-many -t eslint:lint
       name: 'Linting all projects'
-    - run: npm run generate-fe-api
-      name: 'Generating client id code'
-    - run: npx nx run-many -t test
-      name: 'Running unit tests'
     - run: npx nx run-many -t build
       name: 'Building projects'
+    - run: npx nx run-many -t test
+      name: 'Running unit tests'
