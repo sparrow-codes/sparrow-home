@@ -22,8 +22,16 @@
 
   </ion-toolbar>
 
-  @if (noDevices() === false) {
-    <div class="ion-padding-horizontal">
+  <div class="h-[4px] mt-2">
+    @if (refreshing) {
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </div>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="w-full flex flex-col">
+    @if (noDevices() === false) {
       <ion-input
         mode="md"
         fill="outline"
@@ -34,22 +42,10 @@
       >
         <ion-icon slot="start" name="search-outline" aria-hidden="true"></ion-icon>
       </ion-input>
-    </div>
-
-  }
-
-  <div class="h-[4px] mt-2">
-    @if (refreshing) {
-      <ion-progress-bar type="indeterminate"></ion-progress-bar>
     }
-  </div>
-</ion-header>
-
-<ion-content class="ion-padding">
-  <div class="w-full flex flex-col">
     <div class="min-h-[45px] text-end">
       @if (deviceFilter() === deviceTypeEnum.OPEN_DOOR_SENSOR && noDevices() === false) {
-        <ion-chip class="animate-fadein" (click)="onRemoveFilter()">
+        <ion-chip (click)="onRemoveFilter()">
           <ion-label>{{ 'home.doors_and_windows' | translate }}</ion-label>
           <ion-icon name="close-circle"></ion-icon>
         </ion-chip>
@@ -58,14 +54,13 @@
     <div class="flex flex-col h-full justify-between">
       <div class="flex flex-col gap-2">
         @if (isLoading) {
-          <ion-skeleton-text [animated]="true" class="animate-fadein h-[82px] w-full"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" class="animate-fadein h-[82px] w-full"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" class="animate-fadein h-[82px] w-full"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" class="animate-fadein h-[82px] w-full"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="h-[82px] w-full"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="h-[82px] w-full"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="h-[82px] w-full"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="h-[82px] w-full"></ion-skeleton-text>
         } @else {
           @for (device of homeDevices(); track device.id) {
             <sp-device-list-item
-              class="animate-fadein"
               [refreshingDevices]="refreshingDevices()"
               [device]="device"
               (deviceEvent)="onDeviceEvent(device.homeDeviceId, $event)"

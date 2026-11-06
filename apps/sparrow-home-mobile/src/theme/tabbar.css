@@ -8,5 +8,6 @@
 :root.ion-palette-dark {
   ion-tab-bar {
     --border: 1px solid var(--sp-border);
+    --color-selected: #2dd4bf;
   }
 }
