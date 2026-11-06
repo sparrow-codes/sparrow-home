@@ -40,6 +40,7 @@
   @case ('number') {
     <div class="flex flex-col gap-2">
       <ion-range
+        class="w-[70%] self-end"
         [disabled]="disabled()"
         [ngModel]="Number(action().currentValue)"
         #slider

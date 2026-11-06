@@ -12,3 +12,10 @@
     -webkit-backdrop-filter: blur(10px);
   }
 }
+
+:root.ion-palette-dark {
+  ion-modal::part(content),
+  ion-alert .alert-wrapper {
+    border: 1px solid var(--sp-text);
+  }
+}
