@@ -16,3 +16,9 @@ html {
 * {
   font-family: 'Inter', sans-serif;
 }
+
+ion-app > ion-router-outlet {
+  width: 100%;
+  max-width: 940px;
+  margin-inline: auto;
+}

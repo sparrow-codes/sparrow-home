@@ -11,3 +11,4 @@ export * from './frame/mobile-frame.component';
 export * from './onboarding/onboarding.component';
 export * from './page-not-found/page-not-found.component';
 export * from './page-title/page-title.component';
+export * from './responsive-select-interface.directive';

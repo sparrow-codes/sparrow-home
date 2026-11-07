@@ -28,6 +28,7 @@
     },
     "go_to_device_details": "Go to device details {deviceName}",
     "page_not_found": "Page not found!",
+    "navigation_label": "Main navigation",
     "navigation": {
       "main": "Main",
       "devices": "Devices",

@@ -110,7 +110,6 @@
           [placeholder]="'home.quick-param' | translate"
           [ngModel]="mainParamKey()"
           slot="end"
-          interface="action-sheet"
           (ngModelChange)="setMainParam($event)"
         >
           @for (option of mainParams(); track option.value) {
@@ -139,7 +138,6 @@
       <div class="flex mt-2 items-center">
         <ion-select
           class="flex-1"
-          interface="action-sheet"
           mode="md"
           shape="round"
           fill="outline"

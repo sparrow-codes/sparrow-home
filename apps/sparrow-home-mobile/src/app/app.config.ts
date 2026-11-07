@@ -14,11 +14,15 @@ import { APP_TITLE, authInterceptor, initializeApp, SHORT_APP_TITLE } from '@spa
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 
 import { appRoutes } from './app.routes';
+import { responsiveNavigationAnimation } from './responsive-navigation-animation';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideIonicAngular({ mode: 'ios' }),
+    provideIonicAngular({
+      mode: 'ios',
+      navAnimation: responsiveNavigationAnimation(() => window.matchMedia('(min-width: 768px)').matches),
+    }),
     provideRouter(appRoutes, withPreloading(PreloadAllModules), withComponentInputBinding()),
     provideAppInitializer(initializeApp),
     {

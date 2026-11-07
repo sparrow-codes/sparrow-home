@@ -1,0 +1,13 @@
+<nav [attr.aria-label]="'ui.navigation_label' | translate">
+  @for (item of navigationItems(); track item.routerLink) {
+    <a
+      [routerLink]="item.routerLink"
+      routerLinkActive="active"
+      #rla="routerLinkActive"
+      ariaCurrentWhenActive="page"
+    >
+      <ng-icon aria-hidden="true" [name]="rla.isActive ? item.activeIcon : item.icon" size="1.25rem"></ng-icon>
+      <span>{{ item.label | translate }}</span>
+    </a>
+  }
+</nav>
