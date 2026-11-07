@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DeviceFacadeService } from '@sparrow-home/home-device-domain';
-import { deviceTypeDictionary, PageTitleComponent } from '@sparrow-home/ui';
+import { deviceTypeDictionary, PageTitleComponent, ResponsiveSelectInterfaceDirective } from '@sparrow-home/ui';
 import { Observable } from 'rxjs';
 
 import { CreateDeviceFormService } from './form-service/create-device-form.service';
@@ -36,6 +36,7 @@ import { CreateDeviceForm } from './form-service/model/create-device-form';
     IonInput,
     IonSelect,
     IonSelectOption,
+    ResponsiveSelectInterfaceDirective,
     IonLabel,
     IonButton,
     IonSpinner,

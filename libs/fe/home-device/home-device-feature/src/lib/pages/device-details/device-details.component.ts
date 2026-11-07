@@ -31,6 +31,7 @@ import {
   DeviceTypeComponent,
   Divider,
   PageTitleComponent,
+  ResponsiveSelectInterfaceDirective,
 } from '@sparrow-home/ui';
 import { DeviceType, HomeDevice, humanize, HumanizePipe } from '@sparrow-home/utils';
 import { Observable } from 'rxjs';
@@ -62,6 +63,7 @@ import { SignalStrengthComponent } from '../../components/signal-strength/signal
     IonToggle,
     IonSelect,
     IonSelectOption,
+    ResponsiveSelectInterfaceDirective,
     IonButtons,
     TranslatePipe,
     Divider,

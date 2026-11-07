@@ -19,7 +19,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonDatetime, IonIcon, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AvailableDevice, TaskAction, TasksSignalStore, tasksSignalStore } from '@sparrow-home/task-domain';
-import { DaysOfWeekControl, DeviceActionComponent, Divider } from '@sparrow-home/ui';
+import { DaysOfWeekControl, DeviceActionComponent, Divider, ResponsiveSelectInterfaceDirective } from '@sparrow-home/ui';
 import { DeviceAction, humanize } from '@sparrow-home/utils';
 
 import { ActionFormService } from './form-service/action-form.service';
@@ -37,6 +37,7 @@ import { ActionForm } from './form-service/model/action-form';
     IonLabel,
     IonSelect,
     IonSelectOption,
+    ResponsiveSelectInterfaceDirective,
     Divider,
     IonDatetime,
   ],

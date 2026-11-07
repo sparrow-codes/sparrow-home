@@ -27,6 +27,7 @@ import { DeviceAction, humanize, HumanizePipe } from '@sparrow-home/utils';
 import { debounceTime, Subject } from 'rxjs';
 
 import { AbstractControlValueAccessor } from '../abstract-control-value-accessor';
+import { ResponsiveSelectInterfaceDirective } from '../responsive-select-interface.directive';
 
 @Component({
   selector: 'sp-device-action',
@@ -38,6 +39,7 @@ import { AbstractControlValueAccessor } from '../abstract-control-value-accessor
     IonLabel,
     IonSelect,
     IonSelectOption,
+    ResponsiveSelectInterfaceDirective,
     IonButton,
     IonRange,
   ],

@@ -22,7 +22,7 @@
   @case ('enum') {
     @if (options().length > 1) {
         <ion-label class="mb-2">{{ action().key | humanize }}</ion-label>
-        <ion-select mode="md" [interfaceOptions]="{mode: 'ios'}" fill="outline" shape="round" [disabled]="disabled()" [ngModel]="action().currentValue ?? null" justify="end" interface="action-sheet"
+        <ion-select mode="md" [interfaceOptions]="{mode: 'ios'}" fill="outline" shape="round" [disabled]="disabled()" [ngModel]="action().currentValue ?? null" justify="end"
                     (ngModelChange)="setValue($event)">
           @for (option of options(); track option.value) {
             <ion-select-option [value]="option.value">
