@@ -5,6 +5,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 type SelectInterface = 'action-sheet' | 'popover';
 
 @Directive({
+  // This element selector intentionally applies responsive behavior to every ion-select.
+  // eslint-disable-next-line @angular-eslint/directive-selector -- Global ion-select behavior is intentional.
   selector: 'ion-select',
   host: {
     '[attr.interface]': 'selectInterface()',
