@@ -25,6 +25,7 @@
 @import "badge.css";
 
 :root {
+  color-scheme: light;
   --ion-background-color: var(--sp-surface);
   --ion-text-color: var(--sp-text);
 
@@ -94,6 +95,7 @@
 }
 
 :root.ion-palette-dark {
+  color-scheme: dark;
   --ion-background-color: var(--sp-surface);
   --ion-background-color-rgb: 16,21,28;
   --ion-text-color: var(--sp-text);
